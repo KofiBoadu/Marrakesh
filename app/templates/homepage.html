@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Africa Travellers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+
+
+
+
+
+
+
+<!-- form to add customers -->
+ <h2>Add new paid customer</h2>
+	<form action="{{ url_for('customers.add_paid_customer') }}" method="post">
+
+        <div>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name">
+        </div>
+        <div>
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
+        <div>
+            <label>Gender:</label>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label>
+            <input type="radio" id="other" name="gender" value="other">
+            <label for="other">Other</label>
+        </div>
+
+         <div>
+        <label for="tour_date">Type of tour:</label>
+           <select id="tour_date" name="tour_date">
+                {% for date in available_dates %}
+                <option value="{{ date }}">{{ date }}</option>
+                {% endfor %}
+            </select>
+    </div>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+</form>
+
+
+
+
+
+ <h2>Add new tours</h2>
+    <form action="{{ url_for('customers.add_new_tours') }}" method="post">
+        <div>
+            <label for="first_name">Name:</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="start_date">Start Date:</label>
+            <input type="text" id="start_date" name="start_date">
+        </div>
+        <div>
+            <label for="end_date">End Date:</label>
+            <input type="text" id="end_date" name="end_date">
+        </div>
+        <div>
+            <label for="price">price:</label>
+            <input type="number" id="price" name="price">
+        </div>
+      
+        <div>
+            <label>Type of tour:</label>
+            <input type="radio" id="private" name="tour_type" value="private">
+            <label for="male">private</label>
+            <input type="radio" id="group" name="tour_type" value="group">
+            <label for="female">group</label>
+            
+        </div>
+
+         <div>
+        <label for="destination">Choose Destination:</label>
+            <select id="destination" name="destination">
+                {% for destination in destinations %}
+                <option value="{{ destination }}">{{ destination }}</option>
+                {% endfor %}
+            </select>
+    </div>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+
+                <!-- {% with messages = get_flashed_messages(category_filter=["tour_success"]) %}
+                  {% if messages %}
+                    <ul>
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %} -->
+
+    </form>
+
+
+
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>State</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Tour</th>
+                <th>Travel Year </th>
+                <th>Tour Price</th>
+                <th>Tour Type</th>
+
+            </tr>
+        </thead>
+
+       <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer[0] }}</td>
+                <td>{{ customer[1] }}</td>
+                <td>{{ customer[2] }}</td>
+                <td>{{ customer[3] }}</td>
+                <td>{{ customer[4] }}</td>
+                <td>{{ customer[6] }}</td>
+                <td>
+            {% if customer[7] is number %}
+                {{ '{:0.2f}'.format(customer[7]) }}
+            {% else %}
+                N/A  <!-- or some other placeholder text -->
+            {% endif %}
+            </td>
+
+                <td>{{ customer[8] }}</td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+
+
+</body>
+</html>
