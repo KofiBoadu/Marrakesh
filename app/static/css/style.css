@@ -74,6 +74,7 @@
     }
 
 
+
 /* ... your existing CSS ... */
 
 .info-container {
@@ -125,3 +126,9 @@
   }
 
 
+/* Increase the checkbox size */
+.delete-checkbox {
+  /* Scale up the checkbox */
+  transform: scale(1.5); /* Adjust the scale value as needed */
+  margin: 5px; /* Optional: to ensure the larger checkbox doesn't overlap other elements */
+}

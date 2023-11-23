@@ -38,16 +38,16 @@ def create_get_customer_tour_details_procedure():
     CREATE PROCEDURE GetCustomerTourDetails(IN target_year INT)
     BEGIN
         SELECT
+            c.customer_id,
             CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
             c.state_address AS `State`,
             c.email_address AS `Email`,
             c.phone_number AS `Mobile`,
             t.tour_name AS `Tour`,
             YEAR(t.start_date) AS `Travel_Year_Start`,
-            YEAR(t.end_date) AS `Travel_Year_End`,
             t.tour_price AS `Tour_Price`,
-            t.tour_type AS `Tour_Type`,
-            d.destination_name AS `Destination`
+            t.tour_type AS `Tour_Type`
+
         FROM
             customers c
         JOIN
@@ -426,11 +426,33 @@ def calculate_gross_revenue(year):
 
 
 
-# # # print(get_tour_id("Ghana August 15th-24th"))
-# # # print(get_customer_id("r1y9m4nd7@cox.net"))
+def remove_paid_customer(customer_id):
+    deleted = False
+    database_connection = None
+    try:
+        database_connection = create_databaseConnection()
+        database_connection.autocommit = False
+        cursor = database_connection.cursor()
+        cursor.execute("DELETE FROM tour_bookings WHERE customer_id=%s", (customer_id,))
+        bookings_deleted = cursor.rowcount > 0
+        cursor.execute("DELETE FROM customers WHERE customer_id=%s", (customer_id,))
+        customer_deleted = cursor.rowcount > 0
+        if bookings_deleted and customer_deleted:
+            database_connection.commit()
+            deleted = True
+        else:
+            database_connection.rollback()
+        cursor.close()
+    except Exception as e:
+        logging.error(f"An error occurred while deleting customer: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+    return deleted
 
-# print(calculate_gross_revenue(2023))
 
-# # # create_get_customer_tour_details_procedure()
 
-# # # print( get_customers_information(2023))

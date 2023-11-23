@@ -161,6 +161,10 @@
     <table>
         <thead>
             <tr>
+                <th>
+                <input type="checkbox" class="delete-checkbox">
+                <label for="select-all"></label>
+                </th>
                 <th>Full Name</th>
                 <th>State</th>
                 <th>Email</th>
@@ -176,21 +180,26 @@
        <tbody>
             {% for customer in customers %}
             <tr>
-                <td>{{ customer[0] }}</td>
+                <td>
+                <input type="checkbox" class="delete-checkbox" data-id="{{ customer[0] }}" id="delete-customer-{{ loop.index }}">
+                <!-- <label for="delete-customer-{{ loop.index }}"></label> -->
+                </td>
+                <!-- <td>{{ customer[0] }}</td> -->
                 <td>{{ customer[1] }}</td>
                 <td>{{ customer[2] }}</td>
                 <td>{{ customer[3] }}</td>
                 <td>{{ customer[4] }}</td>
-                <td>{{ customer[6] }}</td>
+                <td>{{ customer[5] }}</td>
                 <td>
-            {% if customer[7] is number %}
-                {{ '{:0.2f}'.format(customer[7]) }}
+            {% if customer[6] is number %}
+                {{ '{:0.2f}'.format(customer[6]) }}
             {% else %}
                 N/A  <!-- or some other placeholder text -->
             {% endif %}
             </td>
 
-                <td>{{ customer[8] }}</td>
+                <td>{{ customer[7] }}</td>
+                 <td>{{ customer[8] }}</td>
                
             </tr>
             {% endfor %}
