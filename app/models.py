@@ -3,6 +3,7 @@ from mysql.connector import Error
 from dotenv import load_dotenv
 import os
 import logging
+import datetime
 
 
 
@@ -362,14 +363,74 @@ def check_customer_exists(email):
 
 
 
+def get_total_numberOfTravellers():
+    target_year = datetime.datetime.now().year
+    query = """
+        SELECT COUNT(tb.booking_id)
+        FROM tour_bookings tb
+        JOIN tours t ON tb.tour_id = t.tour_id
+        WHERE YEAR(t.start_date) = %s
+    """
+    database_connection = None
+    cursor = None
+
+    try:
+        database_connection = create_databaseConnection()
+        if database_connection:
+            cursor = database_connection.cursor()
+            cursor.execute(query, (target_year,))
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+            else:
+                return 0
+    except mysql.connector.Error as db_err:
+        logging.error(f"Database error occurred: {db_err}")
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+    return None
 
 
 
-# # print(get_tour_id("Ghana August 15th-24th"))
-# # print(get_customer_id("r1y9m4nd7@cox.net"))
 
-# print(available_tour_dates())
+def calculate_gross_revenue(year):
+    query = """
+        SELECT COALESCE(SUM(t.tour_price), 0) AS total_revenue
+        FROM tour_bookings tb
+        JOIN tours t ON tb.tour_id = t.tour_id
+        WHERE YEAR(t.start_date) = %s
+    """
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (year,))  # Pass the year as a parameter to the query
+        result = cursor.fetchone()
+        total_revenue = result[0] if result else 0
+        return float(total_revenue)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
-# # create_get_customer_tour_details_procedure()
 
-# # print( get_customers_information(2023))
+
+
+
+# # # print(get_tour_id("Ghana August 15th-24th"))
+# # # print(get_customer_id("r1y9m4nd7@cox.net"))
+
+# print(calculate_gross_revenue(2023))
+
+# # # create_get_customer_tour_details_procedure()
+
+# # # print( get_customers_information(2023))

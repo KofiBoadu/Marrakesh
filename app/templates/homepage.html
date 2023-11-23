@@ -10,6 +10,22 @@
 
 
 
+<div class="info-container">
+    <div class="card">
+        <div class="card-section">
+            <div class="info-value"><h1>{{total_travelers}}</h1></div>
+            <div class="info-title">Total number of travellers since {{year}}</div>
+        </div>
+        <div class="card-section">
+            <div class="info-value"><h1>${{revenue}}</h1></div>
+            <div class="info-title">Gross revenue since {{year}}</div>
+        </div>
+        <div class="card-section">
+            <div class="info-value">$0.00</div>
+            <div class="info-title">Profit generated since {{year}}</div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -59,6 +75,26 @@
         <div>
             <button type="submit">Submit</button>
         </div>
+
+    {% with messages = get_flashed_messages(category_filter=["customer_success"]) %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% with messages = get_flashed_messages(category_filter=["customer_exist"]) %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
 </form>
 
 
@@ -106,7 +142,7 @@
             <button type="submit">Submit</button>
         </div>
 
-                <!-- {% with messages = get_flashed_messages(category_filter=["tour_success"]) %}
+            {% with messages = get_flashed_messages(category_filter=["tour_success"]) %}
                   {% if messages %}
                     <ul>
                     {% for message in messages %}
@@ -114,8 +150,7 @@
                     {% endfor %}
                     </ul>
                   {% endif %}
-                {% endwith %} -->
-
+                {% endwith %}
     </form>
 
 
