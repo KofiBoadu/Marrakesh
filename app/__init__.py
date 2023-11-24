@@ -1,7 +1,8 @@
 from flask import Flask,redirect,url_for
-from .customers import customers_bp  # Import the Blueprint from the customers module
+from .customers import customers_bp
 from dotenv import load_dotenv
 import os
+from .customer_profiles import customers_profile
 
 
 def create_app():
@@ -12,6 +13,7 @@ def create_app():
         return redirect(url_for('customers.home_page'))
 
     app.register_blueprint(customers_bp, url_prefix='/customers')
+    app.register_blueprint(customers_profile, url_prefix='/profiles')
     app.secret_key = os.getenv('SECRET_KEY')
 
     return app

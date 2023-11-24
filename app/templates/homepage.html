@@ -185,7 +185,7 @@
                 <!-- <label for="delete-customer-{{ loop.index }}"></label> -->
                 </td>
                 <!-- <td>{{ customer[0] }}</td> -->
-                <td>{{ customer[1] }}</td>
+                <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1] }}</a></td> 
                 <td>{{ customer[2] }}</td>
                 <td>{{ customer[3] }}</td>
                 <td>{{ customer[4] }}</td>
