@@ -1,14 +1,8 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Customer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+{% extends "base.html" %}
 
 
-</head>
-<body>
+
+{% block content %}
 
 <div class="profile-container" >
     <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
@@ -22,12 +16,11 @@
     <h2>Tours Booked:</h2>
     <ul>
         {% for tour_name in tour_list %}
-        <li>{{ tour_name }}</li>
+        <li>{{ tour_name }}    <span>{{profile[6]}}</span></li>
         {% endfor %}
     </ul>
 
     <p class="total-payment" >Revenue Generated: {{ profile[5] }}</p> <!-- Assuming the sixth element is the total payment -->
 </div>
 
-</body>
-</html>
+{% endblock %}

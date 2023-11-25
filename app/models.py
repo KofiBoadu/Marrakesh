@@ -62,8 +62,8 @@ def create_get_customer_tour_details_procedure():
             c.customer_id DESC;
     END
     """
-
     database_connection = None
+    cursor = None
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
@@ -83,11 +83,33 @@ def create_get_customer_tour_details_procedure():
 
 
 
+# def get_customers_information(year):
+#     database_connection = None
+#     cursor = None
+#     customers = []
+
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+#         cursor.callproc('GetCustomerTourDetails', [year])
+#         for result in cursor.stored_results():
+#             customers.extend(result.fetchall())
+#         return customers
+#     except Exception as e:
+#         logging.error(f"Error in get_customers_information: {e}")
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
 
 
 def get_customers_information(year):
     database_connection = None
     customers = []
+    cursor=None
 
     try:
         database_connection = create_databaseConnection()
@@ -109,21 +131,22 @@ def get_customers_information(year):
 
 
 
-
 def create_tour_bookings(tour_id, customer_id):
+    query = "INSERT INTO tour_bookings(tour_id, customer_id) VALUES(%s, %s)"
+    database_connection = None
+    cursor = None
+
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-
-        query = "INSERT INTO tour_bookings(tour_id, customer_id) VALUES(%s, %s)"
-        values = (tour_id, customer_id)
-        cursor.execute(query, values)
+        cursor.execute(query, (tour_id, customer_id))
         database_connection.commit()
         return True
-
     except Exception as e:
-        raise Exception(f"An error occurred: {e}")
-
+        logging.error(f"Error in create_tour_bookings: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
     finally:
         if cursor:
             cursor.close()
@@ -131,83 +154,197 @@ def create_tour_bookings(tour_id, customer_id):
             database_connection.close()
 
 
+# def create_tour_bookings(tour_id, customer_id):
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+
+#         query = "INSERT INTO tour_bookings(tour_id, customer_id) VALUES(%s, %s)"
+#         values = (tour_id, customer_id)
+#         cursor.execute(query, values)
+#         database_connection.commit()
+#         return True
+
+#     except Exception as e:
+#         raise Exception(f"An error occurred: {e}")
+
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
 
 
+
+# def get_tour_id(tour_name):
+#     query = "SELECT tour_id FROM tours WHERE tour_name = %s"
+#     database_connection = create_databaseConnection()
+#     cursor = database_connection.cursor()
+
+#     try:
+#         cursor.execute(query, (tour_name,))
+#         result = cursor.fetchone()
+#         if result:
+#             return result[0]
+#         else:
+#             return None
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
 def get_tour_id(tour_name):
     query = "SELECT tour_id FROM tours WHERE tour_name = %s"
-    database_connection = create_databaseConnection()
-    cursor = database_connection.cursor()
-    cursor.execute(query, (tour_name,))
-    result = cursor.fetchone()
-    cursor.close()
-    database_connection.close()
-    if result:
+    database_connection = None
+    cursor = None
 
-        return result[0]
-    else:
-
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (tour_name,))
+        result = cursor.fetchone()
+        print(result)
+        return result[0] if result else None
+    except mysql.connector.Error as e:
+        # Handle specific database errors here
+        logging.error(f"Database error in get_tour_id: {e}")
         return None
+    except Exception as e:
+        # Handle general errors here
+        logging.error(f"Error in get_tour_id: {e}")
+        return None
+    finally:
+        if database_connection:
+            database_connection.close()
 
 
 
+# def get_customer_id(email):
+#     query = "SELECT customer_id FROM customers WHERE email_address = %s"
+#     database_connection = create_databaseConnection()
+#     cursor = database_connection.cursor()
+#     cursor.execute(query, (email,))
+#     result = cursor.fetchone()
+#     cursor.close()
+#     database_connection.close()
+#     if result:
+
+#         return result[0]
+#     else:
+
+#         return None
 
 def get_customer_id(email):
     query = "SELECT customer_id FROM customers WHERE email_address = %s"
-    database_connection = create_databaseConnection()
-    cursor = database_connection.cursor()
-    cursor.execute(query, (email,))
-    result = cursor.fetchone()
-    cursor.close()
-    database_connection.close()
-    if result:
-
-        return result[0]
-    else:
-
-        return None
-
-
-
-
-
-def available_tour_dates():
-    dates = []
     database_connection = None
     cursor = None
+
     try:
         database_connection = create_databaseConnection()
-        if database_connection is not None:
-            cursor = database_connection.cursor()
-            query = "SELECT tour_name FROM tours"
-            cursor.execute(query)
-            date_tuples = cursor.fetchall()
-            dates = [date[0] for date in date_tuples]
-        else:
-            print("Failed to connect to the database")
+        cursor = database_connection.cursor()
+        cursor.execute(query, (email,))
+        result = cursor.fetchone()
+        return result[0] if result else None
     except Exception as e:
-        raise Exception(f"An error occurred while getting  tour dates: {e}")
+        logging.error(f"Error in get_customer_id: {e}")
+        return None
     finally:
         if cursor:
             cursor.close()
         if database_connection:
             database_connection.close()
-    return dates
 
 
 
 
-def create_new_tourDates(tour_name, start_date,end_date,price,destination_id, tour_type):
-     query = "INSERT INTO tours(tour_name, start_date,end_date,tour_price,destination_id,tour_type) VALUES(%s,%s,%s,%s,%s,%s)"
-     values = (tour_name, start_date,end_date,price,destination_id, tour_type)
-     try:
+# def available_tour_dates():
+#     dates = []
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_databaseConnection()
+#         if database_connection is not None:
+#             cursor = database_connection.cursor()
+#             query = "SELECT tour_name FROM tours"
+#             cursor.execute(query)
+#             date_tuples = cursor.fetchall()
+#             dates = [date[0] for date in date_tuples]
+#         else:
+#             print("Failed to connect to the database")
+#     except Exception as e:
+#         raise Exception(f"An error occurred while getting  tour dates: {e}")
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+#     return dates
+
+
+def available_tour_dates():
+    query = "SELECT tour_name FROM tours"
+    database_connection = None
+    cursor = None
+    dates = []
+
+    try:
         database_connection = create_databaseConnection()
-        with database_connection.cursor() as cursor:
-            cursor.execute(query, values)
-            database_connection.commit()
-            return True
-     except Exception as e:
-        raise Exception(f"An error occurred while creating new tour dates: {e}")
-     finally:
+        cursor = database_connection.cursor()
+        cursor.execute(query)
+        date_tuples = cursor.fetchall()
+        dates = [date[0] for date in date_tuples]
+        return dates
+    except Exception as e:
+        logging.error(f"Error in available_tour_dates: {e}")
+        return []
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+# def create_new_tourDates(tour_name, start_date,end_date,price,destination_id, tour_type):
+#      query = "INSERT INTO tours(tour_name, start_date,end_date,tour_price,destination_id,tour_type) VALUES(%s,%s,%s,%s,%s,%s)"
+#      values = (tour_name, start_date,end_date,price,destination_id, tour_type)
+#      try:
+#         database_connection = create_databaseConnection()
+#         with database_connection.cursor() as cursor:
+#             cursor.execute(query, values)
+#             database_connection.commit()
+#             return True
+#      except Exception as e:
+#         raise Exception(f"An error occurred while creating new tour dates: {e}")
+#      finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+def create_new_tourDates(tour_name, start_date, end_date, price, destination_id, tour_type):
+    query = "INSERT INTO tours(tour_name, start_date, end_date, tour_price, destination_id, tour_type) VALUES(%s, %s, %s, %s, %s, %s)"
+    database_connection = None
+    cursor = None
+
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (tour_name, start_date, end_date, price, destination_id, tour_type))
+        database_connection.commit()
+        return True
+    except mysql.connector.Error as e:
+        logging.error(f"Database error in create_new_tourDates: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
+    except Exception as e:
+        logging.error(f"Error in create_new_tourDates: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
+    finally:
         if cursor:
             cursor.close()
         if database_connection:
@@ -453,6 +590,7 @@ def remove_paid_customer(customer_id):
         if database_connection:
             database_connection.close()
     return deleted
+
 
 
 

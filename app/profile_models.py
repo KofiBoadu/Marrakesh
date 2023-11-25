@@ -11,7 +11,8 @@ def profile_details(customer_id):
           c.phone_number,
           c.state_address,
           GROUP_CONCAT(t.tour_name SEPARATOR ', '),
-          SUM(t.tour_price)
+          SUM(t.tour_price),
+          YEAR(t.start_date)
         FROM
           customers c
         JOIN

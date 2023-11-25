@@ -40,20 +40,18 @@ def add_paid_customer():
         gender = request.form.get('gender')
         tour_type= request.form.get("tour_date")
         customer_exist=check_customer_exists(email)
-
+        tour_id= get_tour_id(tour_type)
         if customer_exist:
             customer_id= customer_exist
             tour_id= get_tour_id(tour_type)
             create_tour_bookings(tour_id,customer_id)
             return redirect(url_for("customers.home_page",form_submitted='customer_exist'))
-
         else:
             customer= add_new_paidCustomer(first_name, last_name,email,phone,gender,state)
             tour_id= get_tour_id(tour_type)
             customer_id= get_customer_id(email)
             create_tour_bookings(tour_id,customer_id)
-    return redirect(url_for("customers.home_page",form_submitted='customer'))
-
+            return redirect(url_for("customers.home_page",form_submitted='customer'))
 
 
 

@@ -1,1 +1,41 @@
-ECHO is on.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JourneyManager CRM</title>
+    <!-- Add your stylesheet links here -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <!-- Logo can be text or an image -->
+                <a href="index.html">JourneyManager</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="tours.html">Tours</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="customers.html">Customers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Main content of the page goes here -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    
+
+    <!-- Add your scripts here -->
+
+</body>
+</html>
+
