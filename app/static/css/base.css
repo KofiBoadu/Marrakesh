@@ -49,9 +49,10 @@ nav ul li a:hover {
     background-color: #FFA07A; /* Lighter tone on hover for interactive feel */
 }
 
-main {
-    padding: 2rem;
-}
-
 
 /* Further stylings for buttons, forms, tables, etc., can be added */
+main {
+    padding: 2rem;
+    padding: 0; 
+    /* Ensure no padding at the top of the main content */
+}

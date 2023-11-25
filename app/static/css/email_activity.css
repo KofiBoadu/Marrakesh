@@ -1,0 +1,65 @@
+
+.email-container {
+        background-color: #ffffff;
+        padding: 2rem;
+        margin: 2rem auto; /* Top and bottom margin with auto side margins centers the card */
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px; /* Adjust the width as needed */
+        margin-top: 0;
+    }
+
+.email-header {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+.email-body {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+.email-title {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+.email-text {
+        color: #333;
+        line-height: 1.5;
+    }
+
+.email-footer {
+        font-size: 0.9rem;
+        text-align: center;
+        color: #333;
+        margin-top: 1rem;
+    }
+
+
+
+    .email-container {
+        position: relative; /* This allows absolute positioning inside the container */
+        /* ... other styles ... */
+    }
+
+    .delete-form {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.5rem;
+    }
+
+    .delete-text-link {
+        color: #dc3545; /* Bootstrap's danger color for delete links */
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .delete-text-link:hover {
+        text-decoration: underline;
+    }
+
+

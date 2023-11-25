@@ -1,24 +1,32 @@
-/* Apply a basic reset and set box-sizing for all elements */
-* {
+/* Reset margins and padding for all elements, pseudo-elements, body, and html */
+*,
+*::before,
+*::after,
+html,
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Ensure the font is consistent */
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Style the container for the profile */
+/* Apply styles to the .profile-container */
 .profile-container {
     max-width: 500px;
-    margin: 40px auto;
+    margin: 0; /* This ensures no margin at the top and flush with the left side */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #e1e1e1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
+    position: relative; /* In case you need to position something absolutely inside */
 }
 
-/* Style the main header */
+/* Style the main header without top margin */
 .profile-container > h1 {
     font-size: 1.75rem;
     color: #333;
@@ -27,7 +35,7 @@
     letter-spacing: 1px;
 }
 
-/* Style the email and other details */
+/* Style the email and other details without top margin */
 .profile-container > p {
     font-size: 1rem;
     line-height: 1.4;
@@ -35,11 +43,11 @@
     margin-bottom: 0.5rem;
 }
 
-/* Style sub-headers */
+/* Style sub-headers without top margin */
 .profile-container > h2 {
     font-size: 1.25rem;
     color: #333;
-    margin-top: 1rem;
+    margin-top: 40px; /* Reset top margin to 0 */
     margin-bottom: 0.5rem;
     border-bottom: 2px solid #e1e1e1;
     padding-bottom: 0.25rem;
@@ -63,10 +71,36 @@
     background-color: #e9e9e9;
 }
 
-/* Total payment styling */
+/* Total payment styling without top margin */
 .profile-container .total-payment {
     font-weight: bold;
     color: #4CAF50;
     font-size: 1.1rem;
-    margin-top: 1rem;
+    margin-top: 30px; /* Reset top margin to 0 */
 }
+
+button {
+    margin:50px;
+    background-color: #FF8C00; /* Warm tone from your header, for the button background */
+    color: #FFF; /* White text color for contrast */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Add some padding around the text */
+    font-family: 'Arial', sans-serif; /* Keep the font consistent with the body */
+    font-size: 1rem; /* Set a standard font size */
+    cursor: pointer; /* Change cursor to indicate button is clickable */
+    border-radius: 5px; /* Slightly rounded corners for a modern look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for depth, slightly darker than your header's shadow for contrast */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+button:hover {
+    background-color: #e47600; /* A slightly darker shade for the hover state */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow for a raised button effect on hover */
+}
+
+button:active {
+    background-color: #cc6b00; /* Even darker shade for the active state */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Revert to the original shadow for a pressed button effect */
+}
+
+

@@ -6,14 +6,14 @@
 
 <div class="profile-container" >
     <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
-    <p>Email: {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
+    <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
 
     <h2>About Customer</h2>
     <p>Number: {{ profile[2] }}</p> <!-- Assuming the third element is the number -->
     <!-- No need for a second email -->
     <p>State: {{ profile[3] }}</p> <!-- Assuming the fourth element is the state -->
     
-    <h2>Tours Booked:</h2>
+    <h2>Tours Booked</h2>
     <ul>
         {% for tour_name in tour_list %}
         <li>{{ tour_name }}    <span>{{profile[6]}}</span></li>
@@ -21,6 +21,92 @@
     </ul>
 
     <p class="total-payment" >Revenue Generated: {{ profile[5] }}</p> <!-- Assuming the sixth element is the total payment -->
+     <button onclick="openEmailForm()">Send customer Email</button>
 </div>
+
+
+
+
+{% for email in emails %}
+<div class="email-container">
+    <div class="email-header">
+        <strong>Subject:</strong> {{ email['subject'] }}
+        <form action="{{ url_for('send_emails.delete_email', email_id=email['email_id'],customer_id=customer_id) }}" method="POST" class="delete-form">
+            <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
+            <input type="hidden" name="customer_id" value="{{ customer_id }}">
+            <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link">Delete</a>
+        </form>
+    </div>
+    <div class="email-body">
+        <h5 class="email-title">Dear {{ profile[0] }},</h5>
+        <p class="email-text">{{ email['body'] }}</p>
+        <p class="email-text"><small class="text-muted">Status: {{ email['status'] }} on {{ email['sent_date'] }}</small></p>
+    </div>
+    <div class="email-footer">
+        Best regards,<br>
+        Your Company Name
+    </div>
+</div>
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+<div id="emailForm" class="email-form-container" style="display: none;">
+  <h2>Email</h2>
+  <form  action="{{ url_for('send_emails.send_customer_email') }}" method="post">
+   
+    <input type="hidden" name="customer_id" value="{{ customer_id }}">
+
+    <!-- To Field -->
+    <div class="form-group">
+      <label for="toEmail">To</label>
+      <input type="email" id="toEmail" name="to_email" placeholder="{{profile[0]  }}" required value="{{profile[1]  }}" readonly> <!-- Assuming you have customer_email variable -->
+    </div>
+
+    <!-- From Field (readonly or a label if it's a fixed value) -->
+    <div class="form-group">
+      <label for="fromEmail">From</label>
+      <input type="email" id="fromEmail" name="from_email" value="kboadu16@gmail.com" readonly>
+    </div>
+
+    <!-- Subject Field -->
+    <div class="form-group">
+      <label for="emailSubject">Subject</label>
+      <input type="text" id="emailSubject" name="subject" placeholder="Enter subject here" required>
+    </div>
+
+    <!-- Email Body -->
+    <div class="form-group">
+      <label for="emailBody">Body</label>
+      <textarea id="emailBody" name="body" rows="10" placeholder="Write your message here" required></textarea>
+    </div>
+
+    <!-- Send Button -->
+    <div class="form-group">
+      <button type="submit" class="send-email-button">Send Email</button>
+    </div>
+  </form>
+
+  {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+</div>
+
+
+
+<script>
+function openEmailForm() {
+    // Show the email form when the button is clicked
+    document.getElementById('emailForm').style.display = 'block';
+}
+</script>
 
 {% endblock %}
