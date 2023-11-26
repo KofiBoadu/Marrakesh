@@ -34,4 +34,3 @@ Built with:
 - **Database:** MySQL
 
 
-yes 
