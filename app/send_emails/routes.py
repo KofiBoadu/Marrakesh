@@ -2,10 +2,11 @@
 from . import email_customers
 from app.emails import send_email,customer_email_interactions,delete_customer_email
 from flask import request, redirect, url_for, flash
-
+from flask_login import login_required
 
 
 @email_customers.route('/send-email', methods=['POST'])
+@login_required
 def send_customer_email():
     to_email = request.form.get('to_email')
     from_email = request.form.get('from_email')
@@ -24,6 +25,7 @@ def send_customer_email():
 
 
 @email_customers.route('/delete-email/<int:customer_id>/<int:email_id>',methods=['POST'])
+@login_required
 def delete_email(email_id,customer_id):
     delete_the_email=delete_customer_email(email_id)
     customer_id= customer_id

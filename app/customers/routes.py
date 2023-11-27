@@ -4,10 +4,13 @@ from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_
 from app.models import check_customer_exists,get_total_numberOfTravellers,calculate_gross_revenue
 from app.customers import customers_bp
 import datetime
-
+from flask_login import login_required
+from app.extension import cache
 
 
 @customers_bp.route('/', methods=['GET'])
+@login_required
+@cache.cached(timeout=120)
 def home_page():
     form_submitted = request.args.get('form_submitted')
     if form_submitted == 'customer':
@@ -30,6 +33,7 @@ def home_page():
 
 
 @customers_bp.route('/add_customer', methods=['POST'])
+@login_required
 def add_paid_customer():
     if request.method=='POST':
         first_name = request.form.get('first_name')
@@ -58,6 +62,7 @@ def add_paid_customer():
 
 
 @customers_bp.route('/add_new_tours',methods=['POST'])
+@login_required
 def add_new_tours():
     if request.method=='POST':
         tour_name = request.form.get('name')

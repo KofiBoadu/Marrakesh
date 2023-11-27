@@ -56,3 +56,20 @@ main {
     padding: 0; 
     /* Ensure no padding at the top of the main content */
 }
+
+
+#logout-button a {
+  font-weight: bold; /* Makes the font bold */
+  color: #f00; /* Sets the text color to red */
+  background-color: #fff; /* Sets the background color to white */
+  padding: 8px 15px; /* Adds padding around the text */
+  border-radius: 5px; /* Rounds the corners of the background */
+  text-transform: uppercase; /* Makes the text uppercase */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+#logout-button a:hover {
+  color: #fff; /* Changes text color to white on hover */
+  background-color: #f44336; /* Changes background color to a light red on hover */
+  text-decoration: none; /* Removes the underline from the anchor tag on hover */
+}

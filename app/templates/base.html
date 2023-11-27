@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JourneyManager CRM</title>
+    <title>Travel Salesman</title>
     <!-- Add your stylesheet links here -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_form.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_activity.css') }}">
+
    <!--  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
 
@@ -26,6 +27,8 @@
                 <li><a href="bookings.html">Bookings</a></li>
                 <li><a href="customers.html">Customers</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li id="logout-button"><a href="{{ url_for('users.log_out')}}">Logout</a></li>
+                <span id="welcome-message">Welcome Daniel</span>
             </ul>
         </nav>
     </header>

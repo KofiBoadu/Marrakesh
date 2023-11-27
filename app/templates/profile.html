@@ -59,7 +59,10 @@
 
 
 
-<div id="emailForm" class="email-form-container" style="display: none;">
+<div id="emailForm"  class="email-form-container" style="display: none;">
+    <!-- Close button -->
+  <span class="close-btn" onclick="closeEmailForm()">X</span>
+
   <h2>Email</h2>
   <form  action="{{ url_for('send_emails.send_customer_email') }}" method="post">
    
@@ -107,6 +110,12 @@ function openEmailForm() {
     // Show the email form when the button is clicked
     document.getElementById('emailForm').style.display = 'block';
 }
+
+
+function closeEmailForm() {
+  document.getElementById('emailForm').style.display = 'none';
+}
 </script>
 
 {% endblock %}
+
