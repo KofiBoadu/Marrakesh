@@ -10,7 +10,7 @@ from app.extension import cache
 
 @customers_bp.route('/', methods=['GET'])
 @login_required
-@cache.cached(timeout=240)
+# @cache.cached(timeout=240)
 def home_page():
     form_submitted = request.args.get('form_submitted')
     if form_submitted == 'customer':
