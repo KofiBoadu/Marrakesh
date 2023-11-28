@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Salesman</title>
+    <title>Travel Torch</title>
     <!-- Add your stylesheet links here -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
@@ -28,7 +28,7 @@
                 <li><a href="customers.html">Customers</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li id="logout-button"><a href="{{ url_for('users.log_out')}}">Logout</a></li>
-                <span id="welcome-message">Welcome Daniel</span>
+                <span id="welcome-message">Welcome   {{username}}</span>
             </ul>
         </nav>
     </header>

@@ -3,7 +3,7 @@ from app.profile_models import profile_details
 from . import customers_profile
 from app.emails import all_emails_sent_to_customer
 from flask_login import login_required
-
+from app.extension import cache
 
 
 

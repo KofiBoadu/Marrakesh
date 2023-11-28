@@ -1,4 +1,4 @@
-from flask import  render_template, request,redirect,url_for,flash
+from flask import  render_template, request,redirect,url_for,flash,session
 from app.models import get_customers_information, available_tour_dates,add_new_paidCustomer,get_destination_id
 from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_destination,create_new_tourDates
 from app.models import check_customer_exists,get_total_numberOfTravellers,calculate_gross_revenue
@@ -10,7 +10,7 @@ from app.extension import cache
 
 @customers_bp.route('/', methods=['GET'])
 @login_required
-@cache.cached(timeout=120)
+@cache.cached(timeout=240)
 def home_page():
     form_submitted = request.args.get('form_submitted')
     if form_submitted == 'customer':
@@ -20,13 +20,14 @@ def home_page():
     elif form_submitted== "customer_exist":
         flash("This customer just rebooked another trip","customer_exist")
     if request.method == 'GET':
+        username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
         customers= get_customers_information(year)
         available_dates= available_tour_dates()
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
         revenue= calculate_gross_revenue(year)
-        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue)
+        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username)
 
 
 
