@@ -1,0 +1,251 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.create{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+    flex-direction: column;
+    margin: auto;
+    &_logo{
+        
+        width: 600px; 
+        height: 400px; 
+        
+    }
+    &_button{
+        padding: 10px;
+        margin-left: 4%;
+        background-color: $ATorange;
+        width: 200px; 
+        height: 50px; 
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family:sans-serif;
+    }
+}
+
+
+.modal{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+   
+    z-index: 1000;
+    width: 40%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+    &_title{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        background: rgb(3,152,158);
+        background: linear-gradient(90deg, rgba(3,152,158,1) 32%, rgba(191,232,233,1) 100%);
+    }
+    &_title--header{
+        font-family: sans-serif;
+        font-size: 1.5em ;
+        color: $textColor1;
+        margin-left: 5%;
+    }
+    &_title--close{
+        margin-top:5% ;
+        margin-right: 2%;
+        cursor: pointer;
+    }
+    &_form{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    &_wrap{
+        display: flex;
+        flex-direction: column;
+       margin-left: 20%;
+    }
+    &_wrap--gender{
+        display: flex;
+        flex-direction: row;
+        width:20% ;
+        gap:2%;
+    }
+    &_submit{
+       margin-top: 5%;
+       padding: 10px;
+        
+        background-color: $ATorange;
+        width: 150px; 
+        height: 50px; 
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family:sans-serif;
+         margin-left: 20%;
+         margin-bottom:5%;
+    }
+}
+#createCustomerBtn{
+    background-color: $ATorange;
+        width: 150px; 
+        height: 30px; 
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family:sans-serif;
+        padding-bottom: 5%;
+         margin-bottom:5%;
+         margin-top: 4%;
+         
+
+}
+#tourBtn{
+    background-color: $ATorange;
+        width: 150px; 
+        height: 30px; 
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family:sans-serif;
+        margin-top: 4%;
+         margin-bottom:5%;
+         padding-bottom: 5%;
+
+}
+
+input{
+   width: 20em;
+   height: 2em;
+   border: 1px solid $ATblue;
+   border-radius: 2px;
+  
+}
+select{
+    width: 20em;
+    height: 2em;
+    border: 1px solid $ATblue;
+    border-radius: 2px;
+}
+
+label{
+  margin-right: 50%;
+  font-family:sans-serif;
+  margin-top: 5%;
+  color: $textColor3;
+}
+
+input[type='radio']:checked {
+    accent-color: $ATorange;
+}
+h3{
+    font-family: Calibri;
+}
+#gender{
+    color: $ATblue;
+}
+#table-container{
+    
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.476);
+    margin: 2%;
+    align-self: center
+    ;
+}
+#table-header{
+    display: flex;
+   justify-content: space-between;
+   border-bottom: 2px solid rgb(238, 234, 234);
+   
+   
+
+}
+#table-title{
+    margin: 2%;
+    font-family: Helvetica;
+    font-size: 2em;
+    color: $textColor3;
+}
+#table-action{
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+    gap: 2%;
+    margin-top: 0%;
+    
+}
+th {
+    padding: 10px; // Adjust padding as needed
+    text-align: center;
+    font-family: Helvetica;
+    font-weight: 400;
+    font-size: 1em;
+
+    
+}
+#data-table{
+    background-color: rgba(6, 138, 138, 0.506);
+    width: 100%;
+    border-collapse: collapse;
+}
+td{
+    text-align: center;
+    font: 1em Helvetica ;
+    font-weight: 200;
+}
+#table-body tr td {
+    margin: 0; /* Remove margin */
+    padding: 1%; /* Remove padding */
+}
+#table-body tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Light background color for even rows */
+}
+
+#table-body tr:nth-child(odd) td {
+    background-color: #ffffff; /* White background color for odd rows */
+}
+
+.dashboard{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10%;
+    &_card{
+        display: flex;
+        
+        width: 30%;
+        border-radius: 4px 4px 4px 4px;
+        box-shadow: 2px 2px 2px 1px rgb(212, 212, 212);
+    }
+    &_icon{
+        margin-top: 30%;
+        border-right: 2px solid  rgb(239, 237, 237);
+    }
+    &_container2{
+        margin-left: 5%;
+    }
+    &_header{
+        font-family:Helvetica;
+        font-size: 2.2em;
+        margin-bottom: 0%; 
+        color: $ATblue;
+
+
+    }
+    &_subheader{
+        font-family:Helvetica;
+        font-size: .5em;
+        margin-top: 2%;
+        font-weight:100; 
+
+    }
+}

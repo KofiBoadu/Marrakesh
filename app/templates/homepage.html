@@ -5,74 +5,115 @@
 {% block content %}
 
 
+<div class="dashboard">
 
-<div class="info-container">
-    <div class="card">
-        <div class="card-section">
-            <div class="info-value"><h1>{{total_travelers}}</h1></div>
-            <div class="info-title">Total number of travellers since {{year}}</div>
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/windows/64/ff914c/stocks-growth.png" alt="stocks-growth" />
         </div>
-        <div class="card-section">
-            <div class="info-value"><h1>${{revenue}}</h1></div>
-            <div class="info-title">Gross revenue since {{year}}</div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">${{revenue}}</h1>
+            <h5 class="dashboard_subheader">Gross revenue since {{year}} </h5>
         </div>
-        <div class="card-section">
-            <div class="info-value">$0.00</div>
-            <div class="info-title">Profit generated since {{year}}</div>
-        </div>
+
     </div>
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/pastel-glyph/64/FF914C/person-male--v3.png" alt="person-male--v3" />
+        </div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">{{total_travelers}}</h1>
+            <h5 class="dashboard_subheader">Total number of travellers since{{year}}</h5>
+        </div>
+
+    </div>
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/material-sharp/64/ff914c/economic-improvement.png"
+                alt="economic-improvement" />
+        </div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">$10760.0</h1>
+            <h5 class="dashboard_subheader">Profit generated since {{year}}</h5>
+        </div>
+
+    </div>
+
 </div>
 
-
-
 <!-- form to add customers -->
- <h2>Add new paid customer</h2>
-	<form action="{{ url_for('customers.add_paid_customer') }}" method="post">
+<div class="modal" id="popUp">
+    <div class="modal_title">
+        <h3 class="modal_title--header">Create Costumer</h3>
 
-        <div>
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name">
+        <img class="modal_title--close" id="close" width="24" height="24"
+            src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+    </div>
+    <form class="modal__form" action="{{ url_for('customers.add_paid_customer') }}" method="post">
+
+        <!-- First Name -->
+        <div class="modal_wrap">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" required>
         </div>
-        <div>
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name">
+
+        <!-- Last Name -->
+        <div class="modal_wrap">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" required>
         </div>
-        <div>
+
+        <!-- Email -->
+        <div class="modal_wrap">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="modal_wrap">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <!-- State (Dropdown with all states and initials) -->
+        <div class="modal_wrap">
             <label for="state">State:</label>
             <input type="text" id="state" name="state">
         </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email">
-        </div>
-        <div>
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone">
-        </div>
-        <div>
-            <label>Gender:</label>
-            <input type="radio" id="male" name="gender" value="male">
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">Female</label>
-            <input type="radio" id="other" name="gender" value="other">
-            <label for="other">Other</label>
+
+        <!-- Gender Option -->
+        <div class="modal_wrap">
+            <label>Gender</label>
+            <div class="modal_wrap--gender">
+                <input id='radio' type="radio" id="male" name="gender" value="male">
+                <label id='gender' for="male">Male</label>
+                <input id='radio' type="radio" id="female" name="gender" value="female">
+                <label id='gender' for="female">Female</label>
+                <input id='radio' type="radio" id="other" name="gender" value="other">
+
+                <label id='gender' for="other">Other</label>
+            </div>
         </div>
 
-         <div>
-        <label for="tour_date">Type of tour:</label>
-           <select id="tour_date" name="tour_date">
+        <!-- Tours Dropdown -->
+        <div class="modal_wrap">
+            <label for="tour">Select a tour</label>
+            <select id="tour" name="tour_date">
                 {% for date in available_dates %}
                 <option value="{{ date }}">{{ date }}</option>
+
                 {% endfor %}
             </select>
-    </div>
-
-        <div>
-            <button type="submit">Submit</button>
         </div>
 
-    {% with messages = get_flashed_messages(category_filter=["customer_success"]) %}
+        <!-- Submit Button -->
+        <div class="modal_wrap">
+            <button class="modal_submit" type="submit">Submit</button>
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["customer_success"]) %}
         {% if messages %}
         <ul>
             {% for message in messages %}
@@ -91,13 +132,16 @@
         </ul>
         {% endif %}
         {% endwith %}
-</form>
+    </form>
+
+
+</div>
 
 
 
 
 
- <h2>Add new tours</h2>
+<!-- <h2>Add new tours</h2>
     <form action="{{ url_for('customers.add_new_tours') }}" method="post">
         <div>
             <label for="first_name">Name:</label>
@@ -148,18 +192,25 @@
                   {% endif %}
                 {% endwith %}
     </form>
+ -->
 
 
 
 
-
-
-    <table>
-        <thead>
+<div id="table-container">
+    <table id="data-table">
+        <div id="table-header">
+            <h3 id="table-title">Customers</h3>
+            <div id="table-action">
+                <button id="createCustomerBtn">Add Customer</button>
+                <button id="tourBtn">Add Tour</button>
+            </div>
+        </div>
+        <thead id="table-head">
             <tr>
                 <th>
-                <input type="checkbox" class="delete-checkbox">
-                <label for="select-all"></label>
+                    <input type="checkbox" class="delete-checkbox">
+                    <label for="select-all"></label>
                 </th>
                 <th>Full Name</th>
                 <th>State</th>
@@ -173,36 +224,38 @@
             </tr>
         </thead>
 
-       <tbody>
+        <tbody id="table-body">
             {% for customer in customers %}
             <tr>
                 <td>
-                <input type="checkbox" class="delete-checkbox" data-id="{{ customer[0] }}" id="delete-customer-{{ loop.index }}">
-                <!-- <label for="delete-customer-{{ loop.index }}"></label> -->
+                    <input type="checkbox" class="delete-checkbox" data-id="{{ customer[0] }}"
+                        id="delete-customer-{{ loop.index }}">
+                    <!-- <label for="delete-customer-{{ loop.index }}"></label> -->
                 </td>
                 <!-- <td>{{ customer[0] }}</td> -->
-                <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1] }}</a></td> 
+                <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1] }}</a>
+                </td>
                 <td>{{ customer[2] }}</td>
                 <td>{{ customer[3] }}</td>
                 <td>{{ customer[4] }}</td>
                 <td>{{ customer[5] }}</td>
                 <td>
-            {% if customer[6] is number %}
-                {{ '{:0.2f}'.format(customer[6]) }}
-            {% else %}
-                N/A  <!-- or some other placeholder text -->
-            {% endif %}
-            </td>
+                    {% if customer[6] is number %}
+                    {{ '{:0.2f}'.format(customer[6]) }}
+                    {% else %}
+                    N/A <!-- or some other placeholder text -->
+                    {% endif %}
+                </td>
 
                 <td>{{ customer[7] }}</td>
-                 <td>{{ customer[8] }}</td>
-               
+                <td>{{ customer[8] }}</td>
+
             </tr>
             {% endfor %}
         </tbody>
 
 
     </table>
+</div>
 
 {% endblock %}
-

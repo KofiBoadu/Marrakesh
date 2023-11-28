@@ -1,75 +1,43 @@
-/* Base styles for the website */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #FFF5EE; /* Soft white background, like a sandy beach */
-    color: #333; /* Dark grey text for readability */
+  margin: 0%;
 }
 
-header {
-    background-color: #FF8C00; /* Warm tone for header, reminiscent of African sunsets */
-    color: #FFF;
-    padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1.5px solid rgba(255, 145, 76, 0.431372549);
 }
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
+.nav_logo {
+  margin-top: 1.5%;
+  margin-left: 2%;
+  width: 30%;
+  height: 5%;
 }
-
-nav .logo a {
-    text-decoration: none;
-    color: #FFF;
-    font-size: 2rem; /* Large size for logo */
-    font-weight: bold;
+.nav_logo img {
+  width: 25%;
 }
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
+.nav_links {
+  display: flex;
+  margin-right: 20%;
+  margin-top: 2%;
 }
-
-nav ul li {
-    display: inline;
-    margin-left: 2rem;
+.nav_link {
+  list-style: none;
+  margin-left: 10%;
 }
-
-nav ul li a {
-    color: #FFF;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease;
+.nav_link a {
+  text-decoration: none;
+  font-family: Helvetica;
+  color: #959494;
 }
-
-nav ul li a:hover {
-    background-color: #FFA07A; /* Lighter tone on hover for interactive feel */
+.nav_welcome {
+  margin-left: 10%;
+  font-family: Helvetica;
+  color: #03989E;
+  font-weight: 600;
 }
-
-
-/* Further stylings for buttons, forms, tables, etc., can be added */
-main {
-    padding: 2rem;
-    padding: 0; 
-    /* Ensure no padding at the top of the main content */
-}
-
 
 #logout-button a {
-  font-weight: bold; /* Makes the font bold */
-  color: #f00; /* Sets the text color to red */
-  background-color: #fff; /* Sets the background color to white */
-  padding: 8px 15px; /* Adds padding around the text */
-  border-radius: 5px; /* Rounds the corners of the background */
-  text-transform: uppercase; /* Makes the text uppercase */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
-}
-
-#logout-button a:hover {
-  color: #fff; /* Changes text color to white on hover */
-  background-color: #f44336; /* Changes background color to a light red on hover */
-  text-decoration: none; /* Removes the underline from the anchor tag on hover */
-}
+  color: #FF914C;
+  font-weight: 600;
+}/*# sourceMappingURL=base.css.map */

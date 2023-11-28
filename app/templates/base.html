@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Torch</title>
     <!-- Add your stylesheet links here -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hompage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_form.css') }}">
@@ -16,19 +16,22 @@
 
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
+    <header >
+        <nav class="nav">
+            <div class="nav_logo">
                 <!-- Logo can be text or an image -->
-                <a href="index.html">Travel Salesman</a>
+                <a href="{{ url_for('customers.home_page') }}">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}">
+                </a>
+                
             </div>
-            <ul class="nav-links">
-                <li><a href="tours.html">Tours</a></li>
-                <li><a href="bookings.html">Bookings</a></li>
-                <li><a href="customers.html">Customers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li id="logout-button"><a href="{{ url_for('users.log_out')}}">Logout</a></li>
-                <span id="welcome-message">Welcome   {{username}}</span>
+            <ul class="nav_links">
+                <li class="nav_link"><a href="tours.html">Tours</a></li>
+                <li class="nav_link"><a href="bookings.html">Bookings</a></li>
+                <li class="nav_link"><a href="customers.html">Customers</a></li>
+                <li class="nav_link"><a href="contact.html">Contact</a></li>
+                <li class="nav_link"id="logout-button"><a href="{{ url_for('users.log_out')}}">Logout</a></li>
+                <span class="nav_welcome" id="welcome-message">Welcome   {{username}}</span>
             </ul>
         </nav>
     </header>
@@ -42,7 +45,7 @@
     
 
     <!-- Add your scripts here -->
-
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
 

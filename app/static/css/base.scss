@@ -1,0 +1,48 @@
+@use 'variables' as * ;
+@use 'mixins' as *;
+ body{
+    margin: 0%;
+ }
+.nav{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1.5px solid #ff914c6e;
+   
+    &_logo{
+        margin-top:1.5% ;
+        margin-left: 2%;
+       width: 30%;
+       height:5%;
+        
+    }
+    &_logo img{
+        width: 25%;
+        
+    }
+    &_links{
+        display: flex;
+        margin-right: 20%;
+        margin-top: 2%;
+        
+    }
+    &_link{
+        list-style: none;
+        margin-left:10% ;
+    }
+    &_link a {
+        
+        text-decoration: none;
+        font-family: Helvetica;
+        color: $textColor3;
+    }
+    &_welcome{
+        margin-left:10% ;
+        font-family: Helvetica;
+        color: $ATblue;
+        font-weight: 600;
+    }
+}
+#logout-button a{
+    color: $ATorange;
+    font-weight: 600;
+}
