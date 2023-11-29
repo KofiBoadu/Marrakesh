@@ -21,9 +21,10 @@ body {
     padding: 20px;
     background-color: #fff;
     border: 1px solid #e1e1e1;
-    border-radius: 10px;
+    border-radius: 0px;
     overflow: hidden;
-    position: relative; /* In case you need to position something absolutely inside */
+    position: relative; 
+    /* In case you need to position something absolutely inside */
 }
 
 /* Style the main header without top margin */

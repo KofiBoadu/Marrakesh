@@ -6,6 +6,7 @@ from app.customers import customers_bp
 import datetime
 from flask_login import login_required
 from app.extension import cache
+from app.models import format_phone_number
 
 
 @customers_bp.route('/', methods=['GET'])
@@ -27,9 +28,14 @@ def home_page():
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
         revenue= calculate_gross_revenue(year)
+
         return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username)
 
 
+
+@customers_bp.context_processor
+def context_processor():
+    return dict(format_phone_number=format_phone_number)
 
 
 

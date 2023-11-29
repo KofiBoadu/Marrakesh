@@ -72,6 +72,7 @@
             <input type="email" id="email" name="email" required>
         </div>
 
+
         <!-- Phone -->
         <div class="modal_wrap">
             <label for="phone">Phone</label>
@@ -231,11 +232,13 @@
                     <!-- <label for="delete-customer-{{ loop.index }}"></label> -->
                 </td>
                 <!-- <td>{{ customer[0] }}</td> -->
-                <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1] }}</a>
+                <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1].capitalize() }}</a>
                 </td>
-                <td>{{ customer[2].upper() if customer[2] is not none else ""}}</td>
-                <td>{{ customer[3] }}</td>
-                <td>{{ customer[4] }}</td>
+                <td>{{ customer[2].upper() if customer[2] is not none else '' }}</td>
+                <td><a href="mailto:{{ customer[3] }}"> {{ customer[3] }}</a></td>
+
+
+                <td>{{ format_phone_number(customer[4]) }}</td>
                 <td>{{ customer[5] }}</td>
                 <td>
                     <!-- {% if customer[6] is number %} -->
