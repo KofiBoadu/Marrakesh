@@ -159,12 +159,14 @@
   border-radius: 10px 10px 10px 10px;
   margin: 2%;
   align-self: center;
+   
 }
 
 #table-header {
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid rgb(238, 234, 234);
+
 }
 
 #table-title {
@@ -172,6 +174,7 @@
   font-family: Helvetica;
   font-size: 2em;
   color: #959494;
+
 }
 
 #table-action {
@@ -188,13 +191,28 @@ th {
   font-family: Helvetica;
   font-weight: 400;
   font-size: 1.2em;
+
 }
+
+
+
 
 #data-table {
   background-color: rgb(191, 190, 190);
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 1px;
+  border-collapse: collapse; 
+
+}
+
+#data-table th,
+#data-table td {
+   border: 1px solid rgba(0, 0, 0, 0.1); /* Light grey border with some transparency */
+  padding: 8px;
+}
+
+#data-table thead th {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2); /* Slightly darker and thicker for header row */
+
 }
 
 td {
@@ -247,7 +265,7 @@ td {
 td a {
   text-decoration: none;
   color: #03989E;
-  text-transform: capitalize;
+/*  text-transform: capitalize;*/
 }
 
 .dashboard {
