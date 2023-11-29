@@ -49,16 +49,16 @@ body, html {
     margin-bottom: 15px;
   }
   
-  .form-group input {
+  /* .form-group input {
     width: calc(100% - 20px);
-    padding: 15px; /* Increased padding for larger input fields */
-    font-size: 16px; /* Increased font size */
+    padding: 15px; 
+    font-size: 16px; 
     line-height: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 10px;
   }
-  
+   */
   .form-group input[type="submit"] {
     width: calc(100% - 20px);
     padding: 15px; /* Increased padding for a larger submit button */

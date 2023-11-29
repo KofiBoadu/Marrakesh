@@ -24,14 +24,14 @@
 }
 
 .modal {
-  display: none;
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 0;
+  transform: translate(0%, -50%);
   background-color: #fff;
   z-index: 1000;
-  width: 40%;
+  width: 25%;
+  height: 100%;
   border-radius: 2px 2px;
   box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
 }
@@ -40,6 +40,7 @@
   justify-content: space-between;
   flex-direction: row;
   background: rgb(3, 152, 158);
+  padding: 4%;
   background: linear-gradient(90deg, rgb(3, 152, 158) 32%, rgb(191, 232, 233) 100%);
 }
 .modal_title--header {
@@ -49,7 +50,7 @@
   margin-left: 5%;
 }
 .modal_title--close {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-right: 2%;
   cursor: pointer;
 }
@@ -57,21 +58,33 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center;
+  margin-top: 5%;
 }
 .modal_wrap {
-  display: flex;
-  flex-direction: column;
-  margin-left: 20%;
+  margin: 2%;
+  margin-left: 15%;
+}
+.modal_wrap input {
+  width: 20em;
+  height: 2.5em;
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 2px 2px 2px 2px;
+  margin-bottom: 5%;
+  color: #03989E;
+  font-size: 1em;
+}
+.modal_wrap label {
+  margin-right: 50%;
+  font-family: sans-serif;
+  margin-top: 5%;
+  color: #959494;
 }
 .modal_wrap--gender {
   display: flex;
-  flex-direction: row;
-  width: 20%;
-  gap: 2%;
+  width: 60%;
 }
 .modal_submit {
-  margin-top: 5%;
+  margin-top: 10%;
   padding: 10px;
   background-color: #FF914C;
   width: 150px;
@@ -83,6 +96,15 @@
   font-family: sans-serif;
   margin-left: 20%;
   margin-bottom: 5%;
+}
+
+.tour-select {
+  width: 20em;
+  height: 2.5em;
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 2px 2px 2px 2px;
+  color: #03989E;
+  font-size: 1em;
 }
 
 #createCustomerBtn {
@@ -113,42 +135,27 @@
   padding-bottom: 5%;
 }
 
-input {
-  width: 20em;
-  height: 2em;
-  border: 1px solid #03989E;
-  border-radius: 2px;
+.modal_wrap--gender input {
+  width: 10%;
+  margin-top: 4%;
 }
 
-select {
-  width: 20em;
-  height: 2em;
-  border: 1px solid #03989E;
-  border-radius: 2px;
-}
-
-label {
-  margin-right: 50%;
-  font-family: sans-serif;
-  margin-top: 5%;
-  color: #959494;
-}
-
-input[type=radio]:checked {
-  accent-color: #FF914C;
-}
-
-h3 {
-  font-family: Calibri;
+.modal_wrap--gender input:checked {
+  accent-color: #03989E;
 }
 
 #gender {
   color: #03989E;
+  margin: auto;
+  margin-left: 10px;
+}
+
+#gender label {
+  margin-right: 5%;
 }
 
 #table-container {
   border-radius: 10px 10px 10px 10px;
-  box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.476);
   margin: 2%;
   align-self: center;
 }
@@ -179,13 +186,14 @@ th {
   text-align: center;
   font-family: Helvetica;
   font-weight: 400;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
 #data-table {
-  background-color: rgba(6, 138, 138, 0.506);
+  background-color: rgb(191, 190, 190);
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 1px;
 }
 
 td {
@@ -195,16 +203,50 @@ td {
 }
 
 #table-body tr td {
-  margin: 0; /* Remove margin */
-  padding: 1%; /* Remove padding */
+  margin: 0;
+  /* Remove margin */
+  padding-top: 1%;
+  padding-bottom: 1%;
 }
 
 #table-body tr:nth-child(even) td {
-  background-color: #f2f2f2; /* Light background color for even rows */
+  background-color: #f2f2f2;
+  /* Light background color for even rows */
 }
 
 #table-body tr:nth-child(odd) td {
-  background-color: #ffffff; /* White background color for odd rows */
+  background-color: #ffffff;
+  /* White background color for odd rows */
+}
+
+#data-table #select-box {
+  width: 40px;
+  /* Adjust this value as needed */
+  min-width: 40px;
+  padding: 5px;
+  /* Adjust padding for better alignment if needed */
+  text-align: center;
+  /* Center align the checkbox */
+}
+
+#data-table td:first-child {
+  width: 40px;
+  /* Keep consistent with the header cell */
+  min-width: 40px;
+  text-align: center;
+  /* Center align the checkbox */
+}
+
+.delete-checkbox {
+  width: 2em;
+  height: 2em;
+  border: 2px solid grey;
+}
+
+td a {
+  text-decoration: none;
+  color: #03989E;
+  text-transform: capitalize;
 }
 
 .dashboard {
@@ -213,7 +255,6 @@ td {
   align-items: center;
   justify-content: space-between;
   margin: 10%;
-  margin-top: 5%;
 }
 .dashboard_card {
   display: flex;
@@ -230,13 +271,13 @@ td {
 }
 .dashboard_header {
   font-family: Helvetica;
-  font-size: 2.6em;
+  font-size: 2.2em;
   margin-bottom: 0%;
   color: #03989E;
 }
 .dashboard_subheader {
   font-family: Helvetica;
-  font-size: 20px;
+  font-size: 1.2em;
   margin-top: 2%;
   font-weight: 100;
 }/*# sourceMappingURL=hompage.css.map */

@@ -88,20 +88,18 @@
         <div class="modal_wrap">
             <label>Gender</label>
             <div class="modal_wrap--gender">
-                <input id='radio' type="radio" id="male" name="gender" value="male">
+                <input class="radio" id='radio' type="radio" id="male" name="gender" value="male">
                 <label id='gender' for="male">Male</label>
-                <input id='radio' type="radio" id="female" name="gender" value="female">
+                <input  class="radio" id='radio' type="radio" id="female" name="gender" value="female">
                 <label id='gender' for="female">Female</label>
-                <input id='radio' type="radio" id="other" name="gender" value="other">
-
-                <label id='gender' for="other">Other</label>
+                
             </div>
         </div>
 
         <!-- Tours Dropdown -->
         <div class="modal_wrap">
             <label for="tour">Select a tour</label>
-            <select id="tour" name="tour_date">
+            <select  class="tour-select" name="tour_date">
                 {% for date in available_dates %}
                 <option value="{{ date }}">{{ date }}</option>
 
@@ -208,7 +206,7 @@
         </div>
         <thead id="table-head">
             <tr>
-                <th>
+                <th id="select-box">
                     <input type="checkbox" class="delete-checkbox">
                     <label for="select-all"></label>
                 </th>
@@ -235,16 +233,16 @@
                 <!-- <td>{{ customer[0] }}</td> -->
                 <td><a href="{{ url_for('profiles.customer_profile',customer_id=customer[0]) }}">{{ customer[1] }}</a>
                 </td>
-                <td>{{ customer[2] }}</td>
+                <td>{{ customer[2].upper() if customer[2] is not none else ""}}</td>
                 <td>{{ customer[3] }}</td>
                 <td>{{ customer[4] }}</td>
                 <td>{{ customer[5] }}</td>
                 <td>
-                    {% if customer[6] is number %}
-                    {{ '{:0.2f}'.format(customer[6]) }}
-                    {% else %}
-                    N/A <!-- or some other placeholder text -->
-                    {% endif %}
+                    <!-- {% if customer[6] is number %} -->
+                    {{ customer[6]}}
+                    <!-- {% else %} -->
+                    
+                    <!-- {% endif %} -->
                 </td>
 
                 <td>{{ customer[7] }}</td>
