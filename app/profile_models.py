@@ -43,7 +43,3 @@ def profile_details(customer_id):
 
 
 
-
-
-
-

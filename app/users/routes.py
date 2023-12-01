@@ -30,6 +30,13 @@ def login_user_route():
         return redirect(url_for('users.login'))
 
 
+@users_bp.context_processor
+def user():
+    username = session.get('username')
+    if username:
+        return {'username': username}
+    return {'username': None}
+
 
 @users_bp.route('/logout')
 @login_required

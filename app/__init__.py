@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for,session
 from app.extension import login_manager, cache
 from .customers import customers_bp
 from app.users import users_bp
@@ -20,6 +20,13 @@ def create_app():
     @app.route('/')
     def redirect_to_login():
         return redirect(url_for('users.login'))
+
+    @app.context_processor
+    def inject_user():
+        username = session.get('username')
+        if username:
+            return {'username': username}
+        return {'username': None}
 
 
     app.register_blueprint(users_bp,url_prefix='/users')
