@@ -1,3 +1,4 @@
+//add customer functionality
 document.addEventListener('DOMContentLoaded', function() {
     let customerBtn= document.getElementById("createCustomerBtn");
     let popUpForm=document.getElementById("popUp");
@@ -12,13 +13,26 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 })
 
+//add tour modal form
+document.addEventListener('DOMContentLoaded', function() {
+    let tourBtn= document.getElementById("tourBtn");
+    let tourForm=document.getElementById("tourForm");
+    let exit=document.getElementById("exit");
+
+    tourBtn.addEventListener('click',function(){
+        tourForm.style.display='block'
+    })
+
+    exit.addEventListener('click',function(){
+        tourForm.style.display='none'
+    })
+})
 
 
-
-
+//delete functionality
 function toggleDeleteButton(checkbox) {
     let deleteButton = document.getElementById('deleteButton');
-    deleteButton.style.display = checkbox.checked ? 'block' : 'none';
+    deleteButton.style.display = checkbox.checked ? 'flex' : 'none';
     if (checkbox.checked) {
         document.getElementById('customerIdToDelete').value = checkbox.value;
         

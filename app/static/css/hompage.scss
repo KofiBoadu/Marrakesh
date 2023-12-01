@@ -72,33 +72,38 @@
         justify-content: center;
         flex-direction: column;
         margin-top: 5%;
-        
+
     }
-    &_wrap{
-       margin: 2%;
-       margin-left: 15%;
+
+    &_wrap {
+        margin: 2%;
+        margin-left: 15%;
     }
-    &_wrap input{
-        width:20em;
+
+    &_wrap input {
+        width: 20em;
         height: 2.5em;
         border: 1px solid rgb(180, 180, 180);
         border-radius: 2px 2px 2px 2px;
         margin-bottom: 5%;
         color: $ATblue;
-     font-size: 1em;
+        font-size: 1em;
     }
-    &_wrap label{
+
+    &_wrap label {
         margin-right: 50%;
         font-family: sans-serif;
         margin-top: 5%;
         color: $textColor3;
     }
-    &_wrap--gender{
+
+    &_wrap--gender {
         display: flex;
         width: 60%;
-        
-        
+
+
     }
+
     &_submit {
         margin-top: 10%;
         padding: 10px;
@@ -116,8 +121,8 @@
     }
 }
 
-.tour-select{
-    width:20em;
+.tour-select {
+    width: 20em;
     height: 2.5em;
     border: 1px solid rgb(180, 180, 180);
     border-radius: 2px 2px 2px 2px;
@@ -125,9 +130,156 @@
     font-size: 1em;
 
 }
+
+
+
+.modal_wrap--gender input {
+    width: 10%;
+    margin-top: 4%;
+}
+
+.modal_wrap--gender input:checked {
+    accent-color: $ATblue;
+
+}
+
+
+#gender {
+    color: $ATblue;
+    margin: auto;
+    margin-left: 10px;
+}
+
+#gender label {
+    margin-right: 5%;
+}
+
+//tour form
+.tour {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+
+    z-index: 1000;
+    width: 25%;
+    height: 100%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+
+    &_header {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        background: rgb(3, 152, 158);
+        padding: 4%;
+        background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgba(191, 232, 233, 1) 100%);
+
+    }
+
+    &_header--title {
+        font-family: sans-serif;
+        font-size: 1.5em;
+        color: $textColor1;
+        margin-left: 5%;
+    }
+
+    &_header--close {
+        margin-top: 2%;
+        margin-right: 2%;
+        cursor: pointer;
+    }
+
+    &_form {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 5%;
+
+    }
+
+    &_wrap {
+        margin: 2%;
+        margin-left: 15%;
+    }
+
+    &_wrap input {
+        width: 20em;
+        height: 2.5em;
+        border: 1px solid rgb(180, 180, 180);
+        border-radius: 2px 2px 2px 2px;
+        margin-bottom: 5%;
+        color: $ATblue;
+        font-size: 1em;
+    }
+
+    &_wrap label {
+        margin-right: 50%;
+        font-family: sans-serif;
+        margin-top: 5%;
+        color: $textColor3;
+    }
+
+    &_wrap--type {
+        display: flex;
+        width: 60%;
+
+    }
+
+    &_submit {
+        margin-top: 10%;
+        padding: 10px;
+
+        background-color: $ATorange;
+        width: 150px;
+        height: 50px;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: sans-serif;
+        margin-left: 20%;
+        margin-bottom: 5%;
+    }
+}
+
+#destination {
+    width: 20em;
+    height: 2.5em;
+    border: 1px solid rgb(180, 180, 180);
+    border-radius: 2px 2px 2px 2px;
+    color: $ATblue;
+    font-size: 1em;
+}
+
+.tour_wrap--type input {
+    width: 10%;
+    margin-top: 4%;
+}
+
+.tour_wrap--type input:checked {
+    accent-color: $ATblue;
+
+}
+
+
+#type {
+    color: $ATblue;
+    margin: auto;
+    margin-left: 10px;
+}
+
+.tour_wrap--type label {
+    margin-right: 10%;
+}
+
+
+//table syling
 #createCustomerBtn {
     background-color: $ATorange;
-    width: 150px;
+    width: 170px;
     height: 30px;
     color: #fff;
     border: none;
@@ -137,7 +289,8 @@
     padding-bottom: 5%;
     margin-bottom: 5%;
     margin-top: 4%;
-
+    margin-left: 0;
+    padding-bottom: 7%;
 
 }
 
@@ -153,28 +306,9 @@
     margin-top: 4%;
     margin-bottom: 5%;
     padding-bottom: 5%;
+    margin-left: 0;
+    padding-bottom: 7%;
 
-}
-
-
-.modal_wrap--gender input{
-    width:10%;
-    margin-top: 4%;
-}
-
-.modal_wrap--gender input:checked {
-    accent-color: $ATblue;
-   
-}
-
-
-#gender {
-    color: $ATblue;
-    margin:auto;
-    margin-left: 10px;
-}
-#gender label{
-    margin-right: 5%;
 }
 
 #table-container {
@@ -207,7 +341,20 @@
     margin-right: 2%;
     gap: 2%;
     margin-top: 0%;
+}
 
+#deleteButton{
+    margin-top: 2.5%;
+    margin-right: 10%;
+    
+}
+#deleteButton p{
+    margin-top: 1.5%;
+    color:$ATblue;
+    font-family: helvetica;
+}
+#delete-button-icon{
+    margin-top: 2%;
 }
 
 th {
@@ -221,7 +368,7 @@ th {
 }
 
 #data-table {
-    background-color:rgb(191, 190, 190) ;
+    background-color: rgb(191, 190, 190);
     width: 100%;
     border-collapse: separate;
     border-spacing: 1px;
@@ -231,7 +378,7 @@ td {
     text-align: center;
     font: 1em Helvetica;
     font-weight: 200;
-   
+
 
 }
 
@@ -272,17 +419,17 @@ td {
 }
 
 .delete-checkbox {
-    width:2em;
-    height:2em;
+    width: 2em;
+    height: 2em;
     border: 2px solid grey;
 }
 
-td a{
+td a {
     text-decoration: none;
     color: $ATblue;
-    text-transform:capitalize;
+    text-transform: capitalize;
 }
-
+//dashboard styling
 .dashboard {
     display: flex;
     flex-direction: row;
@@ -323,4 +470,144 @@ td a{
         font-weight: 100;
 
     }
+}
+
+#deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 10% auto;
+
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    max-width: 500px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+.modal-content h2 {
+    color: $ATorange;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: Helvetica;
+
+}
+
+.modal-content p {
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+#deleteConfirmInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-content button {
+    display: inline;
+    /* This will make the buttons sit side by side */
+}
+
+
+
+#confirmDeleteButton {
+    background-color: #d9534f;
+    color: white;
+    display: block;
+}
+
+#confirmDeleteButton:hover {
+    background-color: #c9302c;
+}
+
+button#cancel {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+button#cancel:hover {
+    background-color: #e0e0e0;
+}
+
+
+.delete-background {
+    display: flex;
+    border-radius: 10px 10px 0px 0px;
+    background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgb(175, 213, 214) 100%);
+    height: 100px;
+    width: 100%;
+    margin-top: 0px;
+}
+
+.delete-buttons {
+    display: flex;
+    margin-left: 5%;
+}
+
+
+.delete-title{
+    margin-left: 30%;
+    margin-top: 7%;
+    font-family:Helvetica;
+    text-shadow: gray 2px ;
+}
+.delete-message-1{
+    text-align: center;
+    font-family:Helvetica;
+    font-size: 1.2em;
+    margin-top: 5%;
+}
+.delete-message-2{
+   text-align: center;
+   font-family:Helvetica;
+   font-size: 1em;
+
+}
+.delete-message{
+    padding: 5%;
+}
+
+#highlight{
+    color:$ATorange ;
+    font-size: 1.2em;
 }

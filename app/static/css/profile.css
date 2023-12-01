@@ -27,6 +27,58 @@ body {
     /* In case you need to position something absolutely inside */
 }
 
+.profile-avatar{
+    
+    background-color: #e1e1e1;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border-radius: 50%;
+    margin: auto;
+}
+.profile-avatar-letter{
+   
+    text-transform: uppercase;
+    font-family: helvetica;
+    font-size: 3em;
+    font-weight: 500;
+    padding-top: 25px;
+    
+
+}
+.profile-name{
+    text-align: center;
+    margin-top: 5%;
+    padding-bottom: 5%;
+    border-bottom: 2px solid #e1e1e1;
+}
+.profile-name h1{
+    text-transform: capitalize;
+    font-family: helvetica;
+    color:#03989E ;
+    
+
+}
+.profile-name p{
+    font-family: helvetica;
+}
+.profile-actions{
+    margin-top: 5%;
+}
+.profile-info-container{
+    margin-left: 5%;
+    font-family: helvetica;
+    margin-bottom: 5%;
+}
+.profile-title {
+    font-family: helvetica;
+    color: #03989E ;
+    font-size: 1.25rem;
+  
+}
+#state-info{
+    text-transform: uppercase;
+}
 /* Style the main header without top margin */
 .profile-container > h1 {
     font-size: 1.75rem;
@@ -46,11 +98,10 @@ body {
 
 /* Style sub-headers without top margin */
 .profile-container > h2 {
-    font-size: 1.25rem;
-    color: #333;
+    
     margin-top: 40px; /* Reset top margin to 0 */
     margin-bottom: 0.5rem;
-    border-bottom: 2px solid #e1e1e1;
+    
     padding-bottom: 0.25rem;
 }
 
