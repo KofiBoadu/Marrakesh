@@ -5,11 +5,12 @@
 {% block content %}
 
 <div class="profile-container" >
+    <h1>{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
     <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
     <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
 
     <h2>About Customer</h2>
-    <p>Number: {{ profile[2] }}</p> <!-- Assuming the third element is the number -->
+    <p>Number: {{ phone_number }}</p> <!-- Assuming the third element is the number -->
     <!-- No need for a second email -->
     <p>State: {{ profile[3] }}</p> <!-- Assuming the fourth element is the state -->
     

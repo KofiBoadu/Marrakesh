@@ -4,6 +4,7 @@ from . import customers_profile
 from app.emails import all_emails_sent_to_customer
 from flask_login import login_required
 from app.extension import cache
+from app.models import format_phone_number
 
 
 
@@ -16,9 +17,10 @@ def customer_profile(customer_id):
     else:
         profile= profile_details(customer_id)
         tour_names=profile[4]
+        phone_number=format_phone_number(profile[2])
         if not tour_names:
             return redirect(url_for("customers.home_page"))
         tour_list= tour_names.split(', ')
         emails= all_emails_sent_to_customer(customer_id)
-        return render_template('profile.html', profile=profile, tour_list=tour_list,customer_id=customer_id,emails=emails)
+        return render_template('profile.html', profile=profile, tour_list=tour_list,customer_id=customer_id,emails=emails,phone_number=phone_number)
 
