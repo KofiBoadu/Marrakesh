@@ -24,6 +24,7 @@ body {
     border-radius: 0px;
     overflow: hidden;
     position: relative; 
+    
     /* In case you need to position something absolutely inside */
 }
 
@@ -43,6 +44,7 @@ body {
     font-size: 3em;
     font-weight: 500;
     padding-top: 25px;
+    color: #ffffff;
     
 
 }
@@ -61,6 +63,7 @@ body {
 }
 .profile-name p{
     font-family: helvetica;
+    color: #646464;
 }
 .profile-actions{
     margin-top: 5%;
@@ -69,6 +72,7 @@ body {
     margin-left: 5%;
     font-family: helvetica;
     margin-bottom: 5%;
+    color: #646464;
 }
 .profile-title {
     font-family: helvetica;
@@ -92,7 +96,7 @@ body {
 .profile-container > p {
     font-size: 1rem;
     line-height: 1.4;
-    color: #555;
+    color: #646464;
     margin-bottom: 0.5rem;
 }
 
@@ -109,14 +113,24 @@ body {
 .profile-container ul {
     list-style: none;
     padding-left: 20px;
+    width:80%;
+    text-align: center;
+  
 }
 
 .profile-container ul li {
-    background-color: #f2f2f2;
+    background-color: #ff914cd0;
     margin-bottom: 10px;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    color: #FFF;
+    font-family: helvetica;
+    font-weight: 600;
+    padding-left: 0px;
+    padding-right: 0px;
+
 }
 
 .profile-container ul li:hover {
@@ -124,11 +138,28 @@ body {
 }
 
 /* Total payment styling without top margin */
-.profile-container .total-payment {
-    font-weight: bold;
-    color: #4CAF50;
-    font-size: 1.1rem;
-    margin-top: 30px; /* Reset top margin to 0 */
+.revenue{
+    display: flex;
+    
+    
+   
+    
+    margin-top: 5%;
+}
+.revenue-container{
+    margin-left: 2%;
+  
+}
+.revenue-amt{
+    font: 1.5em helvetica;
+    color: #FF8C00;
+   
+}
+
+.revenue-title{
+  color: #646464;
+  font: 1em helvetica;
+ 
 }
 
 button {
@@ -155,4 +186,6 @@ button:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Revert to the original shadow for a pressed button effect */
 }
 
+
+/* /* email form styling */
 
