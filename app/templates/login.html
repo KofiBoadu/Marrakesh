@@ -11,12 +11,14 @@
 </head>
 
 <body>
-<h1>
+
   <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Travel Salesman Logo" width="800" height="400">
-</h1>
+
+
+
 
 <div class="login-container">
-	Login Below
+	<h3>Login Below</h3>
   <div class="auth-message"></div>
   <form action="{{ url_for('users.login_user_route') }}" method="post">
     <div class="form-group">
@@ -30,5 +32,8 @@
     </div>
   </form>
 </div>
+
+
+
 </body>
 </html>

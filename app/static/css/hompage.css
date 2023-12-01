@@ -110,7 +110,7 @@
 
 #createCustomerBtn {
   background-color: #FF914C;
-  width: 150px;
+  width: 200px;
   height: 30px;
   color: #fff;
   border: none;
@@ -301,3 +301,110 @@ td a {
   margin-top: 2%;
   font-weight: 100;
 }/*# sourceMappingURL=hompage.css.map */
+
+
+
+
+
+/*DELETE FORM STYLING */
+/* Style the modal (you can adjust the styles as needed) */
+#deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(15px);
+}
+
+.modal-content {
+    position: relative; 
+    background-color: #fff; 
+    margin: 10% auto; 
+    padding: 30px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 40%; 
+    max-width: 500px; 
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+.modal-content h2 {
+    color: #d9534f; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    color: #333; 
+    line-height: 1.5; 
+    margin-bottom: 20px; 
+}
+
+#deleteConfirmInput {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-content button {
+    display: inline; /* This will make the buttons sit side by side */
+}
+
+
+
+#confirmDeleteButton {
+    background-color: #d9534f; 
+    color: white; 
+    display: block;
+}
+
+#confirmDeleteButton:hover {
+    background-color: #c9302c; 
+}
+
+button#cancel {
+    background-color: #f0f0f0; 
+    color: #333; 
+}
+
+button#cancel:hover {
+    background-color: #e0e0e0; 
+}
+
+
+.delete-background{
+  background-color: #03989E;
+  height: 100px;
+  margin-top: 0px;
+}

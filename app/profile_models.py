@@ -6,13 +6,12 @@ from .models import create_databaseConnection
 def profile_details(customer_id):
     query = """
         SELECT
-          CONCAT(c.first_name, ' ', c.last_name),
+          CONCAT(c.first_name, ' ', c.last_name) AS customer_name,
           c.email_address,
           c.phone_number,
           c.state_address,
-          GROUP_CONCAT(t.tour_name SEPARATOR ', '),
-          SUM(t.tour_price),
-          YEAR(t.start_date)
+          GROUP_CONCAT(CONCAT(t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tours,
+          SUM(t.tour_price) AS total_price
         FROM
           customers c
         JOIN
@@ -40,6 +39,8 @@ def profile_details(customer_id):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
+
+
 
 
 

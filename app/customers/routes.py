@@ -6,7 +6,7 @@ from app.customers import customers_bp
 import datetime
 from flask_login import login_required
 from app.extension import cache
-from app.models import format_phone_number
+from app.models import format_phone_number, remove_paid_customer
 
 
 @customers_bp.route('/', methods=['GET'])
@@ -36,6 +36,21 @@ def home_page():
 @customers_bp.context_processor
 def context_processor():
     return dict(format_phone_number=format_phone_number)
+
+
+
+
+@customers_bp.route('/delete_customer',methods=['POST'])
+def delete_customer():
+    customer_id= request.form.get("customer_id")
+    if not customer_id:
+        return redirect(url_for("customers.home_page"))
+    else:
+        remove_paid_customer(customer_id)
+        return redirect(url_for("customers.home_page"))
+
+
+
 
 
 
