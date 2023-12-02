@@ -1,61 +1,116 @@
+.email-activity{
+    background:#f7fefd8c ;
+    width: 800px;
+    margin-top: 10px; /* Adjust the margin to separate the email containers */
+    display: block; 
+    
+    max-height: 700px; /* Set a maximum height for the container */
+    overflow-y: auto;
+    
+    
+}
 
-.email-container {
+.email-activity-title{
+    font:2em helvetica;
+    color:#03989E ;
+    font-weight: 600;
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    
+}
+.email-activity-container {
         background-color: #ffffff;
-        padding: 2rem;
-        margin: 2rem auto; /* Top and bottom margin with auto side margins centers the card */
-        border-radius: 0.5rem;
+        display: block;
+        margin: auto;/* Top and bottom margin with auto side margins centers the card */
+        clear: both;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 600px; /* Adjust the width as needed */
-        margin-top: 0;
+        width: 600px; /* Adjust the width as needed */
+        margin-top: 5%;
     }
 
 .email-header {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        color: #333;
-    }
+        font-size: 1em;
+        
+        color: #03989E;
+        font: helvetica;
+        display: flex;
+        padding: 2%;
+        
+       
+        
+}
+.email-header-block{
+    display: flex;
+}
 
+.email-header strong{
+    width: 50px;
+}
+.subject{
+    color: #03989E;
+    width: 200px;
+    margin-left: 1%;
+    max-width: max-content;
+}
+.dropdown{
+    margin-top: 1%;
+    cursor: pointer;
+}
+.from{
+    color: #646464;
+    font-size: .8em;
+    width: 130px;
+    padding: 1%;
+    margin-left: 2%;
+}
 .email-body {
         padding: 1.5rem;
         border-radius: 0.5rem;
         margin-bottom: 1rem;
+        line-height: 1.5em;
     }
 
-.email-title {
+.email-body-content {
         color: #333;
-        margin-bottom: 0.5rem;
+        font: helvetica 1.2em;
     }
-
+.email-content{
+    margin-left: 2%;
+    margin-top: 2%;
+}
 .email-text {
-        color: #333;
+        color: #646464;
         line-height: 1.5;
+        margin-left: 2%;
+
     }
 
 .email-footer {
         font-size: 0.9rem;
-        text-align: center;
+        text-align: left;
         color: #333;
         margin-top: 1rem;
+        
+        font-family: helvetica;
     }
 
 
 
-    .email-container {
-        position: relative; /* This allows absolute positioning inside the container */
-        /* ... other styles ... */
-    }
+  
 
     .delete-form {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 0.5rem;
+        margin-left: 50px;
+        width: 50px;
     }
 
     .delete-text-link {
-        color: #dc3545; /* Bootstrap's danger color for delete links */
+        color: #FF914C; 
         text-decoration: none;
         cursor: pointer;
+        font-weight: 600;
+        
+
     }
 
     .delete-text-link:hover {
