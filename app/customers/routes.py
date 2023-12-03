@@ -13,13 +13,13 @@ from app.models import format_phone_number, remove_paid_customer
 @login_required
 # @cache.cached(timeout=240)
 def home_page():
-    form_submitted = request.args.get('form_submitted')
-    if form_submitted == 'customer':
-        flash("Customer added successfully!","customer_success")
-    elif form_submitted == 'tour':
-        flash("New tour added successfully!","tour_success")
-    elif form_submitted== "customer_exist":
-        flash("This customer just rebooked another trip","customer_exist")
+    # form_submitted = request.args.get('form_submitted')
+    # if form_submitted == 'customer':
+    #     flash("Customer added successfully!","customer_success")
+    # elif form_submitted == 'tour':
+    #     flash("New tour added successfully!","tour_success")
+    # elif form_submitted== "customer_exist":
+    #     flash("This customer just rebooked another trip","customer_exist")
     if request.method == 'GET':
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
@@ -71,13 +71,13 @@ def add_paid_customer():
             customer_id= customer_exist
             tour_id= get_tour_id(tour_type)
             create_tour_bookings(tour_id,customer_id)
-            return redirect(url_for("customers.home_page",form_submitted='customer_exist'))
+            return redirect(url_for("customers.home_page"))
         else:
             customer= add_new_paidCustomer(first_name, last_name,email,phone,gender,state)
             tour_id= get_tour_id(tour_type)
             customer_id= get_customer_id(email)
             create_tour_bookings(tour_id,customer_id)
-            return redirect(url_for("customers.home_page",form_submitted='customer'))
+            return redirect(url_for("customers.home_page"))
 
 
 
@@ -96,6 +96,6 @@ def add_new_tours():
         destination_id= get_destination_id(destination)
         create_new_tourDates(tour_name, start_date,end_date,tour_price,destination_id, tour_type)
 
-    return redirect(url_for("customers.home_page",form_submitted='tour'))
+    return redirect(url_for("customers.home_page"))
 
 
