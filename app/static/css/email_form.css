@@ -15,8 +15,8 @@ html, body {
   border-radius: 10px;
   overflow: hidden;
   position: ABSOLUTE;
-    left: 48%;
-    TOP: 80%;
+    left: 78%;
+    TOP: 60%;
   transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
 }
 .email-title{

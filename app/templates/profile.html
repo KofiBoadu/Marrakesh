@@ -12,7 +12,7 @@
       <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
       <div class="profile-actions" onclick="openEmailForm()">
-        <img width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
+        <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
           alt="circled-envelope" />
       </div>
     </div>
@@ -62,7 +62,7 @@
 
   <div class="email-activity">
     <div class="email-activity-header">
-      <h2 class="email-activity-title">EMAIL ACTIVITY</h2>
+      <h2 class="email-activity-title">ACTIVITY</h2>
     </div>
     {% for email in emails[::-1] %}
 
@@ -124,7 +124,7 @@
 
   <div class="email-title">
     <h2>Send Email</h2>
-    <img class="expand" width="32" height="32"
+    <img title="Maximize"class="expand" width="32" height="32"
     src="https://img.icons8.com/windows/32/FFFFFF/circled-chevron-down.png" alt="circled-chevron-down"
       onclick="toggleEmailForm(this)" alt="expand" />
     <img class="email-close" id="exit" width="24" height="24"
