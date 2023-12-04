@@ -46,29 +46,29 @@ def create_databaseConnection():
 
 def create_get_customer_tour_details_procedure():
     procedure_query = """
-    CREATE PROCEDURE GetCustomerTourDetails()
+    CREATE PROCEDURE GetCustomerTourDetails(IN items_per_page INT, IN offset INT)
     BEGIN
-    SELECT
-        c.customer_id,
-        CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-        c.state_address AS `State`,
-        c.email_address AS `Email`,
-        c.phone_number AS `Mobile`,
-        t.tour_name AS `Tour`,
-        YEAR(t.start_date) AS `Travel_Year_Start`,
-        t.tour_price AS `Tour_Price`,
-        t.tour_type AS `Tour_Type`
-
-    FROM
-        customers c
-    JOIN
-        tour_bookings tb ON tb.customer_id = c.customer_id
-    JOIN
-        tours t ON tb.tour_id = t.tour_id
-    JOIN
-        destinations d ON t.destination_id = d.destination_id
-    ORDER BY
-        YEAR(t.start_date) DESC, c.customer_id DESC;
+        SELECT
+            c.customer_id,
+            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+            c.state_address AS `State`,
+            c.email_address AS `Email`,
+            c.phone_number AS `Mobile`,
+            t.tour_name AS `Tour`,
+            YEAR(t.start_date) AS `Travel_Year_Start`,
+            t.tour_price AS `Tour_Price`,
+            t.tour_type AS `Tour_Type`
+        FROM
+            customers c
+        JOIN
+            tour_bookings tb ON tb.customer_id = c.customer_id
+        JOIN
+            tours t ON tb.tour_id = t.tour_id
+        JOIN
+            destinations d ON t.destination_id = d.destination_id
+        ORDER BY
+            YEAR(t.start_date) DESC, c.customer_id DESC
+        LIMIT items_per_page OFFSET offset;
     END;
 
     """
@@ -113,7 +113,8 @@ def total_customers():
 
 
 
-def get_customers_information():
+def get_customers_information(page=1, items_per_page=25):
+    offset = (page - 1) * items_per_page
     database_connection = None
     customers = []
     cursor=None
@@ -121,7 +122,7 @@ def get_customers_information():
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.callproc('GetCustomerTourDetails')
+        cursor.callproc('GetCustomerTourDetails',[items_per_page, offset])
         for result in cursor.stored_results():
             customers.extend(result.fetchall())
 

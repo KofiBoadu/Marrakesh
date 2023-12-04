@@ -4,6 +4,7 @@ from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_
 from app.models import check_customer_exists,get_total_numberOfTravellers,calculate_gross_revenue
 from app.customers import customers_bp
 import datetime
+import math
 from flask_login import login_required
 from app.extension import cache
 from app.models import format_phone_number, remove_paid_customer,total_customers
@@ -14,16 +15,19 @@ from app.models import format_phone_number, remove_paid_customer,total_customers
 # @cache.cached(timeout=240)
 def home_page():
     if request.method == 'GET':
+        page = request.args.get('page', 1, type=int)
+        items_per_page = 25
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
-        customers= get_customers_information()
+        customers= get_customers_information(page, items_per_page)
         available_dates= available_tour_dates()
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
         revenue= calculate_gross_revenue(year)
         customers_total=total_customers()
+        total_pages = math.ceil(customers_total / items_per_page)
 
-        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total)
+        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
 
 

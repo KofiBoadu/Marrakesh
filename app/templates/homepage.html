@@ -316,6 +316,18 @@
 
 
     </table>
+
+    <div class="pagination-controls">
+        {% if page > 1 %}
+            <a href="{{ url_for('customers.home_page', page=page-1) }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+            <a href="{{ url_for('customers.home_page', page=page+1) }}">Next</a>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}
