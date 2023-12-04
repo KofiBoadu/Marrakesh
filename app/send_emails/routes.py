@@ -15,9 +15,9 @@ def send_customer_email():
     customer_id= request.form.get('customer_id')
     status = "email not sent"
     email_sent = send_email(subject, from_email, [to_email], body)
-    print(email_sent)
     if email_sent:
         status = "sent"
+
     store_email_details = customer_email_interactions(customer_id, subject, body, status)
 
     return redirect(url_for('profiles.customer_profile', customer_id=customer_id))

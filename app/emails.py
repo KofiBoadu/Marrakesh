@@ -46,7 +46,8 @@ def customer_email_interactions(customer_id,subject,body,status):
 def all_emails_sent_to_customer(customer_id):
     database_connection = None
     cursor = None
-    query = "SELECT email_id,subject, status,sent_date, body FROM emails WHERE customer_id = %s"
+    query = "SELECT email_id, subject, status, sent_date, body FROM emails WHERE customer_id = %s ORDER BY email_id DESC"
+
     all_emails = []
     try:
         database_connection = create_databaseConnection()
