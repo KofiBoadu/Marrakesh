@@ -3,19 +3,20 @@
 
 
 {% block content %}
-
-<div class="profile-container" >
-  <div class="profile-avatar">
-    <h1 class="profile-avatar-letter">{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
-  </div>
+<div class="customer-dashboard">
+  <div class="profile-container">
+    <div class="profile-avatar">
+      <h1 class="profile-avatar-letter">{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
+    </div>
     <div class="profile-name">
       <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
-      <div class="profile-actions"onclick="openEmailForm()">
-        <img width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png" alt="circled-envelope"/>
+      <div class="profile-actions" onclick="openEmailForm()">
+        <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
+          alt="circled-envelope" />
       </div>
     </div>
-   
+
 
     <h2 class="profile-title">Customer Information</h2>
     <div class="profile-info-container">
@@ -24,63 +25,89 @@
     </div>
     <div class="profile-info-container">
       <h4>Email: </h4>
-    <p>{{ profile[1] }}</p> <!-- Assuming the fourth element is the state -->
+      <p>{{ profile[1] }}</p> <!-- Assuming the fourth element is the state -->
     </div>
-     <!-- Assuming the third element is the number -->
+    <!-- Assuming the third element is the number -->
     <!-- No need for a second email -->
     <div class="profile-info-container">
       <h4>State: </h4>
-    <p id="state-info">{{ profile[3] }}</p> <!-- Assuming the fourth element is the state -->
+      <p id="state-info">{{ profile[3] }}</p> <!-- Assuming the fourth element is the state -->
     </div>
-    
-    
+
+
     <h2 class="profile-title">Tours Booked</h2>
     <ul>
-        {% for tour_name in tour_list %}
-        <li>{{ tour_name }}    <span>{{profile[6]}}</span></li>
-        {% endfor %}
+      {% for tour_name in tour_list %}
+      <li>{{ tour_name }} <span>{{profile[6]}}</span></li>
+      {% endfor %}
     </ul>
     <div>
 
       <div class="revenue">
-        <img  class="revenue-icon" width="48" height="48" src="https://img.icons8.com/fluency-systems-regular/48/03989e/stocks-growth.png" alt="stocks-growth"/>
+        <img class="revenue-icon" width="48" height="48"
+          src="https://img.icons8.com/fluency-systems-regular/48/03989e/stocks-growth.png" alt="stocks-growth" />
         <div class="revenue-container">
           <p class="revenue-amt">${{ profile[5] }}</p>
-          <p class="revenue-title" >Revenue Generated </p>
+          <p class="revenue-title">Revenue Generated </p>
         </div>
-         
+
       </div>
-     
+
     </div>
-   <!-- Assuming the sixth element is the total payment -->
-   
-</div>
+    <!-- Assuming the sixth element is the total payment -->
+
+  </div>
 
 
 
+  <div class="email-activity">
+    <div class="email-activity-header">
+      <h2 class="email-activity-title">ACTIVITY</h2>
+    </div>
+    {% for email in emails %}
 
-{% for email in emails %}
-<div class="email-container">
-    <div class="email-header">
-        <strong>Subject:</strong> {{ email['subject'] }}
-        <form action="{{ url_for('send_emails.delete_email', email_id=email['email_id'],customer_id=customer_id) }}" method="POST" class="delete-form">
-            <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
-            <input type="hidden" name="customer_id" value="{{ customer_id }}">
-            <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link">Delete</a>
+
+    <div class="email-activity-container">
+      <div class="email-header">
+        <div class="email-header-block">
+          <strong>Email-</strong>
+          <p class="subject"> {{ email['subject'] }}</p>
+          <p class="from"> from Daniel Boadu</p>
+          <img class="dropdown" width="16" height="16"
+            src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down"
+            onclick="toggleEmailBody(this)" />
+        </div>
+
+
+        <form action="{{ url_for('send_emails.delete_email', email_id=email['email_id'],customer_id=customer_id) }}"
+          method="POST" class="delete-form">
+          <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
+          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
+            class="delete-text-link">delete</a>
+
         </form>
+
+      </div>
+      <p class="email-text"><small class="text-muted">Status: {{ email['status'] }} on {{ email['sent_date'] }}</small>
+      </p>
+      <div class="email-body" style="display: none" id="body" ;>
+        <p class="email-body-content">Dear {{ profile[0] }},</p>
+        <p class="email-content">{{ email['body'] }}</p>
+        <div class="email-footer">
+          Best regards,<br>
+          Africa Travellers
+        </div>
+
+      </div>
+
     </div>
-    <div class="email-body">
-      <p class="email-text"><small class="text-muted">Status: {{ email['status'] }} on {{ email['sent_date'] }}</small></p>
-        <h5 class="email-title">Dear {{ profile[0] }},</h5>
-        <p class="email-text">{{ email['body'] }}</p>
-        
-    </div>
-    <div class="email-footer">
-        Best regards,<br>
-        Your Company Name
-    </div>
+    {% endfor %}
+  </div>
+
+
+
 </div>
-{% endfor %}
 
 
 
@@ -92,23 +119,29 @@
 
 
 
-<div id="emailForm"  class="email-form-container" style="display: none;">
+<div id="emailForm" class="email-form-container" style="display: none;">
   <!-- Close button -->
-  
- <div class="email-title">
-    <h2>Email</h2>
-    <img class="email-close" id="exit" width="24" height="24" 
-    src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign"  onclick="closeEmailForm()"/>
- </div>
-  
-  <form  action="{{ url_for('send_emails.send_customer_email') }}" method="post">
-   
+
+  <div class="email-title">
+    <h2>Send Email</h2>
+    <img title="Maximize"class="expand" width="32" height="32"
+    src="https://img.icons8.com/windows/32/FFFFFF/circled-chevron-down.png" alt="circled-chevron-down"
+      onclick="toggleEmailForm(this)" alt="expand" />
+    <img class="email-close" id="exit" width="24" height="24"
+      src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign"
+      onclick="closeEmailForm()" />
+  </div>
+
+  <form class="sendEmail" style="display: none;" action="{{ url_for('send_emails.send_customer_email') }}"
+    method="post">
+
     <input type="hidden" name="customer_id" value="{{ customer_id }}">
 
     <!-- To Field -->
     <div class="form-group">
       <label for="toEmail">To</label>
-      <input type="email" id="toEmail" name="to_email" placeholder="{{profile[0]  }}" required value="{{profile[1]  }}" readonly> <!-- Assuming you have customer_email variable -->
+      <input type="email" id="toEmail" name="to_email" placeholder="{{profile[0]  }}" required value="{{profile[1]  }}"
+        readonly> <!-- Assuming you have customer_email variable -->
     </div>
 
     <!-- From Field (readonly or a label if it's a fixed value) -->
@@ -136,9 +169,8 @@
   </form>
 
   {% for message in messages %}
-
-            <p>{{ message }}</p>
-            {% endfor %}
+  <p>{{ message }}</p>
+  {% endfor %}
 </div>
 
 
@@ -147,42 +179,44 @@
 
 
 <script>
-
-function openEmailForm() {
+  function openEmailForm() {
     // Show the email form when the button is clicked
     document.getElementById('emailForm').style.display = 'block';
-}
+  }
 
 
-function closeEmailForm() {
-  document.getElementById('emailForm').style.display = 'none';
+  function closeEmailForm() {
+    document.getElementById('emailForm').style.display = 'none';
+  }
+  function toggleEmailBody(header) {
+    // Find the closest email container
+    var emailContainer = header.closest('.email-activity-container');
 
-}
+    // Find the email body inside the email container
+    var emailBody = emailContainer.querySelector('.email-body');
 
+    // Toggle the display of the email body
+    if (emailBody.style.display === 'block') {
+      emailBody.style.display = 'none';
+    } else {
+      emailBody.style.display = 'block';
+    }
+  }
+  function toggleEmailForm(header) {
+    // Find the closest email form container
+    var emailFormContainer = header.closest(".email-form-container");
 
+    // Find the email form inside the email form container
+    var emailSendBody = emailFormContainer.querySelector('.sendEmail');
+
+    // Toggle the display of the email form
+    if (emailSendBody.style.display === 'block') {
+      emailSendBody.style.display = 'none';
+    } else {
+      emailSendBody.style.display = 'block';
+    }
+  }
 </script>
 
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

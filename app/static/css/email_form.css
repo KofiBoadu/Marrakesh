@@ -14,9 +14,9 @@ html, body {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   overflow: hidden;
-  position: relative; /* Position it absolutely */
-  top: 50%; /* Position it halfway down the parent */
-  left: 50%; /* Position it halfway across the parent */
+  position: ABSOLUTE;
+    left: 78%;
+    TOP: 60%;
   transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
 }
 .email-title{
@@ -24,6 +24,11 @@ html, body {
   padding: 10px;
   display:flex;
   justify-content: space-between;
+}
+.expand{
+  margin-right: 400px;
+    margin-top: 2px;
+    cursor: pointer;
 }
 .email-title h2{
   font: 2em helvetica ;

@@ -13,10 +13,13 @@ body {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+.customer-dashboard{
+ display: flex;
+ 
+}
 /* Apply styles to the .profile-container */
 .profile-container {
-    max-width: 500px;
+    width: 400px;
     margin: 0; /* This ensures no margin at the top and flush with the left side */
     padding: 20px;
     background-color: #fff;
@@ -24,6 +27,7 @@ body {
     border-radius: 0px;
     overflow: hidden;
     position: relative; 
+    height: 700px;
     
     /* In case you need to position something absolutely inside */
 }
