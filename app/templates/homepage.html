@@ -317,17 +317,45 @@
 
     </table>
 
-    <div class="pagination-controls">
-        {% if page > 1 %}
-            <a href="{{ url_for('customers.home_page', page=page-1) }}">Previous</a>
-        {% endif %}
 
-        <span>Page {{ page }} of {{ total_pages }}</span>
 
-        {% if page < total_pages %}
-            <a href="{{ url_for('customers.home_page', page=page+1) }}">Next</a>
-        {% endif %}
+  <div class="pagination-controls">
+        <ul class="pagination">
+            <!-- Previous Page Button -->
+            {% if page > 1 %}
+                <li><a href="{{ url_for('customers.home_page', page=page-1) }}">Prev</a></li>
+            {% else %}
+                <li class="disabled"><span>Prev</span></li>
+            {% endif %}
+
+            <!-- Page Number Links -->
+            {% for i in range(1, total_pages + 1) %}
+                <li {% if i == page %}class="active"{% endif %}>
+                    <a href="{{ url_for('customers.home_page', page=i) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            <!-- Next Page Button -->
+            {% if page < total_pages %}
+                <li><a href="{{ url_for('customers.home_page', page=page+1) }}">Next</a></li>
+            {% else %}
+                <li class="disabled"><span>Next</span></li>
+            {% endif %}
+        </ul>
+
+        <!-- Dropdown for items per page -->
+        <select id="items-per-page" onchange="changeItemsPerPage(this)">
+            <option value="10">10 per page</option>
+            <option value="25" selected>25 per page</option>
+            <option value="50">50 per page</option>
+            <option value="100">100 per page</option>
+        </select>
     </div>
+
+
 </div>
+
+
+
 
 {% endblock %}

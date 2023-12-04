@@ -16,7 +16,7 @@ from app.models import format_phone_number, remove_paid_customer,total_customers
 def home_page():
     if request.method == 'GET':
         page = request.args.get('page', 1, type=int)
-        items_per_page = 25
+        items_per_page = 8
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
         customers= get_customers_information(page, items_per_page)

@@ -132,7 +132,7 @@
       onclick="closeEmailForm()" />
   </div>
 
-  <form class="sendEmail" style="display: none;" action="{{ url_for('send_emails.send_customer_email') }}"
+  <form class="sendEmail" style="display: block;" action="{{url_for('send_emails.send_customer_email') }}"
     method="post">
 
     <input type="hidden" name="customer_id" value="{{ customer_id }}">

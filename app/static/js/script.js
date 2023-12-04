@@ -91,3 +91,10 @@ function validateDeleteInput(input) {
     document.getElementById('deleteConfirmForm').style.display = isDeleteTyped ? 'block' : 'none';
 }
 
+
+
+
+
+ function changeItemsPerPage(select) {
+        window.location.href = "{{ url_for('customers.home_page', page=1) }}?per_page=" + select.value;
+    }

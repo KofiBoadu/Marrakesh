@@ -541,3 +541,38 @@ button#cancel:hover {
   color: #FF914C;
   font-size: 1.2em;
 }/*# sourceMappingURL=hompage.css.map */
+
+
+
+
+
+
+
+
+  .pagination {
+        list-style-type: none;
+        display: flex;
+        justify-content: center;
+    }
+    .pagination li {
+        margin: 0 5px;
+    }
+    .pagination li a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        color: #333;
+    }
+    .pagination li a:hover,
+    .pagination li.active a {
+        background-color: #03989e;
+        color: white;
+    }
+    .pagination li.disabled span {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        color: #ccc;
+    }
+    #items-per-page {
+        margin-left: 20px;
+    }
