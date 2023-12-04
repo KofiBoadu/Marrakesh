@@ -46,32 +46,31 @@ def create_databaseConnection():
 
 def create_get_customer_tour_details_procedure():
     procedure_query = """
-    CREATE PROCEDURE GetCustomerTourDetails(IN target_year INT)
+    CREATE PROCEDURE GetCustomerTourDetails()
     BEGIN
-        SELECT
-            c.customer_id,
-            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-            c.state_address AS `State`,
-            c.email_address AS `Email`,
-            c.phone_number AS `Mobile`,
-            t.tour_name AS `Tour`,
-            YEAR(t.start_date) AS `Travel_Year_Start`,
-            t.tour_price AS `Tour_Price`,
-            t.tour_type AS `Tour_Type`
+    SELECT
+        c.customer_id,
+        CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+        c.state_address AS `State`,
+        c.email_address AS `Email`,
+        c.phone_number AS `Mobile`,
+        t.tour_name AS `Tour`,
+        YEAR(t.start_date) AS `Travel_Year_Start`,
+        t.tour_price AS `Tour_Price`,
+        t.tour_type AS `Tour_Type`
 
-        FROM
-            customers c
-        JOIN
-            tour_bookings tb ON tb.customer_id = c.customer_id
-        JOIN
-            tours t ON tb.tour_id = t.tour_id
-        JOIN
-            destinations d ON t.destination_id = d.destination_id
-        WHERE
-            YEAR(t.start_date) = target_year
-        ORDER BY
-            c.customer_id DESC;
-    END
+    FROM
+        customers c
+    JOIN
+        tour_bookings tb ON tb.customer_id = c.customer_id
+    JOIN
+        tours t ON tb.tour_id = t.tour_id
+    JOIN
+        destinations d ON t.destination_id = d.destination_id
+    ORDER BY
+        YEAR(t.start_date) DESC, c.customer_id DESC;
+    END;
+
     """
     database_connection = None
     cursor = None
@@ -114,7 +113,7 @@ def total_customers():
 
 
 
-def get_customers_information(year):
+def get_customers_information():
     database_connection = None
     customers = []
     cursor=None
@@ -122,7 +121,7 @@ def get_customers_information(year):
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.callproc('GetCustomerTourDetails', [year])
+        cursor.callproc('GetCustomerTourDetails')
         for result in cursor.stored_results():
             customers.extend(result.fetchall())
 
@@ -290,7 +289,10 @@ def get_customer_id(email):
 
 
 def available_tour_dates():
-    query = "SELECT tour_name FROM tours"
+    query = """
+    SELECT tour_name
+    FROM tours
+    ORDER BY ABS(YEAR(start_date) - YEAR(CURDATE())) ASC, start_date DESC;"""
     database_connection = None
     cursor = None
     dates = []

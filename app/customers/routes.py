@@ -16,7 +16,7 @@ def home_page():
     if request.method == 'GET':
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
-        customers= get_customers_information(year)
+        customers= get_customers_information()
         available_dates= available_tour_dates()
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
