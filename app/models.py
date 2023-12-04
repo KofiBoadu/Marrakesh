@@ -92,28 +92,25 @@ def create_get_customer_tour_details_procedure():
 
 
 
+def total_customers():
+    cursor = None
+    database_connection = None
+    query = "SELECT COUNT(*) FROM customers"
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchone()
+        return result[0]  # Getting the first element of the tuple
+    except Exception as e:
+        raise Exception(f"An error occurred while counting: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
-# def get_customers_information(year):
-#     database_connection = None
-#     cursor = None
-#     customers = []
-
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
-#         cursor.callproc('GetCustomerTourDetails', [year])
-#         for result in cursor.stored_results():
-#             customers.extend(result.fetchall())
-#         return customers
-#     except Exception as e:
-#         logging.error(f"Error in get_customers_information: {e}")
-#         return []
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
 
 
 

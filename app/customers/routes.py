@@ -6,20 +6,13 @@ from app.customers import customers_bp
 import datetime
 from flask_login import login_required
 from app.extension import cache
-from app.models import format_phone_number, remove_paid_customer
+from app.models import format_phone_number, remove_paid_customer,total_customers
 
 
 @customers_bp.route('/', methods=['GET'])
 @login_required
 # @cache.cached(timeout=240)
 def home_page():
-    # form_submitted = request.args.get('form_submitted')
-    # if form_submitted == 'customer':
-    #     flash("Customer added successfully!","customer_success")
-    # elif form_submitted == 'tour':
-    #     flash("New tour added successfully!","tour_success")
-    # elif form_submitted== "customer_exist":
-    #     flash("This customer just rebooked another trip","customer_exist")
     if request.method == 'GET':
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
@@ -28,8 +21,9 @@ def home_page():
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
         revenue= calculate_gross_revenue(year)
+        customers_total=total_customers()
 
-        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username)
+        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total)
 
 
 
