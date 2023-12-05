@@ -6,14 +6,14 @@ import logging
 import datetime
 import phonenumbers
 from phonenumbers import geocoder, carrier
-
+from urllib.parse import urlparse
 
 
 load_dotenv()
-db_host = os.getenv("DATABASE_HOST")
-db_user = os.getenv("DATABASE_USER")
-db_password = os.getenv("DATABASE_PASSWORD")
-db_name = os.getenv("DATABASE_NAME")
+# db_host = os.getenv("DATABASE_URL")
+# db_user = os.getenv("DATABASE_USER")
+# db_password = os.getenv("DATABASE_PASSWORD")
+# db_name = os.getenv("DATABASE_NAME")
 
 
 
@@ -27,17 +27,31 @@ def format_phone_number(number, country_code='US'):
 
 
 def create_databaseConnection():
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        parsed_url = urlparse(database_url)
+        db_user = parsed_url.username
+        db_password = parsed_url.password
+        db_host = parsed_url.hostname
+        db_name = parsed_url.path.lstrip('/')
+        db_port = parsed_url.port
     try:
         sql_connection= mysql.connector.connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name
+                user=db_user,
+                password=db_password,
+                host=db_host,
+                database=db_name,
+                port=db_port
         )
         return sql_connection
 
-    except Error as e :
-        raise Exception(f"An error occurred while fetching customer information: {e}")
+    except mysql.connector.Error as e:
+
+        logging.error(f"An error occurred while connecting to the database: {e}")
+
+    else:
+        logging.error("DATABASE_URL not set")
+        raise ValueError("DATABASE_URL not set")
 
 
 
