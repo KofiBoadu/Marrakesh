@@ -17,7 +17,6 @@ db_name = os.getenv("DATABASE_NAME")
 
 
 
-
 def format_phone_number(number, country_code='US'):
     user_number = phonenumbers.parse(number, country_code)
     formatted_number = phonenumbers.format_number(user_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
@@ -162,45 +161,7 @@ def create_tour_bookings(tour_id, customer_id):
             database_connection.close()
 
 
-# def create_tour_bookings(tour_id, customer_id):
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
 
-#         query = "INSERT INTO tour_bookings(tour_id, customer_id) VALUES(%s, %s)"
-#         values = (tour_id, customer_id)
-#         cursor.execute(query, values)
-#         database_connection.commit()
-#         return True
-
-#     except Exception as e:
-#         raise Exception(f"An error occurred: {e}")
-
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
-
-
-
-# def get_tour_id(tour_name):
-#     query = "SELECT tour_id FROM tours WHERE tour_name = %s"
-#     database_connection = create_databaseConnection()
-#     cursor = database_connection.cursor()
-
-#     try:
-#         cursor.execute(query, (tour_name,))
-#         result = cursor.fetchone()
-#         if result:
-#             return result[0]
-#         else:
-#             return None
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
 def get_tour_id(tour_name):
     query = "SELECT tour_id FROM tours WHERE tour_name = %s"
     database_connection = None
@@ -227,20 +188,7 @@ def get_tour_id(tour_name):
 
 
 
-# def get_customer_id(email):
-#     query = "SELECT customer_id FROM customers WHERE email_address = %s"
-#     database_connection = create_databaseConnection()
-#     cursor = database_connection.cursor()
-#     cursor.execute(query, (email,))
-#     result = cursor.fetchone()
-#     cursor.close()
-#     database_connection.close()
-#     if result:
 
-#         return result[0]
-#     else:
-
-#         return None
 
 def get_customer_id(email):
     query = "SELECT customer_id FROM customers WHERE email_address = %s"
@@ -264,29 +212,6 @@ def get_customer_id(email):
 
 
 
-
-# def available_tour_dates():
-#     dates = []
-#     database_connection = None
-#     cursor = None
-#     try:
-#         database_connection = create_databaseConnection()
-#         if database_connection is not None:
-#             cursor = database_connection.cursor()
-#             query = "SELECT tour_name FROM tours"
-#             cursor.execute(query)
-#             date_tuples = cursor.fetchall()
-#             dates = [date[0] for date in date_tuples]
-#         else:
-#             print("Failed to connect to the database")
-#     except Exception as e:
-#         raise Exception(f"An error occurred while getting  tour dates: {e}")
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
-#     return dates
 
 
 def available_tour_dates():
@@ -317,22 +242,7 @@ def available_tour_dates():
 
 
 
-# def create_new_tourDates(tour_name, start_date,end_date,price,destination_id, tour_type):
-#      query = "INSERT INTO tours(tour_name, start_date,end_date,tour_price,destination_id,tour_type) VALUES(%s,%s,%s,%s,%s,%s)"
-#      values = (tour_name, start_date,end_date,price,destination_id, tour_type)
-#      try:
-#         database_connection = create_databaseConnection()
-#         with database_connection.cursor() as cursor:
-#             cursor.execute(query, values)
-#             database_connection.commit()
-#             return True
-#      except Exception as e:
-#         raise Exception(f"An error occurred while creating new tour dates: {e}")
-#      finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
+
 
 def create_new_tourDates(tour_name, start_date, end_date, price, destination_id, tour_type):
     query = "INSERT INTO tours(tour_name, start_date, end_date, tour_price, destination_id, tour_type) VALUES(%s, %s, %s, %s, %s, %s)"
