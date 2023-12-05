@@ -275,6 +275,18 @@
   border-bottom: 2px solid rgb(238, 234, 234);
 }
 
+#costumer-header {
+  display: block;
+}
+
+#total {
+  font-family: Helvetica;
+  font-size: 1em;
+  color: #646464;
+  margin: 5%;
+  font-weight: 400;
+}
+
 #table-title {
   margin: 2%;
   font-family: Helvetica;
@@ -540,39 +552,38 @@ button#cancel:hover {
 #highlight {
   color: #FF914C;
   font-size: 1.2em;
+}
+
+.pagination {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 2%;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination li a {
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.pagination li a:hover,
+.pagination li.active a {
+  background-color: #03989e;
+  color: white;
+}
+
+.pagination li.disabled span {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  color: #ccc;
+}
+
+#items-per-page {
+  margin-left: 20px;
 }/*# sourceMappingURL=hompage.css.map */
-
-
-
-
-
-
-
-
-  .pagination {
-        list-style-type: none;
-        display: flex;
-        justify-content: center;
-    }
-    .pagination li {
-        margin: 0 5px;
-    }
-    .pagination li a {
-        text-decoration: none;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        color: #333;
-    }
-    .pagination li a:hover,
-    .pagination li.active a {
-        background-color: #03989e;
-        color: white;
-    }
-    .pagination li.disabled span {
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        color: #ccc;
-    }
-    #items-per-page {
-        margin-left: 20px;
-    }

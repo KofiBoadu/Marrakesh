@@ -247,8 +247,11 @@
     <table id="data-table">
 
         <div id="table-header">
-            <h3 id="table-title">Customers</h3>
-            <h3>{{"{:,}".format(customers_total)}}</h3>
+            <div id="customer-header">
+                <h3 id="table-title">Customers</h3>
+                <h3 id="total">{{"{:,}".format(customers_total)}} Records</h3>
+            </div>
+            
 
 
             <!-- DELETE --->

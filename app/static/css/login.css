@@ -17,9 +17,11 @@ body, html {
 
   .login-container h3 {
     text-align: center;
-    color: #333;
+    color: #03989E;
     margin: 0px;
     font-size: 20px;
+    font-family: Helvitica;
+    font-weight: 800;
   }
   
   /*.login-container {
@@ -107,6 +109,7 @@ body, html {
   color: white; /* White text color */
   cursor: pointer; /* Cursor to signify it's clickable */
   border: none; /* No border for the submit input */
+  margin-left: 10px;
 }
 
 .login-container .form-group input[type="submit"]:hover {

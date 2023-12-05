@@ -327,7 +327,17 @@
 
 
 }
-
+#costumer-header{
+    display: block;
+    
+}
+#total{
+    font-family: Helvetica;
+    font-size: 1em;
+    color: #646464;
+    margin: 5%;
+    font-weight: 400;
+}
 #table-title {
     margin: 2%;
     font-family: Helvetica;
@@ -619,6 +629,7 @@ button#cancel:hover {
         list-style-type: none;
         display: flex;
         justify-content: center;
+        margin-top: 2%;
     }
     .pagination li {
         margin: 0 5px;
