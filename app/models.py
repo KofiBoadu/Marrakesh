@@ -27,7 +27,7 @@ def format_phone_number(number, country_code='US'):
 
 
 def create_databaseConnection():
-    database_url = os.getenv("DATABASE_URL")
+    database_url = os.getenv('JAWSDB_URL')
     if database_url:
         parsed_url = urlparse(database_url)
         db_user = parsed_url.username
