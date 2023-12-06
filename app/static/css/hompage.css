@@ -329,7 +329,7 @@ th {
   background-color: rgb(191, 190, 190);
   width: 100%;
   border-collapse: separate;
-  border-spacing: 1px;
+  border-spacing: 1.5px;
 }
 
 td {
