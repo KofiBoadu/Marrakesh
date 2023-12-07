@@ -25,7 +25,6 @@ def generate_secure_password(length=12):
 
 
 
-
 def add_new_user(first_name, last_name, email_address,pass_word):
     cursor= None
     database_connection= None
@@ -103,8 +102,63 @@ def load_user(user_id):
         if database_connection:
             database_connection.close()
 
+
+
+
+def pass_word_checker(password):
+    if (len(password) > 8 and len(password  ) < 12):
+        lower_case= False
+        upper_case= False
+        number= False
+        special_char= False
+
+        for each_character in password  :
+            if each_character.isdigit():
+                number= True
+            if each_character.islower():
+                lower_case  = True
+            if each_character.isupper():
+                upper_case  = True
+            if each_character.isalnum():
+                special_char= True
+        return lower_case   and upper_case  and number  and special_char
+    return False
+
+
+
+
+
+
+
+def password_change(user_id ,new_password):
+    cursor = None
+    database_connection = None
+    hash_password= generate_password_hash(new_password)
+    query = "UPDATE users SET pass_word = %s WHERE user_id = %s"
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (hash_password, user_id))
+        database_connection.commit()
+
+    except Exception as e:
+        print(f"Error updating password: {e}")
+
+    finally :
+        if cursor :
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+
+
 # print(create_user_account("daniel","boadu","mrboadu3@gmail.com"))
 # print(get_user("mrboadu3@gmail.com"))
 
 # daniel=R#e+weo<P7=Q
 # print(load_user(1))
+
+# print(pass_word_checker("R#e+weo<P7="))
