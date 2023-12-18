@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_form.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_activity.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset_password.css') }}">
    
    <!--  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -31,8 +32,29 @@
                 <li class="nav_link"><a href="tours.html">Marketing</a></li>
                 <li class="nav_link"><a href="bookings.html">Records</a></li>
                 <li class="nav_link"><a href="customers.html">Analytics</a></li>
-                <li class="nav_link"id="logout-button"><a href="{{ url_for('users.log_out')}}">Logout</a></li>
-                <span class="nav_welcome" id="welcome-message">Welcome   {{username}}</span>
+                <div class="user-container">
+
+  <div class="user-info">
+    <!-- Circle for Initials -->
+    <div class="user-initials-circle">
+        <span class="user-initials">{{ username[1].capitalize()[0] + username[2].capitalize()[0] }}</span>
+    </div>
+    <!-- User's Full Name and Dropdown Arrow -->
+    <div class="user-name-dropdown">
+        <span class="user-fullname">{{ username[1].capitalize() + ' ' + username[2].capitalize() }}</span>
+        <!-- Dropdown Content -->
+        <div class="dropdown-content">
+            <a href="{{ url_for('users.log_out')}}">Logout</a>
+            <a href="{{ url_for('users.password_reset')}}">Reset password</a>
+        </div>
+    </div>
+</div>
+
+
+            
+
+            </div>
+
             </ul>
         </nav>
     </header>

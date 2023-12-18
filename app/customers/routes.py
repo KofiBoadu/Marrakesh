@@ -10,6 +10,9 @@ from app.extension import cache
 from app.models import format_phone_number, remove_paid_customer,total_customers
 
 
+
+
+
 @customers_bp.route('/', methods=['GET'])
 @login_required
 # @cache.cached(timeout=240)
@@ -26,7 +29,6 @@ def home_page():
         revenue= calculate_gross_revenue(year)
         customers_total=total_customers()
         total_pages = math.ceil(customers_total / items_per_page)
-
         return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
 
@@ -63,19 +65,43 @@ def add_paid_customer():
         phone = request.form.get('phone')
         gender = request.form.get('gender')
         tour_type= request.form.get("tour_date")
+
+        print(tour_type)
+
+        tour_date= tour_type.split()
+
+        print("Tour date",tour_date)
+
         customer_exist=check_customer_exists(email)
-        tour_id= get_tour_id(tour_type)
+
+        tour_year= tour_date.pop()
+
+        print("Tour year", tour_year)
+
+        tour_name=" ".join(tour_date)
+
+        print("tour name", tour_name)
+
+        tour_id= get_tour_id(tour_name,tour_year)
+
+        print("tour ID",tour_id)
+
+
+
+
         if customer_exist:
             customer_id= customer_exist
-            tour_id= get_tour_id(tour_type)
+            tour_id= get_tour_id(tour_name,tour_year)
             create_tour_bookings(tour_id,customer_id)
             return redirect(url_for("customers.home_page"))
         else:
             customer= add_new_paidCustomer(first_name, last_name,email,phone,gender,state)
-            tour_id= get_tour_id(tour_type)
+            tour_id= get_tour_id(tour_name,tour_year)
             customer_id= get_customer_id(email)
             create_tour_bookings(tour_id,customer_id)
             return redirect(url_for("customers.home_page"))
+
+
 
 
 

@@ -176,17 +176,17 @@ def create_tour_bookings(tour_id, customer_id):
 
 
 
-def get_tour_id(tour_name):
-    query = "SELECT tour_id FROM tours WHERE tour_name = %s"
+def get_tour_id(tour_name, year):
+    query = "SELECT tour_id FROM tours WHERE TRIM(tour_name) = %s and YEAR(start_date) = %s"
+
     database_connection = None
     cursor = None
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (tour_name,))
+        cursor.execute(query, (tour_name,year))
         result = cursor.fetchone()
-        print(result)
         return result[0] if result else None
     except mysql.connector.Error as e:
         # Handle specific database errors here
@@ -201,6 +201,7 @@ def get_tour_id(tour_name):
             database_connection.close()
 
 
+print("tour ID",get_tour_id("Egypt October 1st-10th",2024))
 
 
 
@@ -230,8 +231,8 @@ def get_customer_id(email):
 
 def available_tour_dates():
     query = """
-    SELECT tour_name
-    FROM tours
+    SELECT Concat(tour_name, " ", YEAR(t.start_date))
+    FROM tours t
     ORDER BY ABS(YEAR(start_date) - YEAR(CURDATE())) ASC, start_date DESC;"""
     database_connection = None
     cursor = None
@@ -252,7 +253,6 @@ def available_tour_dates():
             cursor.close()
         if database_connection:
             database_connection.close()
-
 
 
 
