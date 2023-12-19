@@ -21,10 +21,17 @@ body {
   margin-right: 20%;
   margin-top: 2%;
 }
+
+
 .nav_link {
-  list-style: none;
-  margin-left: 10%;
+    list-style: none;
+    margin-left: 10%;
+    margin-top: 5%;
 }
+
+
+
+
 .nav_link a {
   text-decoration: none;
   font-family: Helvetica;
@@ -49,16 +56,13 @@ body {
 
 
 
-
-/* General Container for User Info */
 .user-container {
     display: flex;
     align-items: center;
     font-family: Arial, sans-serif;
-
     margin-bottom: 20px;
-    width:  150px;
-
+    width: 150px;
+    margin-left: 5%;
 }
 
 
@@ -67,18 +71,20 @@ body {
   width: 200px
 }
 
-/* Circle for User Initials */
+
+
 .user-initials-circle {
-    width: 40px; /* Adjust size as needed */
-    height: 40px; /* Adjust size as needed */
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: orange; /* Your preferred color */
+    background-color: #FF914C;
     display: flex;
     justify-content: center;
     align-items: center;
-   
-    
+    margin-right: 5px;
 }
+
+
 
 /* Initials inside the Circle */
 .user-initials {
@@ -127,4 +133,6 @@ body {
 .user-fullname {
     font-size: 16px; /* Adjust size as needed */
 }
+
+
 
