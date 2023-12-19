@@ -56,13 +56,15 @@ body {
     align-items: center;
     font-family: Arial, sans-serif;
 
-    margin-top: 1px;
+    margin-bottom: 20px;
+    width:  150px;
 
 }
 
 
 .user-info{
   display:  flex;
+  width: 200px
 }
 
 /* Circle for User Initials */
