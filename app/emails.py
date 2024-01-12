@@ -2,19 +2,23 @@
 from  .models import create_databaseConnection
 from flask_mail import Message
 from flask_mail import Mail
+from flask import current_app
 
 mail = Mail()
 
-def send_email(subject, sender, recipients, body):
-    msg = Message(subject, sender=sender, recipients=recipients)
-    msg.body = body
-    try:
-        mail.send(msg)
-        return True
-    except Exception as e:
 
-        return False
+def send_email(subject, sender, recipients, text_body):
+    with current_app.app_context():
+        msg = Message(subject, sender=sender, recipients=recipients)
+        msg.body = text_body
+        try:
 
+            mail.send(msg)
+            return True
+        except Exception as e:
+            # It's a good idea to log your errors, for easier debugging
+            current_app.logger.error(f'Failed to send email: {e}')
+            return False
 
 
 
