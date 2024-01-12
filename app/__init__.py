@@ -38,9 +38,9 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY')
 
      # Flask-Mail configuration
-    app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_SERVER'] = 'smtpout.secureserver.net'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USE_SSL'] = True
     app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
     app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
     # app.config['REDIS_URL'] = os.environ.get('REDIS_URL', "redis://localhost:6379/0")
@@ -52,4 +52,9 @@ def create_app():
     # redis_client = FlaskRedis(app)
     cache.init_app(app)
     return app
+
+
+
+
+
 
