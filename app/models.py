@@ -10,12 +10,10 @@ from urllib.parse import urlparse
 
 
 load_dotenv()
-# db_host = os.getenv("DATABASE_URL")
-# db_user = os.getenv("DATABASE_USER")
-# db_password = os.getenv("DATABASE_PASSWORD")
-# db_name = os.getenv("DATABASE_NAME")
 
 
+database_url = os.getenv('JAWSDB_URL')
+print(database_url,"faillllllll")
 
 def format_phone_number(number, country_code='US'):
     user_number = phonenumbers.parse(number, country_code)
@@ -35,19 +33,19 @@ def create_databaseConnection():
         db_host = parsed_url.hostname
         db_name = parsed_url.path.lstrip('/')
         db_port = parsed_url.port
-    try:
-        sql_connection= mysql.connector.connect(
-                user=db_user,
-                password=db_password,
-                host=db_host,
-                database=db_name,
-                port=db_port
-        )
-        return sql_connection
+        try:
+            sql_connection= mysql.connector.connect(
+                    user=db_user,
+                    password=db_password,
+                    host=db_host,
+                    database=db_name,
+                    port=db_port
+            )
+            return sql_connection
 
-    except mysql.connector.Error as e:
+        except mysql.connector.Error as e:
 
-        logging.error(f"An error occurred while connecting to the database: {e}")
+            logging.error(f"An error occurred while connecting to the database: {e}")
 
     else:
         logging.error("DATABASE_URL not set")
@@ -100,6 +98,14 @@ def create_get_customer_tour_details_procedure():
             cursor.close()
         if database_connection is not None:
             database_connection.close()
+
+
+
+
+
+
+
+
 
 
 
@@ -201,7 +207,7 @@ def get_tour_id(tour_name, year):
             database_connection.close()
 
 
-print("tour ID",get_tour_id("Egypt October 1st-10th",2024))
+
 
 
 

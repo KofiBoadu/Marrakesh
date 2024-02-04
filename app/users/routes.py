@@ -20,6 +20,7 @@ def login_user_route():
     email = request.form.get('email')
     password = request.form.get('password')
     user= get_user(email)
+    print(user)
     old_password=check_password_hash(user[4],password)
     if user and old_password:
         user_object=User(user[0],user[1],user[2],user[3],user[4])

@@ -60,6 +60,8 @@ def create_user_account(first_name, last_name, email_address):
 
 
 
+
+
 def get_user(email):
     cursor = None
     database_connection = None
@@ -78,6 +80,8 @@ def get_user(email):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
 
 
 @login_manager.user_loader
@@ -129,7 +133,6 @@ def pass_word_checker(password):
 
 
 
-
 def password_change(user_id ,new_password):
     cursor = None
     database_connection = None
@@ -152,13 +155,28 @@ def password_change(user_id ,new_password):
 
 
 
+def get_all_users():
+    query= """ SELECT first_name, last_name, email_address FROM users """
+    cursor= None 
+    database_connection= None 
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query)
+        results= cursor.fetchall()
+        return results
+
+    except Exception as e:
+        print(f"An error occurred: {e}")  # Log the exception
+        return None  # Return None or an appropriate value indicating failure
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
 
-# print(create_user_account("daniel","boadu","mrboadu3@gmail.com"))
-# print(get_user("mrboadu3@gmail.com"))
 
-# daniel=R#e+weo<P7=Q
-# print(load_user(1))
 
-# print(pass_word_checker("R#e+weo<P7="))
+
