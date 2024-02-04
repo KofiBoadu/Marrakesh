@@ -490,7 +490,19 @@ def calculate_gross_revenue(year):
         cursor.execute(query, (year,))  # Pass the year as a parameter to the query
         result = cursor.fetchone()
         total_revenue = result[0] if result else 0
-        return float(total_revenue)
+        revenue= float(total_revenue)
+        upper= int(revenue/1000)
+        middle= int(revenue-upper*1000)
+        lower=int(revenue*100-upper*100000-middle*100)
+        if upper==0:
+            format_rev= f"{middle}.{lower}"
+    
+        else:
+            format_rev= f"{upper},{middle}.{lower}"
+        
+        return format_rev,revenue
+
+
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
@@ -501,7 +513,7 @@ def calculate_gross_revenue(year):
             database_connection.close()
 
 
-
+print(calculate_gross_revenue(2024))
 
 
 def remove_paid_customer(customer_id):

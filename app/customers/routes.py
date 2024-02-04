@@ -26,7 +26,7 @@ def home_page():
         available_dates= available_tour_dates()
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
-        revenue= calculate_gross_revenue(year)
+        revenue,formatted_revenue= calculate_gross_revenue(year)
         customers_total=total_customers()
         total_pages = math.ceil(customers_total / items_per_page)
         return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)

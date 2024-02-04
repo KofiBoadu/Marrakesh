@@ -121,27 +121,27 @@ async def mass_send_emailTemplate(subject, sender, recipients, text_body, batch_
 
 
 
-# def mass_send_emailTemplate(subject, sender, recipients, text_body, name):
-#     msg = Message(subject, sender=sender, recipients=recipients)
-#     msg.body = f"""Dear {name},
+def mass_send_emailTemplate(subject, sender, recipients, text_body, name):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = f"""Dear {name},
 
-#             {text_body}
+            {text_body}
 
-#              """
-#     msg.html = f"""<html>
-#         <body>
-#             <p>Dear {name},</p>
-#              <br>
-#              <p>{text_body}</p>
-#         </body>
-#     </html>
-#     """
-#     try:
-#         current_app.mail.send(msg)
-#         return True
-#     except Exception as e:
-#         current_app.logger.error(f'Failed to send email: {e}')
-#         return False
+             """
+    msg.html = f"""<html>
+        <body>
+            <p>Dear {name},</p>
+             <br>
+             <p>{text_body}</p>
+        </body>
+    </html>
+    """
+    try:
+        current_app.mail.send(msg)
+        return True
+    except Exception as e:
+        current_app.logger.error(f'Failed to send email: {e}')
+        return False
 
 
 
