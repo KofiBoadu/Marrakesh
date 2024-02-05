@@ -201,7 +201,7 @@ def get_tour_id(tour_name, year):
             database_connection.close()
 
 
-print("tour ID",get_tour_id("Egypt October 1st-10th",2024))
+
 
 
 
