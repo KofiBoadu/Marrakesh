@@ -272,7 +272,20 @@
 
 
 
+
+<!-- <form action="/search" method="get">
+        <input type="search" name="query" placeholder="Search...">
+        <button type="submit">Search</button>
+</form> -->
+
+
+<form action="{{ url_for('customers.home_page') }}" method="post">
+    <input type="search" name="search_query" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
         <thead id="table-head">
+
             <tr>
                 <th id="select-box">
                     <input type="checkbox" class="delete-checkbox">

@@ -13,16 +13,17 @@ from app.models import format_phone_number, remove_paid_customer,total_customers
 
 
 
-@customers_bp.route('/', methods=['GET'])
+@customers_bp.route('/', methods=['GET','POST'])
 @login_required
 # @cache.cached(timeout=240)
 def home_page():
-    if request.method == 'GET':
+    if request.method == 'GET' or request.method=="POST":
         page = request.args.get('page', 1, type=int)
+        search= request.form.get('search_query')
         items_per_page = 8
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
-        customers= get_customers_information(page, items_per_page)
+        customers= get_customers_information(page, items_per_page,search)
         available_dates= available_tour_dates()
         destinations= get_all_destination()
         total_travelers= get_total_numberOfTravellers()
@@ -31,7 +32,7 @@ def home_page():
         total_pages = math.ceil(customers_total / items_per_page)
         return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
-
+    
 
 @customers_bp.context_processor
 def context_processor():
@@ -66,27 +67,15 @@ def add_paid_customer():
         gender = request.form.get('gender')
         tour_type= request.form.get("tour_date")
 
-        print(tour_type)
-
         tour_date= tour_type.split()
-
-        print("Tour date",tour_date)
 
         customer_exist=check_customer_exists(email)
 
         tour_year= tour_date.pop()
 
-        print("Tour year", tour_year)
-
         tour_name=" ".join(tour_date)
 
-        print("tour name", tour_name)
-
         tour_id= get_tour_id(tour_name,tour_year)
-
-        print("tour ID",tour_id)
-
-
 
 
         if customer_exist:

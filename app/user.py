@@ -155,6 +155,9 @@ def password_change(user_id ,new_password):
 
 
 
+
+
+
 def get_all_users():
     query= """ SELECT first_name, last_name, email_address FROM users """
     cursor= None 
