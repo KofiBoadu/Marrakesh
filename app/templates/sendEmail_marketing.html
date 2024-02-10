@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+
+
+
+
+{% block content %}
+  
+
+
+   
+    <style>
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+<body>
+    <div class="container">
+       
+        <form action="{{url_for('marketing.create_marketingEmails') }}" method="post">
+            <div class="form-group">
+                <label for="dropdown">From name or address:</label>
+                
+                <select id="fromAddress" name="fromAddress" class="form-control">
+
+                	{% for sender in senders %}
+    		<option value="{{ sender[2] }}">{{ sender[0] }} {{ sender[1] }} ({{ sender[2] }})</option>
+					{% endfor %}
+                
+                </select>
+
+
+
+                <label for="dropdown">To customer type:</label>
+
+                <select id="customerType" name="customerType" class="form-control">
+                    <option value=1> All customers </option>
+
+                       {% for year in customer_list_byYear %}
+    					<option value="{{ year }}">{{ year}}</option>
+
+						{% endfor %}
+                   
+                </select>
+
+
+
+            </div>
+
+
+            <div class="form-group">
+                <label for="smallText">Email subject line:</label>
+                <input type="text" id="emailSubject" name="emailSubject" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="largeText">Email Body:</label>
+                <textarea id="emailBody" name="emailBody" class="form-control" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn">Send</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+{% endblock %}

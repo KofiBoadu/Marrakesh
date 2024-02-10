@@ -10,10 +10,7 @@ from urllib.parse import urlparse
 
 
 load_dotenv()
-# db_host = os.getenv("DATABASE_URL")
-# db_user = os.getenv("DATABASE_USER")
-# db_password = os.getenv("DATABASE_PASSWORD")
-# db_name = os.getenv("DATABASE_NAME")
+
 
 
 
@@ -35,19 +32,19 @@ def create_databaseConnection():
         db_host = parsed_url.hostname
         db_name = parsed_url.path.lstrip('/')
         db_port = parsed_url.port
-    try:
-        sql_connection= mysql.connector.connect(
-                user=db_user,
-                password=db_password,
-                host=db_host,
-                database=db_name,
-                port=db_port
-        )
-        return sql_connection
+        try:
+            sql_connection= mysql.connector.connect(
+                    user=db_user,
+                    password=db_password,
+                    host=db_host,
+                    database=db_name,
+                    port=db_port
+            )
+            return sql_connection
 
-    except mysql.connector.Error as e:
+        except mysql.connector.Error as e:
 
-        logging.error(f"An error occurred while connecting to the database: {e}")
+            logging.error(f"An error occurred while connecting to the database: {e}")
 
     else:
         logging.error("DATABASE_URL not set")
@@ -57,33 +54,109 @@ def create_databaseConnection():
 
 
 
-def create_get_customer_tour_details_procedure():
-    procedure_query = """
-    CREATE PROCEDURE GetCustomerTourDetails(IN items_per_page INT, IN offset INT)
-    BEGIN
-        SELECT
-            c.customer_id,
-            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-            c.state_address AS `State`,
-            c.email_address AS `Email`,
-            c.phone_number AS `Mobile`,
-            t.tour_name AS `Tour`,
-            YEAR(t.start_date) AS `Travel_Year_Start`,
-            t.tour_price AS `Tour_Price`,
-            t.tour_type AS `Tour_Type`
-        FROM
-            customers c
-        JOIN
-            tour_bookings tb ON tb.customer_id = c.customer_id
-        JOIN
-            tours t ON tb.tour_id = t.tour_id
-        JOIN
-            destinations d ON t.destination_id = d.destination_id
-        ORDER BY
-            YEAR(t.start_date) DESC, c.customer_id DESC
-        LIMIT items_per_page OFFSET offset;
-    END;
+# def create_get_customer_tour_details_procedure():
+#     procedure_query = """
+#     CREATE PROCEDURE GetCustomerTourDetails(IN items_per_page INT, IN offset INT)
+#     BEGIN
+#         SELECT
+#             c.customer_id,
+#             CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+#             c.state_address AS `State`,
+#             c.email_address AS `Email`,
+#             c.phone_number AS `Mobile`,
+#             t.tour_name AS `Tour`,
+#             YEAR(t.start_date) AS `Travel_Year_Start`,
+#             t.tour_price AS `Tour_Price`,
+#             t.tour_type AS `Tour_Type`
+#         FROM
+#             customers c
+#         JOIN
+#             tour_bookings tb ON tb.customer_id = c.customer_id
+#         JOIN
+#             tours t ON tb.tour_id = t.tour_id
+#         JOIN
+#             destinations d ON t.destination_id = d.destination_id
+#         ORDER BY
+#             YEAR(t.start_date) DESC, c.customer_id DESC
+#         LIMIT items_per_page OFFSET offset;
+#     END;
 
+#     """
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+#         cursor.execute("DROP PROCEDURE IF EXISTS GetCustomerTourDetails")
+#         cursor.execute(procedure_query)
+#         database_connection.commit()
+#     except Exception as e:
+#         raise Exception(f"An error occurred while creating procedure: {e}")
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection is not None:
+#             database_connection.close()
+
+
+
+
+
+def create_get_customer_tour_details_procedure():
+
+    procedure_query = """
+    CREATE PROCEDURE GetCustomerTourDetails(
+        IN search_query VARCHAR(255), 
+        IN items_per_page INT, 
+        IN offset INT)
+    BEGIN
+        IF search_query IS NULL OR search_query = '' THEN
+            -- Original query without filtering
+            SELECT
+                c.customer_id,
+                CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+                c.state_address AS `State`,
+                c.email_address AS `Email`,
+                c.phone_number AS `Mobile`,
+                t.tour_name AS `Tour`,
+                YEAR(t.start_date) AS `Travel_Year_Start`,
+                t.tour_price AS `Tour_Price`,
+                t.tour_type AS `Tour_Type`
+            FROM
+                customers c
+            JOIN
+                tour_bookings tb ON tb.customer_id = c.customer_id
+            JOIN
+                tours t ON tb.tour_id = t.tour_id
+            ORDER BY
+                YEAR(t.start_date) DESC, c.customer_id DESC
+            LIMIT items_per_page OFFSET offset;
+        ELSE
+            -- Query with filtering based on search_query
+            SELECT
+                c.customer_id,
+                CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+                c.state_address AS `State`,
+                c.email_address AS `Email`,
+                c.phone_number AS `Mobile`,
+                t.tour_name AS `Tour`,
+                YEAR(t.start_date) AS `Travel_Year_Start`,
+                t.tour_price AS `Tour_Price`,
+                t.tour_type AS `Tour_Type`
+            FROM
+                customers c
+            JOIN
+                tour_bookings tb ON tb.customer_id = c.customer_id
+            JOIN
+                tours t ON tb.tour_id = t.tour_id
+            WHERE
+                c.first_name LIKE CONCAT(search_query, '%') OR
+                CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%')
+            ORDER BY
+                YEAR(t.start_date) DESC, c.customer_id DESC
+            LIMIT items_per_page OFFSET offset;
+        END IF;
+    END;
     """
     database_connection = None
     cursor = None
@@ -100,6 +173,11 @@ def create_get_customer_tour_details_procedure():
             cursor.close()
         if database_connection is not None:
             database_connection.close()
+
+
+
+# print(create_get_customer_tour_details_procedure())
+
 
 
 
@@ -126,22 +204,20 @@ def total_customers():
 
 
 
-def get_customers_information(page=1, items_per_page=25):
+def get_customers_information(page=1, items_per_page=25, search_query=''):
     offset = (page - 1) * items_per_page
     database_connection = None
     customers = []
-    cursor=None
+    cursor = None
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.callproc('GetCustomerTourDetails',[items_per_page, offset])
+        cursor.callproc('GetCustomerTourDetails', [search_query, items_per_page, offset])
         for result in cursor.stored_results():
             customers.extend(result.fetchall())
-
     except Exception as e:
         raise Exception(f"An error occurred while fetching customer information: {e}")
-
     finally:
         if cursor:
             cursor.close()
@@ -149,6 +225,34 @@ def get_customers_information(page=1, items_per_page=25):
             database_connection.close()
 
     return customers
+
+# print(get_customers_information(search_query="ken"))
+
+
+
+# def get_customers_information(page=1, items_per_page=25):
+#     offset = (page - 1) * items_per_page
+#     database_connection = None
+#     customers = []
+#     cursor=None
+
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+#         cursor.callproc('GetCustomerTourDetails',[items_per_page, offset])
+#         for result in cursor.stored_results():
+#             customers.extend(result.fetchall())
+
+#     except Exception as e:
+#         raise Exception(f"An error occurred while fetching customer information: {e}")
+
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+#     return customers
 
 
 
@@ -173,6 +277,8 @@ def create_tour_bookings(tour_id, customer_id):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
 
 
 
@@ -484,7 +590,19 @@ def calculate_gross_revenue(year):
         cursor.execute(query, (year,))  # Pass the year as a parameter to the query
         result = cursor.fetchone()
         total_revenue = result[0] if result else 0
-        return float(total_revenue)
+        revenue= float(total_revenue)
+        upper= int(revenue/1000)
+        middle= int(revenue-upper*1000)
+        lower=int(revenue*100-upper*100000-middle*100)
+        if upper==0:
+            format_rev= f"{middle}.{lower}"
+    
+        else:
+            format_rev= f"{upper},{middle}.{lower}"
+        
+        return format_rev,revenue
+
+
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
