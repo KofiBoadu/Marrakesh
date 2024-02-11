@@ -166,30 +166,30 @@ body {
  
 }
 
-button {
+/*button {
     margin:50px;
-    background-color: #FF8C00; /* Warm tone from your header, for the button background */
-    color: #FFF; /* White text color for contrast */
-    border: none; /* Remove default border */
-    padding: 10px 20px; /* Add some padding around the text */
-    font-family: 'Arial', sans-serif; /* Keep the font consistent with the body */
-    font-size: 1rem; /* Set a standard font size */
-    cursor: pointer; /* Change cursor to indicate button is clickable */
-    border-radius: 5px; /* Slightly rounded corners for a modern look */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for depth, slightly darker than your header's shadow for contrast */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    background-color: #FF8C00; 
+    color: #FFF; 
+    border: none; 
+    padding: 10px 20px; 
+    font-family: 'Arial', sans-serif; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
 }
 
+
 button:hover {
-    background-color: #e47600; /* A slightly darker shade for the hover state */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow for a raised button effect on hover */
+    background-color: #e47600; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 button:active {
-    background-color: #cc6b00; /* Even darker shade for the active state */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Revert to the original shadow for a pressed button effect */
+    background-color: #cc6b00; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
-
 
 /* /* email form styling */
 
