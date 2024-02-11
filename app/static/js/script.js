@@ -33,16 +33,74 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleDeleteButton(checkbox) {
     let deleteButton = document.getElementById('deleteButton');
     deleteButton.style.display = checkbox.checked ? 'flex' : 'none';
+    let id;
     if (checkbox.checked) {
-        document.getElementById('customerIdToDelete').value = checkbox.value;
+        id=document.getElementById('customerIdToDelete').value = checkbox.value;
+        console.log('Checkbox is checked, ID:', id);
         
     
     }
 }
 
+
+//update details functionality 
+function updateCustomerDetails(checkbox) {
+    let updateButton = document.getElementById('updateButton');
+    updateButton.style.display = checkbox.checked ? 'flex' : 'none';
+    let id;
+    if (checkbox.checked) {
+        id=document.getElementById('customerIdToUpdate').value = checkbox.value;
+        console.log('Checkbox is checked, ID:', id);
+    }
+
+}
+
+
+
+
 function showModal() {
     document.getElementById('deleteModal').style.display = 'block';
 }
+
+
+// function showUpdateModal() {
+//     document.getElementById('updateModal').style.display = 'block';
+// }
+
+
+function showUpdateModal() {
+    const customerId = document.getElementById('customerIdToUpdate').value;
+
+
+    fetch(`/customers/details?customer_id=${customerId}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Populate the form fields in the modal with the customer details
+        let name= document.getElementById('updatefirstName').value = data.first_name || '';
+        document.getElementById('updatelastName').value = data.last_name || '';
+        document.getElementById('updateemail').value = data.email_address || '';
+        document.getElementById('updatephone').value = data.phone_number || '';
+        document.getElementById('updatestate').value = data.state_address || '';
+
+        // Display the modal
+        document.getElementById('updateModal').style.display = 'block';
+        console.log(customerId,"customer ID after click the logo ")
+        console.log(name,"customer name")
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+
+
+
+
+
 
 function closeModal() {
     // Hide the modal
@@ -61,24 +119,32 @@ function closeModal() {
     deleteConfirmForm.style.display = 'none';
 
     // Uncheck all checkboxes that might have been checked
-    var checkboxes = document.querySelectorAll('.delete-checkbox');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = false;
-    });
+    // var checkboxes = document.querySelectorAll('.delete-checkbox');
+    // checkboxes.forEach(function(checkbox) {
+    //     checkbox.checked = false;
+    // });
 
     // Reset any other dynamic elements in the modal to their default state
     // For example, if you have a message element that shows the result of the deletion, hide it or reset its text
     // document.getElementById('resultMessage').style.display = 'none'; // Hide or reset other elements as needed
 
     // If there's a delete button that needs to be hidden
-    var deleteButton = document.getElementById('deleteButton');
-    if (deleteButton) {
-        deleteButton.style.display = 'none';
-    }
+    // var deleteButton = document.getElementById('deleteButton');
+    // if (deleteButton) {
+    //     deleteButton.style.display = 'none';
+    // }
 
     // If you're keeping track of the ID to delete somewhere, clear that too
     document.getElementById('customerIdToDelete').value = '';
+
 }
+
+
+
+document.querySelector('#updateModal .close-button').addEventListener('click', function() {
+    document.querySelector('#updateModal').style.display = 'none';
+});
+
 
 
 

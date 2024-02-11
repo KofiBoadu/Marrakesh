@@ -44,6 +44,12 @@
 
 </div>
 
+
+
+
+
+
+
 <!-- form to add customers -->
 <div class="modal" id="popUp">
     <div class="modal_title">
@@ -57,7 +63,7 @@
         <!-- First Name -->
         <div class="modal_wrap">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="first_name" required>
+            <input type="text" id="firstName"  name="first_name" required>
         </div>
 
         <!-- Last Name -->
@@ -138,7 +144,7 @@
 
 
 
-
+<!-- add new tour details or dates  -->
 <div class="tour" id="tourForm">
     <div class="tour_header">
         <h2 class="tour_header--title">Add new tour</h2>
@@ -149,15 +155,15 @@
     <form class="tour_form" action="{{ url_for('customers.add_new_tours') }}" method="post">
         <div class="tour_wrap">
             <label for="first_name">Name</label>
-            <input type="text" id="name" name="name">
+            <input type="text" id="name" placeholder= "(avoid: /!@#$%^&* )" name="name">
         </div>
         <div class="tour_wrap">
             <label for="start_date">Start Date</label>
-            <input type="text" id="start_date" name="start_date">
+            <input type="text" id="start_date"  placeholder="e.g 2020-01-07"    name="start_date">
         </div>
         <div class="tour_wrap">
             <label for="end_date">End Date</label>
-            <input type="text" id="end_date" name="end_date">
+            <input type="text" id="end_date" placeholder="e.g 2020-01-10"  name="end_date">
         </div>
         <div class="tour_wrap">
             <label for="price">Price</label>
@@ -202,6 +208,9 @@
 
 
 
+
+
+<!-- delete pop form  -->
 <div id="deleteModal" style="display: none;">
     <!-- The modal content -->
     <div class="modal-content">
@@ -216,7 +225,6 @@
             <p class="delete-message-2">Type <strong id="highlight">delete</strong> below to delete</p>
             <input type="text" id="deleteConfirmInput" oninput="validateDeleteInput(this)"
                 placeholder="Type 'delete' to confirm">
-
 
 
             <form id="deleteConfirmForm" action="{{ url_for('customers.delete_customer') }}" method="post"
@@ -241,6 +249,87 @@
 
 
 
+<!-- update customer details form -->
+<div id="updateModal" style="display: none;">
+    <div class="modal-content">
+            <form action="{{ url_for('customers.send_update') }}" method="post">
+
+            <div class="close-button">&#10005;</div>
+
+            <input type="hidden" id="customerIdToUpdate" name="updatecustomer_id" value="">
+
+            <!-- First Name -->
+                <div class="updatemodal_wrap">
+                <label for="firstName">First Name</label>
+                <input type="text" id="updatefirstName" name="updatefirst_name" required>
+                </div>
+
+                <!-- Last Name -->
+                <div class="updatemodal_wrap">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="updatelastName" name="updatelast_name" required>
+                </div>
+
+                <!-- Email -->
+                <div class="updatemodal_wrap">
+                <label for="email">Email</label>
+                <input type="email" id="updateemail" name="updateemail" required>
+                </div>
+
+
+                <!-- Phone -->
+                <div class="updatemodal_wrap">
+                <label for="phone">Phone</label>
+                <input type="tel" id="updatephone" name="updatephone" required>
+                </div>
+
+                <!-- State (Dropdown with all states and initials) -->
+                <div class="updatemodal_wrap">
+                <label for="state">State:</label>
+                <input type="text" id="updatestate" name="updatestate">
+                </div>
+
+                <!-- Gender Option -->
+                <div class="updatemodal_wrap">
+                <label>Gender</label>
+                <div class="updatemodal_wrap--gender">
+                    <input class="radio" id='updateradio' type="radio" id="male" name="updategender" value="male">
+                    <label id='updategender' for="male">Male</label>
+                    <input class="updateradio" id='radio' type="radio" id="female" name="updategender" value="female">
+                    <label id='updategender' for="female">Female</label>
+
+                </div>
+                </div>
+
+                <!-- Tours Dropdown -->
+                <div class="updatemodal_wrap">
+                <label for="tour">Select a tour</label>
+                <select class="tour-select" name="updatetour_date">
+                    {% for date in available_dates %}
+                    <option value="{{ date }}">{{ date }}</option>
+
+                    {% endfor %}
+                </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="updatemodal_wrap">
+                <button class="updatemodal_submit" type="submit">update</button>
+                </div>
+
+            </form>
+      </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 <div id="table-container">
@@ -254,16 +343,25 @@
             
 
 
-            <!-- DELETE --->
+            <!-- DELETE button --->
             <div  id="deleteButton" style="display: none;" onclick="showModal()">
                 <img id="delete-button-icon" width="16" height="16" src="https://img.icons8.com/small/16/03989e/filled-trash.png" alt="filled-trash" />
                 <p>delete</p>
             </div>
+
+
+            <!-- update customer details  button -->
+            <form  action="{{ url_for('customers.get_customer_details') }}" method="get">
+            <div  id="updateButton" style="display: none;" onclick="showUpdateModal()">
+                <img id="delete-button-icon" width="16" height="16" src="https://img.icons8.com/small/16/03989e/filled-trash.png" alt="filled-trash" />
+                 <input type="hidden" id="customerIdToUpdate" name="customer_id" value="">
+                <p>edit</p>
+            </div>
+            </form>
             
-            <!-- DELETE --->
+           
 
             <div id="table-action">
-                
                 <button id="createCustomerBtn">Add Customer</button>
                 <button id="tourBtn">Add Tour</button>
             </div>
@@ -273,16 +371,15 @@
 
 
 
-<!-- <form action="/search" method="get">
-        <input type="search" name="query" placeholder="Search...">
-        <button type="submit">Search</button>
-</form> -->
 
 
+<!-- search form  -->
 <form action="{{ url_for('customers.home_page') }}" method="post">
     <input type="search" name="search_query" placeholder="Search...">
     <button type="submit">Search</button>
 </form>
+
+
 
         <thead id="table-head">
 
@@ -309,7 +406,7 @@
             <tr>
                 <td>
                     <input type="checkbox" class="delete-checkbox" value="{{ customer[0] }}"
-                        id="delete-customer-{{ loop.index }} " onchange=toggleDeleteButton(this)>
+                        id="delete-customer-{{ loop.index }} " onchange="toggleDeleteButton(this); updateCustomerDetails(this)">
                 </td>
 
                 <td>
@@ -370,8 +467,5 @@
 
 
 </div>
-
-
-
 
 {% endblock %}

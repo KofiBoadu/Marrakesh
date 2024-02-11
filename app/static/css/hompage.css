@@ -418,6 +418,9 @@ td a {
   font-weight: 100;
 }
 
+
+
+
 #deleteModal {
   position: fixed;
   z-index: 1;
@@ -431,6 +434,8 @@ td a {
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
 }
+
+
 
 .modal-content {
   position: relative;
@@ -587,3 +592,28 @@ button#cancel:hover {
 #items-per-page {
   margin-left: 20px;
 }/*# sourceMappingURL=hompage.css.map */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

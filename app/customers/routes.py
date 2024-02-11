@@ -8,8 +8,8 @@ import math
 from flask_login import login_required
 from app.extension import cache
 from app.models import format_phone_number, remove_paid_customer,total_customers
-
-
+from app.customer_models import fetch_customer_details,update_customerDetails,update_tour_bookings
+from flask import jsonify
 
 
 
@@ -32,7 +32,62 @@ def home_page():
         total_pages = math.ceil(customers_total / items_per_page)
         return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
+
+
+
+
+@customers_bp.route('/details', methods=['GET'])
+def get_customer_details():
+    customer_id = request.args.get('customer_id')
+    print("Requested Customer ID:", customer_id)
     
+    # Fetching customer details from the database
+    the_details = fetch_customer_details(customer_id)
+    print("Customer Details:", the_details)
+    
+    # Assuming the_details is a list of tuples and we're interested in the first tuple
+    if the_details:
+        customer = the_details[0]  # Extract the first tuple
+        # Convert tuple to dictionary for JSON response
+        customer_dict = {
+            "customer_id": customer[0],
+            "first_name": customer[1],
+            "last_name": customer[2],
+            "state_address": customer[3] if customer[3] is not None else "",
+            "email_address": customer[4],
+            "phone_number": customer[5]
+        }
+        return jsonify(customer_dict)
+    else:
+        return jsonify({"error": "Customer not found"}), 404
+
+
+
+
+
+
+
+@customers_bp.route('/update_details', methods=['POST'])
+def send_update():
+    customer_id= request.form.get('updatecustomer_id')
+    first_name = request.form.get('updatefirst_name')
+    last_name = request.form.get('updatelast_name')
+    state = request.form.get('updatestate')
+    email = request.form.get('updateemail')
+    phone = request.form.get('updatephone')
+    gender = request.form.get('updategender')
+    tour_type= request.form.get("updatetour_date")
+    update_customerDetails(customer_id, first_name, last_name,email ,phone, gender, state)
+    tour_date= tour_type.split()
+    tour_year= tour_date.pop()
+    tour_name=" ".join(tour_date)
+    tour_id= get_tour_id(tour_name,tour_year)
+    update_tour_bookings(tour_id, customer_id)
+    return redirect(url_for("customers.home_page"))
+
+
+
+
 
 @customers_bp.context_processor
 def context_processor():

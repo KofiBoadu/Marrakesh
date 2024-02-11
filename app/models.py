@@ -281,7 +281,6 @@ def create_tour_bookings(tour_id, customer_id):
 
 
 
-
 def get_tour_id(tour_name, year):
     query = "SELECT tour_id FROM tours WHERE TRIM(tour_name) = %s and YEAR(start_date) = %s"
 
@@ -643,6 +642,10 @@ def remove_paid_customer(customer_id):
         if database_connection:
             database_connection.close()
     return deleted
+
+
+
+
 
 
 

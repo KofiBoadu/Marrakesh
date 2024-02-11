@@ -18,8 +18,8 @@ def create_marketingEmails():
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
         email_body=request.form.get('emailBody')
-        email_list=[("daniel", "mrboadu3@gmail.com"), ("phyllis", "phyllis.kodua@gmail.com")]
-        d_email_list = email_list * 10
+        email_list=[("daniel", "mrboadu3@gmail.com"), ("Akwesi", "anowusumensah@gmail.com")]
+        d_email_list = email_list * 20
        
         send_emails_asynchronously(d_email_list, email_subject, from_address, email_body)
         
