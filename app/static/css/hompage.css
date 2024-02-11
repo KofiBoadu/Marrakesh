@@ -303,7 +303,7 @@
 }
 
 #deleteButton {
-  margin-top: 2.5%;
+  margin-left: 130px;
   margin-right: 10%;
 }
 
@@ -329,13 +329,18 @@ th {
   background-color: rgb(191, 190, 190);
   width: 100%;
   border-collapse: separate;
-  border-spacing: 1.5px;
+  border-spacing: 1px;
 }
 
 td {
   text-align: center;
   font: 1em Helvetica;
   font-weight: 200;
+}
+
+tbody {
+  max-height: 200px; /* Set the maximum height of the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 #table-body tr td {
@@ -356,9 +361,9 @@ td {
 }
 
 #data-table #select-box {
-  width: 40px;
+  width: 10px;
   /* Adjust this value as needed */
-  min-width: 40px;
+  min-width: 10px;
   padding: 5px;
   /* Adjust padding for better alignment if needed */
   text-align: center;
@@ -527,7 +532,7 @@ button#cancel:hover {
 
 .delete-buttons {
   display: flex;
-  margin-left: 5%;
+  margin-left: 10px;
 }
 
 .delete-title {
@@ -591,6 +596,7 @@ button#cancel:hover {
 
 #items-per-page {
   margin-left: 20px;
+<<<<<<< HEAD
 }/*# sourceMappingURL=hompage.css.map */
 
 
@@ -617,3 +623,33 @@ button#cancel:hover {
 
 
 
+=======
+}
+
+.search {
+  background-color: white;
+  width: 20px;
+  height: 50px;
+  padding: 0 !important;
+}
+
+.search-container {
+  padding: 10px;
+  display: flex;
+}
+
+.search-container input {
+  border-style: none;
+  border-bottom: 2px solid #03989E;
+  font-size: 1.5em;
+  color: #777474;
+}
+
+.search-container input::-moz-placeholder {
+  color: rgba(100, 100, 100, 0.5294117647);
+}
+
+.search-container input::placeholder {
+  color: rgba(100, 100, 100, 0.5294117647);
+}/*# sourceMappingURL=hompage.css.map */
+>>>>>>> ca228eeab7ddea70e21962203fbe4c65bd21b972

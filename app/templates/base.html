@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,48 +15,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/email_activity.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reset_password.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/editpopform.css') }}">
-   
-  
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/marketing.css') }}">
+
 
 </head>
+
 <body>
-    <header >
+    <header>
         <nav class="nav">
             <div class="nav_logo">
                 <!-- Logo can be text or an image -->
                 <a href="{{ url_for('customers.home_page') }}">
                     <img src="{{ url_for('static', filename='images/logo.png') }}">
                 </a>
-                
+
             </div>
             <ul class="nav_links">
                 <li class="nav_link"><a href="{{ url_for('marketing.marketing_emails') }}">Marketing</a></li>
                 <li class="nav_link"><a href="bookings.html">Records</a></li>
                 <li class="nav_link"><a href="customers.html">Analytics</a></li>
-                <div class="user-container ">
+                <div class="user-container nav_link ">
 
-                  <div class="user-info ">
-                    <!-- Circle for Initials -->
-                    <div class="user-initials-circle">
-                        <span class="user-initials">{{ username[1].capitalize()[0] + username[2].capitalize()[0] }}</span>
-                    </div>
-                    <!-- User's Full Name and Dropdown Arrow -->
-                    <div class="user-name-dropdown">
-                        <span class="user-fullname">{{ username[1].capitalize() + ' ' + username[2].capitalize() }}</span>
-                        <!-- Dropdown Content -->
-                        <div class="dropdown-content">
-                            <a href="{{ url_for('users.log_out')}}">Logout</a>
-                            <a href="{{ url_for('users.password_reset')}}">Reset password</a>
-                        </div>
+  <div class="user-info">
+    <!-- Circle for Initials -->
+    <div class="user-initials-circle">
+        <span class="user-initials">{{ username[1].capitalize()[0] + username[2].capitalize()[0] }}</span>
+    </div>
+    <!-- User's Full Name and Dropdown Arrow -->
+    <div class="user-name-dropdown">
+        <span class="user-fullname">{{ username[1].capitalize() + ' ' + username[2].capitalize() }}</span>
+        <!-- Dropdown Content -->
+        <div class="dropdown-content">
+            <a href="{{ url_for('users.log_out')}}">Logout</a>
+            <a href="{{ url_for('users.password_reset')}}">Reset password</a>
+        </div>
+    </div>
+</div>
 
-                    </div>
+
+
 
                 </div>
-
-
-            
-
-            </div>
 
             </ul>
         </nav>
@@ -67,10 +67,10 @@
         {% endblock %}
     </main>
 
-    
+
 
     <!-- Add your scripts here -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
-</html>
 
+</html>

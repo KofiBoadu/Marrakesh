@@ -3,7 +3,7 @@
  body{
     margin: 0%;
  }
-.nav{
+ .nav{
     display: flex;
     justify-content: space-between;
     border-bottom: 1.5px solid #ff914c6e;
@@ -46,4 +46,93 @@
 #logout-button a{
     color: $ATorange;
     font-weight: 600;
+}
+
+
+.user-container {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+    width: 150px;
+    margin-left: 5%;
+}
+
+
+.user-container {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+    width: 150px;
+    margin-left: 5%;
+}
+
+
+.user-info{
+  display:  flex;
+  width: 200px
+}
+
+
+
+.user-initials-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #FF914C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+}
+
+
+
+/* Initials inside the Circle */
+.user-initials {
+    color: white;
+    font-weight: bold;
+}
+
+/* Container for User's Full Name and Dropdown */
+.user-name-dropdown {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+}
+
+/* Dropdown Content Styling */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Logout Link Styling */
+.dropdown-content a {
+    color: black;
+    padding: 12px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Showing the Dropdown Content on Hover */
+.user-name-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Optional: Add some hover effects to initials circle and full name */
+.user-initials-circle:hover,
+.user-fullname:hover {
+    background-color: #e69500; /* Darker shade for hover effect */
+}
+
+.user-fullname {
+    font-size: 16px; /* Adjust size as needed */
 }
