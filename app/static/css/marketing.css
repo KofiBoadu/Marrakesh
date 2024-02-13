@@ -6,30 +6,30 @@
 
 .send-button {
 	background-color: #FF8C00;
-	width: 150px;
-	height: 30px;
-	padding-bottom: 30px;
+	width: 130px;
+	padding: 10px;
 	margin: 20px;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	font-family: sans-serif;
+	font-weight: bold;
 }
 
 .marketing-container {
-	width: 40%;
+	width: 50%;
 	margin: auto;
 	margin-top: 20px;
-	border-radius: 10px 10px;
+	border-radius: 5px 5px;
 	padding-bottom: 50px;
-	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	
 	
 
 }
 
-.marketing-container form {
-	align-items: center;
+.marketing-form {
+	margin: auto;
 }
 
 .marketing_title {
@@ -102,4 +102,8 @@
 	width: 100px;
 	color: #fff;
 	background-color: #FF8C00;
+	border-style: none;
+	padding: 10px;
+	font-weight: bold;
+	border-radius: 5px;
 }
