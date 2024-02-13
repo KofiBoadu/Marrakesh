@@ -234,23 +234,21 @@
 #createCustomerBtn {
   background-color: #FF914C;
   width: 170px;
-  height: 30px;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-family: sans-serif;
-  padding-bottom: 5%;
+  padding: 10px;
   margin-bottom: 5%;
   margin-top: 4%;
   margin-left: 0;
-  padding-bottom: 7%;
+  font-weight: bold;
 }
 
 #tourBtn {
   background-color: #FF914C;
   width: 150px;
-  height: 30px;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -258,9 +256,9 @@
   font-family: sans-serif;
   margin-top: 4%;
   margin-bottom: 5%;
-  padding-bottom: 5%;
+  padding: 10px;
   margin-left: 0;
-  padding-bottom: 7%;
+  font-weight: bold;
 }
 
 #table-container {
@@ -303,13 +301,25 @@
 }
 
 #deleteButton {
-  margin-left: 130px;
+  margin-left: 100px;
   margin-right: 10%;
+  margin-top: 30px;
+}
+
+#updateButton {
+  margin-top: 30px;
+  margin-right: 40px;
 }
 
 #deleteButton p {
   margin-top: 1.5%;
-  color: #03989E;
+  color: #FF914C;
+  font-family: helvetica;
+}
+
+#updateButton p {
+  margin-top: 1.5%;
+  color: #FF914C;
   font-family: helvetica;
 }
 
@@ -423,9 +433,6 @@ td a {
   font-weight: 100;
 }
 
-
-
-
 #deleteModal {
   position: fixed;
   z-index: 1;
@@ -439,8 +446,6 @@ td a {
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
 }
-
-
 
 .modal-content {
   position: relative;
@@ -486,15 +491,6 @@ td a {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  margin-right: 10px;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .modal-content button {
@@ -596,34 +592,6 @@ button#cancel:hover {
 
 #items-per-page {
   margin-left: 20px;
-<<<<<<< HEAD
-}/*# sourceMappingURL=hompage.css.map */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 }
 
 .search {
@@ -631,6 +599,7 @@ button#cancel:hover {
   width: 20px;
   height: 50px;
   padding: 0 !important;
+  border-style: none;
 }
 
 .search-container {
@@ -652,4 +621,3 @@ button#cancel:hover {
 .search-container input::placeholder {
   color: rgba(100, 100, 100, 0.5294117647);
 }/*# sourceMappingURL=hompage.css.map */
->>>>>>> ca228eeab7ddea70e21962203fbe4c65bd21b972

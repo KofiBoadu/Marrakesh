@@ -280,24 +280,26 @@
 #createCustomerBtn {
     background-color: $ATorange;
     width: 170px;
-    height: 30px;
+    
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-family: sans-serif;
-    padding-bottom: 5%;
+    padding: 10px;
+
     margin-bottom: 5%;
     margin-top: 4%;
     margin-left: 0;
-    padding-bottom: 7%;
+    font-weight: bold;
+    
 
 }
 
 #tourBtn {
     background-color: $ATorange;
     width: 150px;
-    height: 30px;
+   
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -305,9 +307,11 @@
     font-family: sans-serif;
     margin-top: 4%;
     margin-bottom: 5%;
-    padding-bottom: 5%;
+    padding: 10px;
+
     margin-left: 0;
-    padding-bottom: 7%;
+   
+    font-weight: bold;
 
 }
 
@@ -354,13 +358,25 @@
 }
 
 #deleteButton{
-    margin-left: 130px;
+    margin-left: 100px;
     margin-right: 10%;
+    margin-top: 30px;
+
     
+}
+#updateButton{
+    margin-top: 30px;
+    margin-right: 40px;
 }
 #deleteButton p{
     margin-top: 1.5%;
-    color:$ATblue;
+    color:$ATorange;
+    font-family: helvetica;
+}
+
+#updateButton p{
+    margin-top: 1.5%;
+    color:$ATorange;
     font-family: helvetica;
 }
 #delete-button-icon{
@@ -551,14 +567,6 @@ td a {
 }
 
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    margin-right: 10px;
-    cursor: pointer;
-    font-weight: bold;
-}
 
 .modal-content button {
     display: inline;
@@ -661,11 +669,12 @@ button#cancel:hover {
         margin-left: 20px;
     }
 
-    .search{
+    .search {
         background-color: white;	
         width: 20px;
         height: 50px;
         padding: 0 !important;
+        border-style: none;
     
     }
   
