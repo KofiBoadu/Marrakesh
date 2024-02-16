@@ -22,7 +22,8 @@
 
 }
 .updatemodal_wrap {
-    margin: 2%;
+    margin:auto;
+    margin-left: 2%;
   
 }
 
@@ -40,18 +41,21 @@
 .updatemodal_wrap label {
     margin-right: 50%;
     font-family: sans-serif;
-    margin-top: 20px;
+    margin-top: 5px;
     color: #8f8d8dc4;;
 }
 
 .updatemodal_wrap_gender {
+    width: 20px;
+    height: 50px;
     display: flex;
+}
    
 
-}
+
 
 .updatemodal_submit {
-    margin-top: 10%;
+    margin-top: 5%;
     padding: 10px;
 
     background-color: #FF914C;
@@ -103,9 +107,7 @@
 }
 
 /* Targeting only elements within #updateModal */
-#updateModal .updatemodal_wrap {
-    margin-bottom: 10px; /* Compact spacing */
-}
+
 
 #updateModal label {
     display: block;
@@ -116,13 +118,13 @@
 
 #updateModal input[type="radio"] {
     margin-right: 2px; /* Space between radio button and label */
+    width: 15px;
 }
-
+/* 
 #updateModal .modal_wrap--gender {
-    display: flex;
-    justify-content: start;
-    gap: 10px; /* Space between gender options */
-}
+    
+   
+} */
 
 
 
@@ -151,4 +153,28 @@
     font-family:Helvetica;
     text-shadow: gray 2px ;
     color: #fff;
+}
+.updatemodal_container{
+    display: flex;
+
+}
+#updatefirstName{
+    width: 13em;
+    justify-content: center;
+}
+#updatelastName{
+    width: 13em;
+}
+
+#updateemail{
+    width: 13em;
+}
+#updatephone{
+    width: 13em;
+}
+#updatestate{
+    width: 8em;
+}
+#updategender{
+    margin-top: 20px;
 }

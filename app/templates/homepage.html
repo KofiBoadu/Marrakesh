@@ -264,47 +264,54 @@
             <input type="hidden" id="customerIdToUpdate" name="updatecustomer_id" value="">
 
             <!-- First Name -->
-            <div class="updatemodal_wrap">
-                <label for="firstName">First Name</label>
-                <input type="text" id="updatefirstName" name="updatefirst_name" required>
-            </div>
-
-            <!-- Last Name -->
-            <div class="updatemodal_wrap">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="updatelastName" name="updatelast_name" required>
-            </div>
-
-            <!-- Email -->
-            <div class="updatemodal_wrap">
-                <label for="email">Email</label>
-                <input type="email" id="updateemail" name="updateemail" required>
-            </div>
-
-
-            <!-- Phone -->
-            <div class="updatemodal_wrap">
-                <label for="phone">Phone</label>
-                <input type="tel" id="updatephone" name="updatephone" required>
-            </div>
-
-            <!-- State (Dropdown with all states and initials) -->
-            <div class="updatemodal_wrap">
-                <label for="state">State:</label>
-                <input type="text" id="updatestate" name="updatestate">
-            </div>
-
-            <!-- Gender Option -->
-            <div class="updatemodal_wrap">
-                <label>Gender</label>
-                <div class="updatemodal_wrap_gender">
-                    <input class="radio" id='updateradio' type="radio" id="male" name="updategender" value="male">
-                    <label id='updategender' for="male">Male</label>
-                    <input class="updateradio" id='updateradio' type="radio" id="female" name="updategender" value="female">
-                    <label id='updategender' for="female">Female</label>
-
+            <div class="updatemodal_container">
+                <div class="updatemodal_wrap">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="updatefirstName" name="updatefirst_name" required>
+                </div>
+    
+                <!-- Last Name -->
+                <div class="updatemodal_wrap">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="updatelastName" name="updatelast_name" required>
                 </div>
             </div>
+            
+            <div class="updatemodal_container">
+                <div class="updatemodal_wrap">
+                    <label for="email">Email</label>
+                    <input type="email" id="updateemail" name="updateemail" required>
+                </div>
+    
+    
+                <!-- Phone -->
+                <div class="updatemodal_wrap">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="updatephone" name="updatephone" required>
+                </div>
+            </div>
+            <!-- Email -->
+            
+            <div class="updatemodal_container">
+                <div class="updatemodal_wrap">
+                    <label for="state">State</label>
+                    <input type="text" id="updatestate" name="updatestate">
+                </div>
+    
+                <!-- Gender Option -->
+                <div class="updatemodal_wrap">
+                    <label>Gender</label>
+                    <div class="updatemodal_wrap_gender">
+                        <input class="radio" id='updateradio' type="radio" id="male" name="updategender" value="male">
+                        <label id='updategender' for="male">Male</label>
+                        <input class="updateradio" id='updateradio' type="radio" id="female" name="updategender" value="female">
+                        <label id='updategender' for="female">Female</label>
+    
+                    </div>
+                </div>
+            </div>
+            <!-- State (Dropdown with all states and initials) -->
+            
 
             <!-- Tours Dropdown -->
             <div class="updatemodal_wrap">
