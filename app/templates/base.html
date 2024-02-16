@@ -30,32 +30,37 @@
                 </a>
 
             </div>
-            <ul class="nav_links">
-                <li class="nav_link"><a href="{{ url_for('marketing.marketing_emails') }}">Marketing</a></li>
-                <li class="nav_link"><a href="bookings.html">Records</a></li>
-                <li class="nav_link"><a href="customers.html">Analytics</a></li>
-                <div class="user-container nav_link ">
+           
+            <div class="user-container nav_link ">
+                <ul class="nav_links">
+                    <li class="nav_link"><a href="{{ url_for('marketing.marketing_emails') }}">Marketing</a></li>
+                    <li class="nav_link"><a href="bookings.html">Records</a></li>
+                    <li class="nav_link"><a href="customers.html">Analytics</a></li>
+    
+                </ul>
 
-  <div class="user-info">
-    <!-- Circle for Initials -->
-    <div class="user-initials-circle">
-        <span class="user-initials">{{ username[1].capitalize()[0] + username[2].capitalize()[0] }}</span>
-    </div>
-    <!-- User's Full Name and Dropdown Arrow -->
-    <div class="user-name-dropdown">
-        <span class="user-fullname">{{ username[1].capitalize() + ' ' + username[2].capitalize() }}</span>
-        <!-- Dropdown Content -->
-        <div class="dropdown-content">
-            <a href="{{ url_for('users.log_out')}}">Logout</a>
-            <a href="{{ url_for('users.password_reset')}}">Reset password</a>
-        </div>
-    </div>
-</div>
-
-
-
-
+                <div class="user-info">
+                    <!-- Circle for Initials -->
+                    <div class="user-initials-circle">
+                        <span class="user-initials">{{ username[1].capitalize()[0] + username[2].capitalize()[0]
+                            }}</span>
+                    </div>
+                    <!-- User's Full Name and Dropdown Arrow -->
+                    <div class="user-name-dropdown">
+                        <span class="user-fullname">{{ username[1].capitalize() + ' ' + username[2].capitalize()
+                            }}</span>
+                        <!-- Dropdown Content -->
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('users.log_out')}}">Logout</a>
+                            <a href="{{ url_for('users.password_reset')}}">Reset password</a>
+                        </div>
+                    </div>
                 </div>
+
+
+
+
+            </div>
 
             </ul>
         </nav>

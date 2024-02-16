@@ -18,12 +18,12 @@ body {
 }
 .nav_links {
   display: flex;
-  margin-right: 20%;
+  margin-right: 10%;
   margin-top: 2%;
 }
 .nav_link {
   list-style: none;
-  margin-left: 10%;
+  margin-right: 5%;
 }
 .nav_link a {
   text-decoration: none;
@@ -48,8 +48,6 @@ body {
   align-items: center;
   font-family: Arial, sans-serif;
   margin-bottom: 20px;
-  width: 150px;
-  margin-left: 5%;
 }
 
 .user-container {
@@ -57,13 +55,12 @@ body {
   align-items: center;
   font-family: Arial, sans-serif;
   margin-bottom: 20px;
-  width: 150px;
-  margin-left: 5%;
 }
 
 .user-info {
   display: flex;
   width: 200px;
+  margin-left: 2%;
 }
 
 .user-initials-circle {
@@ -99,6 +96,7 @@ body {
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  margin-top: 150px;
 }
 
 /* Logout Link Styling */
