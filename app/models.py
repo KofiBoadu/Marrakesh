@@ -7,6 +7,7 @@ import datetime
 import phonenumbers
 from phonenumbers import geocoder, carrier
 from urllib.parse import urlparse
+import datetime
 
 
 load_dotenv()
@@ -335,9 +336,11 @@ def get_customer_id(email):
 
 
 def available_tour_dates():
+    current_year = datetime.date.today().year
     query = """
     SELECT Concat(tour_name, " ", YEAR(t.start_date))
     FROM tours t
+    WHERE YEAR(t.start_date) >= %s
     ORDER BY ABS(YEAR(start_date) - YEAR(CURDATE())) ASC, start_date DESC;"""
     database_connection = None
     cursor = None
@@ -346,7 +349,7 @@ def available_tour_dates():
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query,(current_year,))
         date_tuples = cursor.fetchall()
         dates = [date[0] for date in date_tuples]
         return dates
@@ -359,7 +362,7 @@ def available_tour_dates():
         if database_connection:
             database_connection.close()
 
-
+print(available_tour_dates())
 
 
 
