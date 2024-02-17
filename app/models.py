@@ -362,7 +362,7 @@ def available_tour_dates():
         if database_connection:
             database_connection.close()
 
-print(available_tour_dates())
+
 
 
 
