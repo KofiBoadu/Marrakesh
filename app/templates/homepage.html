@@ -315,7 +315,7 @@
 
             <!-- Tours Dropdown -->
             <div class="updatemodal_wrap">
-                <label for="tour">Select a tour</label>
+                <label for="tour">Update a tour</label>
                 <select class="tour-select" name="updatetour_date">
                     {% for date in available_dates %}
                     <option value="{{ date }}">{{ date }}</option>
@@ -377,6 +377,8 @@
                     src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
                     alt="search--v1" /></button>
             </form>
+            <!--Export button-->
+            
             <!-- DELETE button --->
             <div id="deleteButton" style="display: none;" onclick="showModal()">
                 <img id="delete-button-icon" width="16" height="16"
@@ -394,8 +396,8 @@
                     <p>edit</p>
                 </div>
             </form>
-
-
+            <button class="export">export</button>
+            
         </div>
 
 

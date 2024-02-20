@@ -279,14 +279,14 @@
 //table syling
 #createCustomerBtn {
     background-color: $ATorange;
-    width: 170px;
+    width: 140px;
     
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-family: sans-serif;
-    padding: 10px;
+    padding: 10px 0px;
 
     margin-bottom: 5%;
     margin-top: 4%;
@@ -298,7 +298,7 @@
 
 #tourBtn {
     background-color: $ATorange;
-    width: 150px;
+    width: 140px;
    
     color: #fff;
     border: none;
@@ -307,7 +307,7 @@
     font-family: sans-serif;
     margin-top: 4%;
     margin-bottom: 5%;
-    padding: 10px;
+    padding: 10px 0px;
 
     margin-left: 0;
    
@@ -681,6 +681,7 @@ button#cancel:hover {
     .search-container{
         padding: 10px;
         display: flex;
+        
       
         
     }
@@ -694,4 +695,15 @@ button#cancel:hover {
         color: #64646487;
     }
   
-   
+.export{
+    width:70px;
+    height: 30px;
+    padding: 5px;
+    border: $ATorange 1px solid;
+    color: $ATorange;
+    border-radius: 5px;
+    margin-left: 1630px;
+    background-color: transparent;
+    position: absolute;
+    margin-top: 19px;
+}
