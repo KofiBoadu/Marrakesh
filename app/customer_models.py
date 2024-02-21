@@ -103,32 +103,6 @@ def fetch_customer_details(customer_id):
 
 
 
-
-def fetch_customer_email(customer_id):
-    query="""SELECT
-                c.email_address
-              FROM
-                customers c
-
-             WHERE c.customer_id = %s;"""
-    try:
-        database_connection=create_databaseConnection()
-        cursor=database_connection.cursor()
-        cursor.execute(query, (customer_id,))
-        customer_data=cursor.fetchall()
-
-        return customer_data[0][0]
-
-    except Exception as e:
-        print(f"Database error occurred: {e}")
-        return None
-
-    finally:
-        if cursor:
-            cursor.close()
-        if database_connection:
-            database_connection.close()
-
   
 
 
@@ -163,34 +137,35 @@ def update_customer_email(customer_email,customer_id):
 
 
 
-
-def fetch_customer_name(customer_id):
-    query= """SELECT
-                c.first_name, 
-                c.last_name
-              FROM
-                customers c
-              WHERE c.customer_id = %s;""" 
-
+def update_customer_phone(customer_id,phone):
+    query = "UPDATE customers SET phone_number = %s WHERE customer_id = %s"
     database_connection = None
     cursor = None
-
     try:
         database_connection=create_databaseConnection()
         cursor=database_connection.cursor()
-        cursor.execute(query, (customer_id,))
-        customer_data=cursor.fetchall()
-        return customer_data[0]
+        cursor.execute(query, (customer_id,phone))
+        database_connection.commit()
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
 
     except Exception as e:
-        print(f"Database error occurred: {e}")
-        return None
-
+        logging.error(f"Error in updating name : {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
     finally:
         if cursor:
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+   
+
 
 
 
@@ -205,7 +180,7 @@ def update_customer_name(first_name, last_name,customer_id):
     try:
         database_connection=create_databaseConnection()
         cursor=database_connection.cursor()
-        cursor.execute(query, (first_name,last_name))
+        cursor.execute(query, (first_name,last_name,customer_id))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True
@@ -213,7 +188,7 @@ def update_customer_name(first_name, last_name,customer_id):
             return False
 
     except Exception as e:
-        logging.error(f"Error in update_tour_bookings: {e}")
+        logging.error(f"Error in updating name : {e}")
         if database_connection:
             database_connection.rollback()
         return False

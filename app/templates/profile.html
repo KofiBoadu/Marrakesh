@@ -183,7 +183,7 @@
 
 
 <!-- update customer name form  -->
-<form class="update_customer_name" action="{{ url_for('customers.send_update') }}" method="post">
+<form class="update_customer_name" action="{{ url_for('profiles.customer_name') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- first name -->
     <div class="update_first_name">
@@ -195,8 +195,62 @@
         <label for="lastName">Last Name</label>
         <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}">
     </div>
+
+
+    <div class="save">
+      <button type="submit" class="save_new_name">save</button>
+    </div>
+
+     <div class="cancel">
+      <button type="submit" class="save_new_name">cancel</button>
+    </div>
 </form>
 
+
+
+
+<!-- update customer email form-->
+<form class="update_customer_email" action="{{ url_for('profiles.customer_email') }}" method="post">
+    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <!-- primary email -->
+    <div class="update_first_name">
+        <label for="primary_email">primary email</label>
+        <input type="text" id="update_email" name="update_email" value="{{profile[1]}}">
+    </div>
+  
+
+
+    <div class="save">
+      <button type="submit" class="save_new_name">save</button>
+    </div>
+
+     <div class="cancel">
+      <button type="submit" class="save_new_name">cancel</button>
+    </div>
+</form>
+
+
+
+
+<!-- update customer phone -->
+<form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
+    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <!-- primary email -->
+    <div class="update_first_name">
+        <label for="primary_email">phone number</label>
+        <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}">
+    </div>
+  
+
+
+    <div class="save">
+      <button type="submit" class="save_new_name">save</button>
+    </div>
+
+     <div class="cancel">
+      <button type="submit" class="save_new_name">cancel</button>
+    </div>
+</form>
 
 
 
