@@ -3,6 +3,9 @@
 
 
 {% block content %}
+
+
+<!-- customer profile -->
 <div class="customer-dashboard">
   <div class="profile-container">
     <div class="profile-avatar">
@@ -60,6 +63,9 @@
 
 
 
+
+
+<!-- customer activity  -->
   <div class="email-activity">
     <div class="email-activity-header">
       <h2 class="email-activity-title">ACTIVITY</h2>
@@ -104,9 +110,6 @@
     </div>
     {% endfor %}
   </div>
-
-
-
 </div>
 
 
@@ -118,6 +121,7 @@
 
 
 
+<!-- sending email form -->
 
 <div id="emailForm" class="email-form-container" style="display: none;">
   <!-- Close button -->
@@ -175,48 +179,25 @@
 
 
 
+<!-- updating customer profile forms  -->
 
 
+<!-- update customer name form  -->
+<form class="update_customer_name" action="{{ url_for('customers.send_update') }}" method="post">
+    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <!-- first name -->
+    <div class="update_first_name">
+        <label for="firstName">First Name</label>
+        <input type="text" id="updatefirstName" name="updatefirst_name" value="{{ profile[0].split()[0] }}">
+    </div>
+    <!-- Last Name -->
+    <div class="update_last_name">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}">
+    </div>
+</form>
 
-<script>
-  function openEmailForm() {
-    // Show the email form when the button is clicked
-    document.getElementById('emailForm').style.display = 'block';
-  }
 
-
-  function closeEmailForm() {
-    document.getElementById('emailForm').style.display = 'none';
-  }
-  function toggleEmailBody(header) {
-    // Find the closest email container
-    var emailContainer = header.closest('.email-activity-container');
-
-    // Find the email body inside the email container
-    var emailBody = emailContainer.querySelector('.email-body');
-
-    // Toggle the display of the email body
-    if (emailBody.style.display === 'block') {
-      emailBody.style.display = 'none';
-    } else {
-      emailBody.style.display = 'block';
-    }
-  }
-  function toggleEmailForm(header) {
-    // Find the closest email form container
-    var emailFormContainer = header.closest(".email-form-container");
-
-    // Find the email form inside the email form container
-    var emailSendBody = emailFormContainer.querySelector('.sendEmail');
-
-    // Toggle the display of the email form
-    if (emailSendBody.style.display === 'block') {
-      emailSendBody.style.display = 'none';
-    } else {
-      emailSendBody.style.display = 'block';
-    }
-  }
-</script>
 
 
 {% endblock %}
