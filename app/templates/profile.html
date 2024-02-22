@@ -125,14 +125,35 @@
 
     </div>
     {% endfor %}
+
   </div>
 </div>
 
 
 
 
+<!-- writing customer notes forms  -->
+ <form action="{{ url_for('profiles.customer_notes') }}" method="post">
+
+          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+  
+          <textarea id="notes" name="notes"  placeholder="Write your notes here" required></textarea>
+
+          <button type="submit" >save note </button>  
+  </form>
 
 
+
+  <!-- showing or displaying customer notes the customer notes  -->
+
+<div>
+    {% for customer_note ,date in notes %}
+        <strong>notes message</strong>
+        <p>{{ customer_note }}</p>
+        <strong>dated</strong>
+        <p>{{ date }}</p>
+    {% endfor %}
+</div>
 
 
 

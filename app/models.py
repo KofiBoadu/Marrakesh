@@ -227,33 +227,7 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
 
     return customers
 
-# print(get_customers_information(search_query="ken"))
 
-
-
-# def get_customers_information(page=1, items_per_page=25):
-#     offset = (page - 1) * items_per_page
-#     database_connection = None
-#     customers = []
-#     cursor=None
-
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
-#         cursor.callproc('GetCustomerTourDetails',[items_per_page, offset])
-#         for result in cursor.stored_results():
-#             customers.extend(result.fetchall())
-
-#     except Exception as e:
-#         raise Exception(f"An error occurred while fetching customer information: {e}")
-
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
-
-#     return customers
 
 
 

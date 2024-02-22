@@ -6,7 +6,7 @@ from flask_login import login_required
 from app.extension import cache
 from app.models import format_phone_number
 from app.customer_models import update_customer_name,update_customer_email,update_customer_phone
-
+from app.customer_notes import  save_customer_notes, get_customer_notes
 
 
 @customers_profile.route('/<int:customer_id>', methods=['GET'])
@@ -22,7 +22,9 @@ def customer_profile(customer_id):
             return redirect(url_for("customers.home_page"))
         tour_list= tour_names.split(', ')
         emails= all_emails_sent_to_customer(customer_id)
-        return render_template('profile.html', profile=profile, tour_list=tour_list,customer_id=customer_id,emails=emails,phone_number=phone_number)
+        notes= get_customer_notes(customer_id)
+        print(notes )
+        return render_template('profile.html', profile=profile,notes=notes,tour_list=tour_list,customer_id=customer_id,emails=emails,phone_number=phone_number)
 
 
 @customers_profile.route('/', methods=['POST'])
@@ -54,4 +56,16 @@ def customer_phone():
     phone = request.form.get('update_phone')
     update_customer_phone(customer_id,phone)
     return redirect(url_for("profiles.customer_profile", customer_id=customer_id))
+
+
+
+@customers_profile.route('/notes', methods=['POST'])
+@login_required
+def customer_notes():
+    customer_id=request.form.get('customer_id')
+    customer_notes=request.form.get('notes')
+    print(customer_id)
+    save_customer_notes(customer_id, customer_notes)
+    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+
 

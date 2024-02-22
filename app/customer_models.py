@@ -207,22 +207,6 @@ def update_customer_name(first_name, last_name,customer_id):
 
 
 
-# print(fetch_customer_name(1))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
