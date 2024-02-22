@@ -6,7 +6,7 @@ from flask_login import login_required
 from app.extension import cache
 from app.models import format_phone_number
 from app.customer_models import update_customer_name,update_customer_email,update_customer_phone
-from app.customer_notes import  save_customer_notes, get_customer_notes
+from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 
 
 @customers_profile.route('/<int:customer_id>', methods=['GET'])
@@ -64,8 +64,20 @@ def customer_phone():
 def customer_notes():
     customer_id=request.form.get('customer_id')
     customer_notes=request.form.get('notes')
-    print(customer_id)
     save_customer_notes(customer_id, customer_notes)
     return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+
+
+
+@customers_profile.route('/delete_notes', methods=['POST'])
+@login_required
+def deleting_customer_notes():
+    notes_id= request.form.get('notes_id')
+    customer_id=request.form.get('customer_id')
+    delete_customer_notes(notes_id, customer_id)
+    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+
+    
+
 
 

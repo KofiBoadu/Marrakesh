@@ -30,7 +30,7 @@ def save_customer_notes(customer_id, note_message):
 def get_customer_notes(customer_id):
     database_connection = None
     cursor = None
-    query = "SELECT note_message, date_created FROM notes WHERE customer_id = %s ORDER BY notes_id DESC"
+    query = "SELECT notes_id,note_message,date_created FROM notes WHERE customer_id = %s ORDER BY notes_id DESC"
     results = None
 
     try:
@@ -48,6 +48,31 @@ def get_customer_notes(customer_id):
             database_connection.close()
 
     return results
+
+
+
+def delete_customer_notes(notes_id, customer_id):
+    database_connection = None
+    cursor = None
+    query = "DELETE FROM notes WHERE notes_id = %s AND customer_id = %s"
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (notes_id, customer_id))
+        database_connection.commit()
+    except Exception as e:
+        print(f"An error occurred while deleting the note: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+    
+
 
 
 

@@ -107,7 +107,6 @@
           <input type="hidden" name="customer_id" value="{{ customer_id }}">
           <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
             class="delete-text-link">delete</a>
-
         </form>
 
       </div>
@@ -147,12 +146,21 @@
   <!-- showing or displaying customer notes the customer notes  -->
 
 <div>
-    {% for customer_note ,date in notes %}
+    {% for notes_id, customer_note ,date in notes %}
         <strong>notes message</strong>
         <p>{{ customer_note }}</p>
         <strong>dated</strong>
         <p>{{ date }}</p>
+        
+        <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
+          <input type="hidden" name="notes_id" value="{{notes_id}}">
+          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <button type="submit">delete note</button>
+        </form>
+
     {% endfor %}
+
+ 
 </div>
 
 
