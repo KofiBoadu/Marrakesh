@@ -12,7 +12,13 @@
       <h1 class="profile-avatar-letter">{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
     </div>
     <div class="profile-name">
-      <h1>{{ profile[0] }}</h1> <!-- Assuming the first element is the full name -->
+      <div class="profile-name-container" onmouseover="showEditButton()" onmouseout="hideEditButton(event)">
+        <h1>{{ profile[0] }}</h1>
+        <img onclick="showUpdateNameForm()" style="display: none" class="edit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" onclick=""/>
+
+
+      </div>
+    
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
       <div class="profile-actions" onclick="openEmailForm()">
         <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
@@ -22,13 +28,23 @@
 
 
     <h2 class="profile-title">Customer Information</h2>
-    <div class="profile-info-container">
+    <div class="profile-info-container" id="phoneForm"onmouseover="showPhoneEditButton()" onmouseout="phoneHideEditButton(event)">
       <h4>Mobile:</h4>
+      <div class="phone-wrap">
       <p> {{ phone_number }}</p>
+      <img onclick="showUpdatePhoneForm()" style="display: none" class="phoneEdit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" />
+
+      </div>
+      
     </div>
-    <div class="profile-info-container">
+    <div class="profile-info-container"id="phoneForm"onmouseover="showEmailEditButton()" onmouseout="emailHideEditButton(event)">
       <h4>Email: </h4>
-      <p>{{ profile[1] }}</p> <!-- Assuming the fourth element is the state -->
+      <div class="phone-wrap">
+        <p>{{ profile[1] }}</p>
+        <img  style="display: none" class="emailEdit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" onclick="showUpdateEmailForm()"/> 
+
+      </div>
+      
     </div>
     <!-- Assuming the third element is the number -->
     <!-- No need for a second email -->
@@ -183,10 +199,13 @@
 
 
 <!-- update customer name form  -->
-<form class="update_customer_name" action="{{ url_for('profiles.customer_name') }}" method="post">
+<div id="formContainer" class="hidden" style="display: none;"  >
+  <img class="updateNameClose" onclick="closeUpdateNameForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+  <form class="update_customer_name" action="{{ url_for('profiles.customer_name') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- first name -->
-    <div class="update_first_name">
+    <div class="update_wrap"> 
+      <div class="update_first_name">
         <label for="firstName">First Name</label>
         <input type="text" id="updatefirstName" name="updatefirst_name" value="{{ profile[0].split()[0] }}">
     </div>
@@ -197,23 +216,30 @@
     </div>
 
 
-    <div class="save">
-      <button type="submit" class="save_new_name">save</button>
+    </div>
+   
+
+    <div class="save" >
+      <button type="submit" class="save_new_name">Save</button>
     </div>
 
-     <div class="cancel">
+     <!-- <div class="cancel">
       <button type="submit" class="save_new_name">cancel</button>
-    </div>
+    </div> -->
 </form>
+</div>
+
 
 
 
 
 <!-- update customer email form-->
-<form class="update_customer_email" action="{{ url_for('profiles.customer_email') }}" method="post">
+<div id="emailformContainer" class="hidden" style="display: none;"  >
+  <img class="updateEmailClose" onclick="closeUpdateEmailForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+  <form class="update_customer_email" action="{{ url_for('profiles.customer_email') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- primary email -->
-    <div class="update_first_name">
+    <div class="update_email">
         <label for="primary_email">primary email</label>
         <input type="text" id="update_email" name="update_email" value="{{profile[1]}}">
     </div>
@@ -221,22 +247,24 @@
 
 
     <div class="save">
-      <button type="submit" class="save_new_name">save</button>
+      <button type="submit" class="save_new_name">Save</button>
     </div>
 
-     <div class="cancel">
-      <button type="submit" class="save_new_name">cancel</button>
-    </div>
+     
 </form>
+
+</div>
 
 
 
 
 <!-- update customer phone -->
-<form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
+<div id="phoneformContainer" class="hidden" style="display: none;"  >
+  <img class="updatePhoneClose" onclick="closeUpdatePhoneForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+  <form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- primary email -->
-    <div class="update_first_name">
+    <div class="update_number">
         <label for="primary_email">phone number</label>
         <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}">
     </div>
@@ -244,13 +272,12 @@
 
 
     <div class="save">
-      <button type="submit" class="save_new_name">save</button>
+      <button type="submit" class="save_new_name">Save</button>
     </div>
 
-     <div class="cancel">
-      <button type="submit" class="save_new_name">cancel</button>
-    </div>
 </form>
+
+</div>
 
 
 

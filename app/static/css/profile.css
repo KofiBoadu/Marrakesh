@@ -13,27 +13,30 @@ body {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.customer-dashboard{
- display: flex;
- 
+
+.customer-dashboard {
+    display: flex;
+
 }
+
 /* Apply styles to the .profile-container */
 .profile-container {
     width: 400px;
-    margin: 0; /* This ensures no margin at the top and flush with the left side */
+    margin: 0;
+    /* This ensures no margin at the top and flush with the left side */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #e1e1e1;
     border-radius: 0px;
     overflow: hidden;
-    position: relative; 
+    position: relative;
     height: 900px;
-    
+
     /* In case you need to position something absolutely inside */
 }
 
-.profile-avatar{
-    
+.profile-avatar {
+
     background-color: #e1e1e1;
     width: 100px;
     height: 100px;
@@ -41,54 +44,63 @@ body {
     border-radius: 50%;
     margin: auto;
 }
-.profile-avatar-letter{
-   
+
+.profile-avatar-letter {
+
     text-transform: uppercase;
     font-family: helvetica;
     font-size: 3em;
     font-weight: 500;
     padding-top: 25px;
     color: #ffffff;
-    
+
 
 }
-.profile-name{
+
+.profile-name {
     text-align: center;
     margin-top: 5%;
     padding-bottom: 5%;
     border-bottom: 2px solid #e1e1e1;
 }
-.profile-name h1{
+
+.profile-name h1 {
     text-transform: capitalize;
     font-family: helvetica;
-    color:#03989E ;
-    
+    color: #03989E;
+
 
 }
-.profile-name p{
+
+.profile-name p {
     font-family: helvetica;
     color: #646464;
 }
-.profile-actions{
+
+.profile-actions {
     margin-top: 5%;
 }
-.profile-info-container{
+
+.profile-info-container {
     margin-left: 5%;
     font-family: helvetica;
     margin-bottom: 5%;
     color: #646464;
 }
+
 .profile-title {
     font-family: helvetica;
-    color: #03989E ;
+    color: #03989E;
     font-size: 1.25rem;
-  
+
 }
-#state-info{
+
+#state-info {
     text-transform: uppercase;
 }
+
 /* Style the main header without top margin */
-.profile-container > h1 {
+.profile-container>h1 {
     font-size: 1.75rem;
     color: #333;
     margin-bottom: 0.5rem;
@@ -97,7 +109,7 @@ body {
 }
 
 /* Style the email and other details without top margin */
-.profile-container > p {
+.profile-container>p {
     font-size: 1rem;
     line-height: 1.4;
     color: #646464;
@@ -105,11 +117,12 @@ body {
 }
 
 /* Style sub-headers without top margin */
-.profile-container > h2 {
-    
-    margin-top: 40px; /* Reset top margin to 0 */
+.profile-container>h2 {
+
+    margin-top: 40px;
+    /* Reset top margin to 0 */
     margin-bottom: 0.5rem;
-    
+
     padding-bottom: 0.25rem;
 }
 
@@ -117,9 +130,9 @@ body {
 .profile-container ul {
     list-style: none;
     padding-left: 20px;
-    width:80%;
+    width: 80%;
     text-align: center;
-  
+
 }
 
 .profile-container ul li {
@@ -142,28 +155,30 @@ body {
 }
 
 /* Total payment styling without top margin */
-.revenue{
+.revenue {
     display: flex;
-    
-    
-   
-    
+
+
+
+
     margin-top: 5%;
 }
-.revenue-container{
+
+.revenue-container {
     margin-left: 2%;
-  
-}
-.revenue-amt{
-    font: 1.5em helvetica;
-    color: #FF8C00;
-   
+
 }
 
-.revenue-title{
-  color: #646464;
-  font: 1em helvetica;
- 
+.revenue-amt {
+    font: 1.5em helvetica;
+    color: #FF8C00;
+
+}
+
+.revenue-title {
+    color: #646464;
+    font: 1em helvetica;
+
 }
 
 /*button {
@@ -193,3 +208,225 @@ button:active {
 
 /* /* email form styling */
 
+.profile-name-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+}
+
+.profile-name-container img {
+    margin-left: 15px;
+}
+
+.profile-name-container h1 {
+    margin-left: 40px;
+}
+
+.edit {
+    display: none;
+    margin-left: 5px;
+
+}
+
+
+
+#formContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px  rgba(0,0,0,.08);
+    width: 450px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 250px;
+    left: 350px;
+    z-index: 1000;
+
+
+}
+
+#formContainer::before {
+    content: '';
+            position: absolute;
+            top: 25%;
+            left: -20px;
+            transform: translateY(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #FFF transparent transparent;
+           
+}
+
+.update_first_name {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_last_name {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.update_first_name input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+}
+
+.update_last_name input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_first_name label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.update_last_name label {
+    font-weight: 200;
+    color: #c3c3c3;
+}
+
+.update_wrap {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.save_new_name {
+    background-color: #FF914C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.updateNameClose {
+    margin-left: 400px;
+
+}
+
+.phone-wrap{
+    display: flex;
+    align-items: center;
+}
+.phoneEdit{
+    margin-left: 10px;
+}
+
+#phoneformContainer{
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px  rgba(0,0,0,.08);
+    width: 300px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 450px;
+    left: 200px;
+    z-index: 1000;
+}
+#phoneformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update_number {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_number input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_number label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+.updatePhoneClose {
+    margin-left: 250px;
+
+}
+.phone-wrap{
+    display: flex;
+    align-items: center;
+}
+.emailEdit{
+    margin-left: 10px;
+}
+
+#emailformContainer{
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px  rgba(0,0,0,.08);
+    width: 300px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 520px;
+    left: 200px;
+    z-index: 1000;
+}
+#emailformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update_email {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_email input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_email label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+.updateEmailClose {
+    margin-left: 250px;
+
+}
