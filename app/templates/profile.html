@@ -20,9 +20,20 @@
       </div>
     
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
-      <div class="profile-actions" onclick="openEmailForm()">
-        <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
+      <div class="profile-actions" >
+        <div class="actions-container"onclick="openNoteForm()">
+          <img width="40" height="40" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/FF914C/external-pencil-whatsapp-flatart-icons-outline-flatarticons.png" alt="external-pencil-whatsapp-flatart-icons-outline-flatarticons"/>
+          <p>Note</p>
+        </div>
+        <div class="actions-container"onclick="openEmailForm()">
+          <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
           alt="circled-envelope" />
+          <p>Email</p>
+          
+        </div>
+        
+        
+          
       </div>
     </div>
 
@@ -106,7 +117,8 @@
           <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
           <input type="hidden" name="customer_id" value="{{ customer_id }}">
           <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
-            class="delete-text-link">delete</a>
+            class="delete-text-link"><img  width="16" height="16"
+            src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</a>
         </form>
 
       </div>
@@ -124,6 +136,41 @@
 
     </div>
     {% endfor %}
+  
+      {% for notes_id, customer_note ,date in notes %}
+      <div class="note-activity-container">
+        <div class="note-header">
+          <div class="header-container">
+            <div class="noteSubject">
+              <strong>Note</strong>
+          
+              <p class="fromNote"> by Daniel Boadu</p>
+            </div>
+            
+            <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
+              <input type="hidden" name="notes_id" value="{{notes_id}}">
+              <input type="hidden" name="customer_id" value="{{ customer_id }}">
+              <button type="submit" id="noteDelete"><img  width="16" height="16"
+                src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</button>
+            </form>
+          </div>
+          
+        </div>
+
+        <div class="date-container">
+          <p class="dateNote">{{ date }}</p>
+        </div>
+        
+        <p class="message">{{ customer_note }}</p>
+          
+          
+          
+         
+        </div>
+      {% endfor %}
+  
+   
+  
 
   </div>
 </div>
@@ -132,36 +179,32 @@
 
 
 <!-- writing customer notes forms  -->
- <form action="{{ url_for('profiles.customer_notes') }}" method="post">
-
-          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+<div class="note-form-container" id="noteForm"  style="display: none;" >
+  <div class="note-title">
+    <h2>Note</h2>
+    <img onclick="expandNoteForm()" class="down" width="16" height="16" src="https://img.icons8.com/ios/50/FFFFFF/expand-arrow--v1.png" alt="expand-arrow--v1"/>
+    <img onclick="closeNoteForm()" class="note-close" id="exit" width="24" height="24"
+      src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign"
+       />
+  </div>
   
-          <textarea id="notes" name="notes"  placeholder="Write your notes here" required></textarea>
+  <form  class="noteForm"action="{{ url_for('profiles.customer_notes') }}" method="post">
 
-          <button type="submit" >save note </button>  
-  </form>
+    <input type="hidden" name="customer_id" value="{{ customer_id }}">
+
+    <textarea id="notes" name="notes"  placeholder="Write your notes here" required></textarea>
+
+    <button type="submit" class="send-note-button" >save note </button>  
+</form>
 
 
+</div>
+ 
 
-  <!-- showing or displaying customer notes the customer notes  -->
-
-<div>
-    {% for notes_id, customer_note ,date in notes %}
-        <strong>notes message</strong>
-        <p>{{ customer_note }}</p>
-        <strong>dated</strong>
-        <p>{{ date }}</p>
-        
-        <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
-          <input type="hidden" name="notes_id" value="{{notes_id}}">
-          <input type="hidden" name="customer_id" value="{{ customer_id }}">
-          <button type="submit">delete note</button>
-        </form>
-
-    {% endfor %}
 
  
-</div>
+
+
 
 
 
