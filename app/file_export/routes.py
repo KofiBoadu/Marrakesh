@@ -11,7 +11,7 @@ import os
 @login_required
 def export_file():
 	customers= export_customer_data()
-	filepath= export_data(customers, 'csv')
+	file_path= export_data(customers, 'csv')
 	# filepath='/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/'+filename
 
 	file=upload_file(os.path.basename(file_path), file_path, 'text/'+'csv')
