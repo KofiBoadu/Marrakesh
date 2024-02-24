@@ -164,3 +164,52 @@ function validateDeleteInput(input) {
  function changeItemsPerPage(select) {
         window.location.href = "{{ url_for('customers.home_page', page=1) }}?per_page=" + select.value;
     }
+
+
+
+
+
+// dynamically submits and reoute to homepage when there is any search in the search box
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const form = document.getElementById('searchForm');
+    const homeUrl = form.getAttribute('data-home-url'); // Get the home page URL from the data attribute
+
+    // Load any saved search query from session storage and set it as the input value
+    const savedQuery = sessionStorage.getItem('searchQuery');
+    if (savedQuery) {
+        searchInput.value = savedQuery;
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+
+        if (query.length >= 3) {
+            // Save the current query to session storage right before submitting
+            sessionStorage.setItem('searchQuery', query);
+            form.submit();
+        } else if (query.length === 0) {
+            // Clear the saved query from session storage and redirect to home page
+            sessionStorage.removeItem('searchQuery');
+            window.location.href = homeUrl; // Use the homeUrl variable for redirection
+        }
+        // For cases where the user deletes the text down to below 3 characters but doesn't empty the input
+        // Update the session storage with the current (non-empty) value
+        else {
+            sessionStorage.setItem('searchQuery', query);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
