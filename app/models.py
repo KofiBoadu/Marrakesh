@@ -224,7 +224,13 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
         if database_connection:
             database_connection.close()
 
-    return customers
+    if len(customers)==0:
+
+        return False 
+
+    else:
+
+        return customers
 
 
 
