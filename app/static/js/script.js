@@ -184,6 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.value = savedQuery;
     }
 
+    searchInput.focus();
+
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
 
