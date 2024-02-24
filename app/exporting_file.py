@@ -164,38 +164,76 @@ def export_customer_data():
 
 
 
-def upload_file(filename, filepath, mimetype):
-    """Shows basic usage of the Google Drive API.
-    Uploads a file to Google Drive.
-    """
+# def upload_file(filename, filepath, mimetype):
+#     """Shows basic usage of the Google Drive API.
+#     Uploads a file to Google Drive.
+#     """
+#     creds = None
+#     # The file token.json stores the user's access and refresh tokens, and is
+#     # created automatically when the authorization flow completes for the first
+#     # time.
+#     if os.path.exists('token.json'):
+#         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+#     # If there are no (valid) credentials available, let the user log in.
+#     if not creds or not creds.valid:
+#         if creds and creds.expired and creds.refresh_token:
+#             creds.refresh(Request())
+#         else:
+#             flow = InstalledAppFlow.from_client_secrets_file(
+#                 os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'), SCOPES)
+#             creds = flow.run_local_server(port=0)
+        
+#         with open('token.json', 'w') as token:
+#             token.write(creds.to_json())
+
+#     service = build('drive', 'v3', credentials=creds)
+
+#     #Call the Drive v3 API to upload the file
+#     file_metadata = {'name': filename}
+#     media = MediaFileUpload(filepath, mimetype=mimetype)
+#     file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+
+#     return file.get('id')
+
+
+import os
+import json
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+
+def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
+    """Uploads a file to Google Drive."""
     creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
+    token_str = os.environ.get('GOOGLE_OAUTH_TOKEN')
+    
+    # If the token environment variable exists, use it to create credentials
+    if token_str:
+        token_info = json.loads(token_str)
+        creds = Credentials.from_authorized_user_info(token_info, SCOPES)
+    
+    # Check if credentials are valid, otherwise refresh or log in
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'), SCOPES)
+            # Assuming client secrets are also stored in an environment variable
+            client_secrets_info = json.loads(os.environ.get('GOOGLE_CLIENT_SECRETS'))
+            flow = InstalledAppFlow.from_client_config(client_secrets_info, SCOPES)
             creds = flow.run_local_server(port=0)
-        
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
-
+            # Here, you would need to update the environment variable or use a more persistent storage
+            # since changes to environment variables in runtime are not persistent across deploys/restarts in Heroku
+            
     service = build('drive', 'v3', credentials=creds)
 
-    #Call the Drive v3 API to upload the file
+    # Call the Drive v3 API to upload the file
     file_metadata = {'name': filename}
     media = MediaFileUpload(filepath, mimetype=mimetype)
     file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
 
     return file.get('id')
-
-
 
 
 
