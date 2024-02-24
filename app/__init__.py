@@ -8,6 +8,7 @@ import os
 from .customer_profiles import customers_profile
 from  .send_emails import email_customers
 from .emails import mail
+from app.file_export import fileExport_bp
 
 
 
@@ -38,6 +39,7 @@ def create_app():
     app.register_blueprint(customers_profile, url_prefix='/profiles')
     app.register_blueprint(email_customers,url_prefix='/send_emails')
     app.register_blueprint(email_marketing,url_prefix='/marketing')
+    app.register_blueprint(fileExport_bp,url_prefix='/exportingFile')
 
     app.secret_key = os.getenv('SECRET_KEY')
 

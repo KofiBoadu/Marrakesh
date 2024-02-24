@@ -11,6 +11,7 @@ class User(UserMixin):
         self.id = user_id
         self.first_name=first_name
         self.last_name= last_name
+        self.email_address=email_address
         self.pass_word= pass_word
 
 

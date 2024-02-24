@@ -177,7 +177,6 @@ def create_get_customer_tour_details_procedure():
 
 
 
-# print(create_get_customer_tour_details_procedure())
 
 
 
