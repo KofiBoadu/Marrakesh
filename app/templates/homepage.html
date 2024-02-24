@@ -371,8 +371,8 @@
 
         <div class="search-container">
             <!-- search form  -->
-            <form class="search-form" action="{{ url_for('customers.home_page') }}" method="post">
-                <input type="search" name="search_query" placeholder="Search name">
+            <form  id="searchForm"  class="search-form" action="{{ url_for('customers.home_page') }}" data-home-url="{{ url_for('customers.home_page') }}" method="post">
+                <input  id="searchInput"   type="search" name="search_query" placeholder="Search name">
                 <button class="search" type="submit"><img width="20" height="20"
                     src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
                     alt="search--v1" /></button>
@@ -396,7 +396,15 @@
                     <p>edit</p>
                 </div>
             </form>
-            <button class="export">export</button>
+
+            <!-- exporting file button -->
+<!-- 
+            <form action="{{ url_for('exportingFile.export_file') }}" method="post">
+
+                <button type="submit" class="export">export</button>
+                
+            </form>  -->
+            
             
         </div>
 
