@@ -3,6 +3,7 @@ from app.user  import get_user,User
 from . import fileExport_bp
 from flask import  render_template, request,redirect,url_for,flash,session
 from app.exporting_file import export_customer_data,export_data,make_file_public,get_download_link,upload_file,send_file_email
+import os 
 
 
 
@@ -10,10 +11,11 @@ from app.exporting_file import export_customer_data,export_data,make_file_public
 @login_required
 def export_file():
 	customers= export_customer_data()
-	filename= export_data(customers, 'csv')
-	filepath='/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/'+filename
+	filepath= export_data(customers, 'csv')
+	# filepath='/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/'+filename
 
-	file=upload_file(filename, filepath, 'text/'+'csv')
+	file=upload_file(os.path.basename(file_path), file_path, 'text/'+'csv')
+	
 
 	make_file_public(file)
 

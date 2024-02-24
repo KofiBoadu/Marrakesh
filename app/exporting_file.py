@@ -64,28 +64,51 @@ def send_file_email(subject, sender, recipients, text_body, html_body=None):
 
 
 
-def export_data(customers, file_format):
-    # Convert customers list to DataFrame
-    df = pd.DataFrame(customers, columns=[ 'Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
+# def export_data(customers, file_format):
+#     # Convert customers list to DataFrame
+#     df = pd.DataFrame(customers, columns=[ 'Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
     
-    # Choose the file format
-    file_name=""
-    if file_format.lower() == 'csv':
-        df.to_csv('CustomerTourDetails.csv', index=False)
-        file_name="CustomerTourDetails.csv"
+#     # Choose the file format
+#     file_name=""
+#     if file_format.lower() == 'csv':
+#         df.to_csv('CustomerTourDetails.csv', index=False)
+#         file_name="CustomerTourDetails.csv"
         
-    elif file_format.lower() == 'excel':
-        df.to_excel('CustomerTourDetails.xlsx', index=False)
-        file_name= "CustomerTourDetails.xlsx"
+#     elif file_format.lower() == 'excel':
+#         df.to_excel('CustomerTourDetails.xlsx', index=False)
+#         file_name= "CustomerTourDetails.xlsx"
         
 
+#     else:
+#         print('Unsupported export format specified. No export performed.')
+
+
+#     return file_name
+
+
+
+
+def export_data(customers, file_format):
+    # Convert customers list to DataFrame
+    df = pd.DataFrame(customers, columns=['Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
+    
+    # Define the base path for temporary storage
+    base_path = '/tmp/'
+    
+    # Choose the file format
+    file_name = ""
+    if file_format.lower() == 'csv':
+        file_name = "CustomerTourDetails.csv"
+        df.to_csv(os.path.join(base_path, file_name), index=False)
+        
+    elif file_format.lower() == 'excel':
+        file_name = "CustomerTourDetails.xlsx"
+        df.to_excel(os.path.join(base_path, file_name), index=False)
+        
     else:
         print('Unsupported export format specified. No export performed.')
 
-
-    return file_name
-
-
+    return os.path.join(base_path, file_name)
 
 
 
@@ -196,13 +219,13 @@ def export_customer_data():
 #     return file.get('id')
 
 
-import os
-import json
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
+# import os
+# import json
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import InstalledAppFlow
+# from google.auth.transport.requests import Request
+# from googleapiclient.discovery import build
+# from googleapiclient.http import MediaFileUpload
 
 def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
     """Uploads a file to Google Drive."""
@@ -220,7 +243,7 @@ def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
             creds.refresh(Request())
         else:
             # Assuming client secrets are also stored in an environment variable
-            client_secrets_info = json.loads(os.environ.get('GOOGLE_CLIENT_SECRETS'))
+            client_secrets_info = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
             flow = InstalledAppFlow.from_client_config(client_secrets_info, SCOPES)
             creds = flow.run_local_server(port=0)
             # Here, you would need to update the environment variable or use a more persistent storage
@@ -237,23 +260,56 @@ def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
 
 
 
+# def get_google_drive_service():
+#     creds = None
+#     if os.path.exists('token.json'):
+#         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+#     if not creds or not creds.valid:
+#         if creds and creds.expired and creds.refresh_token:
+#             creds.refresh(Request())
+#         else:
+#             flow = InstalledAppFlow.from_client_secrets_file(
+#                 os.environ['GOOGLE_APPLICATION_CREDENTIALS'], SCOPES)
+#             creds = flow.run_local_server(port=0)
+#         with open('token.json', 'w') as token:
+#             token.write(creds.to_json())
+    
+#     service = build('drive', 'v3', credentials=creds)
+#     return service
+
+# import os
+# import json
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import InstalledAppFlow
+# from google.auth.transport.requests import Request
+# from googleapiclient.discovery import build
+
 def get_google_drive_service():
+    """Returns a service object connected to the Google Drive API."""
     creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    # Try to load the token from an environment variable
+    token_str = os.environ.get('GOOGLE_OAUTH_TOKEN')
+    
+    if token_str:
+        # If the token was found in the environment variable, load it
+        token_info = json.loads(token_str)
+        creds = Credentials.from_authorized_user_info(token_info, SCOPES)
+    
+    # Check if the credentials are not valid or do not exist
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                os.environ['GOOGLE_APPLICATION_CREDENTIALS'], SCOPES)
+            # Load client secrets from an environment variable
+            client_secrets_info = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
+            flow = InstalledAppFlow.from_client_config(client_secrets_info, SCOPES)
             creds = flow.run_local_server(port=0)
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
-    
+            # Note: In a production environment, especially in platforms like Heroku,
+            # you should consider a more persistent solution for storing refreshed tokens
+
+    # Build the service object for the Google Drive API
     service = build('drive', 'v3', credentials=creds)
     return service
-
 
 
 
@@ -313,6 +369,8 @@ def get_download_link(file_id):
 
 # download=get_download_link(file)
 
+# print(download)
+
 
 # subject = "Your Subject Here"
 # sender = "bookings@africatravellers.com"
@@ -330,5 +388,5 @@ def get_download_link(file_id):
 # print(send_file_email(subject, sender, recipients, text_body, html_body))
 
 
-'/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/app/credentials.json'
+# '/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/app/credentials.json'
 
