@@ -11,12 +11,11 @@ import os
 @login_required
 def export_file():
 	customers= export_customer_data()
-	file_path= export_data(customers, 'csv')
-	# filepath='/Users/danielkofiboadu/Desktop/Travel-Torch-CRM/'+filename
+	file_type=request.form.get('export_file_type')
+	file_path= export_data(customers, file_type)
 
-	file=upload_file(os.path.basename(file_path), file_path, 'text/'+'csv')
+	file=upload_file(os.path.basename(file_path), file_path, 'text/'+file_type)
 	
-
 	make_file_public(file)
 
 	download=get_download_link(file)

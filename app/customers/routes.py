@@ -5,7 +5,7 @@ from app.models import check_customer_exists,get_total_numberOfTravellers,calcul
 from app.customers import customers_bp
 import datetime
 import math
-from flask_login import login_required
+from flask_login import login_required,current_user
 from app.extension import cache
 from app.models import format_phone_number, remove_paid_customer,total_customers
 from app.customer_models import fetch_customer_details,update_customerDetails,update_tour_bookings
@@ -18,6 +18,8 @@ from flask import jsonify
 # @cache.cached(timeout=240)
 def home_page():
     if request.method == 'GET' or request.method=="POST":
+        login_user=current_user
+        login_user_email=login_user.email_address
         page = request.args.get('page', 1, type=int)
         search= request.form.get('search_query')
         items_per_page = 8
@@ -30,7 +32,7 @@ def home_page():
         revenue,formatted_revenue= calculate_gross_revenue(year)
         customers_total=total_customers()
         total_pages = math.ceil(customers_total / items_per_page)
-        return render_template("homepage.html",customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
+        return render_template("homepage.html",login_user_email=login_user_email,customers=customers,available_dates=available_dates,destinations=destinations,total_travelers=total_travelers,year=year,revenue=revenue,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
 
 

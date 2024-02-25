@@ -353,11 +353,6 @@
                 <h3 id="total">{{"{:,}".format(customers_total)}} Records</h3>
             </div>
 
-
-
-            
-
-
             <div id="table-action">
                 <button id="createCustomerBtn">Create Customer</button>
                 <button id="tourBtn">Create Tour</button>
@@ -399,14 +394,53 @@
 
             <!-- exporting file button -->
 
-            <form action="{{ url_for('exportingFile.export_file') }}" method="post">
+            <div>
 
-                <button type="submit" class="export">export</button>
+                <button onclick="show_exportButton()" id="export_button"  class="export">export</button>
                 
-            </form> 
+            </div> 
             
             
         </div>
+
+
+
+
+<!-- exporting file pop up form or container  -->
+
+<div style="display:none;" id='export_form' >
+    
+
+
+    <form  action="{{ url_for('exportingFile.export_file') }}" method="post">
+         
+         <h3>Sending to: </h3>
+
+        <div>
+            The exported file will be emailed to {{login_user_email}} and will be available for download 
+        </div>
+
+        <div>
+            <p>Exporting:{{customers_total}} contacts </p>
+        </div>
+
+        <h3>Choose file format</h3>
+        <select id="option-select" name="export_file_type">
+            <option value="css">csv</option>
+            <option value="excel">excel</option>
+        </select>
+        <br>
+        <!-- <input type="submit" value="Submit"> -->
+        <button type="submit">Export now</button>
+    </form>
+
+
+</div>
+
+
+
+
+
 
 
 
@@ -467,8 +501,6 @@
                 </tr>
             {% endif %}
         </tbody>
-
-
     </table>
 
 
