@@ -12,9 +12,10 @@ import os
 def export_file():
 	customers= export_customer_data()
 	file_type=request.form.get('export_file_type')
-	file_path= export_data(customers, "csv")
 
-	file=upload_file(os.path.basename(file_path), file_path, 'text/'+"csv")
+	file_path= export_data(customers, file_type)
+
+	file=upload_file(os.path.basename(file_path), file_path, 'text/'+file_type)
 	
 	make_file_public(file)
 
