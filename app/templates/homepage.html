@@ -335,77 +335,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-<div id="table-container">
-    <table id="data-table">
-
-        <div id="table-header">
-            <div id="customer-header">
-                <h3 id="table-title">Customers</h3>
-                <h3 id="total">{{"{:,}".format(customers_total)}} Records</h3>
-            </div>
-
-            <div id="table-action">
-                <button id="createCustomerBtn">Create Customer</button>
-                <button id="tourBtn">Create Tour</button>
-            </div>
-
-        </div>
-
-
-
-<!-- search customers  -->
-
-        <div class="search-container">
-            <!-- search form  -->
-            <form  id="searchForm"  class="search-form" action="{{ url_for('customers.home_page') }}" data-home-url="{{ url_for('customers.home_page') }}" method="post">
-                <input  id="searchInput"   type="search" name="search_query" placeholder="Search name">
-                <button class="search" type="submit"><img width="20" height="20"
-                    src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
-                    alt="search--v1" /></button>
-            </form>
-            <!--Export button-->
-            
-            <!-- DELETE button --->
-            <div id="deleteButton" style="display: none;" onclick="showModal()">
-                <img id="delete-button-icon" width="16" height="16"
-                    src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />
-                <p>delete</p>
-            </div>
-
-
-            <!-- update customer details  button -->
-            <form action="{{ url_for('customers.get_customer_details') }}" method="get">
-                <div id="updateButton" style="display: none;" onclick="showUpdateModal()">
-                    <img id="delete-button-icon" width="16" height="16"
-                        src="https://img.icons8.com/ios-filled/50/FF914C/create-new.png" alt="create-new" />
-                    <input type="hidden" id="customerIdToUpdate" name="customer_id" value="">
-                    <p>edit</p>
-                </div>
-            </form>
-
-            <!-- exporting file button -->
-
-            <div>
-
-                <button onclick="show_exportButton()" id="export_button"  class="export">export</button>
-                
-            </div> 
-            
-            
-        </div>
-
-
-
-
 <!-- exporting file pop up form or container  -->
 
 <div style="display:none;" id='export_form' >
@@ -440,6 +369,119 @@
 
 
 
+
+
+
+
+
+<div id="table-container">
+    <table id="data-table">
+
+        <div id="table-header">
+            <div id="customer-header">
+                <h3 id="table-title">Customers</h3>
+                <h3 id="total">{{"{:,}".format(customers_total)}} Records</h3>
+            </div>
+
+            <div id="table-action">
+                <button id="createCustomerBtn">Create Customer</button>
+                <button id="tourBtn">Create Tour</button>
+            </div>
+
+        </div>
+
+
+
+<!-- search customers  -->
+
+        <!-- <div class="search-container"> -->
+            <!-- search form  -->
+           <!--  <div>
+                <form  id="searchForm"  class="search-form" action="{{ url_for('customers.home_page') }}" data-home-url="{{ url_for('customers.home_page') }}" method="post">
+                    <input  id="searchInput"   type="search" name="search_query" placeholder="Search name">
+                    <button class="search" type="submit"><img width="20" height="20"
+                        src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
+                        alt="search--v1" /></button>
+                </form>
+            </div>
+   -->
+            
+            
+            <!-- edit and delete buttons  -->
+          
+                <!-- <div class="action-container"> -->
+                    <!-- DELETE button --->
+                    <!-- <div id="deleteButton" style="display: none;" onclick="showModal()">
+                    <img id="delete-button-icon" width="16" height="16"
+                        src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />
+                    <p>delete</p>
+                    </div>
+ -->
+
+                <!-- update customer details  button -->
+                
+                   <!--  <form action="{{ url_for('customers.get_customer_details') }}" method="get">
+                        <div id="updateButton" style="display: none;" onclick="showUpdateModal()">
+                            <img id="delete-button-icon" width="16" height="16"
+                                src="https://img.icons8.com/ios-filled/50/FF914C/create-new.png" alt="create-new" />
+                            <input type="hidden" id="customerIdToUpdate" name="customer_id" value="">
+                            <p>edit</p>
+                        </div>
+                    </form>
+                </div> -->
+                
+           
+            
+
+            <!-- exporting file button -->
+
+           <!--  <div class="export-div">
+
+                <button onclick="show_exportButton()" id="export_button"  class="export">export</button>
+                
+            </div>  -->
+            
+            
+        <!-- </div> -->
+
+
+
+<div class="search-container">
+    <!-- search form -->
+    <div>
+        <form id="searchForm" class="search-form" action="{{ url_for('customers.home_page') }}" data-home-url="{{ url_for('customers.home_page') }}" method="post">
+            <input id="searchInput" type="search" name="search_query" placeholder="Search name">
+            <button class="search" type="submit"><img width="20" height="20"
+                    src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
+                    alt="search--v1" /></button>
+        </form>
+    </div>
+
+    <!-- edit and delete buttons -->
+    <div class="action-container">
+        <!-- DELETE button -->
+        <div id="deleteButton" onclick="showModal()">
+            <img id="delete-button-icon" width="16" height="16"
+                src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />
+            <p>delete</p>
+        </div>
+
+        <!-- update customer details button -->
+        <form action="{{ url_for('customers.get_customer_details') }}" method="get">
+            <div id="updateButton" onclick="showUpdateModal()">
+                <img width="16" height="16"
+                    src="https://img.icons8.com/ios-filled/50/FF914C/create-new.png" alt="create-new" />
+                <input type="hidden" id="customerIdToUpdate" name="customer_id" value="">
+                <p>edit</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- exporting file button -->
+    <div class="export-div">
+        <button onclick="show_exportButton()" id="export_button" class="export">export</button>
+    </div>
+</div>
 
 
 

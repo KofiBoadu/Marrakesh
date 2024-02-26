@@ -265,6 +265,7 @@
   border-radius: 10px 10px 10px 10px;
   margin: 2%;
   align-self: center;
+/*  border-style: solid;*/
 }
 
 #table-header {
@@ -602,16 +603,16 @@ button#cancel:hover {
   border-style: none;
 }
 
-.search-container {
-  padding: 10px;
-  display: flex;
-}
+
+
 
 .search-container input {
   border-style: none;
   border-bottom: 2px solid #03989E;
   font-size: 1.5em;
   color: #777474;
+  margin-left: 0px;
+
 }
 
 .search-container input::-moz-placeholder {
@@ -622,6 +623,37 @@ button#cancel:hover {
   color: rgba(100, 100, 100, 0.5294117647);
 }
 
+
+.search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+        }
+        .search-container > div,
+        .search-container > form {
+            flex-grow: 1;
+        }
+        .action-container {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Adjust the gap between edit and delete buttons as needed */
+        }
+        .export-div {
+            display: flex;
+            justify-content: flex-end;
+          
+          
+
+        }
+        #deleteButton, #updateButton {
+            display: none; /* Initially hidden */
+        }
+
+
+
 .export {
   width: 70px;
   height: 30px;
@@ -629,8 +661,10 @@ button#cancel:hover {
   border: #FF914C 1px solid;
   color: #FF914C;
   border-radius: 5px;
-  margin-left: 1630px;
+  
   background-color: transparent;
   position: absolute;
-  margin-top: 19px;
+  margin-top: 0px;
+  border-style: solid;
+
 }/*# sourceMappingURL=hompage.css.map */
