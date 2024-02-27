@@ -1,7 +1,11 @@
 @use 'variables' as * ;
 @use 'mixins' as *;
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
+
+
  body{
     margin: 0%;
+   
  }
  .nav{
     display: flex;
@@ -34,13 +38,13 @@
     &_link a {
         
         text-decoration: none;
-        font-family: Helvetica;
+        font-family: "Lexend Deca";
         color: $textColor3;
         font-size: 1.2em;
     }
     &_welcome{
         margin-left:10% ;
-        font-family: Helvetica;
+       
         color: $ATblue;
         font-weight: 600;
     }
@@ -139,5 +143,6 @@
 }
 
 .user-fullname {
-    font-size: 16px; /* Adjust size as needed */
+    font-size: 14px; /* Adjust size as needed */
+    font-family: "Lexend Deca", sans-serif;
 }

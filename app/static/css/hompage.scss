@@ -1,6 +1,38 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
 
+h3 {
+    font-family: "Lexend Deca", sans-serif;
+}
+
+h1 {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 500;
+}
+
+h5 {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 200;
+}
+
+p {
+    font-family: "Lexend Deca", sans-serif;
+     
+}
+
+button {
+    font-family: "Lexend Deca", sans-serif;
+}
+input{
+    font-family: "Lexend Deca", sans-serif;
+}
+label{
+    font-family: "Lexend Deca", sans-serif;
+}
+select{
+    font-family: "Lexend Deca", sans-serif;
+}
 .create {
     display: flex;
     justify-content: center;
@@ -26,7 +58,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: sans-serif;
+
     }
 }
 
@@ -55,7 +87,7 @@
     }
 
     &_title--header {
-        font-family: sans-serif;
+
         font-size: 1.5em;
         color: $textColor1;
         margin-left: 5%;
@@ -92,7 +124,7 @@
 
     &_wrap label {
         margin-right: 50%;
-        font-family: sans-serif;
+
         margin-top: 5%;
         color: $textColor3;
     }
@@ -115,7 +147,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: sans-serif;
+        font-family: "Lexend Deca", sans-serif;
         margin-left: 20%;
         margin-bottom: 5%;
     }
@@ -180,7 +212,7 @@
     }
 
     &_header--title {
-        font-family: sans-serif;
+        font-family: "Lexend Deca", sans-serif;
         font-size: 1.5em;
         color: $textColor1;
         margin-left: 5%;
@@ -217,7 +249,7 @@
 
     &_wrap label {
         margin-right: 50%;
-        font-family: sans-serif;
+        font-family: "Lexend Deca", sans-serif;
         margin-top: 5%;
         color: $textColor3;
     }
@@ -239,7 +271,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: sans-serif;
+        font-family: "Lexend Deca", sans-serif;
         margin-left: 20%;
         margin-bottom: 5%;
     }
@@ -280,38 +312,38 @@
 #createCustomerBtn {
     background-color: $ATorange;
     width: 140px;
-    
+
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-family: sans-serif;
+    
     padding: 10px 0px;
 
     margin-bottom: 5%;
     margin-top: 4%;
     margin-left: 0;
-    font-weight: bold;
-    
+    font-weight: 300;
+
 
 }
 
 #tourBtn {
     background-color: $ATorange;
     width: 140px;
-   
+
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-family: sans-serif;
+   
     margin-top: 4%;
     margin-bottom: 5%;
     padding: 10px 0px;
 
     margin-left: 0;
-   
-    font-weight: bold;
+
+    font-weight: 300;
 
 }
 
@@ -327,24 +359,28 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid rgb(238, 234, 234);
-   
+    font-family: "Lexend Deca", sans-serif;
+
 
 
 }
-#costumer-header{
+
+#costumer-header {
     display: block;
-    
+
 }
-#total{
-    font-family: Helvetica;
+
+#total {
+
     font-size: 1em;
     color: #646464;
     margin: 5%;
     font-weight: 400;
 }
+
 #table-title {
     margin: 2%;
-    font-family: Helvetica;
+    font-weight: 600;
     font-size: 2em;
     color: $textColor3;
 }
@@ -357,36 +393,38 @@
     margin-top: 0%;
 }
 
-#deleteButton{
+#deleteButton {
     margin-left: 100px;
     margin-right: 10%;
     margin-top: 30px;
 
-    
+
 }
-#updateButton{
+
+#updateButton {
     margin-top: 30px;
     margin-right: 40px;
 }
-#deleteButton p{
+
+#deleteButton p {
     margin-top: 1.5%;
-    color:$ATorange;
-    font-family: helvetica;
+    color: $ATorange;
 }
 
-#updateButton p{
+#updateButton p {
     margin-top: 1.5%;
-    color:$ATorange;
-    font-family: helvetica;
+    color: $ATorange;
+
 }
-#delete-button-icon{
+
+#delete-button-icon {
     margin-top: 2%;
 }
 
 th {
     padding: 10px; // Adjust padding as needed
     text-align: center;
-    font-family: Helvetica;
+    font-family: "Lexend Deca", sans-serif;
     font-weight: 400;
     font-size: 1.2em;
 
@@ -398,23 +436,29 @@ th {
     width: 100%;
     border-collapse: separate;
     border-spacing: 1px;
-    
-    
-   
-    
+
+
+
+
 }
 
 td {
     text-align: center;
-    font: 1em Helvetica;
+    font: 1em;
     font-weight: 200;
+    font-family: "Lexend Deca", sans-serif;
 
 
 }
-tbody{
-    max-height: 200px; /* Set the maximum height of the scrollable area */
-    overflow-y: auto; /* Enable vertical scrolling */
+
+tbody {
+    max-height: 200px;
+    /* Set the maximum height of the scrollable area */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    font-family: "Lexend Deca", sans-serif;
 }
+
 #table-body tr td {
     margin: 0;
     /* Remove margin */
@@ -462,6 +506,7 @@ td a {
     color: $ATblue;
     text-transform: capitalize;
 }
+
 //dashboard styling
 .dashboard {
     display: flex;
@@ -488,7 +533,7 @@ td a {
     }
 
     &_header {
-        font-family: Helvetica;
+
         font-size: 2.2em;
         margin-bottom: 0%;
         color: $ATblue;
@@ -497,10 +542,10 @@ td a {
     }
 
     &_subheader {
-        font-family: Helvetica;
+
         font-size: 1.2em;
         margin-top: 2%;
-        font-weight: 100;
+
 
     }
 }
@@ -548,7 +593,7 @@ td a {
     color: $ATorange;
     text-align: center;
     margin-bottom: 20px;
-    font-family: Helvetica;
+
 
 }
 
@@ -610,99 +655,108 @@ button#cancel:hover {
 }
 
 
-.delete-title{
+.delete-title {
     margin-left: 30%;
     margin-top: 7%;
-    font-family:Helvetica;
-    text-shadow: gray 2px ;
+
+    text-shadow: gray 2px;
 }
-.delete-message-1{
+
+.delete-message-1 {
     text-align: center;
-    font-family:Helvetica;
+
     font-size: 1.2em;
     margin-top: 5%;
 }
-.delete-message-2{
-   text-align: center;
-   font-family:Helvetica;
-   font-size: 1em;
+
+.delete-message-2 {
+    text-align: center;
+
+    font-size: 1em;
 
 }
-.delete-message{
+
+.delete-message {
     padding: 5%;
 }
 
-#highlight{
-    color:$ATorange ;
+#highlight {
+    color: $ATorange ;
     font-size: 1.2em;
 }
 
 
 
 
-  .pagination {
-        list-style-type: none;
-        display: flex;
-        justify-content: center;
-        margin-top: 2%;
-    }
-    .pagination li {
-        margin: 0 5px;
-    }
-    .pagination li a {
-        text-decoration: none;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        color: #333;
-    }
-    .pagination li a:hover,
-    .pagination li.active a {
-        background-color: #03989e;
-        color: white;
-    }
-    .pagination li.disabled span {
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        color: #ccc;
-    }
-    #items-per-page {
-        margin-left: 20px;
-    }
+.pagination {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
 
-    .search {
-        background-color: white;	
-        width: 20px;
-        height: 50px;
-        padding: 0 !important;
-        border-style: none;
-    
-    }
-  
-    .search-container{
-        padding: 10px;
-        display: flex;
-        
-      
-        
-    }
-    .search-container input{
-        border-style: none;
-        border-bottom: 2px solid #03989E;
-        font-size: 1.5em;
-        color: #777474;
-    }
-    .search-container input::placeholder{
-        color: #64646487;
-    }
-  
-.export{
-    width:70px;
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.pagination li a:hover,
+.pagination li.active a {
+    background-color: #03989e;
+    color: white;
+}
+
+.pagination li.disabled span {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #ccc;
+}
+
+#items-per-page {
+    margin-left: 20px;
+}
+
+.search {
+    background-color: white;
+    width: 20px;
+    height: 50px;
+    padding: 0 !important;
+    border-style: none;
+
+}
+
+.search-container {
+    padding: 10px;
+    display: flex;
+
+
+
+}
+
+.search-container input {
+    border-style: none;
+    border-bottom: 2px solid #03989E;
+    font-size: 1.5em;
+    color: #777474;
+}
+
+.search-container input::placeholder {
+    color: #64646487;
+}
+
+.export {
+    width: 70px;
     height: 30px;
     padding: 5px;
     border: $ATorange 1px solid;
     color: $ATorange;
     border-radius: 5px;
-    margin-left: 1630px;
     background-color: transparent;
     position: absolute;
     margin-top: 19px;

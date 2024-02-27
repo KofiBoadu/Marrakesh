@@ -1,3 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+h3 {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+h1 {
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 500;
+}
+
+h5 {
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 200;
+}
+
+p {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+button {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+input {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+label {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+select {
+  font-family: "Lexend Deca", sans-serif;
+}
+
 .create {
   display: flex;
   justify-content: center;
@@ -20,7 +55,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: sans-serif;
 }
 
 .modal {
@@ -45,7 +79,6 @@
   background: linear-gradient(90deg, rgb(3, 152, 158) 32%, rgb(191, 232, 233) 100%);
 }
 .modal_title--header {
-  font-family: sans-serif;
   font-size: 1.5em;
   color: white;
   margin-left: 5%;
@@ -76,7 +109,6 @@
 }
 .modal_wrap label {
   margin-right: 50%;
-  font-family: sans-serif;
   margin-top: 5%;
   color: #959494;
 }
@@ -94,7 +126,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: sans-serif;
+  font-family: "Lexend Deca", sans-serif;
   margin-left: 20%;
   margin-bottom: 5%;
 }
@@ -149,7 +181,7 @@
   background: linear-gradient(90deg, rgb(3, 152, 158) 32%, rgb(191, 232, 233) 100%);
 }
 .tour_header--title {
-  font-family: sans-serif;
+  font-family: "Lexend Deca", sans-serif;
   font-size: 1.5em;
   color: white;
   margin-left: 5%;
@@ -180,7 +212,7 @@
 }
 .tour_wrap label {
   margin-right: 50%;
-  font-family: sans-serif;
+  font-family: "Lexend Deca", sans-serif;
   margin-top: 5%;
   color: #959494;
 }
@@ -198,7 +230,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: sans-serif;
+  font-family: "Lexend Deca", sans-serif;
   margin-left: 20%;
   margin-bottom: 5%;
 }
@@ -238,12 +270,11 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: sans-serif;
   padding: 10px 0px;
   margin-bottom: 5%;
   margin-top: 4%;
   margin-left: 0;
-  font-weight: bold;
+  font-weight: 300;
 }
 
 #tourBtn {
@@ -253,12 +284,11 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: sans-serif;
   margin-top: 4%;
   margin-bottom: 5%;
   padding: 10px 0px;
   margin-left: 0;
-  font-weight: bold;
+  font-weight: 300;
 }
 
 #table-container {
@@ -271,6 +301,7 @@
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid rgb(238, 234, 234);
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #costumer-header {
@@ -278,7 +309,6 @@
 }
 
 #total {
-  font-family: Helvetica;
   font-size: 1em;
   color: #646464;
   margin: 5%;
@@ -287,7 +317,7 @@
 
 #table-title {
   margin: 2%;
-  font-family: Helvetica;
+  font-weight: 600;
   font-size: 2em;
   color: #959494;
 }
@@ -314,13 +344,11 @@
 #deleteButton p {
   margin-top: 1.5%;
   color: #FF914C;
-  font-family: helvetica;
 }
 
 #updateButton p {
   margin-top: 1.5%;
   color: #FF914C;
-  font-family: helvetica;
 }
 
 #delete-button-icon {
@@ -330,7 +358,7 @@
 th {
   padding: 10px;
   text-align: center;
-  font-family: Helvetica;
+  font-family: "Lexend Deca", sans-serif;
   font-weight: 400;
   font-size: 1.2em;
 }
@@ -344,13 +372,17 @@ th {
 
 td {
   text-align: center;
-  font: 1em Helvetica;
+  font: 1em;
   font-weight: 200;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 tbody {
-  max-height: 200px; /* Set the maximum height of the scrollable area */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 200px;
+  /* Set the maximum height of the scrollable area */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #table-body tr td {
@@ -397,7 +429,7 @@ tbody {
 td a {
   text-decoration: none;
   color: #03989E;
-/*  text-transform: capitalize;*/
+  text-transform: capitalize;
 }
 
 .dashboard {
@@ -421,16 +453,13 @@ td a {
   margin-left: 5%;
 }
 .dashboard_header {
-  font-family: Helvetica;
   font-size: 2.2em;
   margin-bottom: 0%;
   color: #03989E;
 }
 .dashboard_subheader {
-  font-family: Helvetica;
   font-size: 1.2em;
   margin-top: 2%;
-  font-weight: 100;
 }
 
 #deleteModal {
@@ -476,7 +505,6 @@ td a {
   color: #FF914C;
   text-align: center;
   margin-bottom: 20px;
-  font-family: Helvetica;
 }
 
 .modal-content p {
@@ -534,20 +562,17 @@ button#cancel:hover {
 .delete-title {
   margin-left: 30%;
   margin-top: 7%;
-  font-family: Helvetica;
   text-shadow: gray 2px;
 }
 
 .delete-message-1 {
   text-align: center;
-  font-family: Helvetica;
   font-size: 1.2em;
   margin-top: 5%;
 }
 
 .delete-message-2 {
   text-align: center;
-  font-family: Helvetica;
   font-size: 1em;
 }
 

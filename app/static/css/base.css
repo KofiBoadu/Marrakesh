@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
 body {
   margin: 0%;
 }
@@ -28,13 +29,12 @@ body {
 }
 .nav_link a {
   text-decoration: none;
-  font-family: Helvetica;
+  font-family: "Lexend Deca";
   color: #959494;
   font-size: 1.2em;
 }
 .nav_welcome {
   margin-left: 10%;
-  font-family: Helvetica;
   color: #03989E;
   font-weight: 600;
 }
@@ -122,5 +122,6 @@ body {
 }
 
 .user-fullname {
-  font-size: 16px; /* Adjust size as needed */
+  font-size: 14px; /* Adjust size as needed */
+  font-family: "Lexend Deca", sans-serif;
 }/*# sourceMappingURL=base.css.map */

@@ -9,10 +9,7 @@ body {
     box-sizing: border-box;
 }
 
-/* Ensure the font is consistent */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
 
 .customer-dashboard {
     display: flex;
@@ -48,7 +45,7 @@ body {
 .profile-avatar-letter {
 
     text-transform: uppercase;
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     font-size: 3em;
     font-weight: 500;
     padding-top: 25px;
@@ -66,14 +63,14 @@ body {
 
 .profile-name h1 {
     text-transform: capitalize;
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     color: #03989E;
 
 
 }
 
 .profile-name p {
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     color: #646464;
 }
 
@@ -92,13 +89,13 @@ body {
 }
 .profile-info-container {
     margin-left: 5%;
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     margin-bottom: 5%;
     color: #646464;
 }
 
 .profile-title {
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     color: #03989E;
     font-size: 1.25rem;
 
@@ -152,7 +149,7 @@ body {
     border-radius: 5px;
     transition: background-color 0.3s ease;
     color: #FFF;
-    font-family: helvetica;
+    font-family: "Lexend Deca", sans-serif;
     font-weight: 600;
     padding-left: 0px;
     padding-right: 0px;

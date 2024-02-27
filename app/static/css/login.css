@@ -2,7 +2,7 @@ body, html {
   background-image: url('https://images.pexels.com/photos/17831035/pexels-photo-17831035/free-photo-of-people-sitting-on-chairs-in-savanna.jpeg?');
   height: 100%;
   margin: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
