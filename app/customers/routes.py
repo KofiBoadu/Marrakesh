@@ -125,14 +125,19 @@ def add_paid_customer():
         tour_type= request.form.get("tour_date")
 
         tour_date= tour_type.split()
+        print(tour_date)
 
         customer_exist=check_customer_exists(email)
+        print(customer_exist)
 
         tour_year= tour_date.pop()
+        print(tour_year)
 
         tour_name=" ".join(tour_date)
+        print(tour_name)
 
         tour_id= get_tour_id(tour_name,tour_year)
+        print(tour_id)
 
 
         if customer_exist:
