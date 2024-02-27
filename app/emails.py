@@ -14,10 +14,12 @@ mail = Mail()
 
 
 
-def send_email(subject, sender, recipients, text_body):
+def send_email(subject, sender, recipients, text_body,html_body=None):
     with current_app.app_context():
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = text_body
+        if html_body is not None:
+            msg.html = html_body 
         try:
             mail.send(msg)
             return True

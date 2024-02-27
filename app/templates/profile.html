@@ -144,7 +144,7 @@
             <div class="noteSubject">
               <strong>Note</strong>
           
-              <p class="fromNote"> by Daniel Boadu</p>
+              <p class="fromNote"> by {{login_user}}</p>
             </div>
             
             <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
@@ -224,6 +224,8 @@
       onclick="closeEmailForm()" />
   </div>
 
+
+
   <form class="sendEmail" style="display: block;" action="{{url_for('send_emails.send_customer_email') }}"
     method="post">
 
@@ -252,7 +254,11 @@
     <div class="form-group--body">
       <!-- <label for="emailBody">Body</label> -->
       <textarea id="emailBody" name="body" rows="10" placeholder="Write your message here" required></textarea>
+
+
     </div>
+
+    
 
     <!-- Send Button -->
     <div class="form-group-submit">
@@ -279,12 +285,12 @@
     <div class="update_wrap"> 
       <div class="update_first_name">
         <label for="firstName">First Name</label>
-        <input type="text" id="updatefirstName" name="updatefirst_name" value="{{ profile[0].split()[0] }}">
+        <input type="text" id="updatefirstName" name="updatefirst_name" value="{{ profile[0].split()[0] }}" required>
     </div>
     <!-- Last Name -->
     <div class="update_last_name">
         <label for="lastName">Last Name</label>
-        <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}">
+        <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}" required>
     </div>
 
 
@@ -313,7 +319,7 @@
     <!-- primary email -->
     <div class="update_email">
         <label for="primary_email">primary email</label>
-        <input type="text" id="update_email" name="update_email" value="{{profile[1]}}">
+        <input type="text" id="update_email" name="update_email" value="{{profile[1]}}" required>
     </div>
   
 
@@ -338,7 +344,7 @@
     <!-- primary email -->
     <div class="update_number">
         <label for="primary_email">phone number</label>
-        <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}">
+        <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
     </div>
   
 

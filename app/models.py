@@ -101,7 +101,9 @@ def create_databaseConnection():
 
 
 
-
+# I need to include the tour booking ID , tour ID with every tour name 
+# and then attach it to the values of those select  and update tour id on tour bookings 
+# where booking ID is the same as the booking ID passed and customerID is the customer ID 
 
 def create_get_customer_tour_details_procedure():
 
@@ -177,7 +179,6 @@ def create_get_customer_tour_details_procedure():
 
 
 
-# print(create_get_customer_tour_details_procedure())
 
 
 
@@ -225,7 +226,13 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
         if database_connection:
             database_connection.close()
 
-    return customers
+    if len(customers)==0:
+
+        return False 
+
+    else:
+
+        return customers
 
 
 
@@ -488,31 +495,50 @@ def create_new_tourDates(tour_name, start_date, end_date, price, destination_id,
 
 
 
+
+
+
 def check_customer_exists(email):
     query = "SELECT customer_id FROM customers WHERE email_address = %s"
-    database_connection = None
-    cursor = None
     customer_id = None
 
     try:
         database_connection = create_databaseConnection()
-        if database_connection:
-            cursor = database_connection.cursor()
-            cursor.execute(query, (email,))
-            customer = cursor.fetchone()
-            if customer:
-                customer_id = customer[0]
+        cursor = database_connection.cursor()
+
+        cursor.execute(query, (email,))
+        results = cursor.fetchall()  # Fetch all results to ensure all are consumed
+
+        # Log the number of entries found for the given email for debugging purposes.
+        if len(results) > 1:
+            logging.warning(f"Multiple entries found for {email}: {len(results)} entries.")
+
+        # Assuming the first row and first column is customer_id if any results are returned.
+        if results:
+            customer_id = results[0][0]
+
     except mysql.connector.Error as db_err:
         logging.error(f"Database error occurred: {db_err}")
     except Exception as e:
         logging.error(f"Error occurred: {e}")
     finally:
-        if cursor:
-            cursor.close()
-        if database_connection:
-            database_connection.close()
+        if 'cursor' in locals() and cursor is not None:
+            try:
+                cursor.close()
+            except mysql.connector.Error as err:
+                logging.error(f"Error closing cursor: {err}")
+        if 'database_connection' in locals() and database_connection is not None:
+            try:
+                database_connection.close()
+            except mysql.connector.Error as err:
+                logging.error(f"Error closing connection: {err}")
 
     return customer_id
+
+
+
+
+
 
 
 
@@ -599,11 +625,11 @@ def remove_paid_customer(customer_id):
         database_connection = create_databaseConnection()
         database_connection.autocommit = False
         cursor = database_connection.cursor()
-        cursor.execute("DELETE FROM tour_bookings WHERE customer_id=%s", (customer_id,))
-        bookings_deleted = cursor.rowcount > 0
+        # cursor.execute("DELETE FROM tour_bookings WHERE customer_id=%s", (customer_id,))
+        # bookings_deleted = cursor.rowcount > 0
         cursor.execute("DELETE FROM customers WHERE customer_id=%s", (customer_id,))
         customer_deleted = cursor.rowcount > 0
-        if bookings_deleted and customer_deleted:
+        if customer_deleted:
             database_connection.commit()
             deleted = True
         else:
@@ -625,5 +651,5 @@ def remove_paid_customer(customer_id):
 
 
 
-
+# bookings_deleted and
 

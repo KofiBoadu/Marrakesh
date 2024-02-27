@@ -2,7 +2,7 @@ from flask import  render_template, request,redirect,url_for,flash
 from app.profile_models import profile_details
 from . import customers_profile
 from app.emails import all_emails_sent_to_customer
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.extension import cache
 from app.models import format_phone_number
 from app.customer_models import update_customer_name,update_customer_email,update_customer_phone
@@ -23,8 +23,9 @@ def customer_profile(customer_id):
         tour_list= tour_names.split(', ')
         emails= all_emails_sent_to_customer(customer_id)
         notes= get_customer_notes(customer_id)
+        login_user=current_user.email_address
         print(notes )
-        return render_template('profile.html', profile=profile,notes=notes,tour_list=tour_list,customer_id=customer_id,emails=emails,phone_number=phone_number)
+        return render_template('profile.html', login_user=login_user,profile=profile,notes=notes,tour_list=tour_list,customer_id=customer_id,emails=emails,phone_number=phone_number)
 
 
 @customers_profile.route('/', methods=['POST'])
