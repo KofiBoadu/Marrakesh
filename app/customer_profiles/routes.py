@@ -16,7 +16,7 @@ def customer_profile(customer_id):
         return redirect(url_for("customers.home_page"))
     else:
         profile= profile_details(customer_id)
-        tour_names=profile[4]
+        tour_names=profile[6]
         phone_number=format_phone_number(profile[2])
         if not tour_names:
             return redirect(url_for("customers.home_page"))

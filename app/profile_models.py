@@ -6,12 +6,16 @@ from .models import create_databaseConnection
 def profile_details(customer_id):
     query = """
         SELECT
-          CONCAT(c.first_name, ' ', c.last_name) AS customer_name,
+          CONCAT(c.first_name, ' ', c.last_name) ,
           c.email_address,
           c.phone_number,
           c.state_address,
-          GROUP_CONCAT(CONCAT(t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tours,
-          SUM(t.tour_price) AS total_price
+          c.lead_status,
+          c.gender,
+          GROUP_CONCAT(CONCAT(t.tour_type," ",t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') ,
+          SUM(t.tour_price) 
+          
+
         FROM
           customers c
         JOIN
@@ -41,5 +45,5 @@ def profile_details(customer_id):
             database_connection.close()
 
 
-
+# print(profile_details(1))
 

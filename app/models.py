@@ -55,50 +55,6 @@ def create_databaseConnection():
 
 
 
-# def create_get_customer_tour_details_procedure():
-#     procedure_query = """
-#     CREATE PROCEDURE GetCustomerTourDetails(IN items_per_page INT, IN offset INT)
-#     BEGIN
-#         SELECT
-#             c.customer_id,
-#             CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-#             c.state_address AS `State`,
-#             c.email_address AS `Email`,
-#             c.phone_number AS `Mobile`,
-#             t.tour_name AS `Tour`,
-#             YEAR(t.start_date) AS `Travel_Year_Start`,
-#             t.tour_price AS `Tour_Price`,
-#             t.tour_type AS `Tour_Type`
-#         FROM
-#             customers c
-#         JOIN
-#             tour_bookings tb ON tb.customer_id = c.customer_id
-#         JOIN
-#             tours t ON tb.tour_id = t.tour_id
-#         JOIN
-#             destinations d ON t.destination_id = d.destination_id
-#         ORDER BY
-#             YEAR(t.start_date) DESC, c.customer_id DESC
-#         LIMIT items_per_page OFFSET offset;
-#     END;
-
-#     """
-#     database_connection = None
-#     cursor = None
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
-#         cursor.execute("DROP PROCEDURE IF EXISTS GetCustomerTourDetails")
-#         cursor.execute(procedure_query)
-#         database_connection.commit()
-#     except Exception as e:
-#         raise Exception(f"An error occurred while creating procedure: {e}")
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection is not None:
-#             database_connection.close()
-
 
 
 # I need to include the tour booking ID , tour ID with every tour name 
@@ -121,10 +77,8 @@ def create_get_customer_tour_details_procedure():
                 c.state_address AS `State`,
                 c.email_address AS `Email`,
                 c.phone_number AS `Mobile`,
-                t.tour_name AS `Tour`,
-                YEAR(t.start_date) AS `Travel_Year_Start`,
-                t.tour_price AS `Tour_Price`,
-                t.tour_type AS `Tour_Type`
+                c.lead_status AS  `Lead Status`
+             
             FROM
                 customers c
             JOIN
@@ -142,10 +96,8 @@ def create_get_customer_tour_details_procedure():
                 c.state_address AS `State`,
                 c.email_address AS `Email`,
                 c.phone_number AS `Mobile`,
-                t.tour_name AS `Tour`,
-                YEAR(t.start_date) AS `Travel_Year_Start`,
-                t.tour_price AS `Tour_Price`,
-                t.tour_type AS `Tour_Type`
+                c.lead_status AS  `Lead Status`
+
             FROM
                 customers c
             JOIN
@@ -181,7 +133,7 @@ def create_get_customer_tour_details_procedure():
 
 
 
-
+# print(create_get_customer_tour_details_procedure())
 
 
 def total_customers():

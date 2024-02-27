@@ -22,7 +22,7 @@ def home_page():
         login_user_email=login_user.email_address
         page = request.args.get('page', 1, type=int)
         search= request.form.get('search_query')
-        items_per_page = 8
+        items_per_page = 50
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
         customers= get_customers_information(page, items_per_page,search)
@@ -78,13 +78,13 @@ def send_update():
     email = request.form.get('updateemail')
     phone = request.form.get('updatephone')
     gender = request.form.get('updategender')
-    tour_type= request.form.get("updatetour_date")
+    # tour_type= request.form.get("updatetour_date")
     update_customerDetails(customer_id, first_name, last_name,email ,phone, gender, state)
-    tour_date= tour_type.split()
-    tour_year= tour_date.pop()
-    tour_name=" ".join(tour_date)
-    tour_id= get_tour_id(tour_name,tour_year)
-    update_tour_bookings(tour_id, customer_id)
+    # tour_date= tour_type.split()
+    # tour_year= tour_date.pop()
+    # tour_name=" ".join(tour_date)
+    # tour_id= get_tour_id(tour_name,tour_year)
+    # update_tour_bookings(tour_id, customer_id)
     return redirect(url_for("customers.home_page"))
 
 

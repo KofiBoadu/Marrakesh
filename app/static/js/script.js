@@ -158,9 +158,6 @@ function validateDeleteInput(input) {
 }
 
 
-
-
-
  function changeItemsPerPage(select) {
         window.location.href = "{{ url_for('customers.home_page', page=1) }}?per_page=" + select.value;
     }
@@ -169,10 +166,13 @@ function validateDeleteInput(input) {
 
 
 
+
+
+
+
+
+
 // dynamically submits and reoute to homepage when there is any search in the search box
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const form = document.getElementById('searchForm');
@@ -184,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.value = savedQuery;
     }
 
-    searchInput.focus();
+    // Remove the automatic focus on page load to prevent it from focusing when not desired
+    // searchInput.focus(); // This line is commented out or removed
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
@@ -204,10 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('searchQuery', query);
         }
     });
+
+    // Add event listener for focusing on the input only when the user interacts with it
+    searchInput.addEventListener('click', function() {
+        searchInput.focus();
+    });
 });
-
-
-
 
 
 
