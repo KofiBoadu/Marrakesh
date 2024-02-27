@@ -295,7 +295,6 @@ select {
   border-radius: 10px 10px 10px 10px;
   margin: 2%;
   align-self: center;
-/*  border-style: solid;*/
 }
 
 #table-header {
@@ -376,6 +375,7 @@ td {
   font: 1em;
   font-weight: 200;
   font-family: "Lexend Deca", sans-serif;
+  text-transform: lowercase;
 }
 
 tbody {
@@ -430,7 +430,6 @@ tbody {
 td a {
   text-decoration: none;
   color: #03989E;
-  text-transform: capitalize;
 }
 
 .dashboard {
@@ -531,6 +530,22 @@ td a {
   background-color: #d9534f;
   color: white;
   display: block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.delete-buttons-2 {
+  color: white;
+  display: block;
+  background-color: #FF914C;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 #confirmDeleteButton:hover {
@@ -558,6 +573,7 @@ button#cancel:hover {
 .delete-buttons {
   display: flex;
   margin-left: 10px;
+  gap: 10px;
 }
 
 .delete-title {
@@ -628,16 +644,12 @@ button#cancel:hover {
   border-style: none;
 }
 
-
-
-
 .search-container input {
   border-style: none;
   border-bottom: 2px solid #03989E;
   font-size: 1.5em;
   color: #777474;
   margin-left: 0px;
-
 }
 
 .search-container input::-moz-placeholder {
@@ -648,36 +660,37 @@ button#cancel:hover {
   color: rgba(100, 100, 100, 0.5294117647);
 }
 
-
 .search-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            width: 100%;
-        }
-        .search-container > div,
-        .search-container > form {
-            flex-grow: 1;
-        }
-        .action-container {
-            flex-grow: 2;
-            display: flex;
-            justify-content: center;
-            gap: 10px; /* Adjust the gap between edit and delete buttons as needed */
-        }
-        .export-div {
-            display: flex;
-            justify-content: flex-end;
-          
-          
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+}
 
-        }
-        #deleteButton, #updateButton {
-            display: none; /* Initially hidden */
-        }
+.search-container > div,
+.search-container > form {
+  flex-grow: 1;
+}
 
+.action-container {
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  /* Adjust the gap between edit and delete buttons as needed */
+}
 
+.export-div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#deleteButton,
+#updateButton {
+  display: none;
+  /* Initially hidden */
+}
 
 .export {
   width: 70px;
@@ -686,10 +699,8 @@ button#cancel:hover {
   border: #FF914C 1px solid;
   color: #FF914C;
   border-radius: 5px;
-  
   background-color: transparent;
   position: absolute;
   margin-top: 0px;
   border-style: solid;
-
 }/*# sourceMappingURL=hompage.css.map */

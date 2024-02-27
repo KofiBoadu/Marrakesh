@@ -217,17 +217,16 @@ button:active {
 .profile-name-container {
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-left: 40px;
+  
 }
 
 .profile-name-container img {
     margin-left: 15px;
 }
 
-.profile-name-container h1 {
-    margin-left: 40px;
-}
+
 
 .edit {
     display: none;
