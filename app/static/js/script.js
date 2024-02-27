@@ -176,42 +176,59 @@ function validateDeleteInput(input) {
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const form = document.getElementById('searchForm');
-    const homeUrl = form.getAttribute('data-home-url'); // Get the home page URL from the data attribute
+    // Get the home URL from the form's data attribute
+    const homeUrl = form.getAttribute('data-home-url');
 
-    // Load any saved search query from session storage and set it as the input value
-    const savedQuery = sessionStorage.getItem('searchQuery');
-    if (savedQuery) {
-        searchInput.value = savedQuery;
+    // Function to clear search input and session storage
+    function clearSearch() {
+        searchInput.value = ''; // Clear the input field
+        sessionStorage.removeItem('searchQuery'); // Clear any saved query from session storage
     }
 
-    // Remove the automatic focus on page load to prevent it from focusing when not desired
-    // searchInput.focus(); // This line is commented out or removed
+    // Check if on the homepage by comparing the pathnames
+    if (window.location.pathname === new URL(homeUrl, window.location.href).pathname) {
+        clearSearch();
+    } else {
+        // Load any saved search query from session storage and set it as the input value
+        const savedQuery = sessionStorage.getItem('searchQuery');
+        if (savedQuery) {
+            searchInput.value = savedQuery;
+        }
+    }
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
+        // Save the current query to session storage
+        sessionStorage.setItem('searchQuery', query);
+    });
 
+    form.addEventListener('submit', function(event) {
+        const query = searchInput.value.trim();
+        if (query.length === 0) {
+            // Prevent form submission if the search query is empty
+            event.preventDefault();
+            clearSearch();
+            return false;
+        }
+        // Optionally, clear the search query when submitting the form
+        // clearSearch(); // Uncomment this line if you want to clear the search upon submission
+    });
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+        // Auto-submit logic: submit form if query length is at least 1 character.
+        // Adjust this logic as per your requirement.
         if (query.length >= 3) {
-            // Save the current query to session storage right before submitting
-            sessionStorage.setItem('searchQuery', query);
-            form.submit();
-        } else if (query.length === 0) {
-            // Clear the saved query from session storage and redirect to home page
-            sessionStorage.removeItem('searchQuery');
-            window.location.href = homeUrl; // Use the homeUrl variable for redirection
-        }
-        // For cases where the user deletes the text down to below 3 characters but doesn't empty the input
-        // Update the session storage with the current (non-empty) value
-        else {
-            sessionStorage.setItem('searchQuery', query);
+            sessionStorage.setItem('searchQuery', query); // Save before submitting
+            form.submit(); // Trigger form submission
         }
     });
 
-    // Add event listener for focusing on the input only when the user interacts with it
-    searchInput.addEventListener('click', function() {
-        searchInput.focus();
-    });
+
+    // This script assumes the form action does not always redirect to the home page,
+    // so it does not automatically clear the search input on form submission.
+    // Adjust based on your application's behavior.
 });
-
 
 
 
