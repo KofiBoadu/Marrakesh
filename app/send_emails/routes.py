@@ -2,7 +2,7 @@
 from . import email_customers
 from app.emails import send_email,customer_email_interactions,delete_customer_email
 from flask import request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required,current_user
 
 
 @email_customers.route('/send-email', methods=['POST'])
@@ -14,11 +14,15 @@ def send_customer_email():
     body = request.form.get('body')
     customer_id= request.form.get('customer_id')
     status = "email not sent"
+    user= f"{current_user.first_name} {current_user.last_name}"
     email_sent = send_email(subject, from_email, [to_email], body)
     if email_sent:
         status = "sent"
 
-    store_email_details = customer_email_interactions(customer_id, subject, body, status)
+    # user= f"{current_user.first_name} {current_user.last_name}"
+    # print(user)
+
+    store_email_details = customer_email_interactions(customer_id, subject, body, status,user)
 
     return redirect(url_for('profiles.customer_profile', customer_id=customer_id))
 

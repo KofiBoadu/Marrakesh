@@ -85,11 +85,11 @@ def send_emails_asynchronously(recipients_list, subject, sender, text_body):
 
 
 
-def customer_email_interactions(customer_id,subject,body,status):
+def customer_email_interactions(customer_id,subject,body,status,sent_user):
     database_connection= None
     cursor= None
-    query="INSERT INTO emails (customer_id, subject, body, status) VALUES (%s, %s, %s, %s)"
-    values = (customer_id, subject, body, status)
+    query="INSERT INTO emails (customer_id, subject, body, status,sent_user) VALUES (%s, %s, %s, %s,%s)"
+    values = (customer_id, subject, body, status,sent_user)
     try:
         database_connection= create_databaseConnection()
         cursor= database_connection.cursor()
@@ -113,7 +113,7 @@ def customer_email_interactions(customer_id,subject,body,status):
 def all_emails_sent_to_customer(customer_id):
     database_connection = None
     cursor = None
-    query = "SELECT email_id, subject, status, sent_date, body FROM emails WHERE customer_id = %s ORDER BY email_id DESC"
+    query = "SELECT email_id, subject, status, sent_date, body ,sent_user FROM emails WHERE customer_id = %s ORDER BY email_id DESC"
 
     all_emails = []
     try:
@@ -121,7 +121,7 @@ def all_emails_sent_to_customer(customer_id):
         cursor = database_connection.cursor()
         cursor.execute(query, (customer_id,))
         results = cursor.fetchall()
-        all_emails = [{'email_id':email[0],'subject': email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4]} for email in results]
+        all_emails = [{'email_id':email[0],'subject': email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4],"sent_user":email[5]} for email in results]
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:

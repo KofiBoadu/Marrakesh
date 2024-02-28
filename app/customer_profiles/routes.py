@@ -22,6 +22,7 @@ def customer_profile(customer_id):
             return redirect(url_for("customers.home_page"))
         tour_list= tour_names.split(', ')
         emails= all_emails_sent_to_customer(customer_id)
+       
         notes= get_customer_notes(customer_id)
         login_user=current_user.email_address
         print(notes )
