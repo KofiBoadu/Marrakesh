@@ -45,7 +45,7 @@ def get_customer_details():
     
     # Fetching customer details from the database
     the_details = fetch_customer_details(customer_id)
-    print("Customer Details:", the_details)
+  
     
     # Assuming the_details is a list of tuples and we're interested in the first tuple
     if the_details:

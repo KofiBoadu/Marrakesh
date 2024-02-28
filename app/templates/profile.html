@@ -357,8 +357,6 @@
         <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
     </div>
   
-
-
     <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
@@ -366,6 +364,52 @@
 </form>
 
 </div>
+
+
+
+
+
+
+<!-- updating customer bookings view template-->
+
+<form class="update-bookings">
+  <div>
+    <h3>customer bookings</h3>
+    <ul>
+          {% for bookings  in booking_info %}
+          <li>{{ bookings['tour_name'] }} </li> 
+          <button type="button" class="update-btn" data-booking-id="{{ bookings['booking_id'] }}" data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}" data-tour-name="{{ bookings['tour_name'] }}">update</button>
+
+          {% endfor %} 
+    </ul>
+
+  </div>
+
+</form>
+
+
+
+<!-- submit update information -->
+<form class="submit-update-bookings" style="display: none;" action="{{ url_for('profiles.change_bookings') }}" method="POST">
+  <div id="submit_booking">
+     <h3>Update bookings</h3>
+     <p></p>
+
+     <label for="tour">Change to:</label>
+     <select class="tour-selection" name="updatetour_date">
+           {% for date in available_dates %}          
+           <option value="{{ date }}">{{ date }}</option>
+           {% endfor %}         
+     </select>
+
+     <input type="hidden" name="updatingbooking_customer_id" value="">
+     <input type="hidden" name="updatingbooking_booking_id" value="">
+     <input type="hidden" name="updatingbooking_tour_id" value="">
+     <button type="submit">Update tour</button>
+  </div>
+</form>
+
+
 
 
 

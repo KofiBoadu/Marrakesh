@@ -1,5 +1,5 @@
 from  .models import create_databaseConnection
-
+import logging
 
 
 
@@ -202,6 +202,43 @@ def update_customer_name(first_name, last_name,customer_id):
 
    
 
+
+
+def change_customer_bookings(booking_id, new_tour_id, customer_id):
+    """
+    Updates the tour_id for a given booking and customer.
+
+    Parameters:
+    - booking_id: The ID of the booking to update.
+    - new_tour_id: The new tour ID to associate with the booking.
+    - customer_id: The ID of the customer who made the booking.
+
+    Returns:
+    - True if the update was successful, False otherwise.
+    """
+    query = "UPDATE tour_bookings SET tour_id = %s WHERE booking_id = %s AND customer_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (new_tour_id, booking_id, customer_id))
+        database_connection.commit()
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        logging.error(f"Error in updating booking: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
 

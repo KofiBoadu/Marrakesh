@@ -193,3 +193,63 @@ function emailHideEditButton(event) {
   }
 }
 
+
+
+
+
+
+
+
+
+// update bookings
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var updateButtons = document.querySelectorAll('.update-btn');
+    console.log("JavaScript is running");
+
+
+    updateButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Prevent the default action
+            event.preventDefault();
+
+            var bookingId = this.getAttribute('data-booking-id');
+            var customerId = this.getAttribute('data-customer-id');
+            var tourId = this.getAttribute('data-tour-id');
+            var tourName = this.getAttribute('data-tour-name');
+
+            // Update the inputs in the submit-update-bookings form
+            let id=document.querySelector('input[name="updatingbooking_customer_id"]').value = customerId;
+            let bookid= document.querySelector('input[name="updatingbooking_booking_id"]').value = bookingId;
+            let tourid= document.querySelector('input[name="updatingbooking_tour_id"]').value = tourId;
+            document.getElementById('submit_booking').querySelector('p').textContent = `Change from: ${tourName}`;
+            console.log(id,bookid,tourid)
+
+            // Show the submit-update-bookings form
+            document.querySelector('.submit-update-bookings').style.display = 'block';
+
+            // Correct the placeholders in the text content
+            var formTexts = document.querySelectorAll('#submit_booking p');
+            formTexts[0].textContent = "change from: " + tourName;
+            formTexts[1].textContent = "change to: " + tourName; // Update this based on user interaction or another method
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
