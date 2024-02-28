@@ -64,14 +64,14 @@ def create_databaseConnection():
 def create_get_customer_tour_details_procedure():
 
     procedure_query = """
-    CREATE PROCEDURE GetCustomerTourDetails(
+        CREATE PROCEDURE GetCustomerTourDetails(
         IN search_query VARCHAR(255), 
         IN items_per_page INT, 
         IN offset INT)
     BEGIN
         IF search_query IS NULL OR search_query = '' THEN
-            -- Original query without filtering
-            SELECT
+            -- Original query without filtering, modified to include DISTINCT
+            SELECT DISTINCT
                 c.customer_id,
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.state_address AS `State`,
@@ -89,8 +89,8 @@ def create_get_customer_tour_details_procedure():
                 YEAR(t.start_date) DESC, c.customer_id DESC
             LIMIT items_per_page OFFSET offset;
         ELSE
-            -- Query with filtering based on search_query
-            SELECT
+            -- Query with filtering based on search_query, modified to include DISTINCT
+            SELECT DISTINCT
                 c.customer_id,
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.state_address AS `State`,
@@ -113,6 +113,7 @@ def create_get_customer_tour_details_procedure():
         END IF;
     END;
     """
+    
     database_connection = None
     cursor = None
     try:
@@ -133,7 +134,7 @@ def create_get_customer_tour_details_procedure():
 
 
 
-# print(create_get_customer_tour_details_procedure())
+print(create_get_customer_tour_details_procedure())
 
 
 def total_customers():
