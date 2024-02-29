@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<div class="dashboard">
+
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/windows/64/ff914c/stocks-growth.png" alt="stocks-growth" />
+        </div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">${{revenue}}</h1>
+            <h5 class="dashboard_subheader">Gross revenue since {{year}} </h5>
+        </div>
+
+    </div>
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/pastel-glyph/64/FF914C/person-male--v3.png" alt="person-male--v3" />
+        </div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">{{total_travelers}}</h1>
+            <h5 class="dashboard_subheader">Total number of travellers since {{year}}</h5>
+        </div>
+
+    </div>
+    <div class="dashboard_card">
+        <div class="dashboard_container1">
+            <img class="dashboard_icon" width="64" height="64"
+                src="https://img.icons8.com/material-sharp/64/ff914c/economic-improvement.png"
+                alt="economic-improvement" />
+        </div>
+        <div class="dashboard_container2">
+            <h1 class="dashboard_header">$107,60.0</h1>
+            <h5 class="dashboard_subheader">Profit generated since {{year}}</h5>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
