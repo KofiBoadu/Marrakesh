@@ -16,7 +16,7 @@ html, body {
   overflow: hidden;
   position: ABSOLUTE;
     left: 78%;
-    TOP: 60%;
+    TOP: 50%;
   transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
 }
 .email-title{
@@ -117,7 +117,7 @@ html, body {
   overflow: hidden;
   position: ABSOLUTE;
   left: 78%;
-  TOP: 75%;
+  TOP: 60%;
   transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
   height: 470px;
 }

@@ -14,48 +14,56 @@
     <div class="profile-name">
       <div class="profile-name-container" onmouseover="showEditButton()" onmouseout="hideEditButton(event)">
         <h1>{{ profile[0] }}</h1>
-        <img onclick="showUpdateNameForm()" style="display: none" class="edit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" onclick=""/>
+        <img onclick="showUpdateNameForm()" style="display: none" class="edit" width="20" height="20"
+          src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" onclick="" />
 
 
       </div>
-    
+
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
-      <div class="profile-actions" >
-        <div class="actions-container"onclick="openNoteForm()">
-          <img width="40" height="40" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/FF914C/external-pencil-whatsapp-flatart-icons-outline-flatarticons.png" alt="external-pencil-whatsapp-flatart-icons-outline-flatarticons"/>
+      <div class="profile-actions">
+        <div class="actions-container" onclick="openNoteForm()">
+          <img width="40" height="40"
+            src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/FF914C/external-pencil-whatsapp-flatart-icons-outline-flatarticons.png"
+            alt="external-pencil-whatsapp-flatart-icons-outline-flatarticons" />
           <p>Note</p>
         </div>
-        <div class="actions-container"onclick="openEmailForm()">
+        <div class="actions-container" onclick="openEmailForm()">
           <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
-          alt="circled-envelope" />
+            alt="circled-envelope" />
           <p>Email</p>
-          
+
         </div>
-        
-        
-          
+
+
+
       </div>
     </div>
 
 
     <h2 class="profile-title">Customer Information</h2>
-    <div class="profile-info-container" id="phoneForm"onmouseover="showPhoneEditButton()" onmouseout="phoneHideEditButton(event)">
+    <div class="profile-info-container" id="phoneForm" onmouseover="showPhoneEditButton()"
+      onmouseout="phoneHideEditButton(event)">
       <h4>Mobile:</h4>
       <div class="phone-wrap">
-      <p> {{ phone_number }}</p>
-      <img onclick="showUpdatePhoneForm()" style="display: none" class="phoneEdit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" />
+        <p> {{ phone_number }}</p>
+        <img onclick="showUpdatePhoneForm()" style="display: none" class="phoneEdit" width="20" height="20"
+          src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" />
 
       </div>
-      
+
     </div>
-    <div class="profile-info-container"id="phoneForm"onmouseover="showEmailEditButton()" onmouseout="emailHideEditButton(event)">
+    <div class="profile-info-container" id="phoneForm" onmouseover="showEmailEditButton()"
+      onmouseout="emailHideEditButton(event)">
       <h4>Email: </h4>
       <div class="phone-wrap">
         <p>{{ profile[1] }}</p>
-        <img  style="display: none" class="emailEdit" width="20" height="20" src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new" onclick="showUpdateEmailForm()"/> 
+        <img style="display: none" class="emailEdit" width="20" height="20"
+          src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new"
+          onclick="showUpdateEmailForm()" />
 
       </div>
-      
+
     </div>
     <!-- Assuming the third element is the number -->
     <!-- No need for a second email -->
@@ -69,19 +77,12 @@
       <p id="state-info">{{ profile[4] }}</p> <!-- Assuming the fourth element is the status -->
     </div>
 
-     <div class="profile-info-container">
+    <div class="profile-info-container">
       <h4>Gender</h4>
       <p id="state-info">{{ profile[5] }}</p> <!-- Assuming the fourth element is the gender-->
     </div>
 
 
-
-    <h2 class="profile-title">Tours Booked</h2>
-    <ul>
-      {% for tour_name in tour_list %}
-      <li>{{ tour_name }} </li> 
-      {% endfor %}
-    </ul>
     <div>
 
       <div class="revenue">
@@ -95,17 +96,17 @@
       </div>
 
     </div>
-    
+
 
   </div>
 
 
 
 
-<!-- customer activity  -->
+  <!-- customer activity  -->
   <div class="email-activity">
     <div class="email-activity-header">
-      <h2 class="email-activity-title">ACTIVITY</h2>
+      <h2 class="email-activity-title">ACTIVITY TIMELINE </h2>
     </div>
     {% for email in emails %}
 
@@ -126,9 +127,9 @@
           method="POST" class="delete-form">
           <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
           <input type="hidden" name="customer_id" value="{{ customer_id }}">
-          <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
-            class="delete-text-link"><img  width="16" height="16"
-            src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</a>
+          <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link"><img
+              width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png"
+              alt="filled-trash" />delete</a>
         </form>
 
       </div>
@@ -146,41 +147,80 @@
 
     </div>
     {% endfor %}
-  
-      {% for notes_id, customer_note ,date in notes %}
-      <div class="note-activity-container">
-        <div class="note-header">
-          <div class="header-container">
-            <div class="noteSubject">
-              <strong>Note</strong>
-          
-              <p class="fromNote"> by {{login_user}}</p>
-            </div>
-            
-            <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
-              <input type="hidden" name="notes_id" value="{{notes_id}}">
-              <input type="hidden" name="customer_id" value="{{ customer_id }}">
-              <button type="submit" id="noteDelete"><img  width="16" height="16"
-                src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</button>
-            </form>
+
+    {% for notes_id, customer_note ,date in notes %}
+    <div class="note-activity-container">
+      <div class="note-header">
+        <div class="header-container">
+          <div class="noteSubject">
+            <strong>Note</strong>
+
+            <p class="fromNote"> by {{login_user}}</p>
           </div>
-          
+
+          <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
+            <input type="hidden" name="notes_id" value="{{notes_id}}">
+            <input type="hidden" name="customer_id" value="{{ customer_id }}">
+            <button type="submit" id="noteDelete"><img width="16" height="16"
+                src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</button>
+          </form>
         </div>
 
-        <div class="date-container">
-          <p class="dateNote">{{ date }}</p>
-        </div>
-        
-        <p class="message">{{ customer_note }}</p>
-          
-          
-          
-         
-        </div>
+      </div>
+
+      <div class="date-container">
+        <p class="dateNote">{{ date }}</p>
+      </div>
+
+      <p class="message">{{ customer_note }}</p>
+
+
+
+
+    </div>
+    {% endfor %}
+
+
+
+
+  </div>
+  <div class="profile-detail-container">
+    <div class="profile-bookings">
+
+      <!-- updating customer bookings view template-->
+      <h3>Tours Booked</h3>
+      <form class="update-bookings">
+
+
+        <ul>
+          {% for bookings in booking_info %}
+          <div class="tour-container">
+
+            <li>{{ bookings['tour_name'] }} </li>
+            <button type="button" class="update-btn" data-booking-id="{{ bookings['booking_id'] }}"
+              data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
+              data-tour-name="{{ bookings['tour_name'] }}"><img width="15" height="15"
+                src="https://img.icons8.com/material-outlined/24/FF914C/edit--v1.png" alt="edit--v1" /></button>
+
+
+          </div>
+
+
+          {% endfor %}
+        </ul>
+
+
+
+      </form>
+
+
+      <!-- <h2 class="profile-title">Tours Booked</h2>
+    <ul>
+      {% for tour_name in tour_list %}
+      <li>{{ tour_name }} </li>
       {% endfor %}
-  
-   
-  
+    </ul> -->
+    </div>
 
   </div>
 </div>
@@ -189,30 +229,30 @@
 
 
 <!-- writing customer notes forms  -->
-<div class="note-form-container" id="noteForm"  style="display: none;" >
+<div class="note-form-container" id="noteForm" style="display: none;">
   <div class="note-title">
     <h2>Note</h2>
-    <img onclick="expandNoteForm()" class="down" width="16" height="16" src="https://img.icons8.com/ios/50/FFFFFF/expand-arrow--v1.png" alt="expand-arrow--v1"/>
+    <img onclick="expandNoteForm()" class="down" width="16" height="16"
+      src="https://img.icons8.com/ios/50/FFFFFF/expand-arrow--v1.png" alt="expand-arrow--v1" />
     <img onclick="closeNoteForm()" class="note-close" id="exit" width="24" height="24"
-      src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign"
-       />
+      src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
   </div>
-  
-  <form  class="noteForm"action="{{ url_for('profiles.customer_notes') }}" method="post">
+
+  <form class="noteForm" action="{{ url_for('profiles.customer_notes') }}" method="post">
 
     <input type="hidden" name="customer_id" value="{{ customer_id }}">
 
-    <textarea id="notes" name="notes"  placeholder="Write your notes here" required></textarea>
+    <textarea id="notes" name="notes" placeholder="Write your notes here" required></textarea>
 
-    <button type="submit" class="send-note-button" >save note </button>  
-</form>
+    <button type="submit" class="send-note-button">save note </button>
+  </form>
 
 
 </div>
- 
 
 
- 
+
+
 
 
 
@@ -226,8 +266,8 @@
 
   <div class="email-title">
     <h2>Send Email</h2>
-    <img title="Maximize"class="expand" width="32" height="32"
-    src="https://img.icons8.com/windows/32/FFFFFF/circled-chevron-down.png" alt="circled-chevron-down"
+    <img title="Maximize" class="expand" width="32" height="32"
+      src="https://img.icons8.com/windows/32/FFFFFF/circled-chevron-down.png" alt="circled-chevron-down"
       onclick="toggleEmailForm(this)" alt="expand" />
     <img class="email-close" id="exit" width="24" height="24"
       src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign"
@@ -268,7 +308,7 @@
 
     </div>
 
-    
+
 
     <!-- Send Button -->
     <div class="form-group-submit">
@@ -287,34 +327,35 @@
 
 
 <!-- update customer name form  -->
-<div id="formContainer" class="hidden" style="display: none;"  >
-  <img class="updateNameClose" onclick="closeUpdateNameForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+<div id="formContainer" class="hidden" style="display: none;">
+  <img class="updateNameClose" onclick="closeUpdateNameForm()" width="16" height="16"
+    src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_name" action="{{ url_for('profiles.customer_name') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- first name -->
-    <div class="update_wrap"> 
+    <div class="update_wrap">
       <div class="update_first_name">
         <label for="firstName">First Name</label>
         <input type="text" id="updatefirstName" name="updatefirst_name" value="{{ profile[0].split()[0] }}" required>
-    </div>
-    <!-- Last Name -->
-    <div class="update_last_name">
+      </div>
+      <!-- Last Name -->
+      <div class="update_last_name">
         <label for="lastName">Last Name</label>
         <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}" required>
-    </div>
+      </div>
 
 
     </div>
-   
 
-    <div class="save" >
+
+    <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
 
-     <!-- <div class="cancel">
+    <!-- <div class="cancel">
       <button type="submit" class="save_new_name">cancel</button>
     </div> -->
-</form>
+  </form>
 </div>
 
 
@@ -322,24 +363,25 @@
 
 
 <!-- update customer email form-->
-<div id="emailformContainer" class="hidden" style="display: none;"  >
-  <img class="updateEmailClose" onclick="closeUpdateEmailForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+<div id="emailformContainer" class="hidden" style="display: none;">
+  <img class="updateEmailClose" onclick="closeUpdateEmailForm()" width="16" height="16"
+    src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_email" action="{{ url_for('profiles.customer_email') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- primary email -->
     <div class="update_email">
-        <label for="primary_email">primary email</label>
-        <input type="text" id="update_email" name="update_email" value="{{profile[1]}}" required>
+      <label for="primary_email">primary email</label>
+      <input type="text" id="update_email" name="update_email" value="{{profile[1]}}" required>
     </div>
-  
+
 
 
     <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
 
-     
-</form>
+
+  </form>
 
 </div>
 
@@ -347,21 +389,22 @@
 
 
 <!-- update customer phone -->
-<div id="phoneformContainer" class="hidden" style="display: none;"  >
-  <img class="updatePhoneClose" onclick="closeUpdatePhoneForm()" width="16" height="16" src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign"/>
+<div id="phoneformContainer" class="hidden" style="display: none;">
+  <img class="updatePhoneClose" onclick="closeUpdatePhoneForm()" width="16" height="16"
+    src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
     <!-- primary email -->
     <div class="update_number">
-        <label for="primary_email">phone number</label>
-        <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
+      <label for="primary_email">phone number</label>
+      <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
     </div>
-  
+
     <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
 
-</form>
+  </form>
 
 </div>
 
@@ -370,42 +413,41 @@
 
 
 
-<!-- updating customer bookings view template-->
-
-<form class="update-bookings">
-  <div>
-    <h3>customer bookings</h3>
-    <ul>
-          {% for bookings  in booking_info %}
-          <li>{{ bookings['tour_name'] }} </li> 
-          <button type="button" class="update-btn" data-booking-id="{{ bookings['booking_id'] }}" data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}" data-tour-name="{{ bookings['tour_name'] }}">update</button>
-
-          {% endfor %} 
-    </ul>
-
-  </div>
-
-</form>
 
 
 
 <!-- submit update information -->
-<form class="submit-update-bookings" style="display: none;" action="{{ url_for('profiles.change_bookings') }}" method="POST">
+<form class="submit-update-bookings" style="display: none;" action="{{ url_for('profiles.change_bookings') }}"
+  method="POST">
   <div id="submit_booking">
-     <h3>Update bookings</h3>
-     <p></p>
+    <h1>Update Booking</h1>
+    <p></p>
+    <div class="profile-tour-form">
+      <label for="tour">Modify to:</label>
+      <select class="tour-selection" name="updatetour_date">
+        {% for date in available_dates %}
+        <option value="{{ date }}">{{ date }}</option>
+        {% endfor %}
+      </select>
 
-     <label for="tour">Change to:</label>
-     <select class="tour-selection" name="updatetour_date">
-           {% for date in available_dates %}          
-           <option value="{{ date }}">{{ date }}</option>
-           {% endfor %}         
-     </select>
+      <input type="hidden" name="updatingbooking_customer_id" value="">
+      <input type="hidden" name="updatingbooking_booking_id" value="">
+      <input type="hidden" name="updatingbooking_tour_id" value="">
 
-     <input type="hidden" name="updatingbooking_customer_id" value="">
-     <input type="hidden" name="updatingbooking_booking_id" value="">
-     <input type="hidden" name="updatingbooking_tour_id" value="">
-     <button type="submit">Update tour</button>
+    </div>
+    <div class="profile-form-notify">
+      <label>
+        <input type="checkbox" id="notifyCustomerCheckbox">
+        Notify Customer
+      </label>
+    </div>
+
+    <div class="profile-form-actions">
+      <button class="profile-form-button1" type="submit">Save</button>
+      <button class="profile-form-button2" type="submit">Cancel</button>
+
+    </div>
+
   </div>
 </form>
 

@@ -435,8 +435,8 @@
                     <label for="select-all"></label>
                 </th>
                 <th>Name</th>
-                <th>State</th>
                 <th>Email</th>
+                <th>State</th>
                 <th>Phone Number</th>
                 <th>Lead Status</th>
                 <!-- <th>Tour</th>
@@ -460,9 +460,11 @@
                     <td>
                         <a href="{{ url_for('profiles.customer_profile', customer_id=customer[0]) }}"><strong>{{ customer[1].capitalize() }}</strong></a>
                     </td>
-                    <td>{{ customer[2].upper() if customer[2] is not none else '' }}</td>
                     <td>
                         <strong><a href="mailto:{{ customer[3] }}"> {{ customer[3].lower() }}</a></strong>
+                    </td>
+                    <td>
+                        {{ customer[2].upper() if customer[2] is not none else '' }}
                     </td>
                     <td>{{ format_phone_number(customer[4]) }}</td>
                     <td>{{ customer[5] }}</td>

@@ -1,15 +1,8 @@
 .email-activity {
-    background: #f7fefd8c;
-    width: 800px;
-    margin-top: 10px;
-    /* Adjust the margin to separate the email containers */
+    background: #19a1a60e;
+    width: 60%;
     display: block;
-
-    max-height: 700px;
-    /* Set a maximum height for the container */
     overflow-y: auto;
-
-
 }
 
 .email-activity-title {

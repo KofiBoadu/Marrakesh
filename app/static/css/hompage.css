@@ -1,11 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
 h3 {
   font-family: "Lexend Deca", sans-serif;
+  font-size: 14px;
 }
 
 h1 {
   font-family: "Lexend Deca", sans-serif;
   font-weight: 500;
+}
+
+h4 {
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 400;
 }
 
 h5 {
@@ -15,6 +21,7 @@ h5 {
 
 p {
   font-family: "Lexend Deca", sans-serif;
+  font-weight: 200;
 }
 
 button {
@@ -355,49 +362,69 @@ select {
   margin-top: 2%;
 }
 
-
-
-
-
-
 #table-container {
-    width: 100%;
-    margin: 2% auto;
-    border-radius: 10px;
+  width: 95%;
+  margin: 2% auto;
+  border-radius: 10px;
+  margin-bottom: 0%;
 }
 
 #data-table, .table-container-scroll-bar table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 #data-table th, .table-container-scroll-bar table td {
-    text-align: left;
-    padding: 8px;
+  text-align: center;
+  padding: 8px;
 }
 
 /* Example widths for each column - adjust these as needed */
-#data-table th:nth-child(1), .table-container-scroll-bar table td:nth-child(1) { width: 5%; }
-#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) { width: 20%; }
-#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) { width: 10%; }
-#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) { width: 20%; }
-#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) { width: 10%; }
-#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) { width: 10%; }
-#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) { width: 10%; }
-#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) { width: 10%; }
-#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) { width: 15%; }
-
-.table-container-scroll-bar {
-    overflow-y: auto;
-    max-height: 400px; /* Adjust based on your needs */
-    border: 1px solid #ccc;
-    margin-top: -1px; /* Helps align the top border with the bottom of the header table */
+#data-table th:nth-child(1), .table-container-scroll-bar table td:nth-child(1) {
+  width: 5%;
 }
 
+#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) {
+  width: 10%;
+}
 
+#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) {
+  width: 10%;
+}
+
+#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) {
+  width: 10%;
+}
+
+#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) {
+  width: 10%;
+}
+
+#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) {
+  width: 10%;
+}
+
+#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) {
+  width: 10%;
+}
+
+#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) {
+  width: 10%;
+}
+
+#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) {
+  width: 10%;
+}
+
+.table-container-scroll-bar {
+  overflow-y: auto;
+  max-height: 400px; /* Adjust based on your needs */
+  border: 1px solid #ccc;
+  border-bottom: none;
+  margin-top: -1px; /* Helps align the top border with the bottom of the header table */
+}
 
 th {
-  padding: 10px;
   text-align: center;
   font-family: "Lexend Deca", sans-serif;
   font-weight: 400;
@@ -412,18 +439,16 @@ th {
 }
 
 td {
-  text-align: center;
   font: 1em;
   font-weight: 200;
   font-family: "Lexend Deca", sans-serif;
-/*  text-transform: lowercase;*/
 }
 
 tbody {
- /* max-height: 200px;
-
-  overflow-y: auto;*/
-
+  max-height: 200px;
+  /* Set the maximum height of the scrollable area */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
   font-family: "Lexend Deca", sans-serif;
 }
 
@@ -442,16 +467,6 @@ tbody {
 #table-body tr:nth-child(odd) td {
   background-color: #ffffff;
   /* White background color for odd rows */
-}
-
-#data-table #select-box {
-  width: 10px;
-  /* Adjust this value as needed */
-  min-width: 10px;
-  padding: 5px;
-  /* Adjust padding for better alignment if needed */
-  text-align: center;
-  /* Center align the checkbox */
 }
 
 #data-table td:first-child {
@@ -643,11 +658,17 @@ button#cancel:hover {
   font-size: 1.2em;
 }
 
+.pagination-controls {
+  width: 95%;
+  margin: auto;
+  box-shadow: 0px -10px 15px -5px rgba(181, 181, 181, 0.5);
+}
+
 .pagination {
   list-style-type: none;
   display: flex;
   justify-content: center;
-  margin-top: 2%;
+  padding-top: 1%;
 }
 
 .pagination li {

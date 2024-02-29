@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let id=document.querySelector('input[name="updatingbooking_customer_id"]').value = customerId;
             let bookid= document.querySelector('input[name="updatingbooking_booking_id"]').value = bookingId;
             let tourid= document.querySelector('input[name="updatingbooking_tour_id"]').value = tourId;
-            document.getElementById('submit_booking').querySelector('p').textContent = `Change from: ${tourName}`;
+            document.getElementById('submit_booking').querySelector('p').textContent = `  Modify from: ${tourName}`;
             console.log(id,bookid,tourid)
 
             // Show the submit-update-bookings form
@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Correct the placeholders in the text content
             var formTexts = document.querySelectorAll('#submit_booking p');
-            formTexts[0].textContent = "change from: " + tourName;
-            formTexts[1].textContent = "change to: " + tourName; // Update this based on user interaction or another method
+            formTexts[0].textContent = "Modify from: " + tourName;
+            formTexts[1].textContent = "Modify to: " + tourName; // Update this based on user interaction or another method
         });
     });
 });
