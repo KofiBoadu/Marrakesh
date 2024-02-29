@@ -1,8 +1,9 @@
+
 from  .models import create_databaseConnection
 import logging
 
-
-
+from app.emails import all_emails_sent_to_customer
+from app.customer_notes import get_customer_notes
 
 
 def update_customerDetails(customer_id, first_name, last_name, email, phone, gender, state):
@@ -37,6 +38,30 @@ def update_customerDetails(customer_id, first_name, last_name, email, phone, gen
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+def get_customer_activities(customer_id):
+    emails = all_emails_sent_to_customer(customer_id)
+    notes_raw = get_customer_notes(customer_id)
+    
+    # Convert notes to the same dictionary format as emails for uniform handling
+    notes = [{'email_id': note[0], 
+              'subject': 'Note', 
+              'status': '', 
+              'sent_date': note[2], 
+              'body': note[1],  # Assigning note_message to body
+              'sent_user': 'System',  # Adjust as necessary
+              'is_note': True}  # Differentiate notes from emails
+             for note in notes_raw]
+
+    # Combine emails and notes
+    activities = emails + notes
+
+    # Sort by 'sent_date'
+    activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
+
+    return activities_sorted
 
 
 

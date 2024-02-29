@@ -15,6 +15,9 @@ load_dotenv()
 
 
 
+
+
+
 def format_phone_number(number, country_code='US'):
     user_number = phonenumbers.parse(number, country_code)
     formatted_number = phonenumbers.format_number(user_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
