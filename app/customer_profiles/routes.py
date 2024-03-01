@@ -10,32 +10,6 @@ from app.customer_notes import  save_customer_notes, get_customer_notes,delete_c
 from app.profile_models import get_customer_bookings
 
 
-# @customers_profile.route('/<int:customer_id>', methods=['GET'])
-# @login_required
-# def customer_profile(customer_id):
-#     if not customer_id:
-#         return redirect(url_for("customers.home_page"))
-#     else:
-#         profile= profile_details(customer_id)
-#         tour_names=profile[6]
-#         phone_number=format_phone_number(profile[2])
-#         if not tour_names:
-#             return redirect(url_for("customers.home_page"))
-#         tour_list= tour_names.split(', ')
-#         # emails= all_emails_sent_to_customer(customer_id)
-
-#         # notes= get_customer_notes(customer_id)
-#         login_user=current_user.email_address
-
-#         booking_info=get_customer_bookings(customer_id)
-
-#         available_dates= available_tour_dates()
-#         activities=get_customer_activities(customer_id)
-
-#         # print(activities)
-       
-        
-#         return render_template('profile.html',activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
 
 @customers_profile.route('/<int:customer_id>', methods=['GET'])
 @login_required
