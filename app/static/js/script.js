@@ -176,62 +176,50 @@ function validateDeleteInput(input) {
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const form = document.getElementById('searchForm');
-    // Get the home URL from the form's data attribute
-    const homeUrl = form.getAttribute('data-home-url');
+    // Assuming you have a way to define or get the home URL
+    const homeUrl = form.getAttribute('data-home-url') || '/'; // Fallback to root if not specified
 
-    // Function to clear search input and session storage
+    // Function to clear search input and storage
     function clearSearch() {
-        searchInput.value = ''; // Clear the input field
-        sessionStorage.removeItem('searchQuery'); // Clear any saved query from session storage
+        searchInput.value = '';
+        localStorage.removeItem('searchQuery'); // Using localStorage for persistence
     }
 
-    // Check if on the homepage by comparing the pathnames
-    if (window.location.pathname === new URL(homeUrl, window.location.href).pathname) {
-        clearSearch();
-    } else {
-        // Load any saved search query from session storage and set it as the input value
-        const savedQuery = sessionStorage.getItem('searchQuery');
-        if (savedQuery) {
-            searchInput.value = savedQuery;
-        }
+    // Redirect to home page if input is empty
+    function redirectToHomePage() {
+        window.location.href = homeUrl; // Redirect user to the home page
+    }
+
+    // Load any saved search query from storage and set it as the input value
+    const savedQuery = localStorage.getItem('searchQuery');
+    if (savedQuery) {
+        searchInput.value = savedQuery;
     }
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
-        // Save the current query to session storage
-        sessionStorage.setItem('searchQuery', query);
+        localStorage.setItem('searchQuery', query);
+
+        // Auto-submit logic: submit form if query length is at least 3 characters
+        if (query.length >= 3) {
+            form.submit(); // Trigger form submission
+        } else if (query.length === 0) {
+            // Redirect to home page if the input becomes empty
+            redirectToHomePage();
+        }
     });
 
     form.addEventListener('submit', function(event) {
         const query = searchInput.value.trim();
         if (query.length === 0) {
-            // Prevent form submission if the search query is empty
-            event.preventDefault();
-            clearSearch();
+            event.preventDefault(); // Prevent form submission if the search query is empty
+            // Optionally redirect to home here too, if immediate redirection is desired
+            // redirectToHomePage();
             return false;
         }
-        // Optionally, clear the search query when submitting the form
-        // clearSearch(); // Uncomment this line if you want to clear the search upon submission
+        // Note: No need to clear the search here as we want to keep the input after submission
     });
-
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value.trim();
-        // Auto-submit logic: submit form if query length is at least 1 character.
-        // Adjust this logic as per your requirement.
-        if (query.length >= 3) {
-            sessionStorage.setItem('searchQuery', query); // Save before submitting
-            form.submit(); // Trigger form submission
-        }
-    });
-
-
-    // This script assumes the form action does not always redirect to the home page,
-    // so it does not automatically clear the search input on form submission.
-    // Adjust based on your application's behavior.
 });
-
-
-
 
 
 
