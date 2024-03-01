@@ -11,6 +11,10 @@ h1 {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 500;
 }
+h2 {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 500;
+}
 h4 {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 400;
@@ -41,7 +45,13 @@ label {
 select {
     font-family: "Lexend Deca", sans-serif;
 }
-
+a{
+    font-family: "Lexend Deca", sans-serif;
+}
+strong{
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 500;
+}
 .create {
     display: flex;
     justify-content: center;
@@ -146,7 +156,7 @@ select {
     }
 
     &_submit {
-        margin-top: 10%;
+        margin-top:  11.875%;
         padding: 10px;
 
         background-color: $ATorange;
@@ -175,7 +185,7 @@ select {
 
 
 .modal_wrap--gender input {
-    width: 10%;
+    width:  11.875%;
     margin-top: 4%;
 }
 
@@ -270,7 +280,7 @@ select {
     }
 
     &_submit {
-        margin-top: 10%;
+        margin-top:  11.875%;
         padding: 10px;
 
         background-color: $ATorange;
@@ -296,7 +306,7 @@ select {
 }
 
 .tour_wrap--type input {
-    width: 10%;
+    width:  11.875%;
     margin-top: 4%;
 }
 
@@ -313,7 +323,7 @@ select {
 }
 
 .tour_wrap--type label {
-    margin-right: 10%;
+    margin-right:  11.875%;
 }
 
 
@@ -404,7 +414,7 @@ select {
 
 #deleteButton {
     margin-left: 100px;
-    margin-right: 10%;
+    margin-right:  11.875%;
     margin-top: 30px;
 
 
@@ -449,14 +459,18 @@ select {
 
 /* Example widths for each column - adjust these as needed */
 #data-table th:nth-child(1), .table-container-scroll-bar table td:nth-child(1) { width: 5%; }
-#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) { width: 10%; }
-#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) { width: 10%; }
-#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) { width: 10%; }
-#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) { width: 10%; }
-#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) { width: 10%; }
-#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) { width: 10%; }
-#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) { width: 10%; }
-#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) { width: 10%; }
+#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) { width: 11.875%; }
+#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) { width:  15%; }
+#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) { width:  11.875%; }
+#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) { width:  11.875%; }
+#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) { width:  11.875%; }
+#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) { width:  11.875%; }
+#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) { width:  11.875%; }
+#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) { width: 11.875%; }
+
+.state{
+    padding: 0%;
+}
 
 .table-container-scroll-bar {
     overflow-y: auto;
@@ -514,6 +528,9 @@ tbody {
     // padding: 1%; /* Remove padding */
     padding-top: 1%;
     padding-bottom: 1%;
+    
+    border: 1px solid #dddddd;
+   
 }
 
 #table-body tr:nth-child(even) td {
@@ -545,6 +562,7 @@ tbody {
 td a {
     text-decoration: none;
     color: $ATblue;
+    font-weight: 300;
     
 }
 
@@ -554,7 +572,7 @@ td a {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 10%;
+    margin:  11.875%;
 
     &_card {
         display: flex;
@@ -607,7 +625,7 @@ td a {
 .modal-content {
     position: relative;
     background-color: #fff;
-    margin: 10% auto;
+    margin:  11.875% auto;
 
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

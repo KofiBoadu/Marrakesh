@@ -458,16 +458,16 @@
                         <input type="checkbox" class="delete-checkbox" value="{{ customer[0] }}" id="delete-customer-{{ loop.index }}" onchange="toggleDeleteButton(this); updateCustomerDetails(this)">
                     </td>
                     <td>
-                        <a href="{{ url_for('profiles.customer_profile', customer_id=customer[0]) }}"><strong>{{ customer[1].capitalize() }}</strong></a>
+                        <a href="{{ url_for('profiles.customer_profile', customer_id=customer[0]) }}">{{ customer[1].capitalize() }}</a>
                     </td>
                     <td>
-                        <strong><a href="mailto:{{ customer[3] }}"> {{ customer[3].lower() }}</a></strong>
+                        <a href="mailto:{{ customer[3] }}"> {{ customer[3].lower() }}</a>
                     </td>
-                    <td>
+                    <td class="state">
                         {{ customer[2].upper() if customer[2] is not none else '' }}
                     </td>
                     <td>{{ format_phone_number(customer[4]) }}</td>
-                    <td>{{ customer[5] }}</td>
+                    <td >{{ customer[5] }}</td>
                    <!--  <td>{{ customer[6] }}</td>
                     <td>{{ customer[7] }}</td>
                     <td>{{ customer[8] }}</td>

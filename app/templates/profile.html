@@ -23,13 +23,13 @@
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
       <div class="profile-actions">
         <div class="actions-container" onclick="openNoteForm()">
-          <img width="40" height="40"
+          <img width="30" height="30"
             src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/FF914C/external-pencil-whatsapp-flatart-icons-outline-flatarticons.png"
             alt="external-pencil-whatsapp-flatart-icons-outline-flatarticons" />
           <p>Note</p>
         </div>
         <div class="actions-container" onclick="openEmailForm()">
-          <img title="SendEmail" width="40" height="40" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
+          <img title="SendEmail" width="30" height="30" src="https://img.icons8.com/ios/50/FF914C/circled-envelope.png"
             alt="circled-envelope" />
           <p>Email</p>
 
@@ -82,20 +82,13 @@
       <p id="state-info">{{ profile[5] }}</p> <!-- Assuming the fourth element is the gender-->
     </div>
 
-
-    <div>
-
-      <div class="revenue">
-        <img class="revenue-icon" width="48" height="48"
-          src="https://img.icons8.com/fluency-systems-regular/48/03989e/stocks-growth.png" alt="stocks-growth" />
-        <div class="revenue-container">
-          <p class="revenue-amt">${{ profile[7] }}</p>
-          <p class="revenue-title">Revenue Generated </p>
-        </div>
-
-      </div>
-
+    <div class="profile-info-container">
+      <h4>Revenue Generated</h4>
+      <p id="state-info">${{ profile[7] }}</p> <!-- Assuming the fourth element is the gender-->
     </div>
+
+
+   
 
 
   </div>
@@ -196,10 +189,11 @@
     <h2 class="email-activity-title">ACTIVITY TIMELINE</h2>
   </div>
   {% for activity in activities %}
-  <div class="activity-container {{ 'email-activity-container' if not activity.get('is_note', False) else 'note-activity-container' }}">
+  <div class="email-activity-container {{ 'email-activity-container' if not activity.get('is_note', False) else 'note-activity-container' }}">
     <div class="{{ 'email-header' if not activity.get('is_note', False) else 'note-header' }}">
-      <div class="header-block">
-        <strong>{{ activity['subject'] }}</strong>
+      <div class="email-header-block">
+        
+        <strong class="subject">{{ activity['subject'] }}</strong>
         <p class="from">sent by {{ activity['sent_user'] }}</p>
         {% if not activity.get('is_note', False) %}
         <img class="dropdown" width="16" height="16"
@@ -231,7 +225,7 @@
     <div class="{{ 'email-body' if not activity.get('is_note', False) else 'note-body' }}" style="{{ 'display: none;' if not activity.get('is_note', False) else '' }}">
       {% if not activity.get('is_note', False) %}
       <!-- Email content -->
-      <p class="email-body-content">Dear {{ profile_name }},</p>  <!-- Replace profile_name with actual variable -->
+      <p class="email-body-content">Dear {{ profile[0] }},</p>  <!-- Replace profile_name with actual variable -->
       <p class="email-content">{{ activity.get('body', 'No content available.') }}</p>
       <div class="email-footer">
         Best regards,<br>
