@@ -240,7 +240,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
+function closeUpdateBookingForm() {
+  document.getElementById('update-bookings').style.display = 'none';
+}
 
 
 

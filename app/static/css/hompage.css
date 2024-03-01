@@ -338,7 +338,7 @@ strong {
 
 #table-title {
   margin: 2%;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 2em;
   color: #959494;
 }
@@ -450,7 +450,7 @@ th {
 }
 
 #data-table {
-  background-color: rgb(191, 190, 190);
+  background-color: rgba(151, 194, 195, 0.7176470588);
   width: 100%;
   border-collapse: separate;
   border-spacing: 1px;

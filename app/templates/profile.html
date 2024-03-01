@@ -490,7 +490,7 @@
 
 
 <!-- submit update information -->
-<form class="submit-update-bookings" style="display: none;" action="{{ url_for('profiles.change_bookings') }}"
+<form id="update-bookings"class="submit-update-bookings" style="display: none;" action="{{ url_for('profiles.change_bookings') }}"
   method="POST">
   <div id="submit_booking">
     <h1>Update Booking</h1>
@@ -517,7 +517,7 @@
 
     <div class="profile-form-actions">
       <button class="profile-form-button1" type="submit">Save</button>
-      <button class="profile-form-button2" type="submit">Cancel</button>
+      <button class="profile-form-button2" type="submit" onclick="closeUpdateBookingForm()">Cancel</button>
 
     </div>
 
