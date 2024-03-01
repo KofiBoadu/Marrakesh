@@ -49,11 +49,11 @@ def customer_profile(customer_id):
 
         if not tour_names:
             return redirect(url_for("customers.home_page"))
+        tour_list= tour_names.split(', ')
+        # emails= all_emails_sent_to_customer(customer_id)
 
-        tour_list = tour_names.split(', ')
-        # emails = all_emails_sent_to_customer(customer_id)
-        # notes = get_customer_notes(customer_id)
-        login_user = current_user.email_address
+        # notes= get_customer_notes(customer_id)
+        login_user=current_user.email_address
 
         booking_info = get_customer_bookings(customer_id)
 
@@ -62,9 +62,8 @@ def customer_profile(customer_id):
 
         # print(activities)
         
-        return render_template('profile.html', activities=activities, available_dates=available_dates,
-                               booking_info=booking_info, login_user=login_user, profile=profile,
-                               tour_list=tour_list, customer_id=customer_id, phone_number=phone_number)
+        return render_template('profile.html',activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
+
 
 
 
@@ -141,7 +140,8 @@ def customer_phone():
 def customer_notes():
     customer_id=request.form.get('customer_id')
     customer_notes=request.form.get('notes')
-    save_customer_notes(customer_id, customer_notes)
+    creator=current_user.first_name + " "+ current_user.last_name
+    save_customer_notes(customer_id, customer_notes,creator)
     return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
 
 
