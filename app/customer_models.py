@@ -50,8 +50,8 @@ def get_customer_activities(customer_id):
               'subject': 'Note', 
               'status': '', 
               'sent_date': note[2], 
-              'body': note[1],  # Assigning note_message to body
-              'sent_user': 'System',  # Adjust as necessary
+              'body': note[1],  # note_message is assigned to body
+              'sent_user': note[3],  # Assuming index 3 is the sent_user in your notes_raw tuple
               'is_note': True}  # Differentiate notes from emails
              for note in notes_raw]
 

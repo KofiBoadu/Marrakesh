@@ -3,11 +3,11 @@ import datetime
 
 
 
-def save_customer_notes(customer_id, note_message):
+def save_customer_notes(customer_id, note_message,note_creator):
     database_connection = None
     cursor = None
-    query = "INSERT INTO notes (customer_id, note_message) VALUES (%s, %s)"
-    values = (customer_id, note_message)
+    query = "INSERT INTO notes (customer_id, note_message,note_creator) VALUES (%s, %s,%s)"
+    values = (customer_id, note_message,note_creator)
     
     try:
         database_connection = create_databaseConnection()
@@ -30,8 +30,8 @@ def save_customer_notes(customer_id, note_message):
 def get_customer_notes(customer_id):
     database_connection = None
     cursor = None
-    query = "SELECT notes_id,note_message,date_created FROM notes WHERE customer_id = %s ORDER BY notes_id DESC"
-    results = None
+    query = "SELECT notes_id, note_message, date_created, note_creator FROM notes WHERE customer_id = %s ORDER BY notes_id DESC"
+    results = []
 
     try:
         database_connection = create_databaseConnection()
@@ -41,6 +41,7 @@ def get_customer_notes(customer_id):
         
     except Exception as e:
         print(f"An error occurred: {e}")
+        results = []  # Ensure that results is always a list, even after an exception.
     finally:
         if cursor:
             cursor.close()
