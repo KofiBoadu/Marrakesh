@@ -1,0 +1,7 @@
+#customerLocationChart {
+    max-width: 800px;
+    max-height: 500px;
+    width: 100%;
+    height: auto;
+    border-style: solid;
+}
