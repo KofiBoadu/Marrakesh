@@ -265,7 +265,7 @@
       <form class="update-bookings">
 
 
-        <ul>
+        <!-- <ul>
           {% for bookings in booking_info %}
           <div class="tour-container">
 
@@ -281,6 +281,24 @@
 
           {% endfor %}
         </ul>
+ -->
+
+
+       <ul>
+        
+        {% for bookings in booking_info %}
+        <li>
+          <div class="tour-container">
+            {{ bookings['tour_name'] }}
+            <button type="button" class="update-btn" style="display: none;" data-booking-id="{{ bookings['booking_id'] }}"
+              data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
+              data-tour-name="{{ bookings['tour_name'] }}">
+              <img width="15" height="15" src="https://img.icons8.com/material-outlined/24/FF914C/edit--v1.png" alt="edit">
+            </button>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
 
 
 

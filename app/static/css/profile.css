@@ -302,6 +302,11 @@ body {
 
 
 
+.tour-container:hover .update-btn {
+  display: block !important; /* Temporarily use !important to test */
+}
+
+
 .profile-bookings ul li {
 
     margin-bottom: 10px;
