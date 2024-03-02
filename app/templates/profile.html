@@ -87,97 +87,11 @@
       <p id="state-info">${{ '{:,.2f}'.format(profile[7]) }}</p> <!-- Assuming the fourth element is the gender-->
     </div>
 
-
-   
-
-
   </div>
 
 
 
 
-  <!-- customer activity  -->
-
-<!-- 
-  <div class="email-activity">
-    <div class="email-activity-header">
-      <h2 class="email-activity-title">ACTIVITY TIMELINE </h2>
-    </div>
-    {% for email in emails %}
-
-
-    <div class="email-activity-container">
-      <div class="email-header">
-        <div class="email-header-block">
-          <strong>Email-</strong>
-          <p class="subject"> {{ email['subject'] }}</p>
-          <p class="from"> sent by {{email['sent_user']}}</p>
-          <img class="dropdown" width="16" height="16"
-            src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down"
-            onclick="toggleEmailBody(this)" />
-        </div>
-
-
-        <form action="{{ url_for('send_emails.delete_email', email_id=email['email_id'],customer_id=customer_id) }}"
-          method="POST" class="delete-form">
-          <input type="hidden" name="email_id" value="{{ email['email_id'] }}">
-          <input type="hidden" name="customer_id" value="{{ customer_id }}">
-          <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link"><img
-              width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png"
-              alt="filled-trash" />delete</a>
-        </form>
-
-      </div>
-      <p class="email-text"><small class="text-muted">Status: {{ email['status'] }} on {{ email['sent_date'] }}</small>
-      </p>
-      <div class="email-body" style="display: none" id="body" ;>
-        <p class="email-body-content">Dear {{ profile[0] }},</p>
-        <p class="email-content">{{ email['body'] }}</p>
-        <div class="email-footer">
-          Best regards,<br>
-          Africa Travellers
-        </div>
-
-      </div>
-
-    </div>
-    {% endfor %}
-
-    {% for notes_id, customer_note ,date in notes %}
-    <div class="note-activity-container">
-      <div class="note-header">
-        <div class="header-container">
-          <div class="noteSubject">
-            <strong>Note</strong>
-
-            <p class="fromNote"> by {{login_user}}</p>
-          </div>
-
-          <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
-            <input type="hidden" name="notes_id" value="{{notes_id}}">
-            <input type="hidden" name="customer_id" value="{{ customer_id }}">
-            <button type="submit" id="noteDelete"><img width="16" height="16"
-                src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</button>
-          </form>
-        </div>
-
-      </div>
-
-      <div class="date-container">
-        <p class="dateNote">{{ date }}</p>
-      </div>
-
-      <p class="message">{{ customer_note }}</p>
-
-
-
-
-    </div>
-    {% endfor %}
-
-
-  </div>
-  -->
 
 
 
@@ -264,28 +178,8 @@
       <h3>Tours Booked</h3>
       <form class="update-bookings">
 
-
-        <!-- <ul>
-          {% for bookings in booking_info %}
-          <div class="tour-container">
-
-            <li>{{ bookings['tour_name'] }} </li>
-            <button  type="button"  class="update-btn" data-booking-id="{{ bookings['booking_id'] }}"
-              data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
-              data-tour-name="{{ bookings['tour_name'] }}"><img width="15" height="15"
-                src="https://img.icons8.com/material-outlined/24/FF914C/edit--v1.png" alt="edit--v1" /></button>
-
-
-          </div>
-
-
-          {% endfor %}
-        </ul>
- -->
-
-
        <ul>
-        
+
         {% for bookings in booking_info %}
         <li>
           <div class="tour-container">
@@ -305,12 +199,6 @@
       </form>
 
 
-      <!-- <h2 class="profile-title">Tours Booked</h2>
-    <ul>
-      {% for tour_name in tour_list %}
-      <li>{{ tour_name }} </li>
-      {% endfor %}
-    </ul> -->
     </div>
 
   </div>
@@ -443,9 +331,7 @@
       <button type="submit" class="save_new_name">Save</button>
     </div>
 
-    <!-- <div class="cancel">
-      <button type="submit" class="save_new_name">cancel</button>
-    </div> -->
+  
   </form>
 </div>
 
@@ -485,7 +371,7 @@
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
-    <!-- primary email -->
+ 
     <div class="update_number">
       <label for="primary_email">phone number</label>
       <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
@@ -497,6 +383,24 @@
 
   </form>
 
+</div>
+
+
+
+<!-- updating customer state info -->
+
+<div>
+
+  <form action="{{ url_for('profiles.update_state') }}" method="post">
+     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+     <div class="update_customer_state">
+      <label for="state">State</label>
+      <input type="text" id="update_state" name="new_state" value="{{ profile[3] }}" required>
+       
+     </div>
+    
+  </form>
+  
 </div>
 
 
