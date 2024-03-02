@@ -270,7 +270,7 @@
           <div class="tour-container">
 
             <li>{{ bookings['tour_name'] }} </li>
-            <button type="button" class="update-btn" data-booking-id="{{ bookings['booking_id'] }}"
+            <button  type="button"  class="update-btn" data-booking-id="{{ bookings['booking_id'] }}"
               data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
               data-tour-name="{{ bookings['tour_name'] }}"><img width="15" height="15"
                 src="https://img.icons8.com/material-outlined/24/FF914C/edit--v1.png" alt="edit--v1" /></button>
@@ -494,30 +494,37 @@
   method="POST">
   <div id="submit_booking">
     <h1>Update Booking</h1>
-    <p></p>
-    <div class="profile-tour-form">
-      <label for="tour">Modify to:</label>
-      <select class="tour-selection" name="updatetour_date">
-        {% for date in available_dates %}
-        <option value="{{ date }}">{{ date }}</option>
-        {% endfor %}
-      </select>
-
-      <input type="hidden" name="updatingbooking_customer_id" value="">
-      <input type="hidden" name="updatingbooking_booking_id" value="">
-      <input type="hidden" name="updatingbooking_tour_id" value="">
+    <div class="modify-container">
+      <div class="modify">
+        <h5 class="modify-label" for="tour">Modify from:</h5>
+        <p></p>
+      </div>
+      <div class="profile-tour-form">
+        <label for="tour">Modify to:</label>
+        <select class="tour-selection" name="updatetour_date">
+          {% for date in available_dates %}
+          <option value="{{ date }}">{{ date }}</option>
+          {% endfor %}
+        </select>
+  
+        <input type="hidden" name="updatingbooking_customer_id" value="">
+        <input type="hidden" name="updatingbooking_booking_id" value="">
+        <input type="hidden" name="updatingbooking_tour_id" value="">
+  
+      </div>
+      <div class="profile-form-notify">
+        <label>
+          <input type="checkbox" id="notifyCustomerCheckbox">
+          Notify Customer
+        </label>
+      </div>
 
     </div>
-    <div class="profile-form-notify">
-      <label>
-        <input type="checkbox" id="notifyCustomerCheckbox">
-        Notify Customer
-      </label>
-    </div>
+    
 
     <div class="profile-form-actions">
       <button class="profile-form-button1" type="submit">Save</button>
-      <button class="profile-form-button2" type="submit" onclick="closeUpdateBookingForm()">Cancel</button>
+      <button class="profile-form-button2" type="button" onclick="closeUpdateBookingForm()">Cancel</button>
 
     </div>
 

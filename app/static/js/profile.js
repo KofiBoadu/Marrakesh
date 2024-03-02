@@ -134,7 +134,7 @@ function closeUpdatePhoneForm() {
 }
 function phoneEditButtonDisplay() {
   document.querySelector('.phoneEdit').style.display = 'none'
-}
+} 
 
 function showPhoneEditButton() {
   let phoneEditButton = document.querySelector(".phoneEdit")
@@ -153,7 +153,7 @@ function phoneHideEditButton(event) {
     phoneEditButton.style.display = "none";
   }
 }
-
+//
 //email edit
 function showUpdateEmailForm() {
   var emailForm = document.getElementById('emailformContainer')
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let id=document.querySelector('input[name="updatingbooking_customer_id"]').value = customerId;
             let bookid= document.querySelector('input[name="updatingbooking_booking_id"]').value = bookingId;
             let tourid= document.querySelector('input[name="updatingbooking_tour_id"]').value = tourId;
-            document.getElementById('submit_booking').querySelector('p').textContent = `  Modify from: ${tourName}`;
+            document.getElementById('submit_booking').querySelector('p').textContent = `  ${tourName}`;
             console.log(id,bookid,tourid)
 
             // Show the submit-update-bookings form
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Correct the placeholders in the text content
             var formTexts = document.querySelectorAll('#submit_booking p');
-            formTexts[0].textContent = "Modify from: " + tourName;
+            formTexts[0].textContent =  tourName;
             formTexts[1].textContent = "Modify to: " + tourName; // Update this based on user interaction or another method
         });
     });
@@ -242,7 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function closeUpdateBookingForm() {
   document.getElementById('update-bookings').style.display = 'none';
+  console.log('cancel')
 }
+
+
 
 
 
