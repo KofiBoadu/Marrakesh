@@ -19,6 +19,7 @@
     position: absolute;
     margin-top: 0px;
     border-style: solid;
+    margin-bottom: 5px;
 }
 .analytics {
     display: flex;

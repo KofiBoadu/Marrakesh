@@ -37,4 +37,3 @@ def all_scheduled_events():
 
 
 
-print(all_scheduled_events())
