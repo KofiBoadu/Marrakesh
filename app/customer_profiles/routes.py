@@ -5,7 +5,7 @@ from app.emails import all_emails_sent_to_customer
 from flask_login import login_required, current_user
 from app.extension import cache
 from app.models import format_phone_number,available_tour_dates,get_tour_id
-from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,update_customer_state
+from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_customer_state
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 from app.profile_models import get_customer_bookings
 
@@ -18,7 +18,10 @@ def customer_profile(customer_id):
         return redirect(url_for("customers.home_page"))
     else:
         profile = profile_details(customer_id)
+        print(profile)
+      
         tour_names = profile[6]
+
         phone_number = format_phone_number(profile[2])
 
         if not tour_names:
@@ -104,12 +107,12 @@ def customer_phone():
 
 
 
-@customers_profile.route('/', methods=['POST'])
+@customers_profile.route('/update_customer_state', methods=['POST'])
 @login_required
-def update_state():
+def update_state_of_customers():
     customer_id= request.form.get('customer_id')
     new_state=request.form.get('new_state')
-    update_customer_state(customer_id,new_state)
+    updating_customer_state(new_state,customer_id)
     return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
 
 

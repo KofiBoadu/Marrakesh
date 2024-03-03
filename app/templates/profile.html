@@ -391,13 +391,17 @@
 
 <div>
 
-  <form action="{{ url_for('profiles.update_state') }}" method="post">
+  <form action="{{ url_for('profiles.update_state_of_customers') }}" method="post">
      <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
      <div class="update_customer_state">
       <label for="state">State</label>
       <input type="text" id="update_state" name="new_state" value="{{ profile[3] }}" required>
        
      </div>
+
+     <div >
+      <button type="submit">Save</button>
+    </div>
     
   </form>
   

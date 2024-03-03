@@ -199,7 +199,7 @@ def update_customer_phone(customer_id,phone):
 
 
 
-def update_customer_state(customer_id, state):
+def updating_customer_state(state,customer_id):
     query = "UPDATE customers SET state_address = %s WHERE customer_id = %s"
     database_connection = None
     try:
