@@ -53,6 +53,7 @@ def log_out():
 
 
 @users_bp.route('/password-reset', methods=['GET', 'POST'])
+@login_required
 def password_reset():
     if request.method == "GET":
         return render_template('reset_password.html')

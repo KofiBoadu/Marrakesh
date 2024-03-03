@@ -46,6 +46,7 @@ def customer_profile(customer_id):
 
 
 @customers_profile.route('/update-customer-reservations', methods=['POST'])
+@login_required
 def change_bookings():
     customer_id=request.form.get('updatingbooking_customer_id')
     new_tour_type=request.form.get('updatetour_date')

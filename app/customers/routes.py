@@ -38,6 +38,7 @@ def home_page():
 
 
 @customers_bp.route('/details', methods=['GET'])
+@login_required
 def get_customer_details():
     customer_id = request.args.get('customer_id')
     print("Requested Customer ID:", customer_id)
@@ -69,6 +70,7 @@ def get_customer_details():
 
 
 @customers_bp.route('/update_details', methods=['POST'])
+@login_required
 def send_update():
     customer_id= request.form.get('updatecustomer_id')
     first_name = request.form.get('updatefirst_name')
@@ -91,6 +93,7 @@ def send_update():
 
 
 @customers_bp.context_processor
+@login_required
 def context_processor():
     return dict(format_phone_number=format_phone_number)
 
@@ -98,6 +101,7 @@ def context_processor():
 
 
 @customers_bp.route('/delete_customer',methods=['POST'])
+@login_required
 def delete_customer():
     customer_id= request.form.get("customer_id")
     if not customer_id:
@@ -124,20 +128,19 @@ def add_paid_customer():
         tour_type= request.form.get("tour_date")
 
         tour_date= tour_type.split()
-        print(tour_date)
+       
 
         customer_exist=check_customer_exists(email)
-        print(customer_exist)
+       
 
         tour_year= tour_date.pop()
-        print(tour_year)
+      
 
         tour_name=" ".join(tour_date)
-        print(tour_name)
+       
 
         tour_id= get_tour_id(tour_name,tour_year)
-        print(tour_id)
-
+       
 
         if customer_exist:
             customer_id= customer_exist

@@ -5,12 +5,13 @@ import datetime
 from app.reports import customers_location_by_state,customers_by_gender,get_travellers_by_destination_query,calculate_annual_gross_revenue
 from flask import Flask, jsonify
 from app.emails import our_customers_sincebyYear
-
+from flask_login import login_required
 
 
 
 
 @analytics.route('/analytics', methods=['GET'])
+@login_required
 def analytics_home():
     current_year = datetime.datetime.now().year
    
@@ -29,6 +30,7 @@ def analytics_home():
 
 
 @analytics.route('/location_chart')
+@login_required
 def customers_location_charts():
     data= customers_location_by_state()
      # Convert the result to a list of dicts to jsonify it
@@ -40,6 +42,7 @@ def customers_location_charts():
 
 
 @analytics.route('/gender_chart')
+@login_required
 def customers_gender_charts():
     year= request.args.get("gender_year",default=None)
     gender_data= customers_by_gender(year)
@@ -48,6 +51,7 @@ def customers_gender_charts():
 
 
 @analytics.route('/revenue_chart')
+@login_required
 def revenue_charts():
     revenue_data= calculate_annual_gross_revenue()
    
@@ -57,6 +61,7 @@ def revenue_charts():
 
 
 @analytics.route('/bookings_chart')
+@login_required
 def customers_bookings_charts():
     year= request.args.get("bookings_year",default=None)
     bookings_data= get_travellers_by_destination_query(year)
