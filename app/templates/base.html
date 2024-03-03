@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/marketing.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/exportForm.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/analytics.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
+     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/core/main.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/daygrid/main.min.css' rel='stylesheet' />
+   
+
+
+    
 
 
 </head>
@@ -38,6 +45,8 @@
                     <li class="nav_link"><a href="{{ url_for('marketing.marketing_emails') }}">Marketing</a></li>
                     <li class="nav_link"><a href="bookings.html">Records</a></li>
                     <li class="nav_link"><a href="{{ url_for('analytics.analytics_home') }}">Analytics</a></li>
+                    <li class="nav_link"><a href="{{ url_for('events.events_home') }}">Events</a></li>
+    
     
                 </ul>
 
@@ -76,13 +85,20 @@
 
 
 
+
     <!-- Add your scripts here -->
+   
+
+    <!-- If you need to use the default popups, include these additional files -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
     <script src="{{ url_for('static', filename='js/export.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/events.js') }}"></script>
+    
 </body>
 
 </html>

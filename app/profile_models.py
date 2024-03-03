@@ -82,7 +82,6 @@ def get_customer_bookings(customer_id):
         if database_connection is not None:
             database_connection.close()
 
-print(get_customer_bookings(322))
 
-# print(profile_details(1))
+
 

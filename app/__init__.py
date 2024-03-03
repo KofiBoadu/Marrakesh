@@ -10,7 +10,7 @@ from  .send_emails import email_customers
 from .emails import mail
 from app.file_export import fileExport_bp
 from app.analytics import analytics
-
+from app.events_schedule import events
 
 
 
@@ -42,6 +42,7 @@ def create_app():
     app.register_blueprint(email_marketing,url_prefix='/marketing')
     app.register_blueprint(fileExport_bp,url_prefix='/exportingFile')
     app.register_blueprint(analytics,url_prefix='/analytics')
+    app.register_blueprint(events,url_prefix='/events')
 
     app.secret_key = os.getenv('SECRET_KEY')
 

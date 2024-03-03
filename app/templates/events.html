@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="event-info">
+    <h2>{{ event.tour_name }} - {{ event.tour_type }}</h2>
+</div>
+<div id='calendar'></div>
+
+
+
+
+
+
+<script>
+window.eventData = {
+    title: "{{ event.tour_name }}",
+    start: "{{ event.start_date.isoformat() }}",
+    end: "{{ event.end_date.isoformat() }}"
+};
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (!calendarEl) {
+        console.error('Calendar element not found');
+        return;
+    }
+    
+    try {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            initialDate: window.eventData.start, // Focus on the event start month
+            headerToolbar: {
+                left: '', // Adjust as needed
+                center: 'title', // Month and year in the center
+                right: '' // Adjust as needed
+            },
+            titleFormat: { // Customize the title format
+                month: 'long', // Full month name
+                year: 'numeric', // 4-digit year
+            },
+            events: [
+                {
+                    // Use an empty title to display no text
+                    start: window.eventData.start,
+                    end: window.eventData.end,
+                    display: 'background', // Render the event as a background
+                    backgroundColor: getRandomColor(), // Call getRandomColor for each event
+                }
+            ],
+        });
+        calendar.render();
+        
+        // Optional: Customize the calendar title manually
+        // document.querySelector('.fc-toolbar-title').textContent += ' - Upcoming Tour Schedule';
+    } catch (error) {
+        console.error("Error initializing FullCalendar:", error);
+    }
+});
+</script>
+
+
+{% endblock %}
+
