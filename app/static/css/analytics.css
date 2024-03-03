@@ -1,29 +1,196 @@
-#customerLocationChart {
-    max-width: 800px;
-    max-height: 500px;
+/* dashboard styling */
+
+
+
+.print_page{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5%;
+    margin-top: 2%;
+}
+.print_page button{
+    width: 70px;
+    height: 30px;
+    padding: 5px;
+    border: #FF914C 1px solid;
+    color: #FF914C;
+    border-radius: 5px;
+    background-color: transparent;
+    position: absolute;
+    margin-top: 0px;
+    border-style: solid;
+}
+.analytics {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+   align-items: center;
+   margin-top: 50px;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    
+    background-color: #19a1a60e;
+    padding: 40px;
+    border-radius: 10px;
+    gap: 100px;
+    width: 400Px;
+    margin-right: 20px;
+}
+
+.dashboard_card {
+    display: flex;
+    background-color: white;
     width: 100%;
-    height: auto;
-    border-style: solid;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 2px 2px 2px 1px rgb(212, 212, 212);
+    padding: 10%;
+    justify-content: center;
+    text-align: center;
+    padding-top: 10%;
+    padding-bottom: 10%;
 }
 
 
-#gender-chart-container{
+.dashboard_container2 {
+    margin-left: 5%;
+}
 
-    border-style: solid;
+.dashboard_header {
+
+    font-size: 2em;
+    margin-bottom: 0%;
+    color:#FF914C;
 
 
 }
 
+.dashboard_subheader {
 
-#revenue-chart-container{
+    font-size: 1em;
+    margin-top: 2%;
 
-     border-style: solid;
+
+}
+.chart-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70%;
+    gap: 2%;
+    align-items: center;
+}
+.small-chart-container{
+    display: flex;
+    flex-direction: column;
 
 }
 
 
-#bookings-chart-container{
 
-     border-style: solid;
+
+
+
+
+.chart-background {
+    width: 100%; /* Adjust the width as needed */
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #19a1a60e;/* Set the background color */
+    align-items: center;
+    padding-bottom: 20px;
+}
+.chart-background-state{
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #19a1a60e;/* Set the background color */
+    align-items: center;
+    padding-bottom: 20px;
+    width: 80%;
+}
+
+.location-chart-container,
+#gender-chart-container,
+#bookings-chart-container,
+#revenue-chart-container {
+    padding: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: white; /* Set the background color */
+    margin: auto;
+    margin-top: 20px;
+    box-shadow: 2px 2px 2px 1px rgb(212, 212, 212)
+
+}
+.location-chart-container {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.chart-and-legend {
+    display: flex;
+    align-items: center;
+}
+
+#customerLocationChart {
+    width: 70%;
+}
+
+.state-legend {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.state-legend div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.state-legend span {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.chart-background h2{
+    font-size: 1em;
+    color: #03989E;
+}
+
+
+.location-chart-container h2{
+    
+    color: #03989E;
+}
+
+#revenue-chart-container h3{
+    font-size: .6em;
+    color: #646464;
+    font-weight: 300;
+}
+.chart-options{
+    text-align: center;
+}
+.chart-options label{
+    font-size: .8em;
+    color: #646464;
+    font-weight: 300;
+}
+.chart-options select{
+    border: 1px solid #ccc;
+    color: #03989E;
+    font-size: .6em;
+    padding: 2px;
 
 }

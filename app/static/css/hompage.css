@@ -508,36 +508,6 @@ td a {
   font-weight: 300;
 }
 
-.dashboard {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin: 11.875%;
-}
-.dashboard_card {
-  display: flex;
-  width: 30%;
-  border-radius: 4px 4px 4px 4px;
-  box-shadow: 2px 2px 2px 1px rgb(212, 212, 212);
-}
-.dashboard_icon {
-  margin-top: 30%;
-  border-right: 2px solid rgb(239, 237, 237);
-}
-.dashboard_container2 {
-  margin-left: 5%;
-}
-.dashboard_header {
-  font-size: 2.2em;
-  margin-bottom: 0%;
-  color: #03989E;
-}
-.dashboard_subheader {
-  font-size: 1.2em;
-  margin-top: 2%;
-}
-
 #deleteModal {
   position: fixed;
   z-index: 1;

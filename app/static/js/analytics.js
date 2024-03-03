@@ -16,8 +16,8 @@ function renderCustomerLocationChart() {
                     datasets: [{
                         data: customerCounts,
                         backgroundColor: [
-                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#F7464A',
-                            '#46BFBD', '#FDB45C', '#949FB1', '#4D5360', '#AC64AD'
+                            '#ff9f1c', '#ffbf69', '#cbf3f0', '#2ec4b6', '#264653',
+                            '#fcca46', '#6fffe9', '#fe621d', '#f5c000', '#d7d9ce'
                         ]
                     }]
                 },
@@ -46,7 +46,6 @@ function renderCustomerLocationChart() {
 
 
 renderCustomerLocationChart();
-
 
 
 
@@ -88,12 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 label: 'Gender Distribution',
                                 data: [120, 80], // Example data: 120 men, 80 women
                                 backgroundColor: [
-                                    '#36A2EB', // Solid color for men
-                                    '#FF6384'  // Solid color for women
+                                    '#03989E', // Solid color for men
+                                    '#FF914C'  // Solid color for women
                                 ],
                                 borderColor: [
-                                    '#36A2EB', // Border color for men
-                                    '#FF6384'  // Border color for women
+                                    '#03989E', // Border color for men
+                                    '#FF914C'  // Border color for women
                                 ],
                                 borderWidth: 1
                             }]
@@ -160,8 +159,8 @@ function fetchBookingsData(year = '') {
                 datasets:[{
                     label: 'Number of Bookings',
                     data: data.map(item => item[1]), // Booking counts
-                    backgroundColor: 'rgb(0, 123, 255)', // Solid blue color using RGB
-                    borderColor: 'rgb(0, 123, 255)',
+                    backgroundColor: '#FF914C', // Solid blue color using RGB
+                    borderColor: '#FF914C',
                     borderWidth: 1
                 }]
 
@@ -229,9 +228,9 @@ fetchBookingsData();
 
     // Adjusted function to determine bar color based on the specified revenue amount ranges
     function getBarColor(amount) {
-        if (amount < 50000) return '#ff6384'; // Red for revenues less than $50k
-        else if (amount >= 100000 && amount <= 250000) return '#fdd835'; // Yellow for revenues between $100k and $250k
-        else return '#4bc0c0'; // Green for all other revenues
+        if (amount < 50000) return '233d4d'; // Red for revenues less than $50k
+        else if (amount >= 100000 && amount <= 250000) return '#FF914C'; // Yellow for revenues between $100k and $250k
+        else return '#03989E'; // Green for all other revenues
     }
 
     // Function to create the revenue chart
