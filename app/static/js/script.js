@@ -223,3 +223,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+// table loading spinner 
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide the spinner once the page is fully loaded
+    document.getElementById('loadingSpinner').style.display = 'none';
+});
+
+
+
+
