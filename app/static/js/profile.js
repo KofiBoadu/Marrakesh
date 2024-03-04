@@ -202,11 +202,6 @@ function emailHideEditButton(event) {
 
 
 // update bookings
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     var updateButtons = document.querySelectorAll('.update-btn');
     console.log("JavaScript is running");
@@ -246,6 +241,35 @@ function closeUpdateBookingForm() {
 }
 
 
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Assuming your "update-bookings" form is wrapped in a div with a specific class or ID
+    const formContainer = document.getElementById('update-bookings');
+    const modifyFromParagraph = formContainer.querySelector('.modify p'); // Select the <p> within .modify
+    
+    // Attach the click event listener to the container of the buttons
+    document.querySelector('.profile-bookings ul').addEventListener('click', function(event) {
+        // Check if the clicked element or its parent is an "edit" button
+        const editButton = event.target.closest('.update-btn');
+        if (editButton) {
+            // Retrieve the tour name from the data attribute of the button
+            const tourName = editButton.getAttribute('data-tour-name');
+            
+            // Set the content of the <p> tag to the tour name
+            modifyFromParagraph.textContent = tourName;
+            
+            // Set the hidden input value for submitting
+            document.getElementById('modifyFromValue').value = tourName;
+            
+            // Show the form if it's not already visible
+            formContainer.style.display = 'block';
+        }
+    });
+});
 
 
 

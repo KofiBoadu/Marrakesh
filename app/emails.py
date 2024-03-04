@@ -14,7 +14,7 @@ mail = Mail()
 
 
 
-def send_email(subject, sender, recipients, text_body,html_body=None):
+def send_email(subject, recipients, text_body, sender="bookings@africatravellers.com",html_body=None):
     with current_app.app_context():
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = text_body
