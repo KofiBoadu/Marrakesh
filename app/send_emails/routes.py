@@ -15,12 +15,11 @@ def send_customer_email():
     customer_id= request.form.get('customer_id')
     status = "email not sent"
     user= f"{current_user.first_name} {current_user.last_name}"
-    email_sent = send_email(subject, from_email, [to_email], body)
+    email_sent = send_email(subject, [to_email], body)
     if email_sent:
         status = "sent"
 
-    # user= f"{current_user.first_name} {current_user.last_name}"
-    # print(user)
+   
 
     store_email_details = customer_email_interactions(customer_id, subject, body, status,user)
 

@@ -245,7 +245,7 @@ function closeUpdateBookingForm() {
 
 
 
-
+// gets me the old tour name 
 document.addEventListener('DOMContentLoaded', function() {
     // Assuming your "update-bookings" form is wrapped in a div with a specific class or ID
     const formContainer = document.getElementById('update-bookings');
@@ -271,6 +271,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
+// add a spin 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('update-bookings'); // Use the form's ID
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    
+
+
+    form.addEventListener('submit', function(event) {
+        // Optional: Prevent the form from submitting immediately if you need to validate
+        // event.preventDefault();
+
+        // Display the loading overlay
+        loadingOverlay.style.display = 'flex';
+    });
+});
 
 
 
