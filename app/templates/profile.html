@@ -97,56 +97,62 @@
 
 
 
-<!-- customer activity  testing -->
+
+
+
+
+
+
 <div class="email-activity">
   <div class="email-activity-header">
     <h2 class="email-activity-title">ACTIVITY TIMELINE</h2>
   </div>
   {% for activity in activities %}
-  <div class="email-activity-container {{ 'email-activity-container' if not activity.get('is_note', False) else 'note-activity-container' }}">
-    <div class="{{ 'email-header' if not activity.get('is_note', False) else 'note-header' }}">
+  <div class="email-activity-container {{ 'email-activity-container' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-activity-container' }}">
+    <div class="{{ 'email-header' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-header' }}">
       <div class="email-header-block">
-        
         <strong class="subject">{{ activity['subject'] }}</strong>
-        <p class="from">sent by {{ activity['sent_user'] }}</p>
-        {% if not activity.get('is_note', False) %}
-        <img class="dropdown" width="16" height="16"
-          src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down"
-          onclick="toggleEmailBody(this)" />
+        {% if activity.get('subject') == 'Booking Update' %}
+          <p class="from">updated by {{ activity['sent_user'] }}</p>
+        {% else %}
+          <p class="from">sent by {{ activity['sent_user'] }}</p>
+        {% endif %}
+        {% if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' %}
+          <img class="dropdown" width="16" height="16"
+            src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down"
+            onclick="toggleEmailBody(this)" />
         {% endif %}
       </div>
-      {% if not activity.get('is_note', False) %}
-      <!-- Email deletion form -->
-      <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'],customer_id=customer_id) }}"
-        method="POST" class="delete-form">
-        <input type="hidden" name="email_id" value="{{ activity['email_id'] }}">
-        <input type="hidden" name="customer_id" value="{{ customer_id }}">
-        <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link"><img
-            width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png"
-            alt="filled-trash" />delete</a>
-      </form>
-      {% else %}
-      <!-- Note deletion form -->
-      <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
-        <input type="hidden" name="notes_id" value="{{ activity['email_id'] }}">
-        <input type="hidden" name="customer_id" value="{{ customer_id }}">
-        <button type="submit" class="noteDelete"><img width="16" height="16"
-            src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="filled-trash" />delete</button>
-      </form>
+      {% if activity.get('email_id') %}
+        <!-- Email deletion form, only displayed if there's an email_id -->
+        <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'], customer_id=customer_id) }}" method="POST" class="delete-form">
+          <input type="hidden" name="email_id" value="{{ activity['email_id'] }}">
+          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="delete-text-link">
+            <img width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" />delete
+          </a>
+        </form>
+      {% elif activity.get('is_note', False) %}
+        <!-- Note deletion form -->
+        <form action="{{ url_for('profiles.deleting_customer_notes') }}" method="post">
+          <input type="hidden" name="notes_id" value="{{ activity['email_id'] }}">
+          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <button type="submit" class="noteDelete">
+            <img width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" />delete
+          </button>
+        </form>
       {% endif %}
     </div>
-    <p class="activity-text"><small class="text-muted">Status: {{ activity['status'] }} on {{ activity['sent_date'].strftime('%Y-%m-%d %H:%M:%S') if activity['sent_date'] else 'N/A' }}</small></p>
-    <div class="{{ 'email-body' if not activity.get('is_note', False) else 'note-body' }}" style="{{ 'display: none;' if not activity.get('is_note', False) else '' }}">
-      {% if not activity.get('is_note', False) %}
-      <!-- Email content -->
-      <p class="email-body-content"></p>  <!-- Replace profile_name with actual variable -->
-      <p class="email-content">{{ activity.get('body', 'No content available.') }}</p>
-      <div class="email-footer">
-         <!-- Replace with actual company name -->
-      </div>
+    <p class="activity-text">
+      <small class="text-muted">Status: {{ activity['status'] }} on {{ activity['sent_date'].strftime('%Y-%m-%d %H:%M:%S') if activity['sent_date'] else 'N/A' }}</small>
+    </p>
+    <div class="{{ 'email-body' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-body' }}" style="{{ 'display: none;' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else '' }}">
+      {% if activity.get('subject') == 'Booking Update' %}
+        <!-- Display only the update details for Booking Updates -->
+        <p>{{ activity.get('body', 'No content available.') }}</p>
       {% else %}
-      <!-- Note content -->
-      <p class="note-message">{{ activity.get('body', 'No content available.') }}</p>
+        <!-- Email or Note content -->
+        <p>{{ activity.get('body', 'No content available.') }}</p>
       {% endif %}
     </div>
   </div>
@@ -161,17 +167,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
   <div class="profile-detail-container">
-
 
     <div class="profile-bookings">
 

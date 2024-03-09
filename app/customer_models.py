@@ -48,27 +48,99 @@ def update_customerDetails(customer_id, first_name, last_name, email, phone, gen
 
 
 
+
+
+
+
+def get_customer_booking_changes(customer_id):
+    """
+    Fetches booking changes for a given customer, including the user names and tour names for old and new tours.
+
+    Parameters:
+    - customer_id (int): The ID of the customer whose booking changes are to be fetched.
+
+    Returns:
+    - List of tuples containing the booking changes with user names and tour names.
+    - Returns an empty list if no changes are found or in case of an error.
+    """
+    query = """
+    SELECT
+        t_old.tour_name AS old_tour_name,
+        t_new.tour_name AS new_tour_name,
+        CONCAT(u.first_name, ' ', u.last_name) AS updated_by_username,  -- Added space between names
+        bu.update_time,
+        bu.update_details
+    FROM
+        booking_updates bu
+        JOIN tours t_old ON bu.old_tour_id = t_old.tour_id
+        JOIN tours t_new ON bu.new_tour_id = t_new.tour_id
+        JOIN users u ON bu.updated_by_user_id = u.user_id
+    WHERE
+        bu.customer_id = %s
+    """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (customer_id,))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        logging.error(f"Error in get_customer_booking_changes for customer ID {customer_id}: {e}")
+        return []  # Returning an empty list for uniformity
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+
+
 def get_customer_activities(customer_id):
     emails = all_emails_sent_to_customer(customer_id)
     notes_raw = get_customer_notes(customer_id)
-    
-    # Convert notes to the same dictionary format as emails for uniform handling
-    notes = [{'email_id': note[0], 
-              'subject': 'Note', 
-              'status': '', 
-              'sent_date': note[2], 
-              'body': note[1],  # note_message is assigned to body
-              'sent_user': note[3],  # Assuming index 3 is the sent_user in your notes_raw tuple
-              'is_note': True}  # Differentiate notes from emails
+    booking_changes_raw = get_customer_booking_changes(customer_id)
+
+    # Convert notes to the same dictionary format as emails
+    notes = [{'email_id': note[0],
+              'subject': 'Note',
+              'status': '',
+              'sent_date': note[2],
+              'body': note[1],
+              'sent_user': note[3],
+              'is_note': True}
              for note in notes_raw]
 
-    # Combine emails and notes
-    activities = emails + notes
+    # Convert booking changes to a dictionary format
+    booking_changes = [{'email_id': None,  # No email_id for booking changes
+                        'subject': 'Booking Update',
+                        'status': '',
+                        'sent_date': change[3],  # update_time
+                        'body': change[4],  # update_details
+                        'sent_user': change[2],  # updated_by_username
+                        'is_note': False,  # Differentiate from notes and emails
+                        'old_tour_name': change[0],
+                        'new_tour_name': change[1]}
+                       for change in booking_changes_raw]
+
+    # Combine emails, notes, and booking changes
+    activities = emails + notes + booking_changes
 
     # Sort by 'sent_date'
     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
 
     return activities_sorted
+
+
+
+
+
+
+
 
 
 
