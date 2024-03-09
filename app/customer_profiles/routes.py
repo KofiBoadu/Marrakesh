@@ -5,7 +5,7 @@ from app.emails import all_emails_sent_to_customer,send_email
 from flask_login import login_required, current_user
 from app.extension import cache
 from app.models import format_phone_number,available_tour_dates,get_tour_id
-from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_customer_state
+from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_customer_state,bookings_updates_logs
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 from app.profile_models import get_customer_bookings
 
@@ -55,18 +55,37 @@ def change_bookings():
     tour_year= tour_date.pop()
     tour_name=" ".join(tour_date)
     old_tour_name=request.form.get("modify_from")
+
+
     update_message=f"""Dear {customer_name},
 
            We have successfully updated your trip from {old_tour_name} to {new_tour_type}
 
       Warm regards,
       Africa Travellers
-    """ 
+    """
+
+    old_tour_date=old_tour_name.split()
+
+    old_tour_year= old_tour_date.pop()
+
+    new_old_tour_name=" ".join(old_tour_date)
+
+
+
     subject="Tour update"
     if checkbox_checked:
         send_email(subject,[customer_email],update_message)
+
         
     new_tour_id= get_tour_id(tour_name,tour_year)
+    old_tour_id= get_tour_id(new_old_tour_name,old_tour_year)
+    user_id= current_user.id
+    update_details_message= f" Tour was updated from {old_tour_name} to {new_tour_type}"
+
+
+    bookings_updates_logs(old_tour_id, new_tour_id,customer_id, user_id, update_details_message)
+
     booking_id=request.form.get('updatingbooking_booking_id')
     change_customer_bookings(booking_id, new_tour_id, customer_id)
     return redirect(url_for("profiles.customer_profile",customer_id=customer_id))

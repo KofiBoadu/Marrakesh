@@ -30,55 +30,6 @@ def send_email(subject, recipients, text_body, sender="bookings@africatravellers
 
 
 
-def send_email_with_context(customer_name, receiver_email, subject, sender, text_body):
-    from app import create_app #I initialized and imported the module here to avoid circular import
-    app=create_app()
-    with app.app_context():
-        recipients = [receiver_email]
-        msg = Message(subject, sender=sender, recipients=recipients)
-        msg.body = f"""Dear {customer_name},
-
-{text_body}
-
-"""
-        msg.html = f"""<html>
-<body>
-    <p>Dear {customer_name},</p>
-    <br>
-    <p>{text_body}</p>
-</body>
-</html>
-"""
-        try:
-            mail.send(msg)
-            print("Email sent successfully to", receiver_email)
-        except Exception as e:
-            current_app.logger.error(f'Failed to send email to {receiver_email}: {e}')
-
-
-
-
-
-
-
-
-def send_emails_asynchronously(recipients_list, subject, sender, text_body):
-    from app import create_app #I initialized and imported the module here to avoid circular import 
-    app=create_app()
-    with app.app_context():
-
-        with ThreadPoolExecutor(max_workers=10) as executor:
-
-            futures = [executor.submit(send_email_with_context, name, email, subject, sender, text_body) for name, email in recipients_list]
-
-            for future in as_completed(futures):
-                try:
-                    future.result()  # Wait for each email to be sent and handle exceptions here
-                except Exception as e:
-                    print(f"Email sending failed with error: {e}")
-
-
-
 
 
 
@@ -222,11 +173,16 @@ def get_customers_by_year_or_all(input_year):
 
 
 
+
 def our_customers_sincebyYear():
     start_year= 2023 
     current_year = datetime.now().year
     year_list= [ year for year in range(start_year, current_year+1)]
     return year_list
+
+
+
+
 
 
 

@@ -1,7 +1,8 @@
 from flask import  render_template, request,redirect,url_for,flash
 from . import email_marketing
+from  app.mass_email_marketing import send_emails_asynchronously
 from app.user import get_all_users
-from app.emails import our_customers_sincebyYear,get_customers_by_year_or_all,send_email_with_context,send_emails_asynchronously
+from app.emails import our_customers_sincebyYear,get_customers_by_year_or_all
 
 
 
@@ -18,8 +19,10 @@ def create_marketingEmails():
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
         email_body=request.form.get('emailBody')
-        email_list=[("daniel", "mrboadu3@gmail.com"), ("Akwesi", "anowusumensah@gmail.com")]
-        d_email_list = email_list * 20
+        email_list=[("daniel", "mrboadu3@gmail.com")]
+        d_email_list = email_list * 90
+
+
        
         send_emails_asynchronously(d_email_list, email_subject, from_address, email_body)
         

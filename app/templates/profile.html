@@ -139,11 +139,10 @@
     <div class="{{ 'email-body' if not activity.get('is_note', False) else 'note-body' }}" style="{{ 'display: none;' if not activity.get('is_note', False) else '' }}">
       {% if not activity.get('is_note', False) %}
       <!-- Email content -->
-      <p class="email-body-content">Dear {{ profile[0] }},</p>  <!-- Replace profile_name with actual variable -->
+      <p class="email-body-content"></p>  <!-- Replace profile_name with actual variable -->
       <p class="email-content">{{ activity.get('body', 'No content available.') }}</p>
       <div class="email-footer">
-        Best regards,<br>
-        Your Company Name  <!-- Replace with actual company name -->
+         <!-- Replace with actual company name -->
       </div>
       {% else %}
       <!-- Note content -->

@@ -6,6 +6,9 @@ from app.emails import all_emails_sent_to_customer
 from app.customer_notes import get_customer_notes
 
 
+
+
+
 def update_customerDetails(customer_id, first_name, last_name, email, phone, gender, state):
     query = """
         UPDATE customers
@@ -38,6 +41,10 @@ def update_customerDetails(customer_id, first_name, last_name, email, phone, gen
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
 
 
 
@@ -194,11 +201,6 @@ def update_customer_phone(customer_id,phone):
 
 
 
-
-
-
-
-
 def updating_customer_state(state,customer_id):
     query = "UPDATE customers SET state_address = %s WHERE customer_id = %s"
     database_connection = None
@@ -268,7 +270,6 @@ def update_customer_name(first_name, last_name,customer_id):
 
 
 
-   
 
 
 
@@ -313,5 +314,30 @@ def change_customer_bookings(booking_id, new_tour_id, customer_id):
 
 
 
+
+
+
+
+
+def bookings_updates_logs(old_tourID, new_tourID, customerID, updated_by_userID, update_details):
+    query = "INSERT INTO booking_updates (old_tour_id, new_tour_id, customer_id, updated_by_user_id, update_details) VALUES (%s, %s, %s, %s, %s)"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (old_tourID, new_tourID, customerID, updated_by_userID, update_details))
+        database_connection.commit()
+        return cursor.rowcount > 0
+    except Exception as e:
+        logging.error(f"Error in inserting booking: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 

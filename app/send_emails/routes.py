@@ -1,4 +1,3 @@
-
 from . import email_customers
 from app.emails import send_email,customer_email_interactions,delete_customer_email
 from flask import request, redirect, url_for, flash
