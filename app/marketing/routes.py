@@ -23,21 +23,30 @@ def create_marketingEmails():
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
         email_body=request.form.get('emailBody')
-        email_list=[("daniel", "mrboadu3@gmail.com")] * 10
+        email_list=[("daniel", "mrboadu3@gmail.com")]
         user_id=current_user.id
         # d_email_list = email_list * 90
 
 
-       
-        send_emails_asynchronously(email_list, email_subject, from_address, email_body)
-        # Now, insert campaign details into the database
-        marketing_Email(
+        campaign_id = marketing_Email(
             user_id=user_id,
             total_email_list=len(email_list),
             campaign_subject=email_subject,
             campaign_body=email_body,
             campaign_status="sent"
         )
+
+
+        if campaign_id:
+            # Modify send_emails_asynchronously to pass campaign_id to send_email_marketing
+            send_emails_asynchronously(email_list, email_subject, from_address, email_body, campaign_id)
+        else:
+            print("Failed to create campaign entry in the database.")
+
+
+
+        # send_emails_asynchronously(email_list, email_subject, from_address, email_body)
+        # # Now, insert campaign details into the database
 
         return redirect(url_for("marketing.marketing_emails"))
 
