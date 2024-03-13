@@ -6,10 +6,32 @@
   
   <button class="send-button"><a href="{{ url_for('marketing.create_marketingEmails') }}">Create Email</a></button>
 
+<style >
+  
+#email_marketing_campaign_page {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+#email_marketing_campaign_page table, th, td {
+            border: 1px solid black;
+        }
+#email_marketing_campaign_page th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+#email_marketing_campaign_page th {
+            background-color: #f2f2f2;
+           
+ }
+
+
+</style>
 
 
 
-   <table class="email_marketing_page">
+   <table id="email_marketing_campaign_page">
     <tr>
         <th><input type="checkbox"> </th> <!-- New header for the select column -->
         <th>EMAIL NAME</th>
