@@ -36,6 +36,7 @@ def customer_profile(customer_id):
 
         available_dates = available_tour_dates()
         activities = get_customer_activities(customer_id)
+
         return render_template('profile.html',activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
 
 
@@ -54,7 +55,15 @@ def change_bookings():
     tour_date= new_tour_type.split()
     tour_year= tour_date.pop()
     tour_name=" ".join(tour_date)
+
+
     old_tour_name=request.form.get("modify_from")
+    old_tour_date= old_tour_name.split()
+    old_tour_year=old_tour_date.pop()
+    new_old_tour_name=" ".join(old_tour_date)
+
+    # print(old_tour_year)
+    # print(old_tour_name)
 
     update_message=f"""Dear {customer_name},
 
@@ -71,6 +80,8 @@ def change_bookings():
         
     new_tour_id= get_tour_id(tour_name,tour_year)
     old_tour_id= get_tour_id(new_old_tour_name,old_tour_year)
+
+
     user_id= current_user.id
     update_details_message= f" Tour was updated from {old_tour_name} to {new_tour_type}"
 
@@ -159,7 +170,9 @@ def customer_notes():
 @login_required
 def deleting_customer_notes():
     notes_id= request.form.get('notes_id')
+    print(notes_id)
     customer_id=request.form.get('customer_id')
+    print(customer_id)
     delete_customer_notes(notes_id, customer_id)
     return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
 

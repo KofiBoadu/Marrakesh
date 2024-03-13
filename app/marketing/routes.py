@@ -34,10 +34,24 @@ def email_campaign_performance(campaign_id):
 
     click_events= {'click_rate':click_rate,'unique_clicks':unique_clicks,"total_clicks":total_clicks}
 
+    event_metrics = market.get_event_metrics(campaign_id)
+
+    total_emails_sent= market.total_email_list(campaign_id)
 
 
 
-    return render_template("email_campaign.html", click_events=click_events,campaign_id=campaign_id,open_rate=open_rate, unique_opens= unique_opens,total_opens=total_opens)
+    # total_bounce=market.get_bounces(campaign_id)
+    # total_delivery=market.get_successful_deliveries(campaign_id)
+    # total_unsubscribe=market.get_unsubscribes(campaign_id)
+    # total_spam=market.get_spam_reports(campaign_id)
+
+
+    # delivery_events={"total_bounce":total_bounce,"total_delivery":total_delivery,"total_unsubscribe":total_unsubscribe,"total_spam":total_spam}
+
+
+
+
+    return render_template("email_campaign.html",total_emails_sent=total_emails_sent,**event_metrics, click_events=click_events,campaign_id=campaign_id,open_rate=open_rate, unique_opens= unique_opens,total_opens=total_opens)
 
 
 

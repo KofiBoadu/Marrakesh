@@ -295,6 +295,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+function deleteNote(notesId, customerId) {
+  console.log("deleteNote called with notesId:", notesId, "and customerId:", customerId);
+  // Confirm deletion
+  if (!confirm("Are you sure you want to delete this note?")) {
+    return;
+  }
+
+  // Set up the request data using URLSearchParams for x-www-form-urlencoded format
+  var formData = new URLSearchParams();
+  formData.append('notes_id', notesId);
+  formData.append('customer_id', customerId);
+
+  // Send the POST request
+  fetch('/delete_notes', {
+    method: 'POST',
+    body: formData,
+    credentials: 'same-origin', // Include cookies
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }).then(response => {
+    if (response.ok) {
+      alert('Note deleted successfully.');
+      window.location.reload(); // Reload the page to update the UI
+    } else {
+      alert('Failed to delete the note.');
+    }
+  }).catch(error => console.error('Error:', error));
+}
 
 
 

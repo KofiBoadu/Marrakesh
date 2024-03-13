@@ -144,7 +144,6 @@ def get_customer_activities(customer_id):
 
 
 
-
 def update_tour_bookings(tour_id, customer_id):
     query = "UPDATE tour_bookings SET tour_id = %s WHERE customer_id = %s"
     database_connection = None

@@ -141,10 +141,18 @@ function closeModal() {
 
 
 
-document.querySelector('#updateModal .close-button').addEventListener('click', function() {
-    document.querySelector('#updateModal').style.display = 'none';
-});
+// document.querySelector('#updateModal .close-button').addEventListener('click', function() {
+//     document.querySelector('#updateModal').style.display = 'none';
+// });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var closeButton = document.querySelector('#updateModal .close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            document.querySelector('#updateModal').style.display = 'none';
+        });
+    }
+});
 
 
 

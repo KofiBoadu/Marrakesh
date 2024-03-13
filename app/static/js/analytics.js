@@ -44,8 +44,11 @@ function renderCustomerLocationChart() {
         .catch(error => console.error('Error:', error));
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    renderCustomerLocationChart();
+});
 
-renderCustomerLocationChart();
+
 
 
 

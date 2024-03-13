@@ -4,8 +4,71 @@
 
 {% block content %}
 
+<style>
+        .metrics-container {
+            width: 100%;
+            text-align: center;
+            border-style: solid;
+        }
+        .metric {
+            display: inline-block;
+            margin: 0 20px;
+        }
+        .metric-number {
+            font-size: 2em;
+            color: #007bff;
+        }
+        .metric-description {
+            font-size: 1em;
+            color: #333;
+        }
+
+
+
+        .receipient-metrics-container {
+            width: 300px; /* Adjust width as needed */
+            background-color: #f9f9f9; /* Light grey background, adjust color as needed */
+            border-left: 4px solid #00bfff; /* Blue left border, adjust color as needed */
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .receipient-metrics-container h2 {
+            color: #00bfff; /* Blue text for 'Sent', adjust color as needed */
+            margin: 0;
+            padding: 5px 0; /* Spacing around the 'Sent' title */
+        }
+        .receipient-metric-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0; /* Spacing around each metric item */
+        }
+        .receipient-metric-item strong {
+            color: #333; /* Dark text for metric names */
+        }
+        .receipient-metric-item span {
+            color: #666; /* Lighter text for metric values, adjust as needed */
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- open rate div -->
-<div>
+<div style="border-style: solid;">
 	
   {% if open_rate is not none %}
         <h2>Open rate: {{ open_rate }}%</h2>
@@ -21,7 +84,7 @@
 
 
 <!-- clicks rate div -->
-<div>
+<div style="border-style: solid;">
 
     <h2>Click Rate: {{ click_events.click_rate }}%</h2>
     <p>Unique Clicks: {{ click_events.unique_clicks }}</p>
@@ -31,7 +94,66 @@
 
 
 
+<!-- delivery metrics  -->
 
+
+<div class="metrics-container">
+    <h2>Delivery</h2>
+        <div class="metric">
+            
+            <div class="metric-description">Successful Deliveries</div>
+            <div class="metric-number">{{  successful_deliveries }}</div>
+            <p class="percentage" id="successful-deliveries-percentage">{{ delivery_percentage }}%</p>
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Bounces</div>
+            <div class="metric-number">{{ bounces }}</div>
+            <p class="percentage" id="bounces-percentage">{{ bounce_percentage }}%</p>
+ 
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Unsubscribes</div>
+            <div class="metric-number">{{ unsubscribes }}</div>
+            <p class="percentage" id="unsubscribes-percentage">{{ unsubscribe_percentage }}%</p>
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Spam Reports</div>
+            <div class="metric-number">{{ spam_reports }}</div>
+             <p class="percentage" id="spam-reports-percentage">{{ spam_report_percentage }}%</p>
+        </div>
+    </div>
+
+
+
+
+
+<div class="metrics-container">
+     
+        <div class="metric-item">
+            <strong>Sent</strong><span>{{ total_emails_sent }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Delivered</strong><span></span>
+        </div>
+        <div class="metric-item">
+            <strong>Opened</strong><span></span>
+        </div>
+        <div class="metric-item">
+            <strong>Clicked</strong><span></span>
+        </div>
+        <div class="metric-item">
+            <strong>Bounced</strong><span></span>
+        </div>
+        <div class="metric-item">
+            <strong>Unsubscribed</strong><span></span>
+
+         </div>
 
 
 {% endblock %}

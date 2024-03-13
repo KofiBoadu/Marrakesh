@@ -80,37 +80,6 @@ def send_email_marketing(customer_name, receiver_email, subject, sender_email, t
 
 
 
-# def all_email_campaign():
-#     query = """
-#         SELECT
-#             m.campaign_subject,
-#             m.total_email_list,
-#             m.sent_date,
-#             m.campaign_id,
-#             CONCAT(u.first_name, ' ', u.last_name) AS full_name
-#         FROM marketing_emails AS m
-#         JOIN users AS u ON m.user_id = u.user_id
-#     """
-#     database_connection = None
-#     cursor = None
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
-#         cursor.execute(query)
-#         results = cursor.fetchall()
-#         return results
-#     except Exception as e:
-#         print(f"An error occurred: {e}")  # Log or print the exception information.
-#         if database_connection:
-#             database_connection.close()
-#         return False
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection and database_connection.is_connected():
-#             database_connection.close()
-
-
 
 def all_email_campaign():
     query = """
@@ -252,14 +221,6 @@ def get_total_opens(campaign_id):
 
 
 
-# def get_click_rate(campaign_id):
-#     # This function assumes that 'execute_query' is the same helper function used in the previous examples.
-#     unique_clicks = get_unique_clicks(campaign_id)
-#     deliveries = get_deliveries(campaign_id)  # You'll need to write this function based on the previous pattern
-
-#     # Calculate the click rate
-#     click_rate = (unique_clicks / deliveries) * 100 if deliveries > 0 else 0
-#     return click_rate
 
 
 def get_click_rate(campaign_id):
@@ -300,7 +261,7 @@ def get_total_clicks(campaign_id):
 
 
 def get_deliveries(campaign_id):
-    # SQL query to get the number of successfully delivered emails
+
     query = """
     SELECT COUNT(*)
     FROM marketing_email_metrics
@@ -319,6 +280,72 @@ def get_bounces(campaign_id):
     """
 
     return execute_query(query, campaign_id)
+
+def get_successful_deliveries(campaign_id):
+    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Delivery' AND campaign_id = %s"
+    return execute_query(query, campaign_id)
+
+
+
+def get_unsubscribes(campaign_id):
+    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Subscription' AND campaign_id = %s"
+    return execute_query(query, campaign_id)
+
+def get_spam_reports(campaign_id):
+    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Complaint' AND campaign_id = %s"
+    return execute_query(query, campaign_id)
+
+
+
+
+def get_total_sent(campaign_id):
+    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE campaign_id = %s"
+    return execute_query(query, campaign_id)
+
+
+
+
+
+
+def get_percentage(count, total):
+    return round((count / total) * 100) if total > 0 else 0
+
+
+
+def get_event_metrics(campaign_id):
+    total_sent = get_total_sent(campaign_id)  # Function to get the total number of emails sent for the campaign
+    successful_deliveries = get_successful_deliveries(campaign_id)
+    bounces = get_bounces(campaign_id)
+    unsubscribes = get_unsubscribes(campaign_id)
+    spam_reports = get_spam_reports(campaign_id)
+
+
+    # Calculate percentages
+    delivery_percentage = get_percentage(successful_deliveries, total_sent)
+    bounce_percentage = get_percentage(bounces, total_sent)
+    unsubscribe_percentage = get_percentage(unsubscribes, total_sent)
+    spam_report_percentage = get_percentage(spam_reports, total_sent)
+
+    return {
+
+
+        'successful_deliveries': successful_deliveries,
+        'delivery_percentage': delivery_percentage,
+        'bounces': bounces,
+        'bounce_percentage': bounce_percentage,
+        'unsubscribes': unsubscribes,
+        'unsubscribe_percentage': unsubscribe_percentage,
+        'spam_reports': spam_reports,
+        'spam_report_percentage': spam_report_percentage
+    }
+
+
+
+def total_email_list(campaign_id):
+    query = "SELECT total_email_list FROM marketing_emails WHERE campaign_id = %s"
+    return execute_query(query, campaign_id)
+
+
 
 
 
