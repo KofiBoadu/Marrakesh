@@ -80,16 +80,54 @@ def send_email_marketing(customer_name, receiver_email, subject, sender_email, t
 
 
 
+# def all_email_campaign():
+#     query = """
+#         SELECT
+#             m.campaign_subject,
+#             m.total_email_list,
+#             m.sent_date,
+#             m.campaign_id,
+#             CONCAT(u.first_name, ' ', u.last_name) AS full_name
+#         FROM marketing_emails AS m
+#         JOIN users AS u ON m.user_id = u.user_id
+#     """
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+#         cursor.execute(query)
+#         results = cursor.fetchall()
+#         return results
+#     except Exception as e:
+#         print(f"An error occurred: {e}")  # Log or print the exception information.
+#         if database_connection:
+#             database_connection.close()
+#         return False
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection and database_connection.is_connected():
+#             database_connection.close()
+
+
+
 def all_email_campaign():
     query = """
-        SELECT
-            m.campaign_subject,
-            m.total_email_list,
-            m.sent_date,
-            m.campaign_id,
-            CONCAT(u.first_name, ' ', u.last_name) AS full_name
+       SELECT
+        m.campaign_subject,
+        m.total_email_list,
+        m.sent_date,
+        m.campaign_id,
+        CONCAT(u.first_name, ' ', u.last_name) AS full_name,
+        COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END) AS delivered,
+        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Open' THEN em.customer_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END), 0), 2) AS unique_open_rate,
+        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Click' THEN em.customer_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END), 0), 2) AS unique_click_rate
         FROM marketing_emails AS m
         JOIN users AS u ON m.user_id = u.user_id
+        LEFT JOIN marketing_email_metrics AS em ON m.campaign_id = em.campaign_id
+        GROUP BY m.campaign_id, m.campaign_subject, m.total_email_list, m.sent_date, full_name
+
     """
     database_connection = None
     cursor = None
@@ -101,9 +139,7 @@ def all_email_campaign():
         return results
     except Exception as e:
         print(f"An error occurred: {e}")  # Log or print the exception information.
-        if database_connection:
-            database_connection.close()
-        return False
+        return []
     finally:
         if cursor:
             cursor.close()
@@ -114,16 +150,20 @@ def all_email_campaign():
 
 
 
+
+
 def campaign_open_rate(campaign_id):
+
     query = """
     SELECT
-        SUM(CASE WHEN event_type = 'Open' THEN 1 ELSE 0 END) as unique_opens,
-        SUM(CASE WHEN event_type = 'Delivery' THEN 1 ELSE 0 END) as deliveries,
-        SUM(CASE WHEN event_type = 'Bounce' THEN 1 ELSE 0 END) as bounces
+        COUNT(DISTINCT CASE WHEN event_type = 'Open' THEN customer_id END) as unique_opens,
+        COUNT(DISTINCT CASE WHEN event_type = 'Delivery' THEN customer_id END) as deliveries,
+        COUNT(DISTINCT CASE WHEN event_type = 'Bounce' THEN customer_id END) as bounces
     FROM marketing_email_metrics
     WHERE campaign_id = %s
     GROUP BY campaign_id
     """
+
 
     database_connection = None
     cursor = None
@@ -212,14 +252,24 @@ def get_total_opens(campaign_id):
 
 
 
-def get_click_rate(campaign_id):
-    # This function assumes that 'execute_query' is the same helper function used in the previous examples.
-    unique_clicks = get_unique_clicks(campaign_id)
-    deliveries = get_deliveries(campaign_id)  # You'll need to write this function based on the previous pattern
+# def get_click_rate(campaign_id):
+#     # This function assumes that 'execute_query' is the same helper function used in the previous examples.
+#     unique_clicks = get_unique_clicks(campaign_id)
+#     deliveries = get_deliveries(campaign_id)  # You'll need to write this function based on the previous pattern
 
-    # Calculate the click rate
+#     # Calculate the click rate
+#     click_rate = (unique_clicks / deliveries) * 100 if deliveries > 0 else 0
+#     return click_rate
+
+
+def get_click_rate(campaign_id):
+    unique_clicks = get_unique_clicks(campaign_id)  # This should be the number of unique clicks
+    deliveries = get_deliveries(campaign_id) - get_bounces(campaign_id)  # Subtract bounces to get actual deliveries
+
+    # Calculate the click rate using the unique clicks and actual deliveries
     click_rate = (unique_clicks / deliveries) * 100 if deliveries > 0 else 0
     return click_rate
+
 
 
 
@@ -261,6 +311,14 @@ def get_deliveries(campaign_id):
 
 
 
+def get_bounces(campaign_id):
+    query = """
+    SELECT COUNT(DISTINCT customer_id)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Bounce'
+    """
+
+    return execute_query(query, campaign_id)
 
 
 

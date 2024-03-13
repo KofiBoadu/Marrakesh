@@ -43,7 +43,7 @@
         <th>LAST UPDATED BY</th>
     </tr>
     {% for campaign in campaigns %}
-    <tr>
+    <!-- <tr>
         <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[0] }}"></td>  
       
         <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0] }}</a></td>
@@ -54,7 +54,20 @@
          <td></td>
         <td>{{ campaign[2].strftime('%B %d, %Y').capitalize() }}</td>
         <td>{{ campaign[4] }}</td>
+    </tr> -->
+
+
+    <tr>
+        <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[3] }}"></td> <!-- Assuming campaign_id is now at index 3 -->
+        <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0] }}</a></td>
+        <td>{{ campaign[1] }}</td>
+        <td>{{ campaign[5] }}</td> <!-- Delivered count -->
+        <td>{{ campaign[6] }}%</td> <!-- Open rate -->
+        <td>{{ campaign[7] }}%</td> <!-- Click rate -->
+        <td>{{ campaign[2].strftime('%B %d, %Y').capitalize() }}</td>
+        <td>{{ campaign[4] }}</td>
     </tr>
+
     {% endfor %}
 </table>
 
