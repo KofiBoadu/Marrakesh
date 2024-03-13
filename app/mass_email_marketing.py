@@ -20,30 +20,6 @@ aws_default_region = os.getenv('AWS_DEFAULT_REGION')
 
 
 
-# def marketing_Email(user_id, total_email_list, campaign_subject, campaign_body, campaign_status="sent"):
-#     query = """
-#         INSERT INTO marketing_emails
-#         (user_id, total_email_list, campaign_subject, campaign_body, campaign_status)
-#         VALUES (%s, %s, %s, %s, %s)
-#     """
-#     database_connection = None
-#     cursor = None
-#     try:
-#         database_connection = create_databaseConnection()
-#         cursor = database_connection.cursor()
-#         cursor.execute(query, (user_id, total_email_list, campaign_subject, campaign_body, campaign_status))
-#         database_connection.commit()
-#         return cursor.rowcount > 0
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         if database_connection is not None:
-#             database_connection.rollback()
-#         return False
-#     finally:
-#         if cursor is not None:
-#             cursor.close()
-#         if database_connection is not None:
-#             database_connection.close()
 
 
 def marketing_Email(user_id, total_email_list, campaign_subject, campaign_body, campaign_status="sent"):
@@ -78,41 +54,6 @@ def marketing_Email(user_id, total_email_list, campaign_subject, campaign_body, 
 
 
 
-
-# def send_email_marketing(customer_name, receiver_email, subject, sender_email, text_body, configuration_set_name='EmailEventTrackingSet'):
-#     # AWS Region (make sure this matches your SES region)
-#     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
-
-#     # Initialize SES client
-#     ses_client = boto3.client('ses', region_name=aws_region)
-
-#     # HTML version of your email body
-#     html_body = f"""<html>
-#                     <body>
-#                         <p>Dear {customer_name},</p>
-#                         <p>{text_body}</p>
-#                     </body>
-#                 </html>"""
-
-#     try:
-#         # Send email
-#         response = ses_client.send_email(
-#             Source=sender_email,
-#             Destination={'ToAddresses': [receiver_email]},
-#             Message={
-#                 'Subject': {'Data': subject},
-#                 'Body': {
-#                     'Html': {'Data': html_body},
-#                     'Text': {'Data': text_body},
-#                 }
-#             },
-#             ConfigurationSetName=configuration_set_name
-#         )
-#         print(f"Email sent successfully to {receiver_email}. Message ID: {response['MessageId']}")
-#     except ClientError as e:
-#         print(f"Failed to send email to {receiver_email}: {e.response['Error']['Message']}")
-
-
 def send_email_marketing(customer_name, receiver_email, subject, sender_email, text_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
     ses_client = boto3.client('ses', region_name=aws_region)
@@ -145,6 +86,7 @@ def all_email_campaign():
             m.campaign_subject,
             m.total_email_list,
             m.sent_date,
+            m.campaign_id,
             CONCAT(u.first_name, ' ', u.last_name) AS full_name
         FROM marketing_emails AS m
         JOIN users AS u ON m.user_id = u.user_id
@@ -172,47 +114,150 @@ def all_email_campaign():
 
 
 
+def campaign_open_rate(campaign_id):
+    query = """
+    SELECT
+        SUM(CASE WHEN event_type = 'Open' THEN 1 ELSE 0 END) as unique_opens,
+        SUM(CASE WHEN event_type = 'Delivery' THEN 1 ELSE 0 END) as deliveries,
+        SUM(CASE WHEN event_type = 'Bounce' THEN 1 ELSE 0 END) as bounces
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s
+    GROUP BY campaign_id
+    """
+
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (campaign_id,))
+        results = cursor.fetchone()
+
+        unique_opens, deliveries, bounces = results
+
+        # Calculate the adjusted deliveries by subtracting bounces from deliveries
+        adjusted_deliveries = deliveries - bounces
+
+        # Calculate the open rate using the adjusted deliveries
+        open_rate = (unique_opens / adjusted_deliveries) * 100 if adjusted_deliveries > 0 else 0
+
+        return open_rate
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
 
-# def send_email_marketing(customer_name, receiver_email, subject, sender_email, text_body, smtp_settings=smtp_settings, configuration_set_name='EmailEventTrackingSet'):
-#     msg = MIMEMultipart('alternative')
-#     msg['Subject'] = subject
-#     msg['From'] = sender_email
-#     msg['To'] = receiver_email
-#     # Add configuration set header with the default or provided configuration set name
-#     msg.add_header('X-SES-CONFIGURATION-SET', configuration_set_name)
 
-#     # Plain text version
-#     part1 = MIMEText(text_body, 'plain')
-#     # HTML version
-#     html_body = f"""<html>
-#                     <body>
-#                         <p>Dear {customer_name},</p>
-#                         <p>{text_body}</p>
-#                     </body>
-#                 </html>"""
-#     part2 = MIMEText(html_body, 'html')
 
-#     msg.attach(part1)
-#     msg.attach(part2)
 
-#     try:
-#         with smtplib.SMTP(smtp_settings['server'], smtp_settings['port']) as server:
-#             server.ehlo()
-#             if smtp_settings['tls']:
-#                 server.starttls()
-#                 server.ehlo()
-#             server.login(smtp_settings['username'], smtp_settings['password'])
-#             server.sendmail(sender_email, receiver_email, msg.as_string())
-#             print(f"Email sent successfully to {receiver_email}")
-#     except Exception as e:
-#         print(f"Failed to send email to {receiver_email}: {e}")
+
+def execute_query(query, campaign_id):
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (campaign_id,))
+        result = cursor.fetchone()
+        return result[0] if result else 0
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return 0
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
 
 
 
+
+
+def get_unique_opens(campaign_id):
+    # SQL query to get the number of unique opens
+    query = """
+    SELECT COUNT(DISTINCT customer_id)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Open'
+    """
+
+    return execute_query(query, campaign_id)
+
+
+
+
+
+
+def get_total_opens(campaign_id):
+    # SQL query to get the total number of opens (including multiple opens by the same user)
+    query = """
+    SELECT COUNT(*)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Open'
+    """
+
+    return execute_query(query, campaign_id)
+
+
+
+
+
+def get_click_rate(campaign_id):
+    # This function assumes that 'execute_query' is the same helper function used in the previous examples.
+    unique_clicks = get_unique_clicks(campaign_id)
+    deliveries = get_deliveries(campaign_id)  # You'll need to write this function based on the previous pattern
+
+    # Calculate the click rate
+    click_rate = (unique_clicks / deliveries) * 100 if deliveries > 0 else 0
+    return click_rate
+
+
+
+
+def get_unique_clicks(campaign_id):
+    # SQL query to get the number of unique clicks
+    query = """
+    SELECT COUNT(DISTINCT customer_id)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Click'
+    """
+
+    return execute_query(query, campaign_id)
+
+
+
+
+def get_total_clicks(campaign_id):
+    # SQL query to get the total number of clicks (including multiple clicks by the same user)
+    query = """
+    SELECT COUNT(*)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Click'
+    """
+
+    return execute_query(query, campaign_id)
+
+
+
+def get_deliveries(campaign_id):
+    # SQL query to get the number of successfully delivered emails
+    query = """
+    SELECT COUNT(*)
+    FROM marketing_email_metrics
+    WHERE campaign_id = %s AND event_type = 'Delivery'
+    """
+
+    return execute_query(query, campaign_id)
 
 
 

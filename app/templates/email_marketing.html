@@ -9,39 +9,29 @@
 
 
 
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-
-
-   <table>
+   <table class="email_marketing_page">
     <tr>
         <th><input type="checkbox"> </th> <!-- New header for the select column -->
         <th>EMAIL NAME</th>
         <th>TOTAL EMAILS</th>
-        <th>DATE</th>
-        <th>SENDER</th>
+        <th>DELIVERED</th>
+        <th>OPEN RATE</th>
+        <th>CLICK RATE</th>
+        <th>PUBLISH DATE</th>
+        <th>LAST UPDATED BY</th>
     </tr>
     {% for campaign in campaigns %}
     <tr>
-        <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[0] }}"></td> <!-- Checkbox to select the campaign -->
-        <td><a href="/campaign/{{ campaign[0] | urlencode }}">{{ campaign[0] }}</a></td> <!-- Making the email name clickable -->
+        <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[0] }}"></td>  
+      
+        <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0] }}</a></td>
+
         <td>{{ campaign[1] }}</td>
-        <td>{{ campaign[2].strftime('%Y-%m-%d %H:%M:%S') }}</td>
-        <td>{{ campaign[3] }}</td>
+         <td></td>
+         <td></td>
+         <td></td>
+        <td>{{ campaign[2].strftime('%B %d, %Y').capitalize() }}</td>
+        <td>{{ campaign[4] }}</td>
     </tr>
     {% endfor %}
 </table>

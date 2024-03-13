@@ -3,15 +3,49 @@ from . import email_marketing
 from  app.mass_email_marketing import send_emails_asynchronously
 from app.user import get_all_users
 from app.emails import our_customers_sincebyYear,get_customers_by_year_or_all
-from app.mass_email_marketing import marketing_Email,all_email_campaign
+from app.mass_email_marketing import marketing_Email,all_email_campaign,campaign_open_rate,get_unique_opens,get_total_opens
 from flask_login import login_required, current_user
+import app.mass_email_marketing as market
+# Then you can use mem.specific_function(), mem.AnotherClass(), etc.
 
 
 @email_marketing.route('/emails', methods=['GET'])
 @login_required
 def marketing_emails():
     campaigns= all_email_campaign()
+
     return render_template("email_marketing.html",campaigns=campaigns)
+
+
+
+
+@email_marketing.route('/campaign/performance/<int:campaign_id>', methods=['GET'])
+@login_required
+def email_campaign_performance(campaign_id):
+
+    # Your code to fetch and display the campaign performance for the given campaign_id
+    open_rate=campaign_open_rate(campaign_id)
+    unique_opens = get_unique_opens(campaign_id)  # This function would get the number of unique opens
+    total_opens = get_total_opens(campaign_id)
+
+    click_rate = market.get_click_rate(campaign_id)
+    unique_clicks = market.get_unique_clicks(campaign_id)
+    total_clicks = market.get_total_clicks(campaign_id)
+
+    click_events= {'click_rate':click_rate,'unique_clicks':unique_clicks,"total_clicks":total_clicks}
+
+
+
+
+    return render_template("email_campaign.html", click_events=click_events,campaign_id=campaign_id,open_rate=open_rate, unique_opens= unique_opens,total_opens=total_opens)
+
+
+
+
+
+
+
+
 
 
 
@@ -23,7 +57,7 @@ def create_marketingEmails():
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
         email_body=request.form.get('emailBody')
-        email_list=[("daniel", "mrboadu3@gmail.com")]
+        email_list=[("daniel", "mrboadu3@gmail.com"),("abby", "phyllis.kodUA.UAH@gmail.com")]
         user_id=current_user.id
         # d_email_list = email_list * 90
 

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<!-- open rate div -->
+<div>
+	
+  {% if open_rate is not none %}
+        <h2>Open rate: {{ open_rate }}%</h2>
+    {% else %}
+        <h2>Open rate: None</h2>
+    {% endif %}
+
+   <p>Unique opens: {{ unique_opens }}</p>
+   <p>Total opens: {{ total_opens }}</p>
+
+</div>
+
+
+
+<!-- clicks rate div -->
+<div>
+
+    <h2>Click Rate: {{ click_events.click_rate }}%</h2>
+    <p>Unique Clicks: {{ click_events.unique_clicks }}</p>
+    <p>Total Clicks: {{ click_events.total_clicks }}</p>
+
+</div>
+
+
+
+
+
+
+{% endblock %}
