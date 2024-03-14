@@ -54,3 +54,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+            var quill = new Quill('#editor', {
+                theme: 'snow'
+            });
+
+            var form = document.querySelector('.marketing-form');
+            form.onsubmit = function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Populate hidden input with the content from the rich text editor
+                var htmlContent = quill.root.innerHTML;
+                document.querySelector('input[name="emailBody"]').value = htmlContent;
+
+                // Now submit the form with the rich text content
+                form.submit();
+            };
+        });

@@ -7,6 +7,7 @@ from flask import  copy_current_request_context
 import threading
 from email.message import EmailMessage
 from concurrent.futures import ThreadPoolExecutor,as_completed
+import re
 
 
 
@@ -26,8 +27,6 @@ def send_email(subject, recipients, text_body, sender="bookings@africatravellers
         except Exception as e:
             current_app.logger.error(f'Failed to send email: {e}')
             return False
-
-
 
 
 

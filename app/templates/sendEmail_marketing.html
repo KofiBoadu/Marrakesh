@@ -11,7 +11,7 @@
    
    
 
-
+<!-- 
     <div class="marketing-container">
         <div class="marketing_title">
             <h3 class="marketing_title--header">Marketing Email</h3>
@@ -59,6 +59,57 @@
             <button class="marketing-send" type="submit" class="btn">Send</button>
         </form>
     </div>
+ -->
+
+
+<div class="marketing-container">
+        <div class="marketing_title">
+            <h3 class="marketing_title--header">Marketing Email</h3>
+        </div>
+        <form class="marketing-form" action="{{url_for('marketing.create_marketingEmails')}}" method="post">
+            <div class="marketing-form-group">
+                <label for="fromAddress">From name or address:</label>
+                <select id="fromAddress" name="fromAddress" class="marketing-form-control">
+                    {% for sender in senders %}
+                    <option value="{{ sender[2] }}">{{ sender[0] }} {{ sender[1] }} ({{ sender[2] }})</option>
+                    {% endfor %}
+                </select>
+
+                <label for="customerType">To customer type:</label>
+                <select id="customerType" name="customerType" class="marketing-form-control">
+                    <option value="1">All customers</option>
+                    {% for year in customer_list_byYear %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="marketing-form-group">
+                <label for="emailSubject">Email subject line:</label>
+                <input type="text" id="emailSubject" name="emailSubject" class="subject-form-control">
+            </div>
+            
+            <div class="marketing-form-group">
+                <label for="emailBody">Email Body:</label>
+                <!-- Container for Quill editor -->
+                <div id="editor" style="height: 300px;"></div>
+                <!-- Hidden input to store the HTML content -->
+                <input type="hidden" name="emailBody">
+            </div>
+            
+            <button type="submit" class="marketing-send btn">Send</button>
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
 
 
 

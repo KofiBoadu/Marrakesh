@@ -6,6 +6,7 @@ from app.emails import our_customers_sincebyYear,get_customers_by_year_or_all
 from app.mass_email_marketing import marketing_Email,all_email_campaign,campaign_open_rate,get_unique_opens,get_total_opens
 from flask_login import login_required, current_user
 import app.mass_email_marketing as market
+import bleach
 
 
 
@@ -13,6 +14,7 @@ import app.mass_email_marketing as market
 @login_required
 def marketing_emails():
     campaigns= all_email_campaign()
+
 
     return render_template("email_marketing.html",campaigns=campaigns)
 
@@ -73,25 +75,30 @@ def create_marketingEmails():
 
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
-        email_body=request.form.get('emailBody')
+        raw_email_body = request.form.get('emailBody')
         customers_type=request.form.get('customerType')
-        email_list=get_customers_by_year_or_all(customers_type)
+        # email_list=get_customers_by_year_or_all(customers_type)
         user_id=current_user.id
-        # d_email_list = email_list * 90
+        email_list = [('daniel',"bookings@africatravellers.com"),('daniel',"mrboadu3@gmail.com")]
+
+        # safe_email_body = bleach.clean(raw_email_body)
+
 
 
         campaign_id = marketing_Email(
             user_id=user_id,
             total_email_list=len(email_list),
             campaign_subject=email_subject,
-            campaign_body=email_body,
+            campaign_body=raw_email_body,
             campaign_status="sent"
         )
+
+        # html_body=convert_urls_to_links(email_body)
 
 
         if campaign_id:
             # Modify send_emails_asynchronously to pass campaign_id to send_email_marketing
-            send_emails_asynchronously(email_list, email_subject, from_address, email_body, campaign_id)
+            send_emails_asynchronously(email_list, email_subject, from_address,raw_email_body, campaign_id)
         else:
             print("Failed to create campaign entry in the database.")
 
