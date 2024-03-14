@@ -38,6 +38,9 @@ def email_campaign_performance(campaign_id):
 
     total_emails_sent= market.total_email_list(campaign_id)
 
+    events=market.get_customer_campaign_events(campaign_id)
+
+
 
 
     # total_bounce=market.get_bounces(campaign_id)
@@ -51,7 +54,7 @@ def email_campaign_performance(campaign_id):
 
 
 
-    return render_template("email_campaign.html",total_emails_sent=total_emails_sent,**event_metrics, click_events=click_events,campaign_id=campaign_id,open_rate=open_rate, unique_opens= unique_opens,total_opens=total_opens)
+    return render_template("email_campaign.html",events=events,total_emails_sent=total_emails_sent,**event_metrics, click_events=click_events,campaign_id=campaign_id,open_rate=open_rate, unique_opens= unique_opens,total_opens=total_opens)
 
 
 
@@ -71,7 +74,7 @@ def create_marketingEmails():
         from_address=request.form.get('fromAddress')
         email_subject=request.form.get('emailSubject')
         email_body=request.form.get('emailBody')
-        email_list=[("daniel", "mrboadu3@gmail.com"),("abby", "phyllis.kodUA.UAH@gmail.com")]
+        email_list=[("daniel", "mrboadu3@gmail.com"),("kofi","kboadu16@gmail.com"),("amandani","amandanitube@gmail.com")]
         user_id=current_user.id
         # d_email_list = email_list * 90
 

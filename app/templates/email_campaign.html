@@ -5,50 +5,84 @@
 {% block content %}
 
 <style>
-        .metrics-container {
+
+.metrics-container {
             width: 100%;
             text-align: center;
             border-style: solid;
         }
-        .metric {
+.metric {
             display: inline-block;
             margin: 0 20px;
         }
-        .metric-number {
+.metric-number {
             font-size: 2em;
             color: #007bff;
         }
-        .metric-description {
+.metric-description {
             font-size: 1em;
             color: #333;
         }
 
 
 
-        .receipient-metrics-container {
+.receipient-metrics-container {
             width: 300px; /* Adjust width as needed */
             background-color: #f9f9f9; /* Light grey background, adjust color as needed */
             border-left: 4px solid #00bfff; /* Blue left border, adjust color as needed */
             padding: 10px;
             box-sizing: border-box;
+            margin-bottom: 100px;
         }
-        .receipient-metrics-container h2 {
+.receipient-metrics-container h2 {
             color: #00bfff; /* Blue text for 'Sent', adjust color as needed */
             margin: 0;
             padding: 5px 0; /* Spacing around the 'Sent' title */
         }
-        .receipient-metric-item {
+.receipient-metric-item {
             display: flex;
             justify-content: space-between;
             padding: 5px 0; /* Spacing around each metric item */
         }
-        .receipient-metric-item strong {
+.receipient-metric-item strong {
             color: #333; /* Dark text for metric names */
         }
-        .receipient-metric-item span {
+.receipient-metric-item span {
             color: #666; /* Lighter text for metric values, adjust as needed */
         }
-    </style>
+
+
+
+
+
+.recipient-table{
+    margin-top: 20px;
+
+   
+}
+.email-table {
+ 
+    border-collapse: collapse;
+   
+  }
+  .email-table th,
+  .email-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  .email-table th {
+    background-color: #f2f2f2;
+  }
+  .email-table tr:hover {background-color: #f5f5f5;}
+  .opened {
+    color: green;
+  }
+  .delivered {
+    color: grey;
+  }
+
+
+</style>
 
 
 
@@ -133,27 +167,69 @@
 
 
 
-<div class="metrics-container">
+<div class="receipient-metrics-container">
      
         <div class="metric-item">
             <strong>Sent</strong><span>{{ total_emails_sent }}</span>
         </div>
         <div class="metric-item">
-            <strong>Delivered</strong><span></span>
+            <strong>Delivered</strong><span>{{  successful_deliveries }}</span>
         </div>
         <div class="metric-item">
-            <strong>Opened</strong><span></span>
+            <strong>Opened</strong><span>{{ total_opens }}</span>
         </div>
         <div class="metric-item">
-            <strong>Clicked</strong><span></span>
+            <strong>Clicked</strong><span>{{ click_events.total_clicks }}</span>
         </div>
         <div class="metric-item">
-            <strong>Bounced</strong><span></span>
+            <strong>Bounced</strong><span>{{ bounces }}</span>
         </div>
         <div class="metric-item">
-            <strong>Unsubscribed</strong><span></span>
+            <strong>Unsubscribed</strong><span>{{ unsubscribes }}</span>
 
          </div>
+
+
+
+
+
+
+
+<div class="recipient-table">
+  <table class="email-table">
+    <thead>
+      <tr>
+        <th>Recipient</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer_id, full_name, campaign_id, event_type in events %}
+      <tr>
+        <td>
+          <!-- Full name as a clickable link -->
+          <a href="{{ url_for('profiles.customer_profile', customer_id=customer_id) }}">
+            {{ full_name }}
+          </a>
+          <!-- Hidden inputs for storing additional data -->
+          <input type="hidden" name="campaign_id" value="{{ campaign_id }}">
+          <input type="hidden" name="event_type" value="{{ event_type }}">
+        </td>
+        <td class="{{ event_type|lower }}">{{ event_type }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
 
 
 {% endblock %}

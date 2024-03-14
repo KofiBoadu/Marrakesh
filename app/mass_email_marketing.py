@@ -347,6 +347,79 @@ def total_email_list(campaign_id):
 
 
 
+# def get_customer_campaign_events( campaign_id):
+#     query = """
+#         SELECT
+#             c.customer_id,
+#             CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+#             m.campaign_id,
+#             m.event_type
+#         FROM customers c
+#         JOIN marketing_email_metrics m ON m.customer_id = c.customer_id
+#         WHERE m.campaign_id = %s
+#         GROUP BY c.customer_id
+#     """
+
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_databaseConnection()
+#         cursor = database_connection.cursor()
+#         cursor.execute(query, (campaign_id,))
+#         results = cursor.fetchall()
+#         return results
+
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#         return 0
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+def get_customer_campaign_events(campaign_id):
+    query = """
+        SELECT
+            c.customer_id,
+            CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+            m.campaign_id,
+            m.event_type
+        FROM customers c
+        JOIN (
+            SELECT
+                customer_id,
+                campaign_id,
+                event_type,
+                MAX(metric_id) AS MaxMetricId
+            FROM marketing_email_metrics
+            WHERE campaign_id = %s
+            GROUP BY customer_id
+        ) AS LatestEvent ON c.customer_id = LatestEvent.customer_id
+        JOIN marketing_email_metrics m ON m.customer_id = LatestEvent.customer_id AND m.metric_id = LatestEvent.MaxMetricId
+    """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (campaign_id,))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+print(get_customer_campaign_events(20))
+
+
 
 
 def send_emails_asynchronously(recipients_list, subject, sender_email, text_body,campaign_id):
