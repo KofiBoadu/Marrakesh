@@ -6,7 +6,7 @@ from app.emails import our_customers_sincebyYear,get_customers_by_year_or_all
 from app.mass_email_marketing import marketing_Email,all_email_campaign,campaign_open_rate,get_unique_opens,get_total_opens
 from flask_login import login_required, current_user
 import app.mass_email_marketing as market
-# Then you can use mem.specific_function(), mem.AnotherClass(), etc.
+
 
 
 @email_marketing.route('/emails', methods=['GET'])
@@ -95,10 +95,6 @@ def create_marketingEmails():
             print("Failed to create campaign entry in the database.")
 
 
-
-        # send_emails_asynchronously(email_list, email_subject, from_address, email_body)
-        # # Now, insert campaign details into the database
-
         return redirect(url_for("marketing.marketing_emails"))
 
     senders = get_all_users()
@@ -108,3 +104,12 @@ def create_marketingEmails():
 
 
 
+
+@email_marketing.route('/campaign/delete/', methods=['POST'])
+@login_required
+def delete_email_campaign():
+    campaign_id = request.form.get('deleting-campaign_id')
+    if campaign_id:
+        market.delete_campaign(campaign_id)
+
+    return redirect(url_for("marketing.marketing_emails"))

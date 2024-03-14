@@ -31,6 +31,18 @@
 
 
 
+<!-- delete campaign  -->
+<form action="{{ url_for('marketing.delete_email_campaign') }}" method="post">
+    <button type="submit" id="campaign_deleteButton" style="display: none;"> Delete </button>
+    <input type="hidden" name="deleting-campaign_id" id="deleting-campaign_id" value="">
+</form>
+
+
+
+
+
+
+
    <table id="email_marketing_campaign_page">
     <tr>
         <th><input type="checkbox"> </th> <!-- New header for the select column -->
@@ -43,18 +55,7 @@
         <th>LAST UPDATED BY</th>
     </tr>
     {% for campaign in campaigns %}
-    <!-- <tr>
-        <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[0] }}"></td>  
-      
-        <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0] }}</a></td>
 
-        <td>{{ campaign[1] }}</td>
-         <td></td>
-         <td></td>
-         <td></td>
-        <td>{{ campaign[2].strftime('%B %d, %Y').capitalize() }}</td>
-        <td>{{ campaign[4] }}</td>
-    </tr> -->
 
 
     <tr>

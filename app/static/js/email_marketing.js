@@ -24,3 +24,33 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[name="selected_campaigns"]');
+    const deleteButton = document.getElementById('campaign_deleteButton');
+    const hiddenInput = document.getElementById('deleting-campaign_id');
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+          
+            const checkedCheckboxes = document.querySelectorAll('input[name="selected_campaigns"]:checked');
+            
+            if (checkedCheckboxes.length > 0) {
+                
+                deleteButton.style.display = 'block';
+                let id= hiddenInput.value = checkedCheckboxes[0].value;
+              
+            } else {
+                deleteButton.style.display = 'none';
+                hiddenInput.value = '';
+            }
+        });
+    });
+});
+
