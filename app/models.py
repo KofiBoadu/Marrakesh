@@ -453,9 +453,8 @@ def create_new_tourDates(tour_name, start_date, end_date, price, destination_id,
 
 
 
-
 def check_customer_exists(email):
-    query = "SELECT customer_id FROM customers WHERE email_address = %s"
+    query = "SELECT customer_id FROM customers WHERE TRIM(LOWER(email_address)) = TRIM(LOWER(%s))"
     customer_id = None
 
     try:
@@ -490,7 +489,6 @@ def check_customer_exists(email):
                 logging.error(f"Error closing connection: {err}")
 
     return customer_id
-
 
 
 

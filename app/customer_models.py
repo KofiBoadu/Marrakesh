@@ -100,12 +100,104 @@ def get_customer_booking_changes(customer_id):
 
 
 
+
+def campaigns_sent_to_customer(customer_id):
+    query = """
+            SELECT
+                CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+                e.campaign_id,
+                e.campaign_subject,
+                e.sent_date,
+                m.event_type
+            FROM
+                (SELECT
+                     campaign_id,
+                     MAX(metric_id) as latest_metric_id
+                 FROM
+                     marketing_email_metrics
+                 WHERE
+                     customer_id = %s
+                 GROUP BY
+                     campaign_id
+                ) AS latest_campaign_metrics
+            JOIN
+                marketing_email_metrics m ON latest_campaign_metrics.latest_metric_id = m.metric_id
+            JOIN
+                marketing_emails e ON m.campaign_id = e.campaign_id
+            JOIN
+                customers c ON m.customer_id = c.customer_id
+            WHERE
+                c.customer_id = %s
+            ORDER BY
+                e.sent_date DESC;
+    """
+
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (customer_id,customer_id))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        logging.error(f"Error in campaigns_sent_to_customer for customer ID {customer_id}: {e}")
+        return []
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+# print(campaigns_sent_to_customer(326))
+
+
+
+
+# def get_customer_activities(customer_id):
+#     emails = all_emails_sent_to_customer(customer_id)
+#     notes_raw = get_customer_notes(customer_id)
+#     booking_changes_raw = get_customer_booking_changes(customer_id)
+
+
+#     notes = [{'email_id': note[0],
+#               'subject': 'Note',
+#               'status': '',
+#               'sent_date': note[2],
+#               'body': note[1],
+#               'sent_user': note[3],
+#               'is_note': True}
+#              for note in notes_raw]
+
+
+#     booking_changes = [{'email_id': None,
+#                         'subject': 'Booking Update',
+#                         'status': '',
+#                         'sent_date': change[3],
+#                         'body': change[4],
+#                         'sent_user': change[2],
+#                         'is_note': False,
+#                         'old_tour_name': change[0],
+#                         'new_tour_name': change[1]}
+#                        for change in booking_changes_raw]
+
+
+#     activities = emails + notes + booking_changes
+
+#     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
+
+#     return activities_sorted
+
+# print(get_customer_activities(326))
+
 def get_customer_activities(customer_id):
     emails = all_emails_sent_to_customer(customer_id)
     notes_raw = get_customer_notes(customer_id)
     booking_changes_raw = get_customer_booking_changes(customer_id)
+    campaigns_raw = campaigns_sent_to_customer(customer_id)
 
-    # Convert notes to the same dictionary format as emails
     notes = [{'email_id': note[0],
               'subject': 'Note',
               'status': '',
@@ -115,31 +207,37 @@ def get_customer_activities(customer_id):
               'is_note': True}
              for note in notes_raw]
 
-    # Convert booking changes to a dictionary format
-    booking_changes = [{'email_id': None,  # No email_id for booking changes
+    booking_changes = [{'email_id': None,
                         'subject': 'Booking Update',
                         'status': '',
-                        'sent_date': change[3],  # update_time
-                        'body': change[4],  # update_details
-                        'sent_user': change[2],  # updated_by_username
-                        'is_note': False,  # Differentiate from notes and emails
-                        'old_tour_name': change[0],
-                        'new_tour_name': change[1]}
+                        'sent_date': change[3],
+                        'body': change[4],
+                        'sent_user': change[2],
+                        'is_note': False}
                        for change in booking_changes_raw]
 
-    # Combine emails, notes, and booking changes
-    activities = emails + notes + booking_changes
 
-    # Sort by 'sent_date'
+    campaigns = [{
+        'email_id': campaign[1],
+        'subject': campaign[2],
+        'status': campaign[4],
+        'sent_date': campaign[3],
+        'body': f"Event Type: {campaign[4]}",
+        'sent_user': 'Campaign System',
+        'full_name': campaign[0],
+        'is_note': False
+    } for campaign in campaigns_raw]
+
+
+    activities = emails + notes + booking_changes + campaigns
+
     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
 
     return activities_sorted
 
 
 
-
-
-
+# print(get_customer_activities(326))
 
 
 

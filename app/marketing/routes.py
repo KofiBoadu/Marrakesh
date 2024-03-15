@@ -79,7 +79,7 @@ def create_marketingEmails():
         customers_type=request.form.get('customerType')
         # email_list=get_customers_by_year_or_all(customers_type)
         user_id=current_user.id
-        email_list = [('daniel',"bookings@africatravellers.com"),('daniel',"mrboadu3@gmail.com")]
+        email_list = [('daniel',"mrboadu3@gmail.com")]
 
         # safe_email_body = bleach.clean(raw_email_body)
 

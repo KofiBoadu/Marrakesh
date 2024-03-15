@@ -131,6 +131,7 @@ def add_paid_customer():
        
 
         customer_exist=check_customer_exists(email)
+        print(customer_exist)
        
 
         tour_year= tour_date.pop()
