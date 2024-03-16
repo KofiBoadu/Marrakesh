@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<h1>Settings</h1>
+
+<h2>Your Preferences </h2>
+
+<a href="{{ url_for('users.user_profile')}}"><l1>General</l1></a>
+
+<h2>Account Setup</h2>
+
+<a href="{{ url_for('users.settings_users')}}"><li>Users & Teams</li></a>
+{% endblock %}

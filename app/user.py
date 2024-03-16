@@ -7,12 +7,13 @@ from flask_login import login_user,UserMixin
 
 
 class User(UserMixin):
-    def __init__(self, user_id,first_name,last_name,email_address,pass_word):
+    def __init__(self,user_id,first_name,last_name,email_address,pass_word,role_id=None):
         self.id = user_id
         self.first_name=first_name
         self.last_name= last_name
         self.email_address=email_address
         self.pass_word= pass_word
+        self.role_id= role_id
 
 
 
@@ -66,22 +67,24 @@ def create_user_account(first_name, last_name, email_address):
 def get_user(email):
     cursor = None
     database_connection = None
-    query = "SELECT * FROM users WHERE email_address = %s"
+    query = "SELECT user_id,first_name,last_name,email_address,pass_word,role_id FROM users WHERE email_address = %s"
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
         cursor.execute(query, (email,))
-        user_details = cursor.fetchone()  # Use fetchone() if you expect a single result
+        user_details = cursor.fetchone()
         return user_details
     except Exception as e:
-        print(f"An error occurred: {e}")  # Log the exception
-        return None  # Return None or an appropriate value indicating failure
+        print(f"An error occurred: {e}")
+        return None
     finally:
         if cursor:
             cursor.close()
         if database_connection:
             database_connection.close()
 
+
+# print(get_user("mrboadu3@gmail.com"))
 
 
 
@@ -160,7 +163,7 @@ def password_change(user_id ,new_password):
 
 
 def get_all_users():
-    query= """ SELECT first_name, last_name, email_address FROM users """
+    query= """ SELECT user_id, first_name, last_name, email_address, role_id FROM users """
     cursor= None 
     database_connection= None 
     try:

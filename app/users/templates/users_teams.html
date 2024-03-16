@@ -1,0 +1,32 @@
+
+
+
+
+
+
+
+{% block content %}
+{% include "settings_base.html" %}
+
+
+
+<table>
+  <tr>
+    <th><input type="checkbox"></th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Access Role</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td><input type="checkbox" name="user_{{ user[0] }}"></td>
+    <td>{{ user[1] }} {{ user[2] }}</td>
+    <td>{{ user[3] }}</td>
+    <td>{{ user[4] if user[4] else 'No role assigned' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+
+{% endblock %}

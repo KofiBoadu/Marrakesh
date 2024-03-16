@@ -3,8 +3,8 @@ from flask import  render_template, request,redirect,url_for,flash,session
 from werkzeug.security import check_password_hash
 from flask_login import login_user,UserMixin,logout_user
 from app.user  import get_user,User
-from flask_login import login_required
-from app.user import password_change,pass_word_checker
+from flask_login import login_required,current_user
+from app.user import password_change,pass_word_checker,get_all_users
 
 
 
@@ -23,7 +23,7 @@ def login_user_route():
     print(user)
     old_password=check_password_hash(user[4],password)
     if user and old_password:
-        user_object=User(user[0],user[1],user[2],user[3],user[4])
+        user_object=User(user[0],user[1],user[2],user[3],user[4],user[5])
         login_user(user_object)
         user_id= user[0]
         first_name= user[1]
@@ -34,12 +34,18 @@ def login_user_route():
         return redirect(url_for('users.login'))
 
 
+
+
+
 @users_bp.context_processor
 def user():
     username = session.get('username')
     if username:
         return {'username': username}
     return {'username': None}
+
+
+
 
 
 @users_bp.route('/logout')
@@ -79,3 +85,22 @@ def password_reset():
 
 
 
+
+@users_bp.route('/settings/user/profile',methods=['GET'])
+@login_required
+def user_profile():
+    user_name= current_user.first_name[0]+current_user.last_name[0]
+
+    return render_template('general.html',user_name=user_name)
+
+
+
+
+
+@users_bp.route('/settings/users/',methods=['GET',"POST"])
+@login_required
+def settings_users():
+    users=get_all_users()
+
+
+    return render_template('users_teams.html',users=users)

@@ -67,6 +67,7 @@
                         <div class="dropdown-content">
                             <a href="{{ url_for('users.log_out')}}">Logout</a>
                             <a href="{{ url_for('users.password_reset')}}">Reset password</a>
+                            <a href="{{ url_for('users.user_profile')}}">Profile & Settings</a>
                         </div>
                     </div>
                 </div>
@@ -83,6 +84,7 @@
     <main>
         <!-- Main content of the page goes here -->
         {% block content %}
+
         {% endblock %}
     </main>
 
@@ -100,10 +102,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
-     <script src="{{ url_for('static', filename='js/events.js') }}"></script>
-     <script src="{{ url_for('static', filename='js/email_marketing.js') }}"></script>
-     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    
+    <script src="{{ url_for('static', filename='js/events.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/email_marketing.js') }}"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  
+
 </body>
 
 </html>

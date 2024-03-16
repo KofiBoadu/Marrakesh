@@ -47,7 +47,12 @@
         <!-- State (Dropdown with all states and initials) -->
         <div class="modal_wrap">
             <label for="state">State:</label>
-            <input type="text" id="state" name="state">
+            <select id="state" name="state">
+                <option value="">None</option> 
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+            </select>
         </div>
 
         <!-- Gender Option -->
@@ -77,27 +82,8 @@
         <div class="modal_wrap">
             <button class="modal_submit" type="submit">Create customer</button>
         </div>
-        {% with messages = get_flashed_messages(category_filter=["customer_success"]) %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-
-        {% with messages = get_flashed_messages(category_filter=["customer_exist"]) %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+     
     </form>
-
 
 </div>
 
@@ -153,15 +139,7 @@
             <button class="tour_submit" type="submit">Submit</button>
         </div>
 
-        {% with messages = get_flashed_messages(category_filter=["tour_success"]) %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+       
     </form>
 </div>
 

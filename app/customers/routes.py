@@ -28,10 +28,15 @@ def home_page():
         customers= get_customers_information(page, items_per_page,search)
         available_dates= available_tour_dates()
         destinations= get_all_destination()
+        states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+              "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+              "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+              "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+              "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
         
         customers_total=total_customers()
         total_pages = math.ceil(customers_total / items_per_page)
-        return render_template("homepage.html",login_user_email=login_user_email,customers=customers,available_dates=available_dates,destinations=destinations,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
+        return render_template("homepage.html",states=states,login_user_email=login_user_email,customers=customers,available_dates=available_dates,destinations=destinations,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
 
 
