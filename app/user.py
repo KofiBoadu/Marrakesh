@@ -25,7 +25,7 @@ def generate_secure_password(length=12):
        secure_password= secure_password+secrets.choice(characters)
     return secure_password
 
-
+print(generate_secure_password())
 
 def add_new_user(first_name, last_name, email_address,pass_word):
     cursor= None
@@ -67,7 +67,7 @@ def create_user_account(first_name, last_name, email_address):
 def get_user(email):
     cursor = None
     database_connection = None
-    query = "SELECT user_id,first_name,last_name,email_address,pass_word,role_id FROM users WHERE email_address = %s"
+    query = "SELECT user_id,first_name,last_name,email_address,pass_word,role_id, is_active FROM users WHERE email_address = %s"
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
@@ -185,5 +185,43 @@ def get_all_users():
 
 
 
+def remover_user_from_account(user_id):
+    query= "DELETE FROM users WHERE user_id=%s"
+    database_connection= None
+    cursor= None
+    try:
+        database_connection= create_databaseConnection()
+        cursor=database_connection.cursor()
+        cursor.execute(query,(user_id,))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print(f"OOps !!! this happened:  {e}")
+        if database_connection:
+            database_connection.rollback()
+
+    finally:
+        if database_connection:
+            database_connection.close()
+        if cursor:
+            cursor.close()
 
 
+def user_roles():
+    query= "SELECT role_id, role_name FROM user_roles"
+    database_connection= None
+    cursor= None
+    try:
+        database_connection=create_databaseConnection()
+        cursor= database_connection.cursor()
+        cursor.execute(query)
+        results= cursor.fetchall()
+        return results
+    except Exception as e:
+        print(f"an error occured: {e}")
+
+    finally:
+        if database_connection:
+            database_connection.close()
+        if cursor:
+            cursor.close()

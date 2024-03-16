@@ -10,6 +10,48 @@
 
 
 
+
+<!-- remove user from account  forms-->
+<form id="remove-user-form"  action="{{ url_for('users.remove_a_user') }}" method="post">
+    
+	<input type="hidden" name="user_id" id="hiddenUserId" value="">
+    <button type="submit">Remove from account</button>
+</form>
+
+
+
+<!-- create user button  -->
+ <div class="create-user-button">
+ 	 <button type="button">Create new user</button>
+ </div>
+   
+
+<!-- create user forms  -->
+
+<form class="new-user-form">
+	<label>Add a new user to your Marrakesh account with an email address.
+</label>
+	<input type="Email" name="new-user-email" required>
+
+	<label>Chose new user role and access</label>
+	<select name="role_id" required>
+		{% for role in available_roles%}
+		
+		<option value="{{ role[0] }}">{{role[1]}}</option>
+
+		{% endfor %}
+		
+	</select>
+
+     <label>create a temporary password</label>
+	<input type="password" name="temporary_password" required>
+
+	<button>create user </button>
+	
+</form>
+
+
+
 <table>
   <tr>
     <th><input type="checkbox"></th>
@@ -19,7 +61,7 @@
   </tr>
   {% for user in users %}
   <tr>
-    <td><input type="checkbox" name="user_{{ user[0] }}"></td>
+    <td><input type="checkbox" data-user-id="{{ user[0] }}" class="user-checkbox"> </td>
     <td>{{ user[1] }} {{ user[2] }}</td>
     <td>{{ user[3] }}</td>
     <td>{{ user[4] if user[4] else 'No role assigned' }}</td>

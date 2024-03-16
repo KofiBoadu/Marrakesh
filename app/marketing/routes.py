@@ -74,12 +74,13 @@ def create_marketingEmails():
     if request.method == 'POST':
 
         from_address=request.form.get('fromAddress')
+        print(from_address)
         email_subject=request.form.get('emailSubject')
         raw_email_body = request.form.get('emailBody')
         customers_type=request.form.get('customerType')
         # email_list=get_customers_by_year_or_all(customers_type)
         user_id=current_user.id
-        email_list = [('daniel',"mrboadu3@gmail.com")]
+        email_list = [('daniel',"mrboadu3@gmail.com"),("Anning","ebenezeraning71@gmail.com")]
 
         # safe_email_body = bleach.clean(raw_email_body)
 
@@ -106,6 +107,7 @@ def create_marketingEmails():
         return redirect(url_for("marketing.marketing_emails"))
 
     senders = get_all_users()
+
     customer_list_byYear = our_customers_sincebyYear()
     return render_template("sendEmail_marketing.html", senders=senders, customer_list_byYear=customer_list_byYear)
 

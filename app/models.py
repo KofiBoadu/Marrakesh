@@ -25,6 +25,16 @@ def format_phone_number(number, country_code='US'):
 
 
 
+def all_states():
+    states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+              "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+              "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+              "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+              "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+    return states
+
+
+
 
 
 def create_databaseConnection():
@@ -60,9 +70,6 @@ def create_databaseConnection():
 
 
 
-# I need to include the tour booking ID , tour ID with every tour name 
-# and then attach it to the values of those select  and update tour id on tour bookings 
-# where booking ID is the same as the booking ID passed and customerID is the customer ID 
 
 def create_get_customer_tour_details_procedure():
 

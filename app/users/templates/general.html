@@ -12,18 +12,18 @@
 <div>
 	<div>
         <label for="profileImage">Profile Image</label>
-        <h1 style="color: red;" class="profile-avatar-letter">{{ user_name }}</h1>
+        <h1 style="color: red;" class="profile-avatar-letter">{{ user.first_name[0]+ user.last_name[0] }}</h1>
         
     </div>
 
     <div>
         <label for="firstName">First name</label>
-        <input type="text" id="firstName" name="first_name" required>
+        <input type="text" id="firstName" name="first_name" value="{{ user.first_name }}">
     </div>
 
     <div>
         <label for="lastName">Last name</label>
-        <input type="text" id="lastName" name="last_name" required>
+        <input type="text" id="lastName" name="last_name" value="{{ user.last_name }}">
     </div>
 
 	

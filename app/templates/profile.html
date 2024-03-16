@@ -398,8 +398,14 @@
      <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
      <div class="update_customer_state">
       <label for="state">State</label>
-      <input type="text" id="update_state" name="new_state" value="{{ profile[3] }}" required>
+      <!-- <input type="text" id="update_state" name="new_state" value="{{ profile[3] }}" required> -->
        
+            <select id="state" name="new_state">
+                <option value="{{ profile[3] }}">{{ profile[3] }}</option> 
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+            </select>
      </div>
 
      <div >

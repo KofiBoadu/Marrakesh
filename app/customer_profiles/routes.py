@@ -4,7 +4,7 @@ from . import customers_profile
 from app.emails import all_emails_sent_to_customer,send_email
 from flask_login import login_required, current_user
 from app.extension import cache
-from app.models import format_phone_number,available_tour_dates,get_tour_id
+from app.models import format_phone_number,available_tour_dates,get_tour_id,all_states
 from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_customer_state,bookings_updates_logs,get_customer_booking_changes
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 from app.profile_models import get_customer_bookings
@@ -36,8 +36,9 @@ def customer_profile(customer_id):
 
         available_dates = available_tour_dates()
         activities = get_customer_activities(customer_id)
+        states= all_states()
 
-        return render_template('profile.html',activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
+        return render_template('profile.html',states=states,activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
 
 
 

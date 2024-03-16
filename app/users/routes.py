@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 from flask_login import login_user,UserMixin,logout_user
 from app.user  import get_user,User
 from flask_login import login_required,current_user
-from app.user import password_change,pass_word_checker,get_all_users
+from app.user import password_change,pass_word_checker,get_all_users,remover_user_from_account,user_roles
 
 
 
@@ -20,9 +20,8 @@ def login_user_route():
     email = request.form.get('email')
     password = request.form.get('password')
     user= get_user(email)
-    print(user)
-    old_password=check_password_hash(user[4],password)
-    if user and old_password:
+    if user and user[6]:
+        old_password=check_password_hash(user[4],password)
         user_object=User(user[0],user[1],user[2],user[3],user[4],user[5])
         login_user(user_object)
         user_id= user[0]
@@ -89,9 +88,8 @@ def password_reset():
 @users_bp.route('/settings/user/profile',methods=['GET'])
 @login_required
 def user_profile():
-    user_name= current_user.first_name[0]+current_user.last_name[0]
-
-    return render_template('general.html',user_name=user_name)
+    user= current_user
+    return render_template('general.html',user=user)
 
 
 
@@ -101,6 +99,29 @@ def user_profile():
 @login_required
 def settings_users():
     users=get_all_users()
+    available_roles= user_roles()
+    return render_template('users_teams.html',users=users,available_roles=available_roles)
 
 
-    return render_template('users_teams.html',users=users)
+
+@users_bp.route('/remove_user', methods=["POST"])
+@login_required
+def remove_a_user():
+    user_id = request.form.get('user_id')
+    if user_id:
+        remover_user_from_account(user_id)  # Implement this function to deactivate/remove the user
+    return redirect(url_for('users.settings_users'))
+
+
+
+
+# @users_bp.route('/settings/user-created/',methods=["POST"])
+# @login_required
+# def creating_users():
+#     ro
+#     new_user_first_name=request.form.get('user_first_name')
+#     new_user_last_name= request.form.get('user_last_name')
+#     new_user_email=request.form.get('user_email')
+#     new_user_role_id=request.form.get('role_name')
+
+#     return render_template('users_teams.html',users=users)
