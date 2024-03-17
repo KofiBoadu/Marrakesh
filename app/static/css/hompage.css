@@ -788,14 +788,12 @@ button#cancel:hover {
 }
 
 
-.disabled-button {
-  width: 80px;
-  background-color: grey;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-transform: uppercase;
+
+.export.disabled {
+  color: #A0A0A0;
+  border: #A0A0A0 1px solid;
+  background-color: #E0E0E0;
   cursor: not-allowed;
-  opacity: 0.7; /* This makes the button look "disabled" */
-  /* Additional styles here to match the image you've mentioned */
+  pointer-events: none;
 }
+
