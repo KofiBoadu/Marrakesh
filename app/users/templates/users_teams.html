@@ -13,7 +13,6 @@
 
 <!-- remove user from account  forms-->
 <form id="remove-user-form"  action="{{ url_for('users.remove_a_user') }}" method="post">
-    
 	<input type="hidden" name="user_id" id="hiddenUserId" value="">
     <button type="submit">Remove from account</button>
 </form>
@@ -26,11 +25,16 @@
  </div>
    
 
-<!-- create user forms  -->
 
-<form class="new-user-form">
-	<label>Add a new user to your Marrakesh account with an email address.
-</label>
+
+<!-- create user forms  -->
+<form class="new-user-form" id="inviting-new-user" action="{{ url_for('users.creating_users') }}" method="post">
+	<label>Add a new user to your Marrakesh account</label>
+	<label>first name</label>
+	<input type="text" name="user_first_name" required>
+	<label>last name</label>
+	<input type="text" name="user_last_name" required>
+		<label>Email</label>
 	<input type="Email" name="new-user-email" required>
 
 	<label>Chose new user role and access</label>
@@ -43,15 +47,16 @@
 		
 	</select>
 
-     <label>create a temporary password</label>
-	<input type="password" name="temporary_password" required>
 
-	<button>create user </button>
+	<button type="submit">invite user </button>
 	
 </form>
 
 
 
+
+
+<!-- users in the account table -->
 <table>
   <tr>
     <th><input type="checkbox"></th>

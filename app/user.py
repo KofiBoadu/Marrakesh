@@ -6,6 +6,7 @@ from app.extension import login_manager
 from flask_login import login_user,UserMixin
 
 
+
 class User(UserMixin):
     def __init__(self,user_id,first_name,last_name,email_address,pass_word,role_id=None):
         self.id = user_id
@@ -25,13 +26,15 @@ def generate_secure_password(length=12):
        secure_password= secure_password+secrets.choice(characters)
     return secure_password
 
-print(generate_secure_password())
 
-def add_new_user(first_name, last_name, email_address,pass_word):
+
+
+
+def add_new_user(first_name, last_name, email_address,pass_word,role_id):
     cursor= None
     database_connection= None
-    query= "INSERT INTO users(first_name,last_name,email_address,pass_word) VALUES(%s,%s,%s,%s)"
-    values= (first_name, last_name,email_address,pass_word)
+    query= "INSERT INTO users(first_name,last_name,email_address,pass_word,role_id) VALUES(%s,%s,%s,%s,%s)"
+    values= (first_name, last_name,email_address,pass_word,role_id)
     try:
         database_connection= create_databaseConnection()
         cursor= database_connection.cursor()
@@ -52,13 +55,14 @@ def add_new_user(first_name, last_name, email_address,pass_word):
 
 
 
-def create_user_account(first_name, last_name, email_address):
-    current_default_password= generate_secure_password()
-    hash_password= generate_password_hash(current_default_password)
-    add_new_user(first_name, last_name, email_address,hash_password)
+def create_user_account(first_name, last_name, email_address,pass_word,role_id):
+    hash_password= generate_password_hash(pass_word)
+    add_new_user(first_name, last_name, email_address,hash_password,role_id)
     if not add_new_user:
         return False
-    return current_default_password
+    return True 
+
+
 
 
 
@@ -84,7 +88,7 @@ def get_user(email):
             database_connection.close()
 
 
-# print(get_user("mrboadu3@gmail.com"))
+
 
 
 
@@ -161,26 +165,32 @@ def password_change(user_id ,new_password):
 
 
 
-
 def get_all_users():
-    query= """ SELECT user_id, first_name, last_name, email_address, role_id FROM users """
-    cursor= None 
-    database_connection= None 
+   
+    query = """ 
+    SELECT users.user_id, users.first_name, users.last_name, users.email_address, user_roles.role_name
+    FROM users
+    LEFT JOIN user_roles ON users.role_id = user_roles.role_id
+    """
+    cursor = None
+    database_connection = None
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
         cursor.execute(query)
-        results= cursor.fetchall()
-        return results
+        results = cursor.fetchall()
+        return [(user_id, first_name, last_name, email_address, role_name if role_name else 'No Role Assigned') for user_id, first_name, last_name, email_address, role_name in results]
 
     except Exception as e:
-        print(f"An error occurred: {e}")  # Log the exception
-        return None  # Return None or an appropriate value indicating failure
+        print(f"An error occurred: {e}")
+        return None
     finally:
         if cursor:
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
 
 
 

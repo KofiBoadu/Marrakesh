@@ -2,16 +2,17 @@ from . import users_bp
 from flask import  render_template, request,redirect,url_for,flash,session
 from werkzeug.security import check_password_hash
 from flask_login import login_user,UserMixin,logout_user
-from app.user  import get_user,User
+from app.user  import get_user,User,create_user_account,generate_secure_password
 from flask_login import login_required,current_user
 from app.user import password_change,pass_word_checker,get_all_users,remover_user_from_account,user_roles
-
+from app.emails  import send_email
 
 
 
 @users_bp.route('/login',methods=["GET"])
 def login():
     return render_template("login.html")
+
 
 
 
@@ -99,7 +100,9 @@ def user_profile():
 @login_required
 def settings_users():
     users=get_all_users()
+   
     available_roles= user_roles()
+
     return render_template('users_teams.html',users=users,available_roles=available_roles)
 
 
@@ -115,13 +118,39 @@ def remove_a_user():
 
 
 
-# @users_bp.route('/settings/user-created/',methods=["POST"])
-# @login_required
-# def creating_users():
-#     ro
-#     new_user_first_name=request.form.get('user_first_name')
-#     new_user_last_name= request.form.get('user_last_name')
-#     new_user_email=request.form.get('user_email')
-#     new_user_role_id=request.form.get('role_name')
 
-#     return render_template('users_teams.html',users=users)
+@users_bp.route('/settings/user-created/', methods=["POST"])
+@login_required
+def creating_users():
+    new_user_role_id = request.form.get("role_id")
+    new_user_first_name = request.form.get('user_first_name')
+    new_user_last_name = request.form.get('user_last_name')
+    new_user_email = request.form.get('new-user-email')
+    temp_password = generate_secure_password()
+    subject = "Welcome to the Marrakesh team!"
+
+    account_creation_success = create_user_account(new_user_first_name, new_user_last_name, new_user_email, temp_password, new_user_role_id)
+
+    if account_creation_success:
+        invite_message = f"""Dear {new_user_first_name},
+
+Thank you for joining the Marrakesh team. Below are your temporary credentials to access your account. You should be able to reset your password when you login with your temporary password.
+
+Login email: {new_user_email}
+Temporary password: {temp_password}
+URL: https://africatravellers-crm-7ca32dc61ea0.herokuapp.com
+
+Thank you,
+Marrakesh Team
+"""
+
+        send_email(subject, [new_user_email],invite_message)
+
+    return redirect(url_for('users.settings_users'))
+
+
+
+
+
+
+
