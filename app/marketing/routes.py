@@ -74,17 +74,13 @@ def create_marketingEmails():
     if request.method == 'POST':
 
         from_address=request.form.get('fromAddress')
-        print(from_address)
+        # print(from_address)
         email_subject=request.form.get('emailSubject')
         raw_email_body = request.form.get('emailBody')
         customers_type=request.form.get('customerType')
-        # email_list=get_customers_by_year_or_all(customers_type)
+        email_list=get_customers_by_year_or_all(customers_type)
         user_id=current_user.id
-        email_list = [('daniel',"mrboadu3@gmail.com"),("Anning","ebenezeraning71@gmail.com")]
-
-        # safe_email_body = bleach.clean(raw_email_body)
-
-
+        # email_list = [('daniel',"mrboadu3@gmail.com")]
 
         campaign_id = marketing_Email(
             user_id=user_id,
@@ -94,11 +90,9 @@ def create_marketingEmails():
             campaign_status="sent"
         )
 
-        # html_body=convert_urls_to_links(email_body)
-
 
         if campaign_id:
-            # Modify send_emails_asynchronously to pass campaign_id to send_email_marketing
+            
             send_emails_asynchronously(email_list, email_subject, from_address,raw_email_body, campaign_id)
         else:
             print("Failed to create campaign entry in the database.")
