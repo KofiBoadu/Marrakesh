@@ -6,7 +6,7 @@
 
 
 
-
+<input type="hidden" id="login-user-role-id" value="{{ session['user_role_id'] }}">
 
 
 <!-- form to add customers -->
@@ -366,7 +366,7 @@
         </div>
 
         <div class="export-div">
-            <button onclick="show_exportButton()" id="export_button" class="export">export</button>
+            <button onclick="show_exportButton()" id="export_button" class="export ">export</button>
         </div>
     </div>
 
@@ -383,10 +383,7 @@
                 <th>State</th>
                 <th>Phone Number</th>
                 <th>Lead Status</th>
-                <!-- <th>Tour</th>
-                <th>Travel Year </th>
-                <th>Tour Price</th>
-                <th>Tour Type</th> -->
+               
             </tr>
         </thead>
     </table>

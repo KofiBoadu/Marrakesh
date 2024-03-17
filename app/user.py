@@ -217,6 +217,8 @@ def remover_user_from_account(user_id):
             cursor.close()
 
 
+
+
 def user_roles():
     query= "SELECT role_id, role_name FROM user_roles"
     database_connection= None
@@ -235,3 +237,100 @@ def user_roles():
             database_connection.close()
         if cursor:
             cursor.close()
+
+
+
+
+
+def deactivate_user_account(user_id):
+    query = "UPDATE users SET is_active = 0 WHERE user_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()  #
+        cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
+        cursor.execute(query, (user_id,))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+def reactivate_user_account(user_id):
+    query = "UPDATE users SET is_active = 1 WHERE user_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()  #
+        cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
+        cursor.execute(query, (user_id,))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+
+
+
+def remove_super_admin(user_id):
+    query = "UPDATE users SET role_id = 2 WHERE user_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()  #
+        cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
+        cursor.execute(query, (user_id,))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+
+
+def make_super_admin(user_id):
+    query = "UPDATE users SET role_id = 1 WHERE user_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_databaseConnection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (user_id,))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()

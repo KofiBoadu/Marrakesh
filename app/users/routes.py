@@ -2,7 +2,7 @@ from . import users_bp
 from flask import  render_template, request,redirect,url_for,flash,session
 from werkzeug.security import check_password_hash
 from flask_login import login_user,UserMixin,logout_user
-from app.user  import get_user,User,create_user_account,generate_secure_password
+from app.user  import get_user,User,create_user_account,generate_secure_password,deactivate_user_account,reactivate_user_account,remove_super_admin,make_super_admin
 from flask_login import login_required,current_user
 from app.user import password_change,pass_word_checker,get_all_users,remover_user_from_account,user_roles
 from app.emails  import send_email
@@ -29,6 +29,8 @@ def login_user_route():
         first_name= user[1]
         last_name= user[2]
         session['username'] =  [user_id,first_name,last_name]
+        role_id = user[5]
+        session['user_role_id'] = role_id
         return redirect(url_for("customers.home_page"))
     else:
         return redirect(url_for('users.login'))
@@ -128,7 +130,6 @@ def creating_users():
     new_user_email = request.form.get('new-user-email')
     temp_password = generate_secure_password()
     subject = "Welcome to the Marrakesh team!"
-
     account_creation_success = create_user_account(new_user_first_name, new_user_last_name, new_user_email, temp_password, new_user_role_id)
 
     if account_creation_success:
@@ -145,11 +146,65 @@ Marrakesh Team
 """
 
         send_email(subject, [new_user_email],invite_message)
-
     return redirect(url_for('users.settings_users'))
 
 
 
+
+
+
+@users_bp.route('/settings/deactivate/user', methods=["POST"])
+@login_required
+def deactivate_user():
+    user_id=request.form.get('user_id')
+    if user_id:
+        deactivate_user_account(user_id)
+    else:
+        print("could not fine the user ID ")
+    return redirect(url_for('users.settings_users'))
+
+
+
+
+
+@users_bp.route('/settings/reactivate/user', methods=["POST"])
+@login_required
+def reactivate_user():
+    user_id=request.form.get('user_id')
+    if user_id:
+        reactivate_user_account(user_id)
+    else:
+        print("could not fine the user ID ")
+    return redirect(url_for('users.settings_users'))
+
+
+
+
+
+
+
+@users_bp.route('/settings/remove-admin-role/', methods=["POST"])
+@login_required
+def remove_admin_role():
+    user_id=request.form.get('user_id')
+    if user_id:
+        remove_super_admin(user_id)
+    else:
+        print("could not fine the user ID ")
+    return redirect(url_for('users.settings_users'))
+
+
+
+
+@users_bp.route('/settings/make-admin-role/', methods=["POST"])
+@login_required
+def make_admin_role():
+    user_id=request.form.get('user_id')
+    if user_id:
+        make_super_admin(user_id)
+    else:
+        print("could not fine the user ID ")
+    return redirect(url_for('users.settings_users'))
 
 
 

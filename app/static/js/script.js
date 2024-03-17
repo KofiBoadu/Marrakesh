@@ -141,9 +141,7 @@ function closeModal() {
 
 
 
-// document.querySelector('#updateModal .close-button').addEventListener('click', function() {
-//     document.querySelector('#updateModal').style.display = 'none';
-// });
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var closeButton = document.querySelector('#updateModal .close-button');
@@ -233,13 +231,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // table loading spinner 
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // Hide the spinner once the page is fully loaded
     document.getElementById('loadingSpinner').style.display = 'none';
 });
 
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Retrieve and check the user's role ID
+  const roleId = parseInt(document.getElementById('login-user-role-id').value, 10);
+  if (roleId > 1) {
+    // Select the button with the 'export' class and disable it
+    const exportButton = document.querySelector('.export');
+    if (exportButton) { // Check if the button exists
+      exportButton.disabled = true;
+      exportButton.classList.add('disabled-button');
+    }
+  }
+});
 
 
 

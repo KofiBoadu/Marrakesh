@@ -63,9 +63,6 @@ def change_bookings():
     old_tour_year=old_tour_date.pop()
     new_old_tour_name=" ".join(old_tour_date)
 
-    # print(old_tour_year)
-    # print(old_tour_name)
-
     update_message=f"""Dear {customer_name},
 
            We have successfully updated your trip from {old_tour_name} to {new_tour_type}

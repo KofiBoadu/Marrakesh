@@ -8,22 +8,59 @@
 {% block content %}
 {% include "settings_base.html" %}
 
+<input type="hidden" id="login-user-role-id" value="{{ session['user_role_id'] }}">
+
 
 
 
 <!-- remove user from account  forms-->
 <form id="remove-user-form"  action="{{ url_for('users.remove_a_user') }}" method="post">
-	<input type="hidden" name="user_id" id="hiddenUserId" value="">
-    <button type="submit">Remove from account</button>
+	<input type="hidden" name="user_id" id="remove-user-id" value="">
+    <button type="submit" class="user-action-button" >Remove from account</button>
 </form>
 
 
 
 <!-- create user button  -->
  <div class="create-user-button">
- 	 <button type="button">Create new user</button>
+ 	 <button type="button" class="user-action-button">Create new user</button>
  </div>
    
+
+
+<!-- deactivate the user -->
+<form class="deactivate-user" action="{{ url_for('users.deactivate_user') }}" method="post">
+	 <input type="hidden" name="user_id" id="deactivate-user-id" value="">
+	 <button type="submit" class="user-action-button">Deactivate user</button>
+</form>
+
+
+
+
+<!-- reactivate the user -->
+<form class="reactivate-user" action="{{ url_for('users.reactivate_user') }}" method="post">
+	 <input type="hidden" name="user_id" id="reactivate-user-id" value="">
+	 <button type="submit" class="user-action-button">reactivate user</button>
+</form>
+
+
+
+<!-- make user admin -->
+<form class="make-user-admin" action="{{ url_for('users.make_admin_role') }}" method="post">
+	 <input type="hidden" name="user_id" id="make-new-user-admin-id" value="">
+	 <button type="submit" class="user-action-button">Make Super Admin</button>
+</form>
+
+
+
+<!-- remove super- admin -->
+<form class="remove-user-admin-role" action="{{ url_for('users.remove_admin_role') }}" method="post">
+	 <input type="hidden" name="user_id" id="remove-new-user-admin-id" value="">
+	 <button type="submit" class="user-action-button">Remove Super Admin</button>
+</form>
+
+
+
 
 
 
