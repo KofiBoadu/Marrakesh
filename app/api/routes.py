@@ -87,7 +87,9 @@ def add_new_lead():
     try:
         # Assuming create_leads function signature matches these field names
         customer_row_id = create_leads(**processed_data)
-        return jsonify({"success": True, "customer_row_id": customer_row_id}), 201
+        return jsonify({"success": True, "message": "Lead created successfully", "customer_row_id": customer_row_id}), 200
+
     except Exception as e:
         app.logger.error(f"Failed to create lead: {str(e)}")  # Log the error for debugging
         return jsonify({"success": False, "error": "Failed to process the request"}), 500
+
