@@ -10,7 +10,9 @@ from flask import current_app as app
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     app.logger.debug(f"Content-Type: {request.content_type}")
-    app.logger.debug(f"Data: {request.data.decode('utf-8')}")
+
+    form_data = {key: value for key, value in request.form.items()}
+    app.logger.debug(f"Form Data: {form_data}")
     return jsonify(success=True), 200
     # logging.debug(f"Request data: {request.data}")
     # logging.debug(f"Form data: {request.form}")
