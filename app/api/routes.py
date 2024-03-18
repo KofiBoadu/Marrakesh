@@ -2,15 +2,15 @@ from flask import request, jsonify
 from . import api_blueprint
 from  .config import auth,create_leads
 import logging
-
+from flask import current_app as app
 
 
 
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
-    logging.debug(f"Content-Type: {request.content_type}")
-    logging.debug(f"Data: {request.data}")
+    app.logger.debug(f"Content-Type: {request.content_type}")
+    app.logger.debug(f"Data: {request.data.decode('utf-8')}")
     return jsonify(success=True), 200
     # logging.debug(f"Request data: {request.data}")
     # logging.debug(f"Form data: {request.form}")
