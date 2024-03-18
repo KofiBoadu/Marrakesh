@@ -12,7 +12,7 @@ from app.file_export import fileExport_bp
 from app.analytics import analytics
 from app.events_schedule import events
 from .api import api_blueprint
-
+from flask.logging import create_logger
 
 
 
@@ -22,6 +22,9 @@ from .api import api_blueprint
 def create_app():
     load_dotenv()
     app = Flask(__name__,static_folder='static')
+
+    logger = create_logger(app)
+    logger.setLevel(logging.DEBUG)
 
     @app.route('/')
     def redirect_to_login():
