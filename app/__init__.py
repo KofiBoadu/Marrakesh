@@ -13,7 +13,7 @@ from app.analytics import analytics
 from app.events_schedule import events
 from .api import api_blueprint
 from flask.logging import create_logger
-
+import logging
 
 
 
