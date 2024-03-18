@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from . import api_blueprint
 from  .config import auth,create_leads
-
+import logging
 
 
 
@@ -9,6 +9,9 @@ from  .config import auth,create_leads
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
+    logging.debug(f"Request data: {request.data}")
+    logging.debug(f"Form data: {request.form}")
+    logging.debug(f"JSON data: {request.json}")
     if request.content_type == 'application/x-www-form-urlencoded':
         # Convert the form data to a Python dictionary
         data = request.form.to_dict()
