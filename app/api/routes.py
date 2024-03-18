@@ -9,8 +9,18 @@ from  .config import auth,create_leads
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
-    data = request.json
+    if request.content_type == 'application/x-www-form-urlencoded':
+        # Convert the form data to a Python dictionary
+        data = request.form.to_dict()
+    elif request.content_type == 'application/json':
+        # Directly get JSON data if the correct content type header is set
+        data = request.json
+    else:
+        # If neither, return a 415 unsupported media type
+        return jsonify({"success": False, "error": "Unsupported Media Type"}), 415
+
     required_fields = ['first_name', 'last_name', 'email']
+
     missing_fields = []
 
     # Check if all required fields are present
