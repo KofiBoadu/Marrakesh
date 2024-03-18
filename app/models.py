@@ -341,7 +341,7 @@ def create_new_tourDates(tour_name, start_date, end_date, price, destination_id,
 
 
 
-def add_new_paidCustomer(first_name, last_name, email, phone, gender, state=None):
+def add_new_paidCustomer(first_name, last_name, email, phone, gender ,state=None):
     query = """
         INSERT INTO customers
         (first_name, last_name, state_address, email_address, phone_number, gender)
