@@ -120,7 +120,7 @@ def create_export_customer_data_procedure():
 
 
 
-print(create_export_customer_data_procedure())
+
 
 
 
