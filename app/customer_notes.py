@@ -3,11 +3,11 @@ import datetime
 
 
 
-def save_customer_notes(customer_id, note_message,note_creator):
+def save_customer_notes(contact_id, note_message,note_creator):
     database_connection = None
     cursor = None
-    query = "INSERT INTO notes (customer_id, note_message,note_creator) VALUES (%s, %s,%s)"
-    values = (customer_id, note_message,note_creator)
+    query = "INSERT INTO notes (contact_id, note_message,note_creator) VALUES (%s, %s,%s)"
+    values = (contact_id, note_message,note_creator)
     
     try:
         database_connection = create_databaseConnection()
@@ -27,16 +27,16 @@ def save_customer_notes(customer_id, note_message,note_creator):
 
 
 
-def get_customer_notes(customer_id):
+def get_customer_notes(contact_id):
     database_connection = None
     cursor = None
-    query = "SELECT notes_id, note_message, date_created, note_creator FROM notes WHERE customer_id = %s ORDER BY notes_id DESC"
+    query = "SELECT notes_id, note_message, date_created, note_creator FROM notes WHERE contact_id = %s ORDER BY notes_id DESC"
     results = []
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))
+        cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         
     except Exception as e:
@@ -52,14 +52,14 @@ def get_customer_notes(customer_id):
 
 
 
-def delete_customer_notes(notes_id, customer_id):
+def delete_customer_notes(notes_id, contact_id):
     database_connection = None
     cursor = None
-    query = "DELETE FROM notes WHERE notes_id = %s AND customer_id = %s"
+    query = "DELETE FROM notes WHERE notes_id = %s AND contact_id = %s"
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (notes_id, customer_id))
+        cursor.execute(query, (notes_id, contact_id))
         database_connection.commit()
     except Exception as e:
         print(f"An error occurred while deleting the note: {e}")

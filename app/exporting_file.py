@@ -52,9 +52,9 @@ def send_file_email(subject, sender, recipients, text_body, html_body=None):
 
 
 
-def export_data(customers, file_format):
+def export_data(contacts, file_format):
     # Convert customers list to DataFrame
-    df = pd.DataFrame(customers, columns=['Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
+    df = pd.DataFrame(contacts, columns=['Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
     
     # Define the base path for temporary storage
     base_path = '/tmp/'
@@ -95,7 +95,7 @@ def create_export_customer_data_procedure():
             t.tour_price AS `Tour_Price`,
             t.tour_type AS `Tour_Type`
         FROM
-            customers c
+            contacts c
         JOIN
             tour_bookings tb ON tb.customer_id = c.customer_id
         JOIN
@@ -120,6 +120,7 @@ def create_export_customer_data_procedure():
 
 
 
+print(create_export_customer_data_procedure())
 
 
 
@@ -127,14 +128,14 @@ def create_export_customer_data_procedure():
 def export_customer_data():
     database_connection = None
     cursor = None
-    customers = []
+    contacts = []
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
         cursor.callproc('ExportCustomerData')
         for result in cursor.stored_results():
-            customers.extend(result.fetchall())
+            contacts.extend(result.fetchall())
     except Exception as e:
         raise Exception(f"An error occurred while fetching customer data: {e}")
     finally:
@@ -143,7 +144,7 @@ def export_customer_data():
         if database_connection:
             database_connection.close()
 
-    return customers
+    return contacts
 
 
 

@@ -26,7 +26,7 @@ def customers_location_by_state():
             ELSE state_address
         END AS state_group, 
         COUNT(*) AS customer_count
-        FROM customers
+        FROM  contacts        #customers
         GROUP BY state_group
         ORDER BY customer_count DESC;
     """
@@ -69,7 +69,7 @@ def customers_by_gender(year=None):
                     ELSE 'Other' 
                 END AS gender_group,
                 COUNT(*) as count
-            FROM customers c
+            FROM contacts c
             JOIN tour_bookings tb ON c.customer_id = tb.customer_id
             JOIN tours t ON tb.tour_id = t.tour_id
             WHERE (YEAR(t.start_date) = %(year)s OR YEAR(t.end_date) = %(year)s)
@@ -84,7 +84,7 @@ def customers_by_gender(year=None):
                     ELSE 'Other' 
                 END AS gender_group,
                 COUNT(*) as count
-            FROM customers
+            FROM contacts
             GROUP BY gender_group;
         """
         params = {}

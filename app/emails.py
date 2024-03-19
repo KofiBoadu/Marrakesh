@@ -35,11 +35,11 @@ def send_email(subject, recipients, text_body, sender="bookings@africatravellers
 
 
 
-def customer_email_interactions(customer_id,subject,body,status,sent_user):
+def customer_email_interactions(contact_id,subject,body,status,sent_user):
     database_connection= None
     cursor= None
-    query="INSERT INTO emails (customer_id, subject, body, status,sent_user) VALUES (%s, %s, %s, %s,%s)"
-    values = (customer_id, subject, body, status,sent_user)
+    query="INSERT INTO emails (contact_id, subject, body, status,sent_user) VALUES (%s, %s, %s, %s,%s)"
+    values = (contact_id, subject, body, status,sent_user)
     try:
         database_connection= create_databaseConnection()
         cursor= database_connection.cursor()
@@ -60,16 +60,16 @@ def customer_email_interactions(customer_id,subject,body,status,sent_user):
 
 
 
-def all_emails_sent_to_customer(customer_id):
+def all_emails_sent_to_customer(contact_id):
     database_connection = None
     cursor = None
-    query = "SELECT email_id, subject, status, sent_date, body ,sent_user FROM emails WHERE customer_id = %s ORDER BY email_id DESC"
+    query = "SELECT email_id, subject, status, sent_date, body ,sent_user FROM emails WHERE contact_id = %s ORDER BY email_id DESC"
 
     all_emails = []
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))
+        cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         all_emails = [{'email_id':email[0],'subject': email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4],"sent_user":email[5]} for email in results]
     except Exception as e:
@@ -98,7 +98,7 @@ def create_customers_by_year_procedure():
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.email_address AS `Email`
             FROM
-                customers c
+                contacts c
             ORDER BY
                 c.customer_id DESC;
         ELSE
@@ -107,7 +107,7 @@ def create_customers_by_year_procedure():
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.email_address AS `Email`
             FROM
-                customers c
+                contacts c
             JOIN
                 tour_bookings tb ON tb.customer_id = c.customer_id
             JOIN
@@ -138,7 +138,7 @@ def create_customers_by_year_procedure():
             database_connection.close()
 
 
-
+# print(create_customers_by_year_procedure())
 
 
 

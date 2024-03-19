@@ -17,15 +17,15 @@ def profile_details(customer_id):
           
 
         FROM
-          customers c
+          contacts c
         JOIN
-          tour_bookings tb ON c.customer_id = tb.customer_id
+          tour_bookings tb ON c.contact_id = tb.contact_id
         JOIN
           tours t ON tb.tour_id = t.tour_id
         WHERE
-          c.customer_id = %s
+          c.contact_id = %s
         GROUP BY
-          c.customer_id;
+          c.contact_id;
     """
     database_connection = None
     cursor = None
@@ -51,14 +51,14 @@ def get_customer_bookings(customer_id):
     query = """SELECT 
                 tb.booking_id,
                 tb.tour_id,
-                tb.customer_id,
+                tb.contact_id,
                 GROUP_CONCAT(CONCAT(t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tour_details
             FROM
                 tour_bookings tb 
             JOIN tours t ON tb.tour_id = t.tour_id
-            WHERE tb.customer_id = %s
+            WHERE tb.contact_id = %s
             GROUP BY
-                tb.booking_id, tb.tour_id, tb.customer_id;
+                tb.booking_id, tb.tour_id, tb.contact_id;
     """
     database_connection = None
     cursor = None

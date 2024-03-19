@@ -439,7 +439,7 @@ def get_customer_campaign_events(campaign_id):
             CONCAT(c.first_name, ' ', c.last_name) AS full_name,
             m.campaign_id,
             m.event_type
-        FROM customers c
+        FROM contacts c
         JOIN (
             SELECT
                 customer_id,

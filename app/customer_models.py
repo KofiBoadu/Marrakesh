@@ -1,7 +1,6 @@
 
 from  .models import create_databaseConnection
 import logging
-
 from app.emails import all_emails_sent_to_customer
 from app.customer_notes import get_customer_notes
 
@@ -11,7 +10,7 @@ from app.customer_notes import get_customer_notes
 
 def update_customerDetails(customer_id, first_name, last_name, email, phone, gender, state):
     query = """
-        UPDATE customers
+        UPDATE contacts
         SET first_name = %s,
             last_name = %s,
             state_address = %s,
@@ -274,9 +273,9 @@ def update_tour_bookings(tour_id, customer_id):
 
 
 
-def fetch_customer_details(customer_id):
+def fetch_customer_details(contact_id):
     query = """SELECT
-                c.customer_id,
+                c.contact_id,
                 c.first_name, 
                 c.last_name,
                 c.state_address,
@@ -284,12 +283,12 @@ def fetch_customer_details(customer_id):
                 c.phone_number
               FROM
                 customers c
-              WHERE c.customer_id = %s;"""  # Assuming you're using a placeholder for a parameterized query
+              WHERE c.contact_id = %s;"""  # Assuming you're using a placeholder for a parameterized query
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))  # Pass customer_id as a tuple
+        cursor.execute(query, (contact_id,))  # Pass customer_id as a tuple
         customer_data = cursor.fetchall()  # Fetch all rows returned by the query
         return customer_data
     except Exception as e:
@@ -308,14 +307,14 @@ def fetch_customer_details(customer_id):
 
 
 
-def update_customer_email(customer_email,customer_id):
-    query = "UPDATE customers SET email_address = %s WHERE customer_id = %s"
+def update_customer_email(contact_email,contact_id):
+    query = "UPDATE contacts SET email_address = %s WHERE contact_id = %s"
     database_connection = None
     cursor = None
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query,(customer_email, customer_id))
+        cursor.execute(query,(contact_email, contact_id))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True
@@ -338,14 +337,14 @@ def update_customer_email(customer_email,customer_id):
 
 
 
-def update_customer_phone(customer_id,phone):
-    query = "UPDATE customers SET phone_number = %s WHERE customer_id = %s"
+def update_customer_phone(contact_id,phone):
+    query = "UPDATE contacts SET phone_number = %s WHERE contact_id = %s"
     database_connection = None
     cursor = None
     try:
         database_connection=create_databaseConnection()
         cursor=database_connection.cursor()
-        cursor.execute(query, (customer_id,phone))
+        cursor.execute(query, (contact_id,phone))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True
@@ -370,14 +369,14 @@ def update_customer_phone(customer_id,phone):
 
 
 
-def updating_customer_state(state,customer_id):
-    query = "UPDATE customers SET state_address = %s WHERE customer_id = %s"
+def updating_customer_state(state,contact_id):
+    query = "UPDATE contacts SET state_address = %s WHERE contact_id = %s"
     database_connection = None
     try:
         # Assume create_databaseConnection() is a function that establishes a database connection
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (state, customer_id))
+        cursor.execute(query, (state, contact_id))
         database_connection.commit()
 
         # Check if the query affected any rows
@@ -412,14 +411,14 @@ def updating_customer_state(state,customer_id):
 
 
 
-def update_customer_name(first_name, last_name,customer_id):
-    query = "UPDATE customers SET first_name = %s, last_name = %s WHERE customer_id = %s"
+def update_customer_name(first_name, last_name,contact_id):
+    query = "UPDATE contacts SET first_name = %s, last_name = %s WHERE contact_id = %s"
     database_connection = None
     cursor = None
     try:
         database_connection=create_databaseConnection()
         cursor=database_connection.cursor()
-        cursor.execute(query, (first_name,last_name,customer_id))
+        cursor.execute(query, (first_name,last_name,contact_id))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True
@@ -442,7 +441,7 @@ def update_customer_name(first_name, last_name,customer_id):
 
 
 
-def change_customer_bookings(booking_id, new_tour_id, customer_id):
+def change_customer_bookings(booking_id, new_tour_id, contact_id):
     """
     Updates the tour_id for a given booking and customer.
 
@@ -454,13 +453,13 @@ def change_customer_bookings(booking_id, new_tour_id, customer_id):
     Returns:
     - True if the update was successful, False otherwise.
     """
-    query = "UPDATE tour_bookings SET tour_id = %s WHERE booking_id = %s AND customer_id = %s"
+    query = "UPDATE tour_bookings SET tour_id = %s WHERE booking_id = %s AND contact_id = %s"
     database_connection = None
     cursor = None
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (new_tour_id, booking_id, customer_id))
+        cursor.execute(query, (new_tour_id, booking_id, contact_id))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True
@@ -488,14 +487,14 @@ def change_customer_bookings(booking_id, new_tour_id, customer_id):
 
 
 
-def bookings_updates_logs(old_tourID, new_tourID, customerID, updated_by_userID, update_details):
+def bookings_updates_logs(old_tourID, new_tourID, contactID, updated_by_userID, update_details):
     query = "INSERT INTO booking_updates (old_tour_id, new_tour_id, customer_id, updated_by_user_id, update_details) VALUES (%s, %s, %s, %s, %s)"
     database_connection = None
     cursor = None
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (old_tourID, new_tourID, customerID, updated_by_userID, update_details))
+        cursor.execute(query, (old_tourID, new_tourID, contactID, updated_by_userID, update_details))
         database_connection.commit()
         return cursor.rowcount > 0
     except Exception as e:

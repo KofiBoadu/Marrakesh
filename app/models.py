@@ -82,7 +82,7 @@ def create_get_customer_tour_details_procedure():
         IF search_query IS NULL OR search_query = '' THEN
             -- Original query without filtering, modified to include DISTINCT
             SELECT DISTINCT
-                c.customer_id,
+                c.contact_id,
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.state_address AS `State`,
                 c.email_address AS `Email`,
@@ -90,18 +90,18 @@ def create_get_customer_tour_details_procedure():
                 c.lead_status AS  `Lead Status`
              
             FROM
-                customers c
+                contacts c
             JOIN
-                tour_bookings tb ON tb.customer_id = c.customer_id
+                tour_bookings tb ON tb.contact_id = c.contact_id
             JOIN
                 tours t ON tb.tour_id = t.tour_id
             ORDER BY
-                YEAR(t.start_date) DESC, c.customer_id DESC
+                YEAR(t.start_date) DESC, c.contact_id DESC
             LIMIT items_per_page OFFSET offset;
         ELSE
             -- Query with filtering based on search_query, modified to include DISTINCT
             SELECT DISTINCT
-                c.customer_id,
+                c.contact_id,
                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
                 c.state_address AS `State`,
                 c.email_address AS `Email`,
@@ -109,16 +109,16 @@ def create_get_customer_tour_details_procedure():
                 c.lead_status AS  `Lead Status`
 
             FROM
-                customers c
+                contacts c
             JOIN
-                tour_bookings tb ON tb.customer_id = c.customer_id
+                tour_bookings tb ON tb.contact_id = c.contact_id
             JOIN
                 tours t ON tb.tour_id = t.tour_id
             WHERE
                 c.first_name LIKE CONCAT(search_query, '%') OR
                 CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%')
             ORDER BY
-                YEAR(t.start_date) DESC, c.customer_id DESC
+                YEAR(t.start_date) DESC, c.contact_id DESC
             LIMIT items_per_page OFFSET offset;
         END IF;
     END;
@@ -144,13 +144,13 @@ def create_get_customer_tour_details_procedure():
 
 
 
-# print(create_get_customer_tour_details_procedure())
+
 
 
 def total_customers():
     cursor = None
     database_connection = None
-    query = "SELECT COUNT(*) FROM customers"
+    query = "SELECT COUNT(*) FROM contacts"
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
@@ -172,7 +172,7 @@ def total_customers():
 def get_customers_information(page=1, items_per_page=25, search_query=''):
     offset = (page - 1) * items_per_page
     database_connection = None
-    customers = []
+    contacts = []
     cursor = None
 
     try:
@@ -180,7 +180,7 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
         cursor = database_connection.cursor()
         cursor.callproc('GetCustomerTourDetails', [search_query, items_per_page, offset])
         for result in cursor.stored_results():
-            customers.extend(result.fetchall())
+            contacts.extend(result.fetchall())
     except Exception as e:
         raise Exception(f"An error occurred while fetching customer information: {e}")
     finally:
@@ -189,27 +189,27 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
         if database_connection:
             database_connection.close()
 
-    if len(customers)==0:
+    if len(contacts)==0:
 
         return False 
 
     else:
 
-        return customers
+        return contacts
 
 
 
 
 
-def create_tour_bookings(tour_id, customer_id):
-    query = "INSERT INTO tour_bookings(tour_id, customer_id) VALUES(%s, %s)"
+def create_tour_bookings(tour_id, contact_id):
+    query = "INSERT INTO tour_bookings(tour_id, contact_id) VALUES(%s, %s)"
     database_connection = None
     cursor = None
 
     try:
         database_connection = create_databaseConnection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (tour_id, customer_id))
+        cursor.execute(query, (tour_id, contact_id))
         database_connection.commit()
         return True
     except Exception as e:
@@ -256,7 +256,7 @@ def get_tour_id(tour_name, year):
 
 
 def get_customer_id(email):
-    query = "SELECT customer_id FROM customers WHERE email_address = %s"
+    query = "SELECT contact_id FROM contacts WHERE email_address = %s"
     database_connection = None
     cursor = None
 
@@ -343,7 +343,7 @@ def create_new_tourDates(tour_name, start_date, end_date, price, destination_id,
 
 def add_new_paidCustomer(first_name, last_name, email, phone, gender ,state=None):
     query = """
-        INSERT INTO customers
+        INSERT INTO contacts
         (first_name, last_name, state_address, email_address, phone_number, gender)
         VALUES (%s, %s, %s, %s, %s, %s)
     """
@@ -461,8 +461,8 @@ def create_new_tourDates(tour_name, start_date, end_date, price, destination_id,
 
 
 def check_customer_exists(email):
-    query = "SELECT customer_id FROM customers WHERE TRIM(LOWER(email_address)) = TRIM(LOWER(%s))"
-    customer_id = None
+    query = "SELECT contact_id FROM contacts WHERE TRIM(LOWER(email_address)) = TRIM(LOWER(%s))"
+    contact_id = None
 
     try:
         database_connection = create_databaseConnection()
@@ -477,7 +477,7 @@ def check_customer_exists(email):
 
         # Assuming the first row and first column is customer_id if any results are returned.
         if results:
-            customer_id = results[0][0]
+            contact_id = results[0][0]
 
     except mysql.connector.Error as db_err:
         logging.error(f"Database error occurred: {db_err}")
@@ -495,7 +495,7 @@ def check_customer_exists(email):
             except mysql.connector.Error as err:
                 logging.error(f"Error closing connection: {err}")
 
-    return customer_id
+    return contact_id
 
 
 
@@ -579,7 +579,7 @@ def calculate_gross_revenue(year):
 
 
 
-def remove_paid_customer(customer_id):
+def remove_paid_customer(contact_id):
     deleted = False
     database_connection = None
     try:
@@ -588,7 +588,7 @@ def remove_paid_customer(customer_id):
         cursor = database_connection.cursor()
         # cursor.execute("DELETE FROM tour_bookings WHERE customer_id=%s", (customer_id,))
         # bookings_deleted = cursor.rowcount > 0
-        cursor.execute("DELETE FROM customers WHERE customer_id=%s", (customer_id,))
+        cursor.execute("DELETE FROM contacts WHERE contact_id=%s", (contact_id,))
         customer_deleted = cursor.rowcount > 0
         if customer_deleted:
             database_connection.commit()
