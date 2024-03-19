@@ -713,7 +713,7 @@ def create_get_customer_tour_details_procedure():
             database_connection.close()
 
 
-print(create_get_customer_tour_details_procedure())
+
 
 
 
