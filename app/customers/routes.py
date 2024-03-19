@@ -1,6 +1,6 @@
 from flask import  render_template, request,redirect,url_for,flash,session
-from app.models import get_customers_information, available_tour_dates,add_new_paidCustomer,get_destination_id
-from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_destination,create_new_tourDates
+from app.models import get_customers_information, available_tour_dates,add_new_paid_customer,get_destination_id
+from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_destinations,create_new_tour_dates
 from app.models import check_customer_exists,all_states
 from app.customers import customers_bp
 import datetime
@@ -27,7 +27,7 @@ def home_page():
         year= datetime.datetime.now().year
         customers= get_customers_information(page, items_per_page,search)
         available_dates= available_tour_dates()
-        destinations= get_all_destination()
+        destinations= get_all_destinations()
         states = all_states()
         
         customers_total=total_customers()
@@ -150,7 +150,7 @@ def add_paid_customer():
             create_tour_bookings(tour_id,customer_id)
             return redirect(url_for("customers.home_page"))
         else:
-            customer= add_new_paidCustomer(first_name, last_name,email,phone,gender,state)
+            customer= add_new_paid_customer(first_name, last_name,email,phone,gender,state)
             tour_id= get_tour_id(tour_name,tour_year)
             customer_id= get_customer_id(email)
             create_tour_bookings(tour_id,customer_id)
@@ -173,7 +173,7 @@ def add_new_tours():
         destination = request.form.get('destination')
         tour_type=request.form.get('tour_type')
         destination_id= get_destination_id(destination)
-        create_new_tourDates(tour_name, start_date,end_date,tour_price,destination_id, tour_type)
+        create_new_tour_dates(tour_name, start_date,end_date,tour_price,destination_id, tour_type)
 
     return redirect(url_for("customers.home_page"))
 

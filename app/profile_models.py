@@ -1,21 +1,19 @@
-from .models import create_databaseConnection
+from .models import create_database_connection
 
 
 
 
-def profile_details(customer_id):
+def profile_details(contact_id):
     query = """
         SELECT
-          CONCAT(c.first_name, ' ', c.last_name) ,
+          CONCAT(c.first_name, ' ', c.last_name) AS full_name,
           c.email_address,
           c.phone_number,
           c.state_address,
           c.lead_status,
           c.gender,
-          GROUP_CONCAT(CONCAT(t.tour_type," ",t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') ,
-          SUM(t.tour_price) 
-          
-
+          GROUP_CONCAT(CONCAT(t.tour_type, " ", t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tour_details,
+          SUM(t.tour_price) AS total_tour_price
         FROM
           contacts c
         JOIN
@@ -30,9 +28,9 @@ def profile_details(customer_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))
+        cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         return results[0] if results else None
     except Exception as e:
@@ -47,25 +45,27 @@ def profile_details(customer_id):
 
 
 
-def get_customer_bookings(customer_id):
-    query = """SELECT 
-                tb.booking_id,
-                tb.tour_id,
-                tb.contact_id,
-                GROUP_CONCAT(CONCAT(t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tour_details
-            FROM
-                tour_bookings tb 
-            JOIN tours t ON tb.tour_id = t.tour_id
-            WHERE tb.contact_id = %s
-            GROUP BY
-                tb.booking_id, tb.tour_id, tb.contact_id;
+def get_customer_bookings(contact_id):
+    query = """
+        SELECT
+            tb.booking_id,
+            tb.tour_id,
+            tb.contact_id,
+            GROUP_CONCAT(CONCAT(t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tour_details
+        FROM
+            tour_bookings tb
+        JOIN tours t ON tb.tour_id = t.tour_id
+        WHERE
+            tb.contact_id = %s
+        GROUP BY
+            tb.booking_id, tb.tour_id, tb.contact_id;
     """
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))
+        cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         # Convert results to a list of dictionaries
         bookings = [

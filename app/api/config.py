@@ -1,7 +1,7 @@
 from flask_httpauth import HTTPBasicAuth
 from app.user import get_user
 from werkzeug.security import generate_password_hash,check_password_hash
-from  app.models import create_databaseConnection
+from  app.models import create_database_connection
 
 
 auth = HTTPBasicAuth()
@@ -51,7 +51,7 @@ def create_leads(first_name=None, last_name=None, email=None, phone=None, gender
 
     try:
         # Assuming create_databaseConnection() is a function that returns a database connection object.
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = None  # Initialize cursor to None for safe closing in the finally block
         if database_connection is not None:
             cursor = database_connection.cursor()

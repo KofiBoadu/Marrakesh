@@ -1,5 +1,5 @@
 import pandas as pd
-from app.models import create_databaseConnection, get_customers_information,total_customers
+from app.models import create_database_connection, get_customers_information,total_customers
 import os
 from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
@@ -105,7 +105,7 @@ def create_export_customer_data_procedure():
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute("DROP PROCEDURE IF EXISTS ExportCustomerData")
         cursor.execute(procedure_query)
@@ -131,7 +131,7 @@ def export_customer_data():
     contacts = []
 
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.callproc('ExportCustomerData')
         for result in cursor.stored_results():

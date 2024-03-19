@@ -1,5 +1,5 @@
 
-from  .models import create_databaseConnection
+from  .models import create_database_connection
 import logging
 from app.emails import all_emails_sent_to_customer
 from app.customer_notes import get_customer_notes
@@ -8,7 +8,40 @@ from app.customer_notes import get_customer_notes
 
 
 
-def update_customerDetails(customer_id, first_name, last_name, email, phone, gender, state):
+# def update_customerDetails(contact_id, first_name, last_name, email, phone, gender, state):
+#     query = """
+#         UPDATE contacts
+#         SET first_name = %s,
+#             last_name = %s,
+#             state_address = %s,
+#             email_address = %s,
+#             phone_number = %s,
+#             gender = %s
+#         WHERE contact_id = %s
+#     """
+#     values = (first_name, last_name, state, email, phone, gender, contact_id)
+
+#     try:
+#         database_connection = create_databaseConnection()
+#         if database_connection is not None:
+#             cursor = database_connection.cursor()
+#             cursor.execute(query, values)
+#             database_connection.commit()
+#             if cursor.rowcount > 0:
+#                 print("Customer details successfully updated for ID:", contact_id)
+#             else:
+#                 print("No customer found with ID:", customer_id)
+#     except Error as e:
+#         print(f"Database error occurred: {e}")
+#         if database_connection:
+#             database_connection.rollback()
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+def update_customerDetails(contact_id, first_name, last_name, email, phone, gender, state):
     query = """
         UPDATE contacts
         SET first_name = %s,
@@ -17,20 +50,20 @@ def update_customerDetails(customer_id, first_name, last_name, email, phone, gen
             email_address = %s,
             phone_number = %s,
             gender = %s
-        WHERE customer_id = %s
+        WHERE contact_id = %s
     """
-    values = (first_name, last_name, state, email, phone, gender, customer_id)
+    values = (first_name, last_name, state, email, phone, gender, contact_id)
 
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         if database_connection is not None:
             cursor = database_connection.cursor()
             cursor.execute(query, values)
             database_connection.commit()
             if cursor.rowcount > 0:
-                print("Customer details successfully updated for ID:", customer_id)
+                print("Customer details successfully updated for ID:", contact_id)
             else:
-                print("No customer found with ID:", customer_id)
+                print("No customer found with ID:", contact_id)
     except Error as e:
         print(f"Database error occurred: {e}")
         if database_connection:
@@ -50,8 +83,7 @@ def update_customerDetails(customer_id, first_name, last_name, email, phone, gen
 
 
 
-
-def get_customer_booking_changes(customer_id):
+def get_customer_booking_changes(contact_id):
     """
     Fetches booking changes for a given customer, including the user names and tour names for old and new tours.
 
@@ -75,18 +107,18 @@ def get_customer_booking_changes(customer_id):
         JOIN tours t_new ON bu.new_tour_id = t_new.tour_id
         JOIN users u ON bu.updated_by_user_id = u.user_id
     WHERE
-        bu.customer_id = %s
+        bu.contact_id = %s
     """
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,))
+        cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         return results
     except Exception as e:
-        logging.error(f"Error in get_customer_booking_changes for customer ID {customer_id}: {e}")
+        logging.error(f"Error in get_customer_booking_changes for customer ID {contact_id}: {e}")
         return []  # Returning an empty list for uniformity
     finally:
         if cursor:
@@ -100,7 +132,7 @@ def get_customer_booking_changes(customer_id):
 
 
 
-def campaigns_sent_to_customer(customer_id):
+def campaigns_sent_to_customer(contact_id):
     query = """
             SELECT
                 CONCAT(c.first_name, ' ', c.last_name) AS full_name,
@@ -115,7 +147,7 @@ def campaigns_sent_to_customer(customer_id):
                  FROM
                      marketing_email_metrics
                  WHERE
-                     customer_id = %s
+                     contact_id = %s
                  GROUP BY
                      campaign_id
                 ) AS latest_campaign_metrics
@@ -124,9 +156,9 @@ def campaigns_sent_to_customer(customer_id):
             JOIN
                 marketing_emails e ON m.campaign_id = e.campaign_id
             JOIN
-                customers c ON m.customer_id = c.customer_id
+                contacts c ON m.contact_id = c.contact_id
             WHERE
-                c.customer_id = %s
+                c.contact_id = %s
             ORDER BY
                 e.sent_date DESC;
     """
@@ -134,13 +166,13 @@ def campaigns_sent_to_customer(customer_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (customer_id,customer_id))
+        cursor.execute(query, (contact_id,contact_id))
         results = cursor.fetchall()
         return results
     except Exception as e:
-        logging.error(f"Error in campaigns_sent_to_customer for customer ID {customer_id}: {e}")
+        logging.error(f"Error in campaigns_sent_to_customer for customer ID {contact_id}: {e}")
         return []
     finally:
         if cursor:
@@ -191,11 +223,11 @@ def campaigns_sent_to_customer(customer_id):
 
 # print(get_customer_activities(326))
 
-def get_customer_activities(customer_id):
-    emails = all_emails_sent_to_customer(customer_id)
-    notes_raw = get_customer_notes(customer_id)
-    booking_changes_raw = get_customer_booking_changes(customer_id)
-    campaigns_raw = campaigns_sent_to_customer(customer_id)
+def get_customer_activities(contact_id):
+    emails = all_emails_sent_to_customer(contact_id)
+    notes_raw = get_customer_notes(contact_id)
+    booking_changes_raw = get_customer_booking_changes(contact_id)
+    campaigns_raw = campaigns_sent_to_customer(contact_id)
 
     notes = [{'email_id': note[0],
               'subject': 'Note',
@@ -241,21 +273,21 @@ def get_customer_activities(customer_id):
 
 
 
-def update_tour_bookings(tour_id, customer_id):
-    query = "UPDATE tour_bookings SET tour_id = %s WHERE customer_id = %s"
+def update_tour_bookings(tour_id, contact_id):
+    query = "UPDATE tour_bookings SET tour_id = %s WHERE contact_id = %s"
     database_connection = None
     cursor = None
 
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (tour_id, customer_id))
+        cursor.execute(query, (tour_id, contact_id))
         database_connection.commit()
         if cursor.rowcount > 0:
-            print(f"Successfully updated tour_id for customer_id {customer_id}")
+            print(f"Successfully updated tour_id for customer_id {contact_id}")
             return True
         else:
-            print(f"No record found to update for customer_id {customer_id}")
+            print(f"No record found to update for customer_id {contact_id}")
             return False
     except Exception as e:
         logging.error(f"Error in update_tour_bookings: {e}")
@@ -282,11 +314,11 @@ def fetch_customer_details(contact_id):
                 c.email_address,
                 c.phone_number
               FROM
-                customers c
+                contacts c
               WHERE c.contact_id = %s;"""  # Assuming you're using a placeholder for a parameterized query
 
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (contact_id,))  # Pass customer_id as a tuple
         customer_data = cursor.fetchall()  # Fetch all rows returned by the query
@@ -312,7 +344,7 @@ def update_customer_email(contact_email,contact_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query,(contact_email, contact_id))
         database_connection.commit()
@@ -342,7 +374,7 @@ def update_customer_phone(contact_id,phone):
     database_connection = None
     cursor = None
     try:
-        database_connection=create_databaseConnection()
+        database_connection=create_database_connection()
         cursor=database_connection.cursor()
         cursor.execute(query, (contact_id,phone))
         database_connection.commit()
@@ -374,7 +406,7 @@ def updating_customer_state(state,contact_id):
     database_connection = None
     try:
         # Assume create_databaseConnection() is a function that establishes a database connection
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (state, contact_id))
         database_connection.commit()
@@ -416,7 +448,7 @@ def update_customer_name(first_name, last_name,contact_id):
     database_connection = None
     cursor = None
     try:
-        database_connection=create_databaseConnection()
+        database_connection=create_database_connection()
         cursor=database_connection.cursor()
         cursor.execute(query, (first_name,last_name,contact_id))
         database_connection.commit()
@@ -457,7 +489,7 @@ def change_customer_bookings(booking_id, new_tour_id, contact_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (new_tour_id, booking_id, contact_id))
         database_connection.commit()
@@ -488,11 +520,11 @@ def change_customer_bookings(booking_id, new_tour_id, contact_id):
 
 
 def bookings_updates_logs(old_tourID, new_tourID, contactID, updated_by_userID, update_details):
-    query = "INSERT INTO booking_updates (old_tour_id, new_tour_id, customer_id, updated_by_user_id, update_details) VALUES (%s, %s, %s, %s, %s)"
+    query = "INSERT INTO booking_updates (old_tour_id, new_tour_id, contact_id, updated_by_user_id, update_details) VALUES (%s, %s, %s, %s, %s)"
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (old_tourID, new_tourID, contactID, updated_by_userID, update_details))
         database_connection.commit()

@@ -1,6 +1,6 @@
 from flask import  render_template, request,redirect,url_for,flash
 from .import analytics
-from app.models import get_total_numberOfTravellers,calculate_gross_revenue
+from app.models import get_total_number_of_travellers,calculate_gross_revenue
 import datetime
 from app.reports import customers_location_by_state,customers_by_gender,get_travellers_by_destination_query,calculate_annual_gross_revenue
 from flask import Flask, jsonify
@@ -15,7 +15,7 @@ from flask_login import login_required
 def analytics_home():
     current_year = datetime.datetime.now().year
    
-    total_travelers = get_total_numberOfTravellers()
+    total_travelers = get_total_number_of_travellers()
     revenue, formatted_revenue = calculate_gross_revenue(current_year)
     list_years=our_customers_sincebyYear()
     revenue_data= calculate_annual_gross_revenue()

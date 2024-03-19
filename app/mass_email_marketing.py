@@ -4,7 +4,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from  .models import create_databaseConnection
+from  .models import create_database_connection
 import logging
 import boto3
 from botocore.exceptions import ClientError
@@ -33,7 +33,7 @@ def marketing_Email(user_id, total_email_list, campaign_subject, campaign_body, 
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (user_id, total_email_list, campaign_subject, campaign_body, campaign_status))
         campaign_id = cursor.lastrowid  # Get the generated campaign_id
@@ -56,10 +56,10 @@ def marketing_Email(user_id, total_email_list, campaign_subject, campaign_body, 
 
 
 
-def send_email_marketing(customer_name, receiver_email, subject, sender_email, text_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
+def send_email_marketing(contact_name, receiver_email, subject, sender_email, text_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
     ses_client = boto3.client('ses', region_name=aws_region)
-    html_body = f" Dear {customer_name},{text_body}"
+    html_body = f" Dear {contact_name},{text_body}"
 
     try:
         response = ses_client.send_email(
@@ -172,9 +172,9 @@ def all_email_campaign():
         m.sent_date,
         m.campaign_id,
         CONCAT(u.first_name, ' ', u.last_name) AS full_name,
-        COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END) AS delivered,
-        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Open' THEN em.customer_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END), 0), 2) AS unique_open_rate,
-        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Click' THEN em.customer_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.customer_id END), 0), 2) AS unique_click_rate
+        COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.contact_id END) AS delivered,
+        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Open' THEN em.contact_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.contact_id END), 0), 2) AS unique_open_rate,
+        ROUND(COUNT(DISTINCT CASE WHEN em.event_type = 'Click' THEN em.contact_id END) * 100.0 / NULLIF(COUNT(DISTINCT CASE WHEN em.event_type = 'Delivery' THEN em.contact_id END), 0), 2) AS unique_click_rate
         FROM marketing_emails AS m
         JOIN users AS u ON m.user_id = u.user_id
         LEFT JOIN marketing_email_metrics AS em ON m.campaign_id = em.campaign_id
@@ -184,7 +184,7 @@ def all_email_campaign():
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
@@ -208,9 +208,9 @@ def campaign_open_rate(campaign_id):
 
     query = """
     SELECT
-        COUNT(DISTINCT CASE WHEN event_type = 'Open' THEN customer_id END) as unique_opens,
-        COUNT(DISTINCT CASE WHEN event_type = 'Delivery' THEN customer_id END) as deliveries,
-        COUNT(DISTINCT CASE WHEN event_type = 'Bounce' THEN customer_id END) as bounces
+        COUNT(DISTINCT CASE WHEN event_type = 'Open' THEN contact_id END) as unique_opens,
+        COUNT(DISTINCT CASE WHEN event_type = 'Delivery' THEN contact_id END) as deliveries,
+        COUNT(DISTINCT CASE WHEN event_type = 'Bounce' THEN contact_id END) as bounces
     FROM marketing_email_metrics
     WHERE campaign_id = %s
     GROUP BY campaign_id
@@ -220,7 +220,7 @@ def campaign_open_rate(campaign_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (campaign_id,))
         results = cursor.fetchone()
@@ -254,7 +254,7 @@ def execute_query(query, campaign_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (campaign_id,))
         result = cursor.fetchone()
@@ -278,7 +278,7 @@ def execute_query(query, campaign_id):
 def get_unique_opens(campaign_id):
     # SQL query to get the number of unique opens
     query = """
-    SELECT COUNT(DISTINCT customer_id)
+    SELECT COUNT(DISTINCT contact_id)
     FROM marketing_email_metrics
     WHERE campaign_id = %s AND event_type = 'Open'
     """
@@ -321,7 +321,7 @@ def get_click_rate(campaign_id):
 def get_unique_clicks(campaign_id):
     # SQL query to get the number of unique clicks
     query = """
-    SELECT COUNT(DISTINCT customer_id)
+    SELECT COUNT(DISTINCT contact_id)
     FROM marketing_email_metrics
     WHERE campaign_id = %s AND event_type = 'Click'
     """
@@ -357,7 +357,7 @@ def get_deliveries(campaign_id):
 
 def get_bounces(campaign_id):
     query = """
-    SELECT COUNT(DISTINCT customer_id)
+    SELECT COUNT(DISTINCT contact_id)
     FROM marketing_email_metrics
     WHERE campaign_id = %s AND event_type = 'Bounce'
     """
@@ -365,24 +365,24 @@ def get_bounces(campaign_id):
     return execute_query(query, campaign_id)
 
 def get_successful_deliveries(campaign_id):
-    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Delivery' AND campaign_id = %s"
+    query = "SELECT COUNT(DISTINCT contact_id) FROM marketing_email_metrics WHERE event_type = 'Delivery' AND campaign_id = %s"
     return execute_query(query, campaign_id)
 
 
 
 def get_unsubscribes(campaign_id):
-    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Subscription' AND campaign_id = %s"
+    query = "SELECT COUNT(DISTINCT contact_id) FROM marketing_email_metrics WHERE event_type = 'Subscription' AND campaign_id = %s"
     return execute_query(query, campaign_id)
 
 def get_spam_reports(campaign_id):
-    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE event_type = 'Complaint' AND campaign_id = %s"
+    query = "SELECT COUNT(DISTINCT contact_id) FROM marketing_email_metrics WHERE event_type = 'Complaint' AND campaign_id = %s"
     return execute_query(query, campaign_id)
 
 
 
 
 def get_total_sent(campaign_id):
-    query = "SELECT COUNT(DISTINCT customer_id) FROM marketing_email_metrics WHERE campaign_id = %s"
+    query = "SELECT COUNT(DISTINCT contact_id) FROM marketing_email_metrics WHERE campaign_id = %s"
     return execute_query(query, campaign_id)
 
 
@@ -435,27 +435,27 @@ def total_email_list(campaign_id):
 def get_customer_campaign_events(campaign_id):
     query = """
         SELECT
-            c.customer_id,
+            c.contact_id,
             CONCAT(c.first_name, ' ', c.last_name) AS full_name,
             m.campaign_id,
             m.event_type
         FROM contacts c
         JOIN (
             SELECT
-                customer_id,
+                contact_id,
                 campaign_id,
                 event_type,
                 MAX(metric_id) AS MaxMetricId
             FROM marketing_email_metrics
             WHERE campaign_id = %s
-            GROUP BY customer_id
-        ) AS LatestEvent ON c.customer_id = LatestEvent.customer_id
-        JOIN marketing_email_metrics m ON m.customer_id = LatestEvent.customer_id AND m.metric_id = LatestEvent.MaxMetricId
+            GROUP BY contact_id
+        ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
+        JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
     """
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (campaign_id,))
         results = cursor.fetchall()
@@ -476,7 +476,7 @@ def delete_campaign(campaign_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (campaign_id,))
         database_connection.commit()

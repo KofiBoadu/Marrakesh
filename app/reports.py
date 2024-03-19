@@ -1,4 +1,4 @@
-from  .models import create_databaseConnection
+from  .models import create_database_connection
 import sys 
 
 
@@ -34,7 +34,7 @@ def customers_location_by_state():
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query)
         result = cursor.fetchall()  # Fetch all the rows in a list of lists.
@@ -70,7 +70,7 @@ def customers_by_gender(year=None):
                 END AS gender_group,
                 COUNT(*) as count
             FROM contacts c
-            JOIN tour_bookings tb ON c.customer_id = tb.customer_id
+            JOIN tour_bookings tb ON c.contact_id = tb.contact_id
             JOIN tours t ON tb.tour_id = t.tour_id
             WHERE (YEAR(t.start_date) = %(year)s OR YEAR(t.end_date) = %(year)s)
             GROUP BY gender_group;
@@ -92,7 +92,7 @@ def customers_by_gender(year=None):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, params)  # Use params to safely pass the year
         result = cursor.fetchall()  # Fetch all the rows in a list of lists.
@@ -146,7 +146,7 @@ def get_travellers_by_destination_query(year=None):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()  # replace with your actual connection function
+        database_connection = create_database_connection()  # replace with your actual connection function
         cursor = database_connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()  # Fetch the results of the query
@@ -192,7 +192,7 @@ def calculate_annual_gross_revenue(year=None):
     query = " ".join(query_parts)
     
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         
         # Execute the query with or without the year parameter

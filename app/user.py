@@ -1,7 +1,7 @@
 import secrets
 import string
 from werkzeug.security import generate_password_hash
-from .models  import create_databaseConnection
+from .models  import create_database_connection
 from app.extension import login_manager
 from flask_login import login_user,UserMixin
 
@@ -36,7 +36,7 @@ def add_new_user(first_name, last_name, email_address,pass_word,role_id):
     query= "INSERT INTO users(first_name,last_name,email_address,pass_word,role_id) VALUES(%s,%s,%s,%s,%s)"
     values= (first_name, last_name,email_address,pass_word,role_id)
     try:
-        database_connection= create_databaseConnection()
+        database_connection= create_database_connection()
         cursor= database_connection.cursor()
         cursor.execute(query,values)
         database_connection.commit()
@@ -73,7 +73,7 @@ def get_user(email):
     database_connection = None
     query = "SELECT user_id,first_name,last_name,email_address,pass_word,role_id, is_active FROM users WHERE email_address = %s"
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (email,))
         user_details = cursor.fetchone()
@@ -98,7 +98,7 @@ def load_user(user_id):
     database_connection = None
     query = "SELECT *  FROM users WHERE user_id = %s"
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (user_id,))
         user_details = cursor.fetchone()
@@ -147,7 +147,7 @@ def password_change(user_id ,new_password):
     hash_password= generate_password_hash(new_password)
     query = "UPDATE users SET pass_word = %s WHERE user_id = %s"
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (hash_password, user_id))
         database_connection.commit()
@@ -175,7 +175,7 @@ def get_all_users():
     cursor = None
     database_connection = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
@@ -200,7 +200,7 @@ def remover_user_from_account(user_id):
     database_connection= None
     cursor= None
     try:
-        database_connection= create_databaseConnection()
+        database_connection= create_database_connection()
         cursor=database_connection.cursor()
         cursor.execute(query,(user_id,))
         database_connection.commit()
@@ -224,7 +224,7 @@ def user_roles():
     database_connection= None
     cursor= None
     try:
-        database_connection=create_databaseConnection()
+        database_connection=create_database_connection()
         cursor= database_connection.cursor()
         cursor.execute(query)
         results= cursor.fetchall()
@@ -247,7 +247,7 @@ def deactivate_user_account(user_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()  #
+        database_connection = create_database_connection()  #
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
@@ -269,7 +269,7 @@ def reactivate_user_account(user_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()  #
+        database_connection = create_database_connection()  #
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
@@ -295,7 +295,7 @@ def remove_super_admin(user_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()  #
+        database_connection = create_database_connection()  #
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
@@ -320,7 +320,7 @@ def make_super_admin(user_id):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_databaseConnection()
+        database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
