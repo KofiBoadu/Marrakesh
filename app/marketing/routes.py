@@ -78,9 +78,9 @@ def create_marketingEmails():
         email_subject=request.form.get('emailSubject')
         raw_email_body = request.form.get('emailBody')
         customers_type=request.form.get('customerType')
-        email_list=get_customers_by_year_or_all(customers_type)
+        # email_list=get_customers_by_year_or_all(customers_type)
         user_id=current_user.id
-        # email_list = [('daniel',"mrboadu3@gmail.com")]
+        email_list = [('daniel',"mrboadu3@gmail.com")]
 
         campaign_id = marketing_Email(
             user_id=user_id,
