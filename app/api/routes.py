@@ -51,12 +51,14 @@ from flask import current_app as app
 
 
 
-
+# webhook url
+# https://africatravellers-crm-7ca32dc61ea0.herokuapp.com/api/adding-new-lead-3e7a8f9d-94593
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
+        print(data)
     elif request.content_type == 'application/json':
         data = request.json
     else:
