@@ -20,6 +20,7 @@ def add_new_lead():
 
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
+        print(data)
     elif request.content_type == 'application/json':
         data = request.json
     else:
@@ -66,3 +67,17 @@ def add_new_lead():
         print("Failed to create lead:", str(e))
         app.logger.error(f"Failed to create lead: {str(e)}")  # Log the error for debugging
         return jsonify({"success": False, "error": "Failed to process the request"}), 500
+
+
+
+
+
+# def standardized_model(webhook_response):
+#     model={
+#           "contact_name": "",
+#           "contact_email": "",
+#           "contact_phone": "",
+#           "submission_date": "",
+#           "source": "",
+#           "form_data": {}
+#         }
