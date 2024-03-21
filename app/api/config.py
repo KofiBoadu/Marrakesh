@@ -18,7 +18,7 @@ def verify_password(email,password):
 
 def create_leads(first_name=None, last_name=None, email=None, phone=None, gender=None, lead_status="lead", state=None):
     query = """
-        INSERT INTO customers
+        INSERT INTO contacts
         (first_name, last_name, state_address, email_address, phone_number, gender, lead_status)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
@@ -33,7 +33,7 @@ def create_leads(first_name=None, last_name=None, email=None, phone=None, gender
             cursor.execute(query, values)
             database_connection.commit()
             return cursor.lastrowid
-    except Error as e:
+    except Exception as e:
         print(f"Database error occurred: {e}")
         if database_connection:
             database_connection.rollback()

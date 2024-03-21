@@ -402,12 +402,12 @@
 <div id="phoneformContainer" class="hidden" style="display: none;">
   <img class="updatePhoneClose" onclick="closeUpdatePhoneForm()" width="16" height="16"
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
-  <form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
+  <form class="update_customer_phone" action="{{ url_for('profiles.update_contact_phone_number') }}" method="post">
     <input type="hidden" id="customerId" name="contact_id" value="{{ contact_id }}">
  
     <div class="update_number">
       <label for="primary_email">phone number</label>
-      <input type="text" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
+      <input type="tel" id="update_phone" name="update_phone" value="{{ phone_number }}" required>
     </div>
 
     <div class="save">

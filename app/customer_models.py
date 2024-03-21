@@ -369,14 +369,14 @@ def update_customer_email(contact_email,contact_id):
 
 
 
-def update_customer_phone(contact_id,phone):
+def update_contact_phone(contact_id,phone):
     query = "UPDATE contacts SET phone_number = %s WHERE contact_id = %s"
     database_connection = None
     cursor = None
     try:
         database_connection=create_database_connection()
         cursor=database_connection.cursor()
-        cursor.execute(query, (contact_id,phone))
+        cursor.execute(query, (phone,contact_id))
         database_connection.commit()
         if cursor.rowcount > 0:
             return True

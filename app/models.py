@@ -17,11 +17,15 @@ load_dotenv()
 
 
 
-
 def format_phone_number(number, country_code='US'):
-    user_number = phonenumbers.parse(number, country_code)
-    formatted_number = phonenumbers.format_number(user_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-    return formatted_number
+    if not number:  # Check if number is None or empty
+        return ""  # Return an empty string if no number is provided
+    try:
+        user_number = phonenumbers.parse(number, country_code)
+        formatted_number = phonenumbers.format_number(user_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        return formatted_number
+    except phonenumbers.NumberParseException:
+        return ""  # Return an empty string if parsing fails
 
 
 
