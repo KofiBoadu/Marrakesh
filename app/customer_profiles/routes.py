@@ -30,6 +30,7 @@ def customer_profile(contact_id):
         phone_number = format_phone_number(profile[2]) if profile[2] else "Not Provided"
 
         booking_info = get_customer_bookings(contact_id) if tour_list else []
+        print(booking_info)
         available_dates = available_tour_dates()
 
         activities = get_customer_activities(contact_id)
@@ -45,9 +46,11 @@ def customer_profile(contact_id):
 @login_required
 def change_bookings():
     contact_id=request.form.get('updatingbooking_contact_id')
+    print("ID",contact_id)
     new_tour_type=request.form.get('updatetour_date')
     checkbox_checked = 'notify-customer' in request.form
     customer_details= profile_details(contact_id)
+
     customer_name=profile_details(contact_id)[0].split()[0].capitalize()
     customer_email= customer_details[1]
     tour_date= new_tour_type.split()

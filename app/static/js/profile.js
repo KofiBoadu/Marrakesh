@@ -208,17 +208,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     updateButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(event) {
             // Prevent the default action
             event.preventDefault();
 
             var bookingId = this.getAttribute('data-booking-id');
-            var customerId = this.getAttribute('data-customer-id');
+            var contactId = this.getAttribute('data-contact-id');
             var tourId = this.getAttribute('data-tour-id');
             var tourName = this.getAttribute('data-tour-name');
 
             // Update the inputs in the submit-update-bookings form
-            let id=document.querySelector('input[name="updatingbooking_customer_id"]').value = customerId;
+            let id=document.querySelector('input[name="updatingbooking_contact_id"]').value = contactId;
             let bookid= document.querySelector('input[name="updatingbooking_booking_id"]').value = bookingId;
             let tourid= document.querySelector('input[name="updatingbooking_tour_id"]').value = tourId;
             document.getElementById('submit_booking').querySelector('p').textContent = `  ${tourName}`;
@@ -239,9 +239,6 @@ function closeUpdateBookingForm() {
   document.getElementById('update-bookings').style.display = 'none';
   console.log('cancel')
 }
-
-
-
 
 
 

@@ -79,7 +79,7 @@ def get_customer_bookings(contact_id):
         results = cursor.fetchall()
         # Convert results to a list of dictionaries
         bookings = [
-            {"booking_id": row[0], "tour_id": row[1], "customer_id": row[2], "tour_name": row[3]} 
+            {"booking_id": row[0], "tour_id": row[1], "contact_id": row[2], "tour_name": row[3]}
             for row in results
         ]
         return bookings if bookings else None
