@@ -204,11 +204,11 @@
       </tr>
     </thead>
     <tbody>
-      {% for customer_id, full_name, campaign_id, event_type in events %}
+      {% for contact_id, full_name, campaign_id, event_type in events %}
       <tr>
         <td>
           <!-- Full name as a clickable link -->
-          <a href="{{ url_for('profiles.customer_profile', customer_id=customer_id) }}">
+          <a href="{{ url_for('profiles.customer_profile', contact_id=contact_id) }}">
             {{ full_name }}
           </a>
           <!-- Hidden inputs for storing additional data -->

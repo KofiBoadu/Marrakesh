@@ -164,9 +164,38 @@ function validateDeleteInput(input) {
 }
 
 
- function changeItemsPerPage(select) {
-        window.location.href = "{{ url_for('customers.home_page', page=1) }}?per_page=" + select.value;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle changes in items per page
+    function changeItemsPerPage(selectObject) {
+        var selectedValue = selectObject.value; // Get the selected value from the dropdown
+        var currentItemsPerPage = getCurrentItemsPerPage(); // Get the current items per page from the URL
+
+        // Only redirect if the selected value is different from the current value
+        if (selectedValue.toString() !== currentItemsPerPage) {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('items_per_page', selectedValue);
+            searchParams.set('page', 1); // Optionally reset to the first page
+
+            // Redirect to the same route with updated query parameters
+            window.location.search = searchParams.toString();
+        }
     }
+
+    // Function to get the current 'items_per_page' value from the URL
+    function getCurrentItemsPerPage() {
+        var params = new URLSearchParams(window.location.search);
+        return params.get('items_per_page') || '50'; // Default to 50 if not present
+    }
+
+    // Attach the change event listener to the dropdown
+    var selectElement = document.getElementById('items-per-page');
+    if (selectElement) {
+        selectElement.addEventListener('change', function() {
+            changeItemsPerPage(this);
+        });
+    }
+});
 
 
 
@@ -249,6 +278,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
+
+
+
+
+
+// check to if the contact exist 
+
+// document.getElementById('leadStatus').addEventListener('change', function() {
+//     var displayStyle = this.value === 'customer' ? 'block' : 'none';
+//     document.getElementById('additionalFields').style.display = displayStyle;
+// });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var emailField = document.getElementById("email");
+
+    emailField.addEventListener("input", function() {
+        var email = this.value.trim();
+        if (email.length === 0) {
+            // If the email is empty, don't make the fetch call.
+            return;
+        }
+
+        fetch('/customers/check-email/contact-existance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            var contactExistsDiv = document.getElementById("contactExists");
+            var additionalFieldsDiv = document.getElementById("additionalFields");
+            var existingEmailLink = document.getElementById("existingEmailLink");
+
+            if (data.exists) {
+                if (data.exists) {
+                    contactExistsDiv.style.display = 'block';
+                    additionalFieldsDiv.style.display = 'none';
+                    existingEmailLink.textContent = email;
+                    // Update the href attribute with the correct blueprint prefix and contact_id
+                    existingEmailLink.href = '/profiles/' + data.contact_id;
+                    existingEmailLink.classList.add('active-link'); // Add your styling for an active link
+                } // Make sure to style this class as needed
+            } else {
+                contactExistsDiv.style.display = 'none';
+                additionalFieldsDiv.style.display = 'block';
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+  
+    document.getElementById("popUp").style.display = 'none';
+});
+
 
 
 

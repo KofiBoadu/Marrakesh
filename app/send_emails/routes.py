@@ -11,7 +11,7 @@ def send_customer_email():
     from_email = request.form.get('from_email')
     subject = request.form.get('subject')
     body = request.form.get('body')
-    customer_id= request.form.get('customer_id')
+    contact_id= request.form.get('contact_id')
     status = "email not sent"
     user= f"{current_user.first_name} {current_user.last_name}"
     email_sent = send_email(subject, [to_email], body)
@@ -20,15 +20,15 @@ def send_customer_email():
 
    
 
-    store_email_details = customer_email_interactions(customer_id, subject, body, status,user)
+    store_email_details = customer_email_interactions(contact_id, subject, body, status,user)
 
-    return redirect(url_for('profiles.customer_profile', customer_id=customer_id))
+    return redirect(url_for('profiles.customer_profile', contact_id=contact_id))
 
 
 
-@email_customers.route('/delete-email/<int:customer_id>/<int:email_id>',methods=['POST'])
+@email_customers.route('/delete-email/<int:contact_id>/<int:email_id>',methods=['POST'])
 @login_required
-def delete_email(email_id,customer_id):
+def delete_email(email_id,contact_id):
     delete_the_email=delete_customer_email(email_id)
-    customer_id= customer_id
-    return redirect(url_for('profiles.customer_profile', customer_id=customer_id))
+    contact_id= contact_id
+    return redirect(url_for('profiles.customer_profile', contact_id=contact_id))

@@ -4,8 +4,8 @@ from . import customers_profile
 from app.emails import all_emails_sent_to_customer,send_email
 from flask_login import login_required, current_user
 from app.extension import cache
-from app.models import format_phone_number,available_tour_dates,get_tour_id,all_states
-from app.customer_models import update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_customer_state,bookings_updates_logs,get_customer_booking_changes
+from app.models import create_tour_bookings,format_phone_number,available_tour_dates,get_tour_id,all_states
+from app.customer_models import updating_contact_status,update_customer_name,update_customer_email,update_customer_phone,change_customer_bookings,get_customer_activities,updating_contact_state,bookings_updates_logs,get_customer_booking_changes
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 from app.profile_models import get_customer_bookings
 
@@ -14,32 +14,29 @@ from app.profile_models import get_customer_bookings
 
 
 
-@customers_profile.route('/<int:customer_id>', methods=['GET'])
+@customers_profile.route('/<int:contact_id>', methods=['GET'])
 @login_required
-def customer_profile(customer_id):
-    if not customer_id:
+def customer_profile(contact_id):
+    if not contact_id:
         return redirect(url_for("customers.home_page"))
     else:
-        profile = profile_details(customer_id)
-      
-        tour_names = profile[6]
-
-        phone_number = format_phone_number(profile[2])
-
-        if not tour_names:
+        profile = profile_details(contact_id)
+        if not profile:
             return redirect(url_for("customers.home_page"))
-        tour_list= tour_names.split(', ')
-       
-        login_user=current_user.email_address
 
-        booking_info = get_customer_bookings(customer_id)
+        tour_names = profile[6]
+        tour_list = tour_names.split(', ') if tour_names else []
 
+        phone_number = format_phone_number(profile[2]) if profile[2] else "Not Provided"
+
+        booking_info = get_customer_bookings(contact_id) if tour_list else []
         available_dates = available_tour_dates()
-        activities = get_customer_activities(customer_id)
-        states= all_states()
 
-        return render_template('profile.html',states=states,activities=activities,available_dates=available_dates,booking_info=booking_info,login_user=login_user,profile=profile,tour_list=tour_list,customer_id=customer_id,phone_number=phone_number)
+        activities = get_customer_activities(contact_id)
+        states = all_states()
 
+        login_user = login_user=current_user.email_address
+        return render_template('profile.html', states=states, activities=activities, available_dates=available_dates, booking_info=booking_info, login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id, phone_number=phone_number)
 
 
 
@@ -47,11 +44,11 @@ def customer_profile(customer_id):
 @customers_profile.route('/update-customer-reservations', methods=['POST'])
 @login_required
 def change_bookings():
-    customer_id=request.form.get('updatingbooking_customer_id')
+    contact_id=request.form.get('updatingbooking_contact_id')
     new_tour_type=request.form.get('updatetour_date')
     checkbox_checked = 'notify-customer' in request.form
-    customer_details= profile_details(customer_id)
-    customer_name=profile_details(customer_id)[0].split()[0].capitalize()
+    customer_details= profile_details(contact_id)
+    customer_name=profile_details(contact_id)[0].split()[0].capitalize()
     customer_email= customer_details[1]
     tour_date= new_tour_type.split()
     tour_year= tour_date.pop()
@@ -84,12 +81,12 @@ def change_bookings():
     update_details_message= f" Tour was updated from {old_tour_name} to {new_tour_type}"
 
 
-    bookings_updates_logs(old_tour_id, new_tour_id,customer_id, user_id, update_details_message)
+    bookings_updates_logs(old_tour_id, new_tour_id,contact_id, user_id, update_details_message)
 
 
     booking_id=request.form.get('updatingbooking_booking_id')
-    change_customer_bookings(booking_id, new_tour_id, customer_id)
-    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+    change_customer_bookings(booking_id, new_tour_id, contact_id)
+    return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
 
 
 
@@ -100,11 +97,11 @@ def change_bookings():
 @customers_profile.route('/', methods=['POST'])
 @login_required
 def customer_name():
-    customer_id= request.form.get('customer_id')
+    contact_id= request.form.get('contact_id')
     first_name = request.form.get('updatefirst_name')
     last_name = request.form.get('updatelast_name')
-    update_customer_name(first_name, last_name,customer_id)
-    return redirect(url_for("profiles.customer_profile", customer_id=customer_id))
+    update_customer_name(first_name, last_name,contact_id)
+    return redirect(url_for("profiles.customer_profile", contact_id=contact_id))
 
 
 
@@ -116,10 +113,10 @@ def customer_name():
 @customers_profile.route('/', methods=['POST'])
 @login_required
 def customer_email():
-    customer_id= request.form.get('customer_id')
+    contact_id= request.form.get('contact_id')
     email = request.form.get('update_email')
-    update_customer_email(email,customer_id)
-    return redirect(url_for("profiles.customer_profile", customer_id=customer_id))
+    update_customer_email(email,contact_id)
+    return redirect(url_for("profiles.customer_profile", contact_id=contact_id))
 
 
 
@@ -129,10 +126,10 @@ def customer_email():
 @customers_profile.route('/', methods=['POST'])
 @login_required
 def customer_phone():
-    customer_id= request.form.get('customer_id')
+    contact_id= request.form.get('contact_id')
     phone = request.form.get('update_phone')
-    update_customer_phone(customer_id,phone)
-    return redirect(url_for("profiles.customer_profile", customer_id=customer_id))
+    update_customer_phone(contact_id,phone)
+    return redirect(url_for("profiles.customer_profile", contact_id=contact_id))
 
 
 
@@ -140,11 +137,11 @@ def customer_phone():
 
 @customers_profile.route('/update_customer_state', methods=['POST'])
 @login_required
-def update_state_of_customers():
-    customer_id= request.form.get('customer_id')
+def update_state_of_contact():
+    contact_id= request.form.get('contact_id')
     new_state=request.form.get('new_state')
-    updating_customer_state(new_state,customer_id)
-    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+    updating_contact_state(new_state,contact_id)
+    return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
 
 
 
@@ -153,11 +150,11 @@ def update_state_of_customers():
 @customers_profile.route('/notes', methods=['POST'])
 @login_required
 def customer_notes():
-    customer_id=request.form.get('customer_id')
+    contact_id=request.form.get('contact_id')
     customer_notes=request.form.get('notes')
     creator=current_user.first_name + " "+ current_user.last_name
-    save_customer_notes(customer_id, customer_notes,creator)
-    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+    save_customer_notes(contact_id, customer_notes,creator)
+    return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
 
 
 
@@ -168,10 +165,62 @@ def customer_notes():
 @login_required
 def deleting_customer_notes():
     notes_id= request.form.get('notes_id')
-    print(notes_id)
-    customer_id=request.form.get('customer_id')
-    print(customer_id)
-    delete_customer_notes(notes_id, customer_id)
-    return redirect(url_for("profiles.customer_profile",customer_id=customer_id))
+    contact_id=request.form.get('contact_id')
+    delete_customer_notes(notes_id, contact_id)
+    return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
+
+
+
+
+
+@customers_profile.route('/change-contact-status',methods=['POST'])
+@login_required
+def new_contact_status():
+    contact_id=request.form.get('contact_id')
+    new_status= request.form.get('new_contact_status_name')
+    updating_contact_status(new_status,contact_id)
+    return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
+
+
+
+
+
+@customers_profile.route('/making-tour-reservation',methods=['POST'])
+@login_required
+def confirm_contact_tour_bookings():
+    contact_id=request.form.get('contact_id')
+    selected_tour= request.form.get('tour_date')
+    profile = profile_details(contact_id)
+    if contact_id and selected_tour:
+        tour_date=selected_tour.split()
+        tour_year= tour_date.pop()
+        tour_name=" ".join(tour_date)
+        tour_id=get_tour_id(tour_name,tour_year)
+        create_tour_bookings(tour_id,contact_id)
+        if profile[4] != "customer":
+            new_status="customer"
+            updating_contact_status(new_status,contact_id)
+        return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
+    else:
+        return redirect(url_for("profiles.customer_profile",contact_id=contact_id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

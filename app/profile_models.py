@@ -3,6 +3,9 @@ from .models import create_database_connection
 
 
 
+
+
+
 def profile_details(contact_id):
     query = """
         SELECT
@@ -12,13 +15,13 @@ def profile_details(contact_id):
           c.state_address,
           c.lead_status,
           c.gender,
-          GROUP_CONCAT(CONCAT(t.tour_type, " ", t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', ') AS tour_details,
-          SUM(t.tour_price) AS total_tour_price
+          COALESCE(GROUP_CONCAT(CONCAT(t.tour_type, " ", t.tour_name, ' ', YEAR(t.start_date)) SEPARATOR ', '), '') AS tour_details,
+          COALESCE(SUM(t.tour_price), 0) AS total_tour_price
         FROM
           contacts c
-        JOIN
+        LEFT JOIN
           tour_bookings tb ON c.contact_id = tb.contact_id
-        JOIN
+        LEFT JOIN
           tours t ON tb.tour_id = t.tour_id
         WHERE
           c.contact_id = %s
@@ -32,7 +35,13 @@ def profile_details(contact_id):
         cursor = database_connection.cursor()
         cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
-        return results[0] if results else None
+        if results and results[0]:
+            return results[0]
+        else:
+            # Handle case where the contact exists but has no bookings
+            cursor.execute("SELECT CONCAT(first_name, ' ', last_name) AS full_name, email_address, phone_number, state_address, lead_status, gender FROM contacts WHERE contact_id = %s", (contact_id,))
+            results = cursor.fetchall()
+            return results[0] + ('', 0) if results else None
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
@@ -41,6 +50,7 @@ def profile_details(contact_id):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
+
 
 
 

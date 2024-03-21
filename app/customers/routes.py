@@ -1,6 +1,6 @@
 from flask import  render_template, request,redirect,url_for,flash,session
-from app.models import get_customers_information, available_tour_dates,add_new_paid_customer,get_destination_id
-from app.models import get_tour_id,get_customer_id,create_tour_bookings,get_all_destinations,create_new_tour_dates
+from app.models import get_customers_information, available_tour_dates,add_new_contact,get_destination_id
+from app.models import get_tour_id,get_contact_id,create_tour_bookings,get_all_destinations,create_new_tour_dates
 from app.models import check_customer_exists,all_states
 from app.customers import customers_bp
 import datetime
@@ -10,6 +10,7 @@ from app.extension import cache
 from app.models import format_phone_number, remove_paid_customer,total_customers
 from app.customer_models import fetch_customer_details,update_customerDetails,update_tour_bookings
 from flask import jsonify
+import logging
 
 
 
@@ -22,17 +23,17 @@ def home_page():
         login_user_email=login_user.email_address
         page = request.args.get('page', 1, type=int)
         search= request.form.get('search_query')
-        items_per_page = 50
+        items_per_page = request.args.get('items_per_page', default=50, type=int)
         username = session.get('username', 'Guest')
         year= datetime.datetime.now().year
         customers= get_customers_information(page, items_per_page,search)
-        available_dates= available_tour_dates()
+        # available_dates= available_tour_dates()
         destinations= get_all_destinations()
         states = all_states()
         
         customers_total=total_customers()
         total_pages = math.ceil(customers_total / items_per_page)
-        return render_template("homepage.html",states=states,login_user_email=login_user_email,customers=customers,available_dates=available_dates,destinations=destinations,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
+        return render_template("homepage.html",items_per_page=items_per_page,states=states,login_user_email=login_user_email,customers=customers,destinations=destinations,username=username,customers_total=customers_total,page=page, total_pages=total_pages)
 
 
 
@@ -43,11 +44,8 @@ def home_page():
 def get_customer_details():
     customer_id = request.args.get('customer_id')
     print("Requested Customer ID:", customer_id)
-    
     # Fetching customer details from the database
     the_details = fetch_customer_details(customer_id)
-  
-    
     # Assuming the_details is a list of tuples and we're interested in the first tuple
     if the_details:
         customer = the_details[0]  # Extract the first tuple
@@ -80,13 +78,9 @@ def send_update():
     email = request.form.get('updateemail')
     phone = request.form.get('updatephone')
     gender = request.form.get('updategender')
-    # tour_type= request.form.get("updatetour_date")
+
     update_customerDetails(customer_id, first_name, last_name,email ,phone, gender, state)
-    # tour_date= tour_type.split()
-    # tour_year= tour_date.pop()
-    # tour_name=" ".join(tour_date)
-    # tour_id= get_tour_id(tour_name,tour_year)
-    # update_tour_bookings(tour_id, customer_id)
+
     return redirect(url_for("customers.home_page"))
 
 
@@ -115,46 +109,34 @@ def delete_customer():
 
 
 
-
 @customers_bp.route('/add_customer', methods=['POST'])
 @login_required
-def add_paid_customer():
-    if request.method=='POST':
+def adding_new_contact():
+    if request.method == 'POST':
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         state = request.form.get('state')
         email = request.form.get('email')
         phone = request.form.get('phone')
         gender = request.form.get('gender')
-        tour_type= request.form.get("tour_date")
+        lead_status = request.form.get("lead_status")
 
-        tour_date= tour_type.split()
-       
+        customer_exist = check_customer_exists(email)
+        if not customer_exist:
+            add_new_contact(first_name, last_name, email, phone, gender, state, lead_status)
+            contact_id =get_contact_id(email)
+            if contact_id:
+                return redirect(url_for("profiles.customer_profile", contact_id=contact_id))
 
-        customer_exist=check_customer_exists(email)
-        print(customer_exist)
-       
 
-        tour_year= tour_date.pop()
-      
 
-        tour_name=" ".join(tour_date)
-       
 
-        tour_id= get_tour_id(tour_name,tour_year)
-       
 
-        if customer_exist:
-            customer_id= customer_exist
-            tour_id= get_tour_id(tour_name,tour_year)
-            create_tour_bookings(tour_id,customer_id)
-            return redirect(url_for("customers.home_page"))
-        else:
-            customer= add_new_paid_customer(first_name, last_name,email,phone,gender,state)
-            tour_id= get_tour_id(tour_name,tour_year)
-            customer_id= get_customer_id(email)
-            create_tour_bookings(tour_id,customer_id)
-            return redirect(url_for("customers.home_page"))
+
+
+
+
+
 
 
 
@@ -178,3 +160,16 @@ def add_new_tours():
     return redirect(url_for("customers.home_page"))
 
 
+
+
+@customers_bp.route('/check-email/contact-existance', methods=['POST'])
+def validate_contact_existance():
+    data = request.get_json()
+    email = data.get('email')
+    contact_id = check_customer_exists(email)  # This function should return None if contact does not exist
+    if contact_id:
+        # Return JSON indicating the contact exists along with the contact_id
+        return jsonify({'exists': True, 'contact_id': contact_id})
+    else:
+        # Return JSON indicating the contact does not exist
+        return jsonify({'exists': False})

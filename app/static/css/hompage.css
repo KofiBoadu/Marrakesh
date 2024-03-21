@@ -152,7 +152,7 @@ strong {
   margin-bottom: 5%;
 }
 
-.tour-select {
+/*.tour-select {
   width: 20em;
   height: 2.5em;
   border: 1px solid rgb(180, 180, 180);
@@ -160,7 +160,7 @@ strong {
   color: #03989E;
   font-size: 1em;
 }
-
+*/
 .modal_wrap--gender input {
   width: 11.875%;
   margin-top: 4%;

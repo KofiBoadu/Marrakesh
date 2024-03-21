@@ -85,84 +85,6 @@ def send_email_marketing(contact_name, receiver_email, subject, sender_email, te
 
 
 
-# def send_email_marketing(customer_name, receiver_email, subject, sender_email, text_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
-#     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
-#     ses_client = boto3.client('ses', region_name=aws_region)
-
-#     html_body_content = format_links_in_html(text_body)
-#     html_body = f"""<html><body><p>Dear {customer_name},</p><p>{html_body_content}</p></body></html>"""
-#     try:
-#         response = ses_client.send_email(
-#             Source=sender_email,
-#             Destination={'ToAddresses': [receiver_email]},
-#             Message={
-#                 'Subject': {'Data': subject},
-#                 'Body': {'Html': {'Data': html_body}, 'Text': {'Data': text_body}},
-#             },
-#             Tags=[{'Name': 'campaign_id', 'Value': str(campaign_id)}],  # Include campaign_id as a tag
-#             ConfigurationSetName=configuration_set_name
-#         )
-#         print(f"Email sent successfully to {receiver_email}. Message ID: {response['MessageId']}")
-#     except ClientError as e:
-#         print(f"Failed to send email to {receiver_email}: {e.response['Error']['Message']}")
-
-
-
-
-# def send_email_marketing(customer_name, receiver_email, subject, sender_email, html_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
-#     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
-#     ses_client = boto3.client('ses', region_name=aws_region)
-
-
-#     html_body_formatted = f"<html><body><p>Dear {customer_name},</p>{html_body}</body></html>"
-
-#     try:
-#         response = ses_client.send_email(
-#             Source=sender_email,
-#             Destination={'ToAddresses': [receiver_email]},
-#             Message={
-#                 'Subject': {'Data': subject},
-#                 'Body': {'Html': {'Data': html_body_formatted}},
-
-#             },
-#             Tags=[{'Name': 'campaign_id', 'Value': str(campaign_id)}],
-#             ConfigurationSetName=configuration_set_name
-#         )
-#         print(f"Email sent successfully to {receiver_email}. Message ID: {response['MessageId']}")
-#     except ClientError as e:
-#         print(f"Failed to send email to {receiver_email}: {e.response['Error']['Message']}")
-
-
-
-
-# def send_email_marketing(customer_name, receiver_email, subject, sender_email, html_body, campaign_id, configuration_set_name='EmailEventTrackingSet'):
-#     aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-2")
-#     ses_client = boto3.client('ses', region_name=aws_region)
-
-#     try:
-#         response = ses_client.send_email(
-#             Source=sender_email,
-#             Destination={'ToAddresses': [receiver_email]},
-#             Message={
-#                 'Subject': {'Data': subject},
-#                 'Body': {'Html': {'Data': html_body}},
-#             },
-#             Tags=[{'Name': 'campaign_id', 'Value': str(campaign_id)}],
-#             ConfigurationSetName=configuration_set_name
-#         )
-#         print(f"Email sent successfully to {receiver_email}. Message ID: {response['MessageId']}")
-#     except ClientError as e:
-#         print(f"Failed to send email to {receiver_email}: {e.response['Error']['Message']}")
-
-
-
-
-
-
-
-
-
-
 
 def all_email_campaign():
     query = """
@@ -179,6 +101,7 @@ def all_email_campaign():
         JOIN users AS u ON m.user_id = u.user_id
         LEFT JOIN marketing_email_metrics AS em ON m.campaign_id = em.campaign_id
         GROUP BY m.campaign_id, m.campaign_subject, m.total_email_list, m.sent_date, full_name
+        ORDER BY m.sent_date DESC
 
     """
     database_connection = None

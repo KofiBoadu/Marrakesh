@@ -643,57 +643,124 @@ def create_database_connection():
 
 
 
+# def create_get_customer_tour_details_procedure():
+
+#     procedure_query = """
+#         CREATE PROCEDURE GetCustomerTourDetails(
+#         IN search_query VARCHAR(255),
+#         IN items_per_page INT,
+#         IN offset INT)
+#     BEGIN
+#         IF search_query IS NULL OR search_query = '' THEN
+#             -- Original query without filtering, modified to include DISTINCT
+#             SELECT DISTINCT
+#                 c.contact_id,
+#                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+#                 c.state_address AS `State`,
+#                 c.email_address AS `Email`,
+#                 c.phone_number AS `Mobile`,
+#                 c.lead_status AS  `Lead Status`
+
+#             FROM
+#                 contacts c
+#             JOIN
+#                 tour_bookings tb ON tb.contact_id = c.contact_id
+#             JOIN
+#                 tours t ON tb.tour_id = t.tour_id
+#             ORDER BY
+#                 YEAR(t.start_date) DESC, c.contact_id DESC
+#             LIMIT items_per_page OFFSET offset;
+#         ELSE
+#             -- Query with filtering based on search_query, modified to include DISTINCT
+#             SELECT DISTINCT
+#                 c.contact_id,
+#                 CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+#                 c.state_address AS `State`,
+#                 c.email_address AS `Email`,
+#                 c.phone_number AS `Mobile`,
+#                 c.lead_status AS  `Lead Status`
+
+#             FROM
+#                 contacts c
+#             JOIN
+#                 tour_bookings tb ON tb.contact_id = c.contact_id
+#             JOIN
+#                 tours t ON tb.tour_id = t.tour_id
+#             WHERE
+#                 c.first_name LIKE CONCAT(search_query, '%') OR
+#                 CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%')
+#             ORDER BY
+#                 YEAR(t.start_date) DESC, c.contact_id DESC
+#             LIMIT items_per_page OFFSET offset;
+#         END IF;
+#     END;
+#     """
+
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_database_connection()
+#         cursor = database_connection.cursor()
+#         cursor.execute("DROP PROCEDURE IF EXISTS GetCustomerTourDetails")
+#         cursor.execute(procedure_query)
+#         database_connection.commit()
+#     except Exception as e:
+#         raise Exception(f"An error occurred while creating procedure: {e}")
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection is not None:
+#             database_connection.close()
+
+
+
+
 def create_get_customer_tour_details_procedure():
 
     procedure_query = """
         CREATE PROCEDURE GetCustomerTourDetails(
-        IN search_query VARCHAR(255),
-        IN items_per_page INT,
-        IN offset INT)
-    BEGIN
-        IF search_query IS NULL OR search_query = '' THEN
-            -- Original query without filtering, modified to include DISTINCT
-            SELECT DISTINCT
-                c.contact_id,
-                CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-                c.state_address AS `State`,
-                c.email_address AS `Email`,
-                c.phone_number AS `Mobile`,
-                c.lead_status AS  `Lead Status`
+IN search_query VARCHAR(255),
+IN items_per_page INT,
+IN offset INT)
+BEGIN
+    IF search_query IS NULL OR search_query = '' THEN
+        -- Query modified to return all contacts without booking details,
+        -- ordering by contact_id in descending order to show recent contacts first
+        SELECT DISTINCT
+            c.contact_id,
+            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+            c.state_address AS `State`,
+            c.email_address AS `Email`,
+            c.phone_number AS `Mobile`,
+            c.lead_status AS  `Lead Status`
+        FROM
+            contacts c
+        ORDER BY
+            c.contact_id DESC
+        LIMIT items_per_page OFFSET offset;
+    ELSE
+        -- Query with enhanced filtering based on search_query
+        SELECT DISTINCT
+            c.contact_id,
+            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+            c.state_address AS `State`,
+            c.email_address AS `Email`,
+            c.phone_number AS `Mobile`,
+            c.lead_status AS  `Lead Status`
+        FROM
+            contacts c
+        WHERE
+            c.first_name LIKE CONCAT('%', search_query, '%') OR
+            c.last_name LIKE CONCAT('%', search_query, '%') OR
+            CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%') OR
+            c.phone_number LIKE CONCAT('%', search_query, '%') OR
+            c.email_address LIKE CONCAT('%', search_query, '%')
+        ORDER BY
+            c.contact_id DESC
+        LIMIT items_per_page OFFSET offset;
+    END IF;
+END;
 
-            FROM
-                contacts c
-            JOIN
-                tour_bookings tb ON tb.contact_id = c.contact_id
-            JOIN
-                tours t ON tb.tour_id = t.tour_id
-            ORDER BY
-                YEAR(t.start_date) DESC, c.contact_id DESC
-            LIMIT items_per_page OFFSET offset;
-        ELSE
-            -- Query with filtering based on search_query, modified to include DISTINCT
-            SELECT DISTINCT
-                c.contact_id,
-                CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-                c.state_address AS `State`,
-                c.email_address AS `Email`,
-                c.phone_number AS `Mobile`,
-                c.lead_status AS  `Lead Status`
-
-            FROM
-                contacts c
-            JOIN
-                tour_bookings tb ON tb.contact_id = c.contact_id
-            JOIN
-                tours t ON tb.tour_id = t.tour_id
-            WHERE
-                c.first_name LIKE CONCAT(search_query, '%') OR
-                CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%')
-            ORDER BY
-                YEAR(t.start_date) DESC, c.contact_id DESC
-            LIMIT items_per_page OFFSET offset;
-        END IF;
-    END;
     """
 
     database_connection = None
@@ -704,8 +771,10 @@ def create_get_customer_tour_details_procedure():
         cursor.execute("DROP PROCEDURE IF EXISTS GetCustomerTourDetails")
         cursor.execute(procedure_query)
         database_connection.commit()
+        return True
     except Exception as e:
         raise Exception(f"An error occurred while creating procedure: {e}")
+        return False
     finally:
         if cursor:
             cursor.close()
@@ -713,8 +782,7 @@ def create_get_customer_tour_details_procedure():
             database_connection.close()
 
 
-
-
+# print(create_get_customer_tour_details_procedure())
 
 
 def total_customers():
@@ -821,7 +889,7 @@ def get_tour_id(tour_name, year):
 
 
 
-def get_customer_id(email):
+def get_contact_id(email):
     query = "SELECT contact_id FROM contacts WHERE email_address = %s"
     database_connection = None
     cursor = None
@@ -901,14 +969,43 @@ def create_new_tour_dates(tour_name, start_date, end_date, price, destination_id
 
 
 
-def add_new_paid_customer(first_name, last_name, email, phone, gender, state=None):
+
+
+# def add_new_contact(first_name, last_name, email, phone=None, gender=None, state=None,lead_status="Lead"):
+#     query = """
+#         INSERT INTO contacts
+#         (first_name, last_name, state_address, email_address, phone_number, gender,lead_status)
+#         VALUES (%s, %s, %s, %s, %s, %s)
+#     """
+#     values = (first_name, last_name, state, email, phone, gender,lead_status)
+
+#     try:
+#         database_connection = create_database_connection()
+#         if database_connection is not None:
+#             cursor = database_connection.cursor()
+#             cursor.execute(query, values)
+#             database_connection.commit()
+#             print("Customer successfully added with ID:", cursor.lastrowid)
+#     except Error as e:
+#         print(f"Database error occurred: {e}")
+#         if database_connection:
+#             database_connection.rollback()
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+
+
+
+def add_new_contact(first_name, last_name, email, phone=None, gender=None, state=None, lead_status="Lead"):
     query = """
         INSERT INTO contacts
-        (first_name, last_name, state_address, email_address, phone_number, gender)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        (first_name, last_name, state_address, email_address, phone_number, gender, lead_status)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    values = (first_name, last_name, state, email, phone, gender)
-
+    values = (first_name, last_name, state, email, phone, gender, lead_status)
     try:
         database_connection = create_database_connection()
         if database_connection is not None:
@@ -916,7 +1013,8 @@ def add_new_paid_customer(first_name, last_name, email, phone, gender, state=Non
             cursor.execute(query, values)
             database_connection.commit()
             print("Customer successfully added with ID:", cursor.lastrowid)
-    except Error as e:
+            return cursor.lastrowid  # Return the new contact's ID
+    except Exception as e:  # Catch a more general exception
         print(f"Database error occurred: {e}")
         if database_connection:
             database_connection.rollback()
@@ -925,6 +1023,10 @@ def add_new_paid_customer(first_name, last_name, email, phone, gender, state=Non
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
 
 
 
@@ -1012,6 +1114,54 @@ def check_customer_exists(email):
                 logging.error(f"Error closing connection: {err}")
 
     return contact_id
+
+
+
+# def get_customer_details_if_exist(email):
+#     query = """
+#     SELECT contact_id, first_name, last_name, phone_number, state_address, gender
+#     FROM contacts
+#     WHERE TRIM(LOWER(email_address)) = TRIM(LOWER(%s))
+#     """
+#     contact_details = {}
+
+#     try:
+#         database_connection = create_database_connection()
+#         cursor = database_connection.cursor()
+
+#         cursor.execute(query, (email,))
+#         result = cursor.fetchone()  # Use fetchone() if you expect at most one entry per email
+
+#         if result:
+#             contact_details = {
+#                 'contact_id': result[0],
+#                 'first_name': result[1],
+#                 'last_name': result[2],
+#                 'phone': result[3],
+#                 'state': result[4],
+#                 'gender': result[5],
+#             }
+
+#     except mysql.connector.Error as db_err:
+#         logging.error(f"Database error occurred: {db_err}")
+#     except Exception as e:
+#         logging.error(f"Error occurred: {e}")
+#     finally:
+#         if 'cursor' in locals() and cursor is not None:
+#             try:
+#                 cursor.close()
+#             except mysql.connector.Error as err:
+#                 logging.error(f"Error closing cursor: {err}")
+#         if 'database_connection' in locals() and database_connection is not None:
+#             try:
+#                 database_connection.close()
+#             except mysql.connector.Error as err:
+#                 logging.error(f"Error closing connection: {err}")
+
+#     return contact_details
+
+
+
 
 
 

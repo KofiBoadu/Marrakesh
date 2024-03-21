@@ -140,17 +140,17 @@
       <!-- Deletion forms for emails and notes only, adjusted to include notes -->
       {% if activity.get('email_id') and not activity.get('is_note', False) and activity.get('sent_user') != 'Campaign System' %}
         <!-- Email deletion form -->
-        <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'], customer_id=customer_id) }}" method="POST" class="delete-form">
+        <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'], contact_id=contact_id) }}" method="POST" class="delete-form">
           <input type="hidden" name="email_id" value="{{ activity['email_id'] }}">
-          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <input type="hidden" name="contact_id" value="{{ contact_id }}">
           <button type="submit" class="delete-text-link"><img width="16" height="16"
               src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" />delete</button>
         </form>
       {% elif activity.get('is_note', True) %}
         <!-- Note deletion form -->
-        <form action="{{ url_for('profiles.deleting_customer_notes', notes_id=activity['email_id'], customer_id=customer_id) }}" method="post">
+        <form action="{{ url_for('profiles.deleting_customer_notes', notes_id=activity['email_id'], contact_id=contact_id) }}" method="post">
           <input type="hidden" name="notes_id" value="{{ activity['email_id'] }}">
-          <input type="hidden" name="customer_id" value="{{ customer_id }}">
+          <input type="hidden" name="contact_id" value="{{ contact_id }}">
           <button type="submit" class="noteDelete"><img width="16" height="16"
               src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" />delete</button>
         </form>
@@ -162,6 +162,32 @@
 
 
 
+<!-- book a tour -->
+
+<h2>Book a tour</h2>
+
+<form class="create-tour-bookings" action="{{ url_for('profiles.confirm_contact_tour_bookings') }}" method="post">
+    <input type="hidden"  name="contact_id" value="{{ contact_id }}">
+
+    <div class="tour-bookings">
+      <label for="tour">Select a tour</label>
+            <select class="tour-select" name="tour_date">
+                {% for date in available_dates %}
+                <option value="{{ date }}">{{ date }}</option>
+
+                {% endfor %}
+            </select>
+            
+     </div>
+    
+   
+
+    <div class="save-bookings">
+      <button type="submit" class="book-now">Creating bookings</button>
+    </div>
+
+  </form>
+ 
 
 
 
@@ -172,11 +198,10 @@
 
 
 
+<!-- tours booked -->
 
   <div class="profile-detail-container">
-
     <div class="profile-bookings">
-
       <!-- updating customer bookings view template-->
       <h3>Tours Booked</h3>
       <form class="update-bookings">
@@ -188,7 +213,7 @@
           <div class="tour-container">
             {{ bookings['tour_name'] }}
             <button type="button" class="update-btn" style="display: none;" data-booking-id="{{ bookings['booking_id'] }}"
-              data-customer-id="{{ bookings['customer_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
+              data-customer-id="{{ bookings['contact_id'] }}" data-tour-id="{{ bookings['tour_id'] }}"
               data-tour-name="{{ bookings['tour_name'] }}">
               <img width="15" height="15" src="https://img.icons8.com/material-outlined/24/FF914C/edit--v1.png" alt="edit">
             </button>
@@ -210,7 +235,7 @@
 
 
 
-<!-- writing customer notes forms  -->
+<!-- writing contacts notes forms  -->
 <div class="note-form-container" id="noteForm" style="display: none;">
   <div class="note-title">
     <h2>Note</h2>
@@ -222,7 +247,7 @@
 
   <form class="noteForm" action="{{ url_for('profiles.customer_notes') }}" method="post">
 
-    <input type="hidden" name="customer_id" value="{{ customer_id }}">
+    <input type="hidden" name="contact_id" value="{{ contact_id }}">
 
     <textarea id="notes" name="notes" placeholder="Write your notes here" required></textarea>
 
@@ -261,7 +286,7 @@
   <form class="sendEmail" style="display: block;" action="{{url_for('send_emails.send_customer_email') }}"
     method="post">
 
-    <input type="hidden" name="customer_id" value="{{ customer_id }}">
+    <input type="hidden" name="contact_id" value="{{ contact_id }}">
 
     <!-- To Field -->
     <div class="form-group">
@@ -298,22 +323,20 @@
     </div>
   </form>
 
-  {% for message in messages %}
-  <p>{{ message }}</p>
-  {% endfor %}
+  
 </div>
 
 
 
-<!-- updating customer profile forms  -->
 
 
-<!-- update customer name form  -->
+
+<!-- update contact name form  -->
 <div id="formContainer" class="hidden" style="display: none;">
   <img class="updateNameClose" onclick="closeUpdateNameForm()" width="16" height="16"
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_name" action="{{ url_for('profiles.customer_name') }}" method="post">
-    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <input type="hidden" id="customerId" name="contact_id" value="{{ contact_id }}">
     <!-- first name -->
     <div class="update_wrap">
       <div class="update_first_name">
@@ -326,15 +349,12 @@
         <input type="text" id="updatelastName" name="updatelast_name" value="{{ profile[0].split()[1] }}" required>
       </div>
 
-
     </div>
-
 
     <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
 
-  
   </form>
 </div>
 
@@ -342,24 +362,21 @@
 
 
 
-<!-- update customer email form-->
+<!-- update contact email form-->
 <div id="emailformContainer" class="hidden" style="display: none;">
   <img class="updateEmailClose" onclick="closeUpdateEmailForm()" width="16" height="16"
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_email" action="{{ url_for('profiles.customer_email') }}" method="post">
-    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <input type="hidden" id="customerId" name="contact_id" value="{{ contact_id }}">
     <!-- primary email -->
     <div class="update_email">
       <label for="primary_email">primary email</label>
       <input type="text" id="update_email" name="update_email" value="{{profile[1]}}" required>
     </div>
 
-
-
     <div class="save">
       <button type="submit" class="save_new_name">Save</button>
     </div>
-
 
   </form>
 
@@ -368,12 +385,25 @@
 
 
 
-<!-- update customer phone -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- update contact phone -->
 <div id="phoneformContainer" class="hidden" style="display: none;">
   <img class="updatePhoneClose" onclick="closeUpdatePhoneForm()" width="16" height="16"
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form class="update_customer_phone" action="{{ url_for('profiles.customer_phone') }}" method="post">
-    <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+    <input type="hidden" id="customerId" name="contact_id" value="{{ contact_id }}">
  
     <div class="update_number">
       <label for="primary_email">phone number</label>
@@ -390,16 +420,12 @@
 
 
 
-<!-- updating customer state info -->
-
+<!-- updating contact state info -->
 <div>
-
-  <form action="{{ url_for('profiles.update_state_of_customers') }}" method="post">
-     <input type="hidden" id="customerId" name="customer_id" value="{{ customer_id }}">
+  <form action="{{ url_for('profiles.update_state_of_contact') }}" method="post">
+     <input type="hidden" id="customerId" name="contact_id" value="{{ contact_id }}">
      <div class="update_customer_state">
       <label for="state">State</label>
-      <!-- <input type="text" id="update_state" name="new_state" value="{{ profile[3] }}" required> -->
-       
             <select id="state" name="new_state">
                 <option value="{{ profile[3] }}">{{ profile[3] }}</option> 
             {% for state in states %}
@@ -407,7 +433,6 @@
             {% endfor %}
             </select>
      </div>
-
      <div >
       <button type="submit">Save</button>
     </div>
@@ -418,6 +443,28 @@
 
 
 
+
+
+<!-- updating contact status -->
+<div class="update-contact-status">
+  <form action="{{ url_for('profiles.new_contact_status') }}" method="post">
+     <input type="hidden" id="status_of_the_contact" name="contact_id" value="{{ contact_id }}">
+     <div >
+      <label for="state">Status</label>
+            <select  name="new_contact_status_name">
+
+              <option>Lead</option>
+              <option>Customer</option>
+                
+            </select>
+     </div>
+     <div >
+      <button type="submit">Save</button>
+    </div>
+    
+  </form>
+  
+</div>
 
 
 
@@ -445,7 +492,7 @@
           {% endfor %}
         </select>
   
-        <input type="hidden" name="updatingbooking_customer_id" value="">
+        <input type="hidden" name="updatingbooking_contact_id" value="">
         <input type="hidden" name="updatingbooking_booking_id" value="">
         <input type="hidden" name="updatingbooking_tour_id" value="">
   

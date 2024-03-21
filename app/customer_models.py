@@ -401,7 +401,7 @@ def update_customer_phone(contact_id,phone):
 
 
 
-def updating_customer_state(state,contact_id):
+def updating_contact_state(state,contact_id):
     query = "UPDATE contacts SET state_address = %s WHERE contact_id = %s"
     database_connection = None
     try:
@@ -432,6 +432,38 @@ def updating_customer_state(state,contact_id):
             database_connection.close()
 
 
+
+
+
+def updating_contact_status(new_status,contact_id):
+    query = "UPDATE contacts SET lead_status = %s WHERE contact_id = %s"
+    database_connection = None
+    cursor=None
+    try:
+        # Assume create_databaseConnection() is a function that establishes a database connection
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (new_status,contact_id))
+        database_connection.commit()
+
+        if cursor.rowcount > 0:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+
+        logging.error(f"Error in updating customer state: {e}")
+        if database_connection:
+            database_connection.rollback()
+        return False
+
+    finally:
+
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
    

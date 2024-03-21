@@ -9,83 +9,134 @@
 <input type="hidden" id="login-user-role-id" value="{{ session['user_role_id'] }}">
 
 
+
+
+
+
+<div id="contactExists" class="contact-exists-popup" style="display: none;">
+    <p>Hold the phone! It looks like a contact with the email address <a id="existingEmailLink" href="#"></a> already exists.</p>
+    <!-- Your content here like the initial image and name -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
 <!-- form to add customers -->
 <div class="modal" id="popUp">
     <div class="modal_title">
-        <h3 class="modal_title--header">Create Costumer</h3>
+        <h3 class="modal_title--header">Create contact</h3>
 
         <img class="modal_title--close" id="close" width="24" height="24"
             src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
     </div>
-    <form class="modal__form" action="{{ url_for('customers.add_paid_customer') }}" method="post">
 
-        <!-- First Name -->
-        <div class="modal_wrap">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="first_name" required>
-        </div>
-
-        <!-- Last Name -->
-        <div class="modal_wrap">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="last_name" required>
-        </div>
-
-        <!-- Email -->
-        <div class="modal_wrap">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-        </div>
+    <form class="modal__form" action="{{ url_for('customers.adding_new_contact') }}" method="post">
+                <!-- Email -->
+                <div class="modal_wrap">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
 
 
-        <!-- Phone -->
-        <div class="modal_wrap">
-            <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" required>
-        </div>
 
-        <!-- State (Dropdown with all states and initials) -->
-        <div class="modal_wrap">
-            <label for="state">State:</label>
-            <select id="state" name="state">
-                <option value="">None</option> 
-            {% for state in states %}
-                <option value="{{ state }}">{{ state }}</option>
-            {% endfor %}
-            </select>
-        </div>
+                <!-- First Name -->
+                <div class="modal_wrap">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="first_name" required>
+                </div>
 
-        <!-- Gender Option -->
-        <div class="modal_wrap">
-            <label>Gender</label>
-            <div class="modal_wrap--gender">
-                <input class="radio" id='radio' type="radio" id="male" name="gender" value="male">
-                <label id='gender' for="male">Male</label>
-                <input class="radio" id='radio' type="radio" id="female" name="gender" value="female">
-                <label id='gender' for="female">Female</label>
+                <!-- Last Name -->
+                <div class="modal_wrap">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="last_name" required>
+                </div>
 
-            </div>
-        </div>
 
-        <!-- Tours Dropdown -->
-        <div class="modal_wrap">
-            <label for="tour">Select a tour</label>
-            <select class="tour-select" name="tour_date">
-                {% for date in available_dates %}
-                <option value="{{ date }}">{{ date }}</option>
 
-                {% endfor %}
-            </select>
-        </div>
 
-        <!-- Submit Button -->
-        <div class="modal_wrap">
-            <button class="modal_submit" type="submit">Create customer</button>
-        </div>
-     
+                 <!-- alternate forms  -->
+
+                 <div  id="additionalFields" style="display:none;">
+
+                       <!-- Phone -->
+                    <div class="modal_wrap">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+
+                    <!-- State (Dropdown with all states and initials) -->
+                    <div class="modal_wrap">
+                        <label for="state">State:</label>
+                        <select id="state" name="state">
+                            <option value="">None</option> 
+                        {% for state in states %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                        </select>
+                    </div> 
+
+
+                    <!-- Gender Option -->
+                    <div class="modal_wrap">
+                        <label>Gender</label>
+                        <div class="modal_wrap--gender">
+                            <input class="radio" id='radio' type="radio" id="male" name="gender" value="male">
+                            <label id='gender' for="male">Male</label>
+                            <input class="radio" id='radio' type="radio" id="female" name="gender" value="female">
+                            <label id='gender' for="female">Female</label>
+
+                        </div>
+                    </div>
+
+                      
+
+                      <!-- contact status -->
+                    <div class="contact-status">
+                        <label>Contact status</label>
+                        <select name="lead_status">
+                            <option>Lead</option>
+                            <option>Customer</option>
+                        </select>
+                    </div>
+
+
+                         
+                     </div>
+             
+                
+       
+ 
+                <!-- Submit Button -->
+                <div class="modal_wrap">
+                    <button class="modal_submit" type="submit">Create contact</button>
+                </div>
+
     </form>
 
 </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -331,12 +382,12 @@
     <!-- Table Header -->
     <div id="table-header">
         <div id="customer-header">
-            <h3 id="table-title">Customers</h3>
+            <h3 id="table-title">Contacts</h3>
             <h3 id="total">{{"{:,}".format(customers_total)}} Records</h3>
         </div>
 
         <div id="table-action">
-            <button id="createCustomerBtn">Create Customer</button>
+            <button id="createCustomerBtn">Create contact</button>
             <button id="tourBtn">Create Tour</button>
         </div>
     </div>
@@ -399,7 +450,7 @@
                         <input type="checkbox" class="delete-checkbox" value="{{ customer[0] }}" id="delete-customer-{{ loop.index }}" onchange="toggleDeleteButton(this); updateCustomerDetails(this)">
                     </td>
                     <td>
-                        <a href="{{ url_for('profiles.customer_profile', customer_id=customer[0]) }}">{{ customer[1].capitalize() }}</a>
+                        <a href="{{ url_for('profiles.customer_profile', contact_id=customer[0]) }}">{{ customer[1].capitalize() }}</a>
                     </td>
                     <td>
                         <a href="mailto:{{ customer[3] }}"> {{ customer[3].lower() }}</a>
@@ -409,10 +460,7 @@
                     </td>
                     <td>{{ format_phone_number(customer[4]) }}</td>
                     <td >{{ customer[5] }}</td>
-                   <!--  <td>{{ customer[6] }}</td>
-                    <td>{{ customer[7] }}</td>
-                    <td>{{ customer[8] }}</td>
-                </tr> -->
+               
                 {% endfor %}
                 {% else %}
                 <tr>
@@ -461,12 +509,14 @@
         </ul>
 
         <!-- Dropdown for items per page -->
-        <select id="items-per-page" onchange="changeItemsPerPage(this)">
-            <option value="10">10 per page</option>
-            <option value="25" selected>25 per page</option>
-            <option value="50">50 per page</option>
-            <option value="100">100 per page</option>
-        </select>
+       <select id="items-per-page">
+            <option value="10" {% if items_per_page == 10 %}selected{% endif %}>10 per page</option>
+            <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25 per page</option>
+            <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50 per page</option>
+            <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100 per page</option>
+     </select>
+
+
     </div>
 
 
