@@ -434,6 +434,7 @@
                 <th>State</th>
                 <th>Phone Number</th>
                 <th>Lead Status</th>
+             
                
             </tr>
         </thead>
@@ -457,9 +458,9 @@
                     </td>
                     <td class="state">
                         {{ customer[2].upper() if customer[2] is not none else '' }}
-                    </td>
-                    <td>{{ format_phone_number(customer[4]) }}</td>
-                    <td >{{ customer[5] }}</td>
+                    </td >
+                    <td class="phone">{{ format_phone_number(customer[4]) }}</td>
+                    <td class="lead">{{ customer[5].capitalize() }}</td>
                
                 {% endfor %}
                 {% else %}
