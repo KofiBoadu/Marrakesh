@@ -5,6 +5,33 @@ import logging
 from flask import current_app as app
 from dotenv import load_dotenv
 import os
+import sys
+
+@api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['GET','POST'])
+def face_book_leads():
+    if request.method == 'GET':
+        # Facebook webhook verification
+        mode = request.args.get('hub.mode')
+        token = request.args.get('hub.verify_token')
+        challenge = request.args.get('hub.challenge')
+
+        if mode and token:
+            if mode == 'subscribe' and token == VERIFY_TOKEN:
+                return challenge
+            return 'Verification token mismatch', 403
+        return 'Bad request', 400
+
+    elif request.method == 'POST':
+        # Obtain the JSON data sent by Facebook
+        data = request.json
+        # Print the data to your server's log (stdout/stderr)
+          # This will log to stderr
+
+        # TODO: Here, you might want to add your logic to handle the lead data
+        # ...
+
+        # Respond to Facebook with a 200 OK to acknowledge receipt of the data
+        return jsonify(success=True), 200
 
 load_dotenv()
 
@@ -75,7 +102,7 @@ def face_book_leads():
     elif request.method == 'POST':
 
         data = request.json
-        print(data)
+        print("Received webhook data:", data, file=sys.stderr)
         # Your logic to handle the lead data
         # ...
 
