@@ -14,7 +14,7 @@ load_dotenv()
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
 
 
-
+print(VERIFY_TOKEN)
 
 
 
@@ -73,6 +73,9 @@ def face_book_leads():
         return 'Bad request', 400
 
     elif request.method == 'POST':
+
+        data = request.json
+        print(data)
         # Your logic to handle the lead data
         # ...
 
