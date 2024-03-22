@@ -4,6 +4,36 @@ from .models import create_database_connection
 
 
 
+known_fields = {
+    'message',
+    'how_many_travelers',
+    'enter_full_names_and_emails__of_other_travelers_if_any',
+    'what_type_of_tour',
+    'referral_name_or_code_if_any',
+    'how_did_you_hear_about_us',
+    'city',
+    'postal_/_zip_code',
+    'country',
+    'type_of_accommodation',
+    'payment_options',
+    'address',
+    'what_is_the_best_way_to_contact_you',
+    'if_phone_when_is_the_best_time_of_day_for_a_call_back',
+    'is_there_anything_else_we_should_know',
+    'deposit_amount',
+    'date',
+    'time',
+    'page_url',
+    'form_name',
+     "Accommodation Type",
+     "Budget (Budget Excluding Flights)",
+    " Destination",
+     "Message",
+     "Time"
+
+  }
+
+
 
 
 def profile_details(contact_id):
@@ -131,4 +161,9 @@ def contact_submissions(contact_id):
             database_connection.close()
 
 
-# print(contact_submissions(373))
+
+
+
+
+
+# print(contact_submissions(374))
