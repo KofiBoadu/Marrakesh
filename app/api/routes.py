@@ -58,7 +58,7 @@ def add_new_lead():
 
 
 
-@api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['POST'])
+@api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['GET','POST'])
 def face_book_leads():
     if request.method == 'GET':
         # Facebook webhook verification
