@@ -91,6 +91,32 @@
 
 
 
+<!-- form submission -->
+<div class="submission-container">
+    <h2>Form Submission</h2>
+    
+    <!-- Display common data -->
+    <div class="submission-property">
+        <span class="property-name">Name:</span>
+        <span class="property-value">{{ common_data.name }}</span>
+    </div>
+    <div class="submission-property">
+        <span class="property-name">Submission Source:</span>
+        <span class="property-value">{{ common_data.submission_source }}</span>
+    </div>
+    <div class="submission-property">
+        <span class="property-name">Submission Date:</span>
+        <span class="property-value">{{ common_data.submission_date }}</span>
+    </div>
+    
+    <!-- Loop over the rest of the fields -->
+    {% for _, _, _, _, field_name, field_value in form_fields %}
+    <div class="submission-property">
+        <span class="property-name">{{ field_name.replace('_', ' ').title() }}:</span>
+        <span class="property-value">{{ field_value }}</span>
+    </div>
+    {% endfor %}
+</div>
 
 
 

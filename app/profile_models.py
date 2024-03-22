@@ -95,3 +95,40 @@ def get_customer_bookings(contact_id):
 
 
 
+
+def contact_submissions(contact_id):
+    query="""
+
+        SELECT
+            c.first_name,
+            c.last_name,
+            fs.submission_source,
+            fs.submission_date,
+            fd.field_name,
+            fd.field_value
+        FROM contacts c
+        JOIN form_submissions fs ON fs.contact_id = c.contact_id
+        JOIN form_data fd ON fd.submission_id = fs.submission_id
+        WHERE c.contact_id = %s;
+
+    """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (contact_id,))
+        results = cursor.fetchall()
+        return results if results else None
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if database_connection is not None:
+            database_connection.close()
+
+
+# print(contact_submissions(373))

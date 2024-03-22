@@ -7,7 +7,7 @@ from app.extension import cache
 from app.models import create_tour_bookings,format_phone_number,available_tour_dates,get_tour_id,all_states
 from app.customer_models import updating_contact_status,update_customer_name,update_customer_email,update_contact_phone,change_customer_bookings,get_customer_activities,updating_contact_state,bookings_updates_logs,get_customer_booking_changes
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
-from app.profile_models import get_customer_bookings
+from app.profile_models import get_customer_bookings,contact_submissions
 
 
 
@@ -35,9 +35,22 @@ def customer_profile(contact_id):
 
         activities = get_customer_activities(contact_id)
         states = all_states()
+        submission=contact_submissions(contact_id)
+
+        common_data = {
+        'name': f"{submission[0][0]} {submission[0][1]}",
+        'submission_source': submission[0][2],
+        'submission_date': submission[0][3].strftime('%B %d, %Y %I:%M %p')
+            }
+
+        print("Common data",common_data)
+
+        form_fields = submission[4:]
+
+        print("form fields",form_fields)
 
         login_user = login_user=current_user.email_address
-        return render_template('profile.html', states=states, activities=activities, available_dates=available_dates, booking_info=booking_info, login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id, phone_number=phone_number)
+        return render_template('profile.html', form_fields=form_fields,common_data=common_data ,states=states, activities=activities, available_dates=available_dates, booking_info=booking_info, login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id, phone_number=phone_number)
 
 
 
