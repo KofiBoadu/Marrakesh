@@ -2,9 +2,22 @@ from flask_httpauth import HTTPBasicAuth
 from app.user import get_user
 from werkzeug.security import generate_password_hash,check_password_hash
 from  app.models import create_database_connection
-
+import secrets
 
 auth = HTTPBasicAuth()
+
+
+def generate_verify_token():
+    return secrets.token_hex(32)
+
+
+
+
+
+
+
+
+
 
 
 
