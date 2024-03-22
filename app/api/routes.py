@@ -78,5 +78,6 @@ def face_book_leads():
         print("Received webhook data:", data, file=sys.stderr)
         # Your logic to handle the lead data
         # ...
+        app.logger.info("This is an informational message")
 
         return jsonify(success=True), 200
