@@ -93,22 +93,25 @@
 
 <!-- form submission -->
 <div class="submission-container">
-    <h2>Form Submission</h2>
-
-     <!-- Display common data -->
-    <div class="submission-property">
-        <span class="property-name">Name:</span>
-        <span class="property-value">{{ common_data.name }}</span>
-    </div>
-    <div class="submission-property">
-        <span class="property-name">Submission Source:</span>
-        <span class="property-value">{{ common_data.submission_source }}</span>
-    </div>
-    <div class="submission-property">
-        <span class="property-name">Submission Date:</span>
-        <span class="property-value">{{ common_data.submission_date }}</span>
-    </div>
     
+     <!-- Display common data -->
+      {% if common_data %}
+      <h2>Form Submission</h2>
+
+        <div class="submission-property">
+            <span class="property-name">Name:</span>
+            <span class="property-value">{{ common_data.name }}</span>
+        </div>
+        <div class="submission-property">
+            <span class="property-name">Submission Source:</span>
+            <span class="property-value">{{ common_data.submission_source }}</span>
+        </div>
+        <div class="submission-property">
+            <span class="property-name">Submission Date:</span>
+            <span class="property-value">{{ common_data.submission_date }}</span>
+        </div>
+      {% endif %}
+      
     
  
     {% for field_name, field_value in form_fields.items() %}

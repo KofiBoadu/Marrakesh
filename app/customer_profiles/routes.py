@@ -44,16 +44,19 @@ def customer_profile(contact_id):
 
         form_fields_dict = {field: '' for field in known_field}
 
-        common_data = {
-        'name': f"{results[0][0]} {results[0][1]}",
-        'submission_source': results[0][2],
-        'submission_date': results[0][3].strftime('%B %d, %Y %I:%M %p')
-            }
+        common_data={}
 
-        for _, _, _, _, field_name, field_value in results:
-            if field_name in known_field:
-                field_display_name = field_name.replace('_', ' ').title()
-                form_fields_dict[field_display_name] = field_value
+        if results:
+            common_data = {
+            'name': f"{results[0][0]} {results[0][1]}",
+            'submission_source': results[0][2],
+            'submission_date': results[0][3].strftime('%B %d, %Y %I:%M %p')
+                }
+
+            for _, _, _, _, field_name, field_value in results:
+                if field_name in known_field:
+                    field_display_name = field_name.replace('_', ' ').title()
+                    form_fields_dict[field_display_name] = field_value
 
         # print("Common data",common_data)
 
