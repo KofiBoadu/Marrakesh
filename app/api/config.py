@@ -15,17 +15,17 @@ def generate_verify_token():
 
 
 
-
-
-
-
-
-
 @auth.verify_password
 def verify_password(email,password):
     user= get_user(email)
     if user and check_password_hash(user[4], password):
         return user
+
+
+
+
+
+
 
 
 
