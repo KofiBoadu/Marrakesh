@@ -58,7 +58,7 @@ def add_new_lead():
 
 
 
-@api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['GET'])
+@api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['POST'])
 @auth.login_required
 def face_book_leads():
     lead_data= request.json
