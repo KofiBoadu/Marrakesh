@@ -38,11 +38,14 @@ def customer_profile(contact_id):
         states = all_states()
 
         results=contact_submissions(contact_id)
-        print(results)
+
 
         known_field=known_fields
 
-        form_fields_dict = {field: '' for field in known_field}
+        # form_fields_dict = {field: '' for field in known_field}
+        form_fields_dict = {}
+
+
 
         common_data={}
 
@@ -54,9 +57,9 @@ def customer_profile(contact_id):
                 }
 
             for _, _, _, _, field_name, field_value in results:
-                if field_name in known_field:
-                    field_display_name = field_name.replace('_', ' ').title()
-                    form_fields_dict[field_display_name] = field_value
+                # if field_name in known_field:
+                field_display_name = field_name.replace('_', ' ').title()
+                form_fields_dict[field_display_name] = field_value
 
         # print("Common data",common_data)
 

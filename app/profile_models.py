@@ -2,8 +2,6 @@ from .models import create_database_connection
 
 
 
-
-
 known_fields = {
     'message',
     'how_many_travelers',
@@ -30,7 +28,8 @@ known_fields = {
     " Destination",
      "Message",
      "Time",
-    " What Is The Best Way To Contact You?"
+    " What Is The Best Way To Contact You?",
+    'Are you prepared to secure your spot with a deposit within the next week?'
 
   }
 
@@ -167,4 +166,4 @@ def contact_submissions(contact_id):
 
 
 
-# print(contact_submissions(374))
+print(contact_submissions(392))
