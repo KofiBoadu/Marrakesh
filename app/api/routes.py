@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify,abort
 from . import api_blueprint
 from  .config import auth,create_leads,create_standardized_model,create_submissions,add_submission_data
 import logging
@@ -14,7 +14,7 @@ import hashlib
 
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
 APP_SECRET = os.environ.get('APP_SECRET')
-
+SECRET_TOKEN = os.getenv('SECRET_TOKEN')
 
 
 
@@ -29,6 +29,10 @@ APP_SECRET = os.environ.get('APP_SECRET')
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
+    token = request.args.get('token')
+    if token != SECRET_TOKEN:
+        abort(403)
+
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
     else:

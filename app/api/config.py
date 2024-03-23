@@ -8,7 +8,7 @@ auth = HTTPBasicAuth()
 
 
 def generate_verify_token():
-    return secrets.token_hex(32)
+    return secrets.token_hex(16)
 
 
 
