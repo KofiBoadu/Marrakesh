@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from  app.models import create_database_connection
 import secrets
 import re
+import datetime
 
 auth = HTTPBasicAuth()
 
@@ -188,22 +189,58 @@ def standardized_model_facebook(raw_data):
 
 
 
-def is_spam(request_data):
 
-    for field in ['first_name', 'last_name', 'message']:
-        if patterns['non_english'].search(request_data.get(field, '')):
-            return True
 
-    for field in ['number_of_days', 'number_of_people', 'budget']:
-        value = request_data.get(field, '0').replace(' ', '')
-        if patterns['large_numbers'].search(value):
-            return True
 
-    from_date = request_data.get('from_date', '')
-    to_date = request_data.get('to_date', '')
-    if from_date > to_date:
+
+
+
+
+
+
+def is_invalid_date(date_str):
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
         return True
+    return False
 
+
+def has_unrealistic_numbers(submission):
+    max_days = 365 * 10  # Example: 10 years in days
+    max_people = 1000
+    if int(submission.get('Number Of Days', 0)) > max_days or int(submission.get('Number Of People', 0)) > max_people:
+        return True
+    return False
+
+def contains_spam_content(submission):
+    spam_keywords = ['прокат квадроциклов', 'Круизы', 'Ещё можно узнать', 'Эко-туризм']
+    spam_domains = ['mailcos.site', 'samoylovaoxana.ru']
+    message = submission.get('Message', '').lower()
+    email = submission.get('Email', '').lower()
+    if any(keyword in message for keyword in spam_keywords):
+        return True
+    if any(domain in email for domain in spam_domains):
+        return True
+    return False
+
+
+
+def is_gibberish_name(name):
+    if len(name) < 3 or not re.search("[aeiou]", name.lower()):
+        return True
+    return False
+
+
+def is_spam(submission):
+    if is_invalid_date(submission.get('From Date', '')) or is_invalid_date(submission.get('To Date', '')):
+        return True
+    if has_unrealistic_numbers(submission):
+        return True
+    if contains_spam_content(submission):
+        return True
+    if is_gibberish_name(submission.get('First Name', '')) or is_gibberish_name(submission.get('Last Name', '')):
+        return True
     return False
 
 
