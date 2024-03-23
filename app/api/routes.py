@@ -6,15 +6,16 @@ from flask import current_app as app
 from dotenv import load_dotenv
 import os
 import sys
-
+import hmac
+import hashlib
 
 
 
 
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
+APP_SECRET = os.environ.get('APP_SECRET')
 
 
-print(VERIFY_TOKEN)
 
 
 
@@ -73,11 +74,24 @@ def face_book_leads():
         return 'Bad request', 400
 
     elif request.method == 'POST':
+        # Validate payload
+        signature = request.headers.get('X-Hub-Signature-256')
+        if not signature:
+            return 'Signature missing', 400
 
+        signature = signature.replace('sha256=', '')
+        expected_signature = hmac.new(
+            key=bytes(APP_SECRET , 'utf-8'),
+            msg=request.get_data(),
+            digestmod=hashlib.sha256
+        ).hexdigest()
+
+        if not hmac.compare_digest(expected_signature, signature):
+            return 'Invalid signature', 403
+
+        # Process the valid payload
         data = request.json
         print("Received webhook data:", data, file=sys.stderr)
-        # Your logic to handle the lead data
-        # ...
-        app.logger.info("This is an informational message")
+        app.logger.info("Verified webhook data: %s", data)
 
         return jsonify(success=True), 200
