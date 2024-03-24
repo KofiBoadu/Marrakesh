@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from  app.models import create_database_connection
 import secrets
 import re
-import datetime
+from datetime import datetime
 
 auth = HTTPBasicAuth()
 
