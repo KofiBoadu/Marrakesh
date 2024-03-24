@@ -315,10 +315,12 @@ document.addEventListener("DOMContentLoaded", function() {
             var contactExistsDiv = document.getElementById("contactExists");
             var additionalFieldsDiv = document.getElementById("additionalFields");
             var existingEmailLink = document.getElementById("existingEmailLink");
+            var create_contact_btn=document.getElementById("contact-submit-button");
 
             if (data.exists) {
                 if (data.exists) {
                     contactExistsDiv.style.display = 'block';
+                    create_contact_btn.style.display="none"
                     additionalFieldsDiv.style.display = 'none';
                     existingEmailLink.textContent = email;
                     // Update the href attribute with the correct blueprint prefix and contact_id
@@ -328,6 +330,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 contactExistsDiv.style.display = 'none';
                 additionalFieldsDiv.style.display = 'block';
+                create_contact_btn.style.display='block';
             }
         })
         .catch((error) => {

@@ -1,0 +1,73 @@
+{% block content %}
+{% include "settings_base.html" %}
+
+<h1>Service Management</h1>
+
+
+
+
+<div>
+    <button id="tourBtn">Add new tour</button>
+</div>
+
+
+
+<div class="tour" id="tourForm">
+    <div class="tour_header">
+        <h2 class="tour_header--title">Add new tour</h2>
+        <img class="tour_header--close" id="exit" width="24" height="24"
+            src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+    </div>
+
+    <form class="tour_form" action="{{ url_for('customers.add_new_tours') }}" method="post">
+        <div class="tour_wrap">
+            <label for="first_name">Name</label>
+            <input type="text" id="name" placeholder="(avoid: /!@#$%^&* )" name="name">
+        </div>
+        <div class="tour_wrap">
+            <label for="start_date">Start Date</label>
+            <input type="text" id="start_date" placeholder="e.g 2020-01-07" name="start_date">
+        </div>
+        <div class="tour_wrap">
+            <label for="end_date">End Date</label>
+            <input type="text" id="end_date" placeholder="e.g 2020-01-10" name="end_date">
+        </div>
+        <div class="tour_wrap">
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price">
+        </div>
+
+        <div class="tour_wrap">
+            <label>Type of Tour</label>
+            <div class="tour_wrap--type">
+                <input id="type" type="radio" name="tour_type" value="private">
+                <label for="male">Private</label>
+                <input type="radio" id="type" name="tour_type" value="group">
+                <label for="female">Group</label>
+            </div>
+
+        </div>
+
+        <div class="tour_wrap">
+            <label for="destination">Choose Destination:</label>
+            <select id="destination" name="destination">
+                {% for destination in destinations %}
+                <option value="{{ destination }}">{{ destination }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="tour_wrap">
+            <button class="tour_submit" type="submit">Submit</button>
+        </div>
+
+       
+    </form>
+</div>
+
+
+
+
+
+
+{% endblock %}

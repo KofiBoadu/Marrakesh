@@ -110,6 +110,15 @@ def settings_users():
     return render_template('users_teams.html',users=users,available_roles=available_roles)
 
 
+@users_bp.route('/settings/services/management/',methods=['GET',"POST"])
+@login_required
+def services():
+    return render_template('service_management.html')
+
+
+
+
+
 
 @users_bp.route('/remove_user', methods=["POST"])
 @login_required
