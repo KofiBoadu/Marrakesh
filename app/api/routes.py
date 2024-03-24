@@ -108,3 +108,15 @@ def face_book_leads():
 
 
 
+@api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['GET','POST'])
+def paypal_transactions_records():
+
+    print(request.json)
+
+
+    return jsonify("data receieved "),200
+    
+
+
+
+
