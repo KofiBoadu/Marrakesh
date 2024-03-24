@@ -14,7 +14,7 @@ import paypalrestsdk
 
 
 paypalrestsdk.configure({
-  'mode': 'sandbox', # 'sandbox' or 'live'
+  'mode': 'live',
   'client_id': os.getenv('PAYPAL_CLIENT_ID'),
   'client_secret': os.getenv('PAYPAL_CLIENT_SECRET')
 })
@@ -117,7 +117,7 @@ def face_book_leads():
 
 
 
-@api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['GET','POST'])
+@api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['POST'])
 def paypal_transactions_records():
     data = request.json
     headers = request.headers
@@ -142,7 +142,7 @@ def paypal_transactions_records():
 
     if response:
         print("Webhook verified")
-        
+
        
     else:
         print("Invalid webhook signature")
