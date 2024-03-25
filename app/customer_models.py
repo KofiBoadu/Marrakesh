@@ -153,50 +153,6 @@ def campaigns_sent_to_customer(contact_id):
 
 
 
-# def get_customer_activities(contact_id):
-#     emails = all_emails_sent_to_customer(contact_id)
-#     notes_raw = get_customer_notes(contact_id)
-#     booking_changes_raw = get_customer_booking_changes(contact_id)
-#     campaigns_raw = campaigns_sent_to_customer(contact_id)
-#     contact_submissions=contact_submissions(contact_id)
-
-    # notes = [{'email_id': note[0],
-    #           'subject': 'Note',
-    #           'status': '',
-    #           'sent_date': note[2],
-    #           'body': note[1],
-    #           'sent_user': note[3],
-    #           'is_note': True}
-    #          for note in notes_raw]
-
-    # booking_changes = [{'email_id': None,
-    #                     'subject': 'Booking Update',
-    #                     'status': '',
-    #                     'sent_date': change[3],
-    #                     'body': change[4],
-    #                     'sent_user': change[2],
-    #                     'is_note': False}
-    #                    for change in booking_changes_raw]
-
-
-    # campaigns = [{
-    #     'email_id': campaign[1],
-    #     'subject': campaign[2],
-    #     'status': campaign[4],
-    #     'sent_date': campaign[3],
-    #     'body': f"Event Type: {campaign[4]}",
-    #     'sent_user': 'Campaign System',
-    #     'full_name': campaign[0],
-    #     'is_note': False
-    # } for campaign in campaigns_raw]
-
-
-#     activities = emails + notes + booking_changes + campaigns
-
-#     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
-
-#     return activities_sorted
-
 
 
 
