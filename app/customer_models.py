@@ -195,25 +195,24 @@ def get_customer_activities(contact_id):
 
     # Process contact submissions
     # First, sort by submission date to ensure grouping works correctly
-    contact_submissions_raw.sort(key=lambda x: x[3])
-
     submissions = []
-    for _, group in groupby(contact_submissions_raw, key=lambda x: x[3]):
-        grouped_fields = list(group)
-        first_entry = grouped_fields[0]
+    if contact_submissions_raw:
+        # Only attempt to sort and process if contact_submissions_raw is not None
+        contact_submissions_raw.sort(key=lambda x: x[3])
 
-        # Prepare the form fields as a list of dicts
-        form_fields = [{'name': entry[4].replace('_', ' ').capitalize(), 'value': entry[5]} for entry in grouped_fields]
+        for _, group in groupby(contact_submissions_raw, key=lambda x: x[3]):
+            grouped_fields = list(group)
+            first_entry = grouped_fields[0]
 
-        # Append a consolidated submission activity
-        submissions.append({
-            'type': 'submission',
-            'subject': 'Form Submission via ' + first_entry[2],  # Include submission source
-            'sent_date': first_entry[3].isoformat(),  # ISO 8601 format
-            'form_fields': form_fields,
-            'sent_user': f"{first_entry[0]} {first_entry[1]}",
-        })
+            form_fields = [{'name': entry[4].replace('_', ' ').capitalize(), 'value': entry[5]} for entry in grouped_fields]
 
+            submissions.append({
+                'type': 'submission',
+                'subject': 'Form Submission via ' + first_entry[2],
+                'sent_date': first_entry[3].isoformat(),
+                'form_fields': form_fields,
+                'sent_user': f"{first_entry[0]} {first_entry[1]}",
+            })
     # Combine all activities
     activities = emails + notes + booking_changes + campaigns + submissions
 
