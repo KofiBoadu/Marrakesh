@@ -193,10 +193,84 @@ function emailHideEditButton(event) {
   }
 }
 
+//state edit
 
+function showUpdateStateForm() {
+  var stateForm = document.getElementById('stateformContainer')
+  var stateEditButton = document.querySelector(".stateEdit")
+  stateForm.style.display = "block"
+  stateEditButton.style.display = "block"
 
+}
+function closeUpdateStateForm() {
+  document.getElementById('stateformContainer').style.display = 'none';
+  var stateForm = document.getElementById('stateformContainer').querySelector('.update_customer_state');
+  if (stateForm) {
+    stateForm.reset();
+  }
+  var stateEditButton = document.querySelector(".stateEdit")
+  stateEditButton.style.display = "none"
+}
+function stateEditButtonDisplay() {
+  document.querySelector('.stateEdit').style.display = 'none'
+}
 
+function showStateEditButton() {
+  let stateEditButton = document.querySelector(".stateEdit")
+  stateEditButton.style.display = "inline-block"
+}
+function stateHideEditButton(event) {
+  let stateEditButton = document.querySelector(".stateEdit")
+  var stateForm = document.getElementById('stateformContainer').querySelector('.update_customer_state');
 
+  // Check if the mouseout occurred outside the nameForm and outside the editButton
+  if (stateForm.contains(event.relatedTarget)) {
+    // Hide the edit button
+    stateEditButton.style.display = "block";
+  }
+  if (event.relatedTarget !== stateEditButton) {
+    stateEditButton.style.display = "none";
+  }
+}
+//status edit
+
+function showUpdateStatusForm() {
+  var statusForm = document.getElementById('statusformContainer')
+  var statusEditButton = document.querySelector(".statusEdit")
+  statusForm.style.display = "block"
+  statusEditButton.style.display = "block"
+
+}
+function closeUpdateStatusForm() {
+  document.getElementById('statusformContainer').style.display = 'none';
+  var statusForm = document.getElementById('stateformContainer').querySelector('.update_customer_state');
+  if (statusForm) {
+    statusForm.reset();
+  }
+  var statusEditButton = document.querySelector(".statusEdit")
+  statusEditButton.style.display = "none"
+}
+function statusEditButtonDisplay() {
+  document.querySelector('.statusEdit').style.display = 'none'
+}
+
+function showStatusEditButton() {
+  let statusEditButton = document.querySelector(".statusEdit")
+  statusEditButton.style.display = "inline-block"
+}
+function statusHideEditButton(event) {
+  let statusEditButton = document.querySelector(".statusEdit")
+  var statusForm = document.getElementById('statusformContainer').querySelector('.update-status');
+
+  // Check if the mouseout occurred outside the nameForm and outside the editButton
+  if (statusForm.contains(event.relatedTarget)) {
+    // Hide the edit button
+    statusEditButton.style.display = "block";
+  }
+  if (event.relatedTarget !== statusEditButton) {
+    statusEditButton.style.display = "none";
+  }
+}
 
 
 
@@ -237,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function closeUpdateBookingForm() {
   document.getElementById('update-bookings').style.display = 'none';
-  console.log('cancel')
+  
 }
 
 
@@ -289,8 +363,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+//book a tour
 
+function showBookingTourForm(){
+  document.getElementById("bookingTour").style.display="block";
+}
+function closeBookingTourForm() {
+  document.getElementById("bookingTour").style.display = 'none';
+  
+}
 
+//delete note
 
 function deleteNote(notesId, customerId) {
   console.log("deleteNote called with notesId:", notesId, "and customerId:", customerId);

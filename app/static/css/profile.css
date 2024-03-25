@@ -624,7 +624,211 @@ button:active {
 }
 
 
+#stateformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 15px;
+    POSITION: absolute;
+    background-color: #FFF;
 
+    top: 580px;
+    left: 100px;
+    z-index: 1000;
+}
+
+#stateformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update_customer_state {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_customer_state  select {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+.update_customer_state label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updateStateClose {
+    margin-left: 250px;
+
+}
+
+#statusformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 15px;
+    POSITION: absolute;
+    background-color: #FFF;
+    top: 640px;
+    left: 200px;
+    z-index: 1000;
+}
+
+#statusformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update-status {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update-status  select {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+.update-status label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updateStatusClose {
+    margin-left: 250px;
+
+}
+
+
+
+/* book a tour form */
+.bookTourButton{
+    background-color: #FF914C;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#bookingTour{
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+
+    z-index: 1000;
+    width: 25%;
+    height: 100%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+    animation: slideIn 0.5s ease;
+    margin: auto;
+
+}
+
+#bookingTour h1 {
+    background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgb(175, 213, 214) 100%);
+    padding: 20px;
+    color: #FFF
+}
+
+#bookingTour p {
+    width: 80%;
+    font-size: 16px;
+    PADDING: 9PX;
+    BORDER-RADIUS: 2PX;
+    color: #03989E;
+    padding-left: 3px;
+    border: 1px solid rgb(180, 180, 180);
+
+}
+.save-bookings {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #e1e1e1;
+
+}
+
+.book-now {
+    background-color: #FF914C;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 120px;
+    margin-left: 20px;
+}
+
+.closeBookingForm {
+    background-color: #d9d9d9;
+    color: #646464;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 120px;
+    margin-left: 20px;
+
+}
+.create-tour-bookings {
+    margin: auto;
+    margin-top: 20px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+.tour-bookings{
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-bottom: 100%;
+}
+.tour-bookings label {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #959494;
+}
+
+.tour-select {
+    width: 80%;
+    font-size: 16px;
+    height: 2.5em;
+    /* font-size: 16px; */
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #03989E;
+    border: 1px solid rgb(180, 180, 180);
+   
+
+}
 /*spinning styling */
 
 #loadingOverlay {
