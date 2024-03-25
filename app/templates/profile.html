@@ -92,9 +92,9 @@
 
 
 <!-- form submission -->
-<div class="submission-container">
+<!-- <div class="submission-container">
     
-     <!-- Display common data -->
+
       {% if common_data %}
       <h2>Form Submission</h2>
 
@@ -124,9 +124,9 @@
    {% endfor %}
 
 </div>
+ -->
 
-
-
+<!-- 
 
 <div class="email-activity">
   <div class="email-activity-header">
@@ -136,14 +136,14 @@
     <div class="activity-container {{ 'email-activity-container' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-activity-container' }}">
       <div class="{{ 'email-header' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-header' }}">
         <div class="header-block">
-          <!-- Handling for campaign activities -->
+        
           {% if activity.get('sent_user') == 'Campaign System' %}
             <h3>Marketing Email Sent to {{ activity['full_name'] }}</h3>
             <strong><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=activity['email_id']) }}">{{ activity['subject'] }}</a></strong>
             <p class="from">Event: {{ activity['status'] }}</p>
           {% else %}
             <strong>{{ activity['subject'] }}</strong>
-            <!-- Differentiation for "sent by", "created by", and "updated by" -->
+          
             {% if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' %}
               <p class="from">sent by {{ activity['sent_user'] }}</p>
             {% elif activity.get('is_note', False) %}
@@ -151,7 +151,7 @@
             {% else %}
               <p class="from">updated by {{ activity['sent_user'] }}</p>
             {% endif %}
-            <!-- Toggle button for email body -->
+         
             {% if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' %}
               <img class="dropdown" width="16" height="16"
                 src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down"
@@ -165,13 +165,13 @@
           Status: {{ activity['status'] }} on {{ activity['sent_date'].strftime('%B %d, %Y').capitalize() }}
         </small>
       </p>
-      <!-- Display logic for email, notes, and booking updates remains unchanged -->
+
       <div class="{{ 'email-body' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-body' }}">
         <p>{{ activity.get('body', 'No content available.') }}</p>
       </div>
-      <!-- Deletion forms for emails and notes only, adjusted to include notes -->
+      
       {% if activity.get('email_id') and not activity.get('is_note', False) and activity.get('sent_user') != 'Campaign System' %}
-        <!-- Email deletion form -->
+
         <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'], contact_id=contact_id) }}" method="POST" class="delete-form">
           <input type="hidden" name="email_id" value="{{ activity['email_id'] }}">
           <input type="hidden" name="contact_id" value="{{ contact_id }}">
@@ -179,7 +179,7 @@
               src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" />delete</button>
         </form>
       {% elif activity.get('is_note', True) %}
-        <!-- Note deletion form -->
+        
         <form action="{{ url_for('profiles.deleting_customer_notes', notes_id=activity['email_id'], contact_id=contact_id) }}" method="post">
           <input type="hidden" name="notes_id" value="{{ activity['email_id'] }}">
           <input type="hidden" name="contact_id" value="{{ contact_id }}">
@@ -189,7 +189,72 @@
       {% endif %}
     </div>
   {% endfor %}
-</div>
+</div> -->
+
+
+<div class="email-activity">
+  <div class="email-activity-header">
+    <h2 class="email-activity-title">ACTIVITY TIMELINE</h2>
+  </div>
+  {% for activity in activities %}
+    <div class="activity-container {{ 'email-activity-container' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' and activity.get('type') != 'submission' else 'note-activity-container' }}">
+      <div class="{{ 'email-header' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' and activity.get('type') != 'submission' else 'note-header' }}">
+        <div class="header-block">
+          {% if activity.get('type') == 'submission' %}
+            <!-- Display for Form Submissions -->
+            <h3> {{ activity['subject'] }}</h3>
+            <p class="from">submitted by {{ activity['sent_user'] }}</p>
+            {% for field in activity['form_fields'] %}
+              <div>
+                <strong>{{ field['name'] }}:</strong> {{ field['value'] }}
+              </div>
+            {% endfor %}
+          {% elif activity.get('sent_user') == 'Campaign System' %}
+            <!-- Existing Display for Campaign Emails -->
+            <h3>Marketing Email Sent to {{ activity['full_name'] }}</h3>
+            <strong><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=activity['email_id']) }}">{{ activity['subject'] }}</a></strong>
+            <p class="from">Event: {{ activity['status'] }}</p>
+          {% else %}
+            <!-- Display for Emails and Notes -->
+            <strong>{{ activity['subject'] }}</strong>
+            <p class="from">{{ 'sent by' if not activity.get('is_note', False) else 'created by' }} {{ activity['sent_user'] }}</p>
+            {% if not activity.get('is_note', False) %}
+              <img class="dropdown" width="16" height="16" src="https://img.icons8.com/windows/32/FF914C/circled-chevron-down.png" alt="circled-chevron-down" onclick="toggleEmailBody(this)" />
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      <p class="activity-text">
+        <small class="text-muted">
+          Status: {{ activity['status'] }} on {{ activity['sent_date'].strftime('%B %d, %Y').capitalize() }}
+        </small>
+      </p>
+      {% if activity.get('type') != 'submission' %}
+        <div class="{{ 'email-body' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' else 'note-body' }}">
+          <p>{{ activity.get('body', 'No content available.') }}</p>
+        </div>
+      {% endif %}
+      
+      <!-- Deletion Forms for Emails and Notes -->
+      {% if activity.get('email_id') and not activity.get('is_note', False) %}
+        <!-- Email deletion form -->
+        <form action="{{ url_for('send_emails.delete_email', email_id=activity['email_id'], contact_id=contact_id) }}" method="POST" class="delete-form">
+          <input type="hidden" name="email_id" value="{{ activity['email_id'] }}">
+          <input type="hidden" name="contact_id" value="{{ contact_id }}">
+          <button type="submit" class="delete-text-link"><img width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" /> delete</button>
+        </form>
+      {% elif activity.get('is_note', False) %}
+        <!-- Note deletion form -->
+        <form action="{{ url_for('profiles.deleting_customer_notes', notes_id=activity['email_id'], contact_id=contact_id) }}" method="post">
+          <input type="hidden" name="notes_id" value="{{ activity['email_id'] }}">
+          <input type="hidden" name="contact_id" value="{{ contact_id }}">
+          <button type="submit" class="noteDelete"><img width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete" /> delete</button>
+        </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+</div> 
+ 
 
 
 

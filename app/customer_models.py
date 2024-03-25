@@ -3,43 +3,13 @@ from  .models import create_database_connection
 import logging
 from app.emails import all_emails_sent_to_customer
 from app.customer_notes import get_customer_notes
+from app.profile_models import contact_submissions
+from datetime import datetime
+from itertools import groupby
 
 
 
 
-
-# def update_customerDetails(contact_id, first_name, last_name, email, phone, gender, state):
-#     query = """
-#         UPDATE contacts
-#         SET first_name = %s,
-#             last_name = %s,
-#             state_address = %s,
-#             email_address = %s,
-#             phone_number = %s,
-#             gender = %s
-#         WHERE contact_id = %s
-#     """
-#     values = (first_name, last_name, state, email, phone, gender, contact_id)
-
-#     try:
-#         database_connection = create_databaseConnection()
-#         if database_connection is not None:
-#             cursor = database_connection.cursor()
-#             cursor.execute(query, values)
-#             database_connection.commit()
-#             if cursor.rowcount > 0:
-#                 print("Customer details successfully updated for ID:", contact_id)
-#             else:
-#                 print("No customer found with ID:", customer_id)
-#     except Error as e:
-#         print(f"Database error occurred: {e}")
-#         if database_connection:
-#             database_connection.rollback()
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
 
 def update_customerDetails(contact_id, first_name, last_name, email, phone, gender, state):
     query = """
@@ -182,54 +152,64 @@ def campaigns_sent_to_customer(contact_id):
 
 
 
-# print(campaigns_sent_to_customer(326))
+
+# def get_customer_activities(contact_id):
+#     emails = all_emails_sent_to_customer(contact_id)
+#     notes_raw = get_customer_notes(contact_id)
+#     booking_changes_raw = get_customer_booking_changes(contact_id)
+#     campaigns_raw = campaigns_sent_to_customer(contact_id)
+#     contact_submissions=contact_submissions(contact_id)
+
+    # notes = [{'email_id': note[0],
+    #           'subject': 'Note',
+    #           'status': '',
+    #           'sent_date': note[2],
+    #           'body': note[1],
+    #           'sent_user': note[3],
+    #           'is_note': True}
+    #          for note in notes_raw]
+
+    # booking_changes = [{'email_id': None,
+    #                     'subject': 'Booking Update',
+    #                     'status': '',
+    #                     'sent_date': change[3],
+    #                     'body': change[4],
+    #                     'sent_user': change[2],
+    #                     'is_note': False}
+    #                    for change in booking_changes_raw]
 
 
+    # campaigns = [{
+    #     'email_id': campaign[1],
+    #     'subject': campaign[2],
+    #     'status': campaign[4],
+    #     'sent_date': campaign[3],
+    #     'body': f"Event Type: {campaign[4]}",
+    #     'sent_user': 'Campaign System',
+    #     'full_name': campaign[0],
+    #     'is_note': False
+    # } for campaign in campaigns_raw]
 
 
-# def get_customer_activities(customer_id):
-#     emails = all_emails_sent_to_customer(customer_id)
-#     notes_raw = get_customer_notes(customer_id)
-#     booking_changes_raw = get_customer_booking_changes(customer_id)
-
-
-#     notes = [{'email_id': note[0],
-#               'subject': 'Note',
-#               'status': '',
-#               'sent_date': note[2],
-#               'body': note[1],
-#               'sent_user': note[3],
-#               'is_note': True}
-#              for note in notes_raw]
-
-
-#     booking_changes = [{'email_id': None,
-#                         'subject': 'Booking Update',
-#                         'status': '',
-#                         'sent_date': change[3],
-#                         'body': change[4],
-#                         'sent_user': change[2],
-#                         'is_note': False,
-#                         'old_tour_name': change[0],
-#                         'new_tour_name': change[1]}
-#                        for change in booking_changes_raw]
-
-
-#     activities = emails + notes + booking_changes
+#     activities = emails + notes + booking_changes + campaigns
 
 #     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
 
 #     return activities_sorted
 
-# print(get_customer_activities(326))
+
+
 
 def get_customer_activities(contact_id):
+    # Mock function calls - replace these with your actual function calls
     emails = all_emails_sent_to_customer(contact_id)
     notes_raw = get_customer_notes(contact_id)
     booking_changes_raw = get_customer_booking_changes(contact_id)
     campaigns_raw = campaigns_sent_to_customer(contact_id)
+    contact_submissions_raw = contact_submissions(contact_id)
 
-    notes = [{'email_id': note[0],
+    # Existing processing logic for emails, notes, booking changes, and campaigns...
+    notes =  [{'email_id': note[0],
               'subject': 'Note',
               'status': '',
               'sent_date': note[2],
@@ -237,7 +217,6 @@ def get_customer_activities(contact_id):
               'sent_user': note[3],
               'is_note': True}
              for note in notes_raw]
-
     booking_changes = [{'email_id': None,
                         'subject': 'Booking Update',
                         'status': '',
@@ -246,7 +225,6 @@ def get_customer_activities(contact_id):
                         'sent_user': change[2],
                         'is_note': False}
                        for change in booking_changes_raw]
-
 
     campaigns = [{
         'email_id': campaign[1],
@@ -259,16 +237,40 @@ def get_customer_activities(contact_id):
         'is_note': False
     } for campaign in campaigns_raw]
 
+    # Process contact submissions
+    # First, sort by submission date to ensure grouping works correctly
+    contact_submissions_raw.sort(key=lambda x: x[3])
 
-    activities = emails + notes + booking_changes + campaigns
+    submissions = []
+    for _, group in groupby(contact_submissions_raw, key=lambda x: x[3]):
+        grouped_fields = list(group)
+        first_entry = grouped_fields[0]
 
+        # Prepare the form fields as a list of dicts
+        form_fields = [{'name': entry[4].replace('_', ' ').capitalize(), 'value': entry[5]} for entry in grouped_fields]
+
+        # Append a consolidated submission activity
+        submissions.append({
+            'type': 'submission',
+            'subject': 'Form Submission via ' + first_entry[2],  # Include submission source
+            'sent_date': first_entry[3].isoformat(),  # ISO 8601 format
+            'form_fields': form_fields,
+            'sent_user': f"{first_entry[0]} {first_entry[1]}",
+        })
+
+    # Combine all activities
+    activities = emails + notes + booking_changes + campaigns + submissions
+
+    for activity in activities:
+        if isinstance(activity['sent_date'], str):
+            # Convert string to datetime object only if it's not already
+            activity['sent_date'] = datetime.fromisoformat(activity['sent_date'])
+    # Sort by 'sent_date'
     activities_sorted = sorted(activities, key=lambda x: x['sent_date'], reverse=True)
+
 
     return activities_sorted
 
-
-
-# print(get_customer_activities(326))
 
 
 

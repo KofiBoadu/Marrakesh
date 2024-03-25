@@ -117,42 +117,42 @@ def face_book_leads():
 
 
 
-@api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['POST'])
-def paypal_transactions_records():
-    data = request.json
-    headers = request.headers
+# @api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['POST'])
+# def paypal_transactions_records():
+#     data = request.json
+#     headers = request.headers
 
 
-    transmission_id = headers.get('PayPal-Transmission-Id')
-    timestamp = headers.get('PayPal-Transmission-Time')
-    webhook_id = os.getenv('WEBHOOK_ID')
-    event_body = request.get_data(as_text=True) 
-    cert_url = headers.get('PayPal-Cert-Url')
-    actual_signature = headers.get('PayPal-Transmission-Sig')
+#     transmission_id = headers.get('PayPal-Transmission-Id')
+#     timestamp = headers.get('PayPal-Transmission-Time')
+#     webhook_id = os.getenv('WEBHOOK_ID')
+#     event_body = request.get_data(as_text=True)
+#     cert_url = headers.get('PayPal-Cert-Url')
+#     actual_signature = headers.get('PayPal-Transmission-Sig')
     
 
-    response = paypalrestsdk.WebhookEvent.verify(
-        transmission_id=transmission_id,
-        timestamp=timestamp,
-        webhook_id=webhook_id,
-        event_body=event_body,
-        cert_url=cert_url,
-        actual_signature=actual_signature,
-    )
+#     response = paypalrestsdk.WebhookEvent.verify(
+#         transmission_id=transmission_id,
+#         timestamp=timestamp,
+#         webhook_id=webhook_id,
+#         event_body=event_body,
+#         cert_url=cert_url,
+#         actual_signature=actual_signature,
+#     )
 
-    if response:
-        print("Webhook verified")
+#     if response:
+#         print("Webhook verified")
 
        
-    else:
-        print("Invalid webhook signature")
+#     else:
+#         print("Invalid webhook signature")
         
-    return jsonify(success=True)
+#     return jsonify(success=True)
 
-    print(request.json)
+#     print(request.json)
 
 
-    return jsonify("data receieved "),200
+#     return jsonify("data receieved "),200
     
 
 
