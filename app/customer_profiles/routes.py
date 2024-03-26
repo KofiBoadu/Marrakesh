@@ -4,8 +4,8 @@ from . import customers_profile
 from app.emails import all_emails_sent_to_customer,send_email
 from flask_login import login_required, current_user
 from app.extension import cache
-from app.models import create_tour_bookings,format_phone_number,available_tour_dates,get_tour_id,all_states
-from app.customer_models import updating_contact_status,update_customer_name,update_customer_email,update_contact_phone,change_customer_bookings,get_customer_activities,updating_contact_state,bookings_updates_logs,get_customer_booking_changes
+from app.models import book_a_tour_for_a_contact,format_phone_number,get_all_upcoming_travel_packages,get_travel_package_id,all_states
+from app.customer_models import updating_contact_status,update_customer_name,update_customer_email,update_contact_phone,change_customer_bookings,get_customer_activities,updating_contact_state,bookings_updates_logs,get_contact_booking_changes
 from app.customer_notes import  save_customer_notes, get_customer_notes,delete_customer_notes
 from app.profile_models import get_customer_bookings,contact_submissions,known_fields
 
@@ -31,7 +31,7 @@ def customer_profile(contact_id):
 
         booking_info = get_customer_bookings(contact_id) if tour_list else []
 
-        available_dates = available_tour_dates()
+        available_dates = get_all_upcoming_travel_packages()
 
         activities = get_customer_activities(contact_id)
 
@@ -107,8 +107,8 @@ def change_bookings():
         send_email(subject,[customer_email],update_message)
 
         
-    new_tour_id= get_tour_id(tour_name,tour_year)
-    old_tour_id= get_tour_id(new_old_tour_name,old_tour_year)
+    new_tour_id= get_travel_package_id(tour_name, tour_year)
+    old_tour_id= get_travel_package_id(new_old_tour_name, old_tour_year)
 
 
     user_id= current_user.id
@@ -231,8 +231,8 @@ def confirm_contact_tour_bookings():
         tour_date=selected_tour.split()
         tour_year= tour_date.pop()
         tour_name=" ".join(tour_date)
-        tour_id=get_tour_id(tour_name,tour_year)
-        create_tour_bookings(tour_id,contact_id)
+        tour_id=get_travel_package_id(tour_name, tour_year)
+        book_a_tour_for_a_contact(tour_id, contact_id)
         if profile[4] != "customer":
             new_status="customer"
             updating_contact_status(new_status,contact_id)

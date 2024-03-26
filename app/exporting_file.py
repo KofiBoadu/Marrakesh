@@ -1,5 +1,5 @@
 import pandas as pd
-from app.models import create_database_connection, get_customers_information,total_customers
+from app.models import create_database_connection, get_all_contacts_information, get_total_num_of_contacts
 import os
 from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
@@ -19,13 +19,7 @@ load_dotenv()
 
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-
-mail= Mail()
-
-
-
-
-
+mail = Mail()
 
 
 def send_file_email(subject, sender, recipients, text_body, html_body=None):
@@ -46,39 +40,29 @@ def send_file_email(subject, sender, recipients, text_body, html_body=None):
             return False
 
 
-
-
-
-
-
-
 def export_data(contacts, file_format):
     # Convert customers list to DataFrame
-    df = pd.DataFrame(contacts, columns=['Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price', 'Tour_Type'])
-    
+    df = pd.DataFrame(contacts,
+                      columns=['Full_Name', 'State', 'Email', 'Mobile', 'Tour', 'Travel_Year_Start', 'Tour_Price',
+                               'Tour_Type'])
+
     # Define the base path for temporary storage
     base_path = '/tmp/'
-    
+
     # Choose the file format
     file_name = ""
     if file_format.lower() == 'csv':
         file_name = "CustomerTourDetails.csv"
         df.to_csv(os.path.join(base_path, file_name), index=False)
-        
+
     elif file_format.lower() == 'excel':
         file_name = "CustomerTourDetails.xlsx"
         df.to_excel(os.path.join(base_path, file_name), index=False)
-        
+
     else:
         print('Unsupported export format specified. No export performed.')
 
     return os.path.join(base_path, file_name)
-
-
-
-
-
-
 
 
 def create_export_customer_data_procedure():
@@ -119,12 +103,6 @@ def create_export_customer_data_procedure():
             database_connection.close()
 
 
-
-
-
-
-
-
 def export_customer_data():
     database_connection = None
     cursor = None
@@ -147,22 +125,16 @@ def export_customer_data():
     return contacts
 
 
-
-
-
-
-
-
 def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
     """Uploads a file to Google Drive."""
     creds = None
     token_str = os.environ.get('GOOGLE_OAUTH_TOKEN')
-    
+
     # If the token environment variable exists, use it to create credentials
     if token_str:
         token_info = json.loads(token_str)
         creds = Credentials.from_authorized_user_info(token_info, SCOPES)
-    
+
     # Check if credentials are valid, otherwise refresh or log in
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -174,7 +146,7 @@ def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
             creds = flow.run_local_server(port=0)
             # Here, you would need to update the environment variable or use a more persistent storage
             # since changes to environment variables in runtime are not persistent across deploys/restarts in Heroku
-            
+
     service = build('drive', 'v3', credentials=creds)
 
     # Call the Drive v3 API to upload the file
@@ -185,23 +157,17 @@ def upload_file(filename, filepath, mimetype, SCOPES=SCOPES):
     return file.get('id')
 
 
-
-
-
-
-
-
 def get_google_drive_service():
     """Returns a service object connected to the Google Drive API."""
     creds = None
     # Try to load the token from an environment variable
     token_str = os.environ.get('GOOGLE_OAUTH_TOKEN')
-    
+
     if token_str:
         # If the token was found in the environment variable, load it
         token_info = json.loads(token_str)
         creds = Credentials.from_authorized_user_info(token_info, SCOPES)
-    
+
     # Check if the credentials are not valid or do not exist
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -219,23 +185,12 @@ def get_google_drive_service():
     return service
 
 
-
-
-
-
-
-
 def generate_shareable_link(file_id):
     service = get_google_drive_service()
     request = service.files().get(fileId=file_id, fields='webViewLink')
     response = request.execute()
     print(f"WebViewLink: {response.get('webViewLink')}")
     return response.get('webViewLink')
-
-
-
-
-
 
 
 def make_file_public(file_id):
@@ -251,17 +206,5 @@ def make_file_public(file_id):
     ).execute()
 
 
-
-
-
-
-
-
 def get_download_link(file_id):
     return f"https://drive.google.com/uc?export=download&id={file_id}"
-    
-
-
-
-
-

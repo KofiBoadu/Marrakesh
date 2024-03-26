@@ -2,7 +2,6 @@ import datetime
 import logging
 import os
 from urllib.parse import urlparse
-
 import mysql.connector
 import phonenumbers
 from dotenv import load_dotenv
@@ -123,7 +122,7 @@ END;
             database_connection.close()
 
 
-def total_customers():
+def get_total_num_of_contacts():
     cursor = None
     database_connection = None
     query = "SELECT COUNT(*) FROM contacts"
@@ -142,7 +141,7 @@ def total_customers():
             database_connection.close()
 
 
-def get_customers_information(page=1, items_per_page=25, search_query=''):
+def get_all_contacts_information(page=1, items_per_page=25, search_query=''):
     offset = (page - 1) * items_per_page
     database_connection = None
     contacts = []
@@ -171,7 +170,7 @@ def get_customers_information(page=1, items_per_page=25, search_query=''):
         return contacts
 
 
-def create_tour_bookings(tour_id, contact_id):
+def book_a_tour_for_a_contact(tour_id, contact_id):
     query = "INSERT INTO tour_bookings(tour_id, contact_id) VALUES(%s, %s)"
     database_connection = None
     cursor = None
@@ -183,7 +182,7 @@ def create_tour_bookings(tour_id, contact_id):
         database_connection.commit()
         return True
     except Exception as e:
-        logging.error(f"Error in create_tour_bookings: {e}")
+        logging.error(f"Error in book_a_tour_for_a_contact: {e}")
         if database_connection:
             database_connection.rollback()
         return False
@@ -194,7 +193,7 @@ def create_tour_bookings(tour_id, contact_id):
             database_connection.close()
 
 
-def get_tour_id(tour_name, year):
+def get_travel_package_id(tour_name, year):
     query = "SELECT tour_id FROM tours WHERE TRIM(tour_name) = %s and YEAR(start_date) = %s"
 
     database_connection = None
@@ -208,11 +207,11 @@ def get_tour_id(tour_name, year):
         return result[0] if result else None
     except mysql.connector.Error as e:
         # Handle specific database errors here
-        logging.error(f"Database error in get_tour_id: {e}")
+        logging.error(f"Database error in get_travel_package_id: {e}")
         return None
     except Exception as e:
         # Handle general errors here
-        logging.error(f"Error in get_tour_id: {e}")
+        logging.error(f"Error in get_travel_package_id: {e}")
         return None
     finally:
         if database_connection:
@@ -240,7 +239,7 @@ def get_contact_id(email):
             database_connection.close()
 
 
-def available_tour_dates():
+def get_all_upcoming_travel_packages():
     current_year = datetime.date.today().year
     query = """
     SELECT Concat(tour_name, " ", YEAR(t.start_date))
@@ -259,7 +258,7 @@ def available_tour_dates():
         dates = [date[0] for date in date_tuples]
         return dates
     except Exception as e:
-        logging.error(f"Error in available_tour_dates: {e}")
+        logging.error(f"Error in get_all_upcoming_travel_packages: {e}")
         return []
     finally:
         if cursor:
@@ -268,7 +267,7 @@ def available_tour_dates():
             database_connection.close()
 
 
-def create_new_tour_dates(tour_name, start_date, end_date, price, destination_id, tour_type):
+def create_new_tour_packages(tour_name, start_date, end_date, price, destination_id, tour_type):
     query = ("INSERT INTO tours(tour_name, start_date, end_date, tour_price, destination_id, tour_type) VALUES(%s, %s, "
              "%s, %s, %s, %s)")
     database_connection = None
@@ -281,12 +280,12 @@ def create_new_tour_dates(tour_name, start_date, end_date, price, destination_id
         database_connection.commit()
         return True
     except mysql.connector.Error as e:
-        logging.error(f"Database error in create_new_tour_dates: {e}")
+        logging.error(f"Database error in create_new_tour_packages: {e}")
         if database_connection:
             database_connection.rollback()
         return False
     except Exception as e:
-        logging.error(f"Error in create_new_tour_dates: {e}")
+        logging.error(f"Error in create_new_tour_packages: {e}")
         if database_connection:
             database_connection.rollback()
         return False
@@ -369,7 +368,7 @@ def get_destination_id(destination_name):
         return None
 
 
-def check_customer_exists(email):
+def check_contact_exists(email):
     query = "SELECT contact_id FROM contacts WHERE TRIM(LOWER(email_address)) = TRIM(LOWER(%s))"
     contact_id = None
     database_connection = None
@@ -481,7 +480,7 @@ def calculate_gross_revenue(year):
             database_connection.close()
 
 
-def remove_paid_customer(contact_id):
+def remove_a_paid_contact(contact_id):
     deleted = False
     database_connection = None
     cursor = None

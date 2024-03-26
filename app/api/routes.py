@@ -1,25 +1,18 @@
-from flask import request, jsonify,abort
+from flask import request, jsonify, abort
 from . import api_blueprint
-from  .config import auth,create_leads,standardized_model_wordpress,create_submissions,add_submission_data,standardized_model_facebook,is_spam
-import logging
-from flask import current_app as app
-from dotenv import load_dotenv
+from .config import auth, create_new_leads, standardized_model_wordpress, create_new_form_submission, add_new_form_submission_data, \
+    standardized_model_facebook, is_spam
 import os
-import sys
-import hmac
-import hashlib
 import paypalrestsdk
-from app.customer_models import update_customer_name
+from app.models import check_contact_exists
 
 
 
 paypalrestsdk.configure({
-  'mode': 'live',
-  'client_id': os.getenv('PAYPAL_CLIENT_ID'),
-  'client_secret': os.getenv('PAYPAL_CLIENT_SECRET')
+    'mode': 'live',
+    'client_id': os.getenv('PAYPAL_CLIENT_ID'),
+    'client_secret': os.getenv('PAYPAL_CLIENT_SECRET')
 })
-
-
 
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
 APP_SECRET = os.environ.get('APP_SECRET')
@@ -41,12 +34,10 @@ spammy_patterns = {
 }
 
 
-
-
-
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     request_data = request.form.to_dict()
+    source = "wordpress"
     if is_spam(request_data):
         print("spam")
         abort(400, description="Spam detected")
@@ -59,30 +50,37 @@ def add_new_lead():
         data = request.form.to_dict()
     else:
         data = request.json
-    contact=standardized_model_wordpress(data)
 
-    if contact:
-        contact_id = create_leads(
-            first_name=contact.get('first_name'),
-            last_name=contact.get('last_name'),
-            email=contact.get('email'),
-            phone=contact.get('phone_number'),
-            gender=contact.get('gender'),
-            state=contact.get('state')
-        )
-        if contact_id:
-            source="wordpress"
-            submission_id=create_submissions(contact_id,source)
+    contact = standardized_model_wordpress(data)
+    contact_email = contact.get('email')
+    check_if_contact_exist = check_contact_exists(contact_email)
+    if check_if_contact_exist:
+        existing_contact_id = check_if_contact_exist
+        submission_id = create_new_form_submission(existing_contact_id, source)
+        if submission_id:
+            for key, value in contact['form_data'].items():
+                add_new_form_submission_data(submission_id, key, value)
+        return jsonify({"submission_id": submission_id}), 200
 
-            if submission_id:
-                for key,value in contact['form_data'].items():
-                    add_submission_data(submission_id,key,value)
-        return jsonify({"contact_id": contact_id}),200
     else:
-        return jsonify({"error": "Invalid contact data"}),400
 
-
-
+        if contact:
+            contact_id = create_new_leads(
+                first_name=contact.get('first_name'),
+                last_name=contact.get('last_name'),
+                email=contact.get('email'),
+                phone=contact.get('phone_number'),
+                gender=contact.get('gender'),
+                state=contact.get('state')
+            )
+            if contact_id:
+                submission_id = create_new_form_submission(contact_id, source)
+                if submission_id:
+                    for key, value in contact['form_data'].items():
+                        add_new_form_submission_data(submission_id, key, value)
+            return jsonify({"contact_id": contact_id}), 200
+        else:
+            return jsonify({"error": "Invalid contact data"}), 400
 
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['POST'])
@@ -92,9 +90,9 @@ def face_book_leads():
         data = request.form.to_dict()
     else:
         data = request.json
-    contact=standardized_model_facebook(data)
+    contact = standardized_model_facebook(data)
     if contact:
-        contact_id = create_leads(
+        contact_id = create_new_leads(
             first_name=contact.get('first_name'),
             last_name=contact.get('last_name'),
             email=contact.get('email'),
@@ -103,58 +101,12 @@ def face_book_leads():
             state=contact.get('state')
         )
         if contact_id:
-            source="facebook"
-            submission_id=create_submissions(contact_id,source)
+            source = "facebook"
+            submission_id = create_new_form_submission(contact_id, source)
             if submission_id:
-                for key,value in contact['form_data'].items():
-                    add_submission_data(submission_id,key,value)
-        return jsonify({"contact_id": contact_id}),200
+                for key, value in contact['form_data'].items():
+                    add_new_form_submission_data(submission_id, key, value)
+        return jsonify({"contact_id": contact_id}), 200
 
     else:
-        return jsonify({"error": "Invalid contact data"}),400
-
-
-
-
-
-# @api_blueprint.route('/paypal-transactions/23902-marrakesh-customer-payments', methods=['POST'])
-# def paypal_transactions_records():
-#     data = request.json
-#     headers = request.headers
-
-
-#     transmission_id = headers.get('PayPal-Transmission-Id')
-#     timestamp = headers.get('PayPal-Transmission-Time')
-#     webhook_id = os.getenv('WEBHOOK_ID')
-#     event_body = request.get_data(as_text=True)
-#     cert_url = headers.get('PayPal-Cert-Url')
-#     actual_signature = headers.get('PayPal-Transmission-Sig')
-    
-
-#     response = paypalrestsdk.WebhookEvent.verify(
-#         transmission_id=transmission_id,
-#         timestamp=timestamp,
-#         webhook_id=webhook_id,
-#         event_body=event_body,
-#         cert_url=cert_url,
-#         actual_signature=actual_signature,
-#     )
-
-#     if response:
-#         print("Webhook verified")
-
-       
-#     else:
-#         print("Invalid webhook signature")
-        
-#     return jsonify(success=True)
-
-#     print(request.json)
-
-
-#     return jsonify("data receieved "),200
-    
-
-
-
-
+        return jsonify({"error": "Invalid contact data"}), 400
