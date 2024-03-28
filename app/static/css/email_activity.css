@@ -94,7 +94,9 @@
     text-align: left;
     width: 300px;
 }
-
+.field-value{
+    text-align: right;
+}
 .dropdown {
     margin-top: 1%;
     cursor: pointer;
