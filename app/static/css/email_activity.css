@@ -45,7 +45,7 @@
 
 }
 
-.email-header-block {
+.header-block {
     display: flex;
     width: 50%
 }
@@ -57,6 +57,42 @@
     width: 200px;
     margin-left: 1%;
     max-width: max-content;
+}
+
+.from-subject {
+    font-size: 0.8em; /* Adjust font size if needed */
+    color: #646464;
+    display: inline; /* Make sure it's inline */
+    margin-top: 20px;
+    
+}
+
+.form-subject {
+    color: #03989E;
+    width: 700px;
+    margin-left: 1%;
+    flex: 1; /* Allow it to take up remaining space */
+}
+.form-dropdown {
+    margin-top: 20px;
+    cursor: pointer;
+}
+.form-feilds{
+    display: flex;
+    justify-content: space-between;
+    border-top: #efefef 1px solid;
+    
+    padding: 20px 20px ;
+    width: 90%;
+    text-align: center;
+    margin: auto;
+}
+.form-feilds:hover{
+    background-color: #03999e1c;
+}
+.field-title{
+    text-align: left;
+    width: 300px;
 }
 
 .dropdown {
@@ -93,7 +129,7 @@
 .activity-text {
     color: #646464;
     line-height: 1.5;
-    margin-left: 15px;
+    margin-left: 10px;
     font-size: 1em;
     margin-bottom: 10px;
     
@@ -130,7 +166,8 @@
     font-size: .8em;
     width: 10px;
     height: 10px;
-    
+    border: none;
+    background-color: transparent;
 
 
 }
@@ -179,7 +216,7 @@
     padding: 1%;
     
 }
-.note-message{
+.note-body{
     margin-left: 15px; 
     color: #646464;
     font-size: .8em;
@@ -209,3 +246,32 @@
 #noteDelete:hover{
     text-decoration: underline;
 }
+.delete-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .activity-container {
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+  small{
+    font-size: .8em;
+    
+  }
+
+  .marketing-title{
+    width: 900px;
+    margin-bottom: 10px;
+  }
+  .marketing-subject{
+    font-size: .8em;
+    display: inline;
+    
+  }
+  .head{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+  }

@@ -727,12 +727,19 @@ button:active {
 
 /* book a tour form */
 .bookTourButton{
-    background-color: #FF914C;
-    color: white;
+    background-color:transparent;
+    color:#FF914C;
     padding: 15px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.bookTourButton p{
+   font-weight: 400;
 }
 #bookingTour{
     position: fixed;
