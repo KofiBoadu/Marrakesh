@@ -27,13 +27,13 @@ def send_file_email(subject, sender, recipients, text_body, html_body=None):
     app = create_app()
 
     with app.app_context():
-        mail = current_app.extensions.get('mail')
+        the_mail = current_app.extensions.get('mail')
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = text_body
         if html_body is not None:
             msg.html = html_body
         try:
-            mail.send(msg)
+            the_mail.send(msg)
             return True
         except Exception as e:
             current_app.logger.error(f'Failed to send email: {e}')

@@ -1,21 +1,20 @@
-from flask import render_template, request, redirect, url_for, flash, session
-from app.models import get_all_contacts_information, get_all_upcoming_travel_packages, add_new_contact, \
+from flask import render_template, request, redirect, url_for, session
+from app.models import get_all_contacts_information, add_new_contact, \
     get_destination_id
-from app.models import get_travel_package_id, get_contact_id, book_a_tour_for_a_contact, get_all_destinations, \
+from app.models import get_contact_id, get_all_destinations, \
     create_new_tour_packages
 from app.models import check_contact_exists, all_states
-from app.customers import customers_bp
-import datetime
+from app.contacts import contacts_bp
+
 import math
 from flask_login import login_required, current_user
-from app.extension import cache
+
 from app.models import format_phone_number, remove_a_paid_contact, get_total_num_of_contacts
-from app.customer_models import fetch_customer_details, update_full_contact_details, update_tour_bookings
+from app.contacts_models import fetch_contact_details, update_full_contact_details
 from flask import jsonify
-import logging
 
 
-@customers_bp.route('/', methods=['GET', 'POST'])
+@contacts_bp.route('/', methods=['GET', 'POST'])
 @login_required
 # @cache.cached(timeout=240)
 def home_page():
@@ -26,9 +25,9 @@ def home_page():
         search = request.form.get('search_query')
         items_per_page = request.args.get('items_per_page', default=50, type=int)
         username = session.get('username', 'Guest')
-        year = datetime.datetime.now().year
+        # year = datetime.datetime.now().year
         customers = get_all_contacts_information(page, items_per_page, search)
-        # available_dates= get_all_upcoming_travel_packages()
+
         destinations = get_all_destinations()
         states = all_states()
 
@@ -39,17 +38,17 @@ def home_page():
                                username=username, customers_total=customers_total, page=page, total_pages=total_pages)
 
 
-@customers_bp.route('/details', methods=['GET'])
+@contacts_bp.route('/details', methods=['GET'])
 @login_required
 def get_customer_details():
     customer_id = request.args.get('customer_id')
     print("Requested Customer ID:", customer_id)
-    # Fetching customer details from the database
-    the_details = fetch_customer_details(customer_id)
-    # Assuming the_details is a list of tuples and we're interested in the first tuple
+
+    the_details = fetch_contact_details(customer_id)
+
     if the_details:
         customer = the_details[0]  # Extract the first tuple
-        # Convert tuple to dictionary for JSON response
+
         customer_dict = {
             "customer_id": customer[0],
             "first_name": customer[1],
@@ -63,7 +62,7 @@ def get_customer_details():
         return jsonify({"error": "Customer not found"}), 404
 
 
-@customers_bp.route('/update_details', methods=['POST'])
+@contacts_bp.route('/update_details', methods=['POST'])
 @login_required
 def send_update():
     customer_id = request.form.get('updatecustomer_id')
@@ -76,16 +75,16 @@ def send_update():
 
     update_full_contact_details(customer_id, first_name, last_name, email, phone, gender, state)
 
-    return redirect(url_for("customers.home_page"))
+    return redirect(url_for("contacts.home_page"))
 
 
-@customers_bp.context_processor
+@contacts_bp.context_processor
 @login_required
 def context_processor():
     return dict(format_phone_number=format_phone_number)
 
 
-@customers_bp.route('/delete_customer', methods=['POST'])
+@contacts_bp.route('/delete_customer', methods=['POST'])
 @login_required
 def delete_customer():
     customer_id = request.form.get("customer_id")
@@ -93,10 +92,10 @@ def delete_customer():
         return redirect(url_for("customers.home_page"))
     else:
         remove_a_paid_contact(customer_id)
-        return redirect(url_for("customers.home_page"))
+        return redirect(url_for("contacts.home_page"))
 
 
-@customers_bp.route('/add_customer', methods=['POST'])
+@contacts_bp.route('/add_customer', methods=['POST'])
 @login_required
 def adding_new_contact():
     if request.method == 'POST':
@@ -113,10 +112,10 @@ def adding_new_contact():
             add_new_contact(first_name, last_name, email, phone, gender, state, lead_status)
             contact_id = get_contact_id(email)
             if contact_id:
-                return redirect(url_for("profiles.customer_profile", contact_id=contact_id))
+                return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
-@customers_bp.route('/add_new_tours', methods=['POST'])
+@contacts_bp.route('/add_new_tours', methods=['POST'])
 @login_required
 def add_new_tours():
     if request.method == 'POST':
@@ -129,17 +128,15 @@ def add_new_tours():
         destination_id = get_destination_id(destination)
         create_new_tour_packages(tour_name, start_date, end_date, tour_price, destination_id, tour_type)
 
-    return redirect(url_for("customers.home_page"))
+    return redirect(url_for("contacts.home_page"))
 
 
-@customers_bp.route('/check-email/contact-existance', methods=['POST'])
-def validate_contact_existance():
+@contacts_bp.route('/check-email/contact-existence', methods=['POST'])
+def validate_contact_existence():
     data = request.get_json()
     email = data.get('email')
-    contact_id = check_contact_exists(email)  # This function should return None if contact does not exist
+    contact_id = check_contact_exists(email)
     if contact_id:
-        # Return JSON indicating the contact exists along with the contact_id
         return jsonify({'exists': True, 'contact_id': contact_id})
     else:
-        # Return JSON indicating the contact does not exist
         return jsonify({'exists': False})

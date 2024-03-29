@@ -5,9 +5,7 @@ from urllib.parse import urlparse
 import logging
 
 
-
-
-#creates a connection my database
+# creates a connection my database
 def create_databaseConnection():
     database_url = os.getenv('JAWSDB_URL')
     if database_url:
@@ -33,8 +31,7 @@ def create_databaseConnection():
         raise ValueError("DATABASE_URL not set")
 
 
-
-#this function gets the customer ID
+# this function gets the customer ID
 def get_contact_id(email_address, connection):
     cursor = connection.cursor(dictionary=True)
     try:
@@ -46,8 +43,7 @@ def get_contact_id(email_address, connection):
         cursor.close()
 
 
-
-#inserts the metrics to my metrics table
+# inserts the metrics to my metrics table
 def insert_event_data(campaign_id, contact_id, event_type, event_timestamp, connection):
     cursor = connection.cursor()
     try:
@@ -57,12 +53,10 @@ def insert_event_data(campaign_id, contact_id, event_type, event_timestamp, conn
         """
         cursor.execute(sql, (campaign_id, contact_id, event_type, event_timestamp))
         connection.commit()
-        print(f"Inserted event data for campaign_id: {campaign_id}, customer_id: {contact_id} event type:  {event_type}")
+        print(
+            f"Inserted event data for campaign_id: {campaign_id}, customer_id: {contact_id} event type:  {event_type}")
     finally:
         cursor.close()
-
-
-
 
 
 def lambda_handler(event, context):

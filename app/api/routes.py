@@ -1,12 +1,11 @@
 from flask import request, jsonify, abort
 from . import api_blueprint
-from .config import auth, create_new_leads, standardized_model_wordpress, create_new_form_submission, add_new_form_submission_data, \
+from .config import auth, create_new_leads, standardized_model_wordpress, create_new_form_submission, \
+    add_new_form_submission_data, \
     standardized_model_facebook, is_spam
 import os
 import paypalrestsdk
 from app.models import check_contact_exists
-
-
 
 paypalrestsdk.configure({
     'mode': 'live',

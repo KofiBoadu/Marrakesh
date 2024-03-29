@@ -63,16 +63,12 @@ function showModal() {
 }
 
 
-// function showUpdateModal() {
-//     document.getElementById('updateModal').style.display = 'block';
-// }
-
 
 function showUpdateModal() {
     const customerId = document.getElementById('customerIdToUpdate').value;
 
 
-    fetch(`/customers/details?customer_id=${customerId}`)
+    fetch(`/contacts/details?customer_id=${customerId}`)
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -118,23 +114,7 @@ function closeModal() {
     var deleteConfirmForm = document.getElementById('deleteConfirmForm');
     deleteConfirmForm.style.display = 'none';
 
-    // Uncheck all checkboxes that might have been checked
-    // var checkboxes = document.querySelectorAll('.delete-checkbox');
-    // checkboxes.forEach(function(checkbox) {
-    //     checkbox.checked = false;
-    // });
 
-    // Reset any other dynamic elements in the modal to their default state
-    // For example, if you have a message element that shows the result of the deletion, hide it or reset its text
-    // document.getElementById('resultMessage').style.display = 'none'; // Hide or reset other elements as needed
-
-    // If there's a delete button that needs to be hidden
-    // var deleteButton = document.getElementById('deleteButton');
-    // if (deleteButton) {
-    //     deleteButton.style.display = 'none';
-    // }
-
-    // If you're keeping track of the ID to delete somewhere, clear that too
     document.getElementById('customerIdToDelete').value = '';
 
 }
@@ -247,12 +227,11 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(event) {
         const query = searchInput.value.trim();
         if (query.length === 0) {
-            event.preventDefault(); // Prevent form submission if the search query is empty
-            // Optionally redirect to home here too, if immediate redirection is desired
-            // redirectToHomePage();
+            event.preventDefault();
+
             return false;
         }
-        // Note: No need to clear the search here as we want to keep the input after submission
+
     });
 });
 
@@ -283,12 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// check to if the contact exist 
-
-// document.getElementById('leadStatus').addEventListener('change', function() {
-//     var displayStyle = this.value === 'customer' ? 'block' : 'none';
-//     document.getElementById('additionalFields').style.display = displayStyle;
-// });
 
 
 
@@ -303,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        fetch('/customers/check-email/contact-existance', {
+        fetch('/contacts/check-email/contact-existence', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

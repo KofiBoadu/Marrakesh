@@ -14,7 +14,7 @@
         <div class="marketing_title">
             <h3 class="marketing_title--header">Marketing Email</h3>
         </div>
-        <form class="marketing-form" action="{{url_for('marketing.create_marketingEmails')}}" method="post">
+        <form id="marketing-email-form" data-email-campaign-url="{{ url_for('marketing.send_marketing_emails') }}"  class="marketing-form"  method="post">
             <div class="marketing-form-group">
                 <label for="fromAddress">From name or address:</label>
                 <select id="fromAddress" name="fromAddress" class="marketing-form-control">
@@ -45,7 +45,7 @@
                 <input type="hidden" name="emailBody">
             </div>
             
-            <button type="submit" class="marketing-send btn">Send</button>
+            <button type="submit" id="sendMarketing-EmailButton" class="marketing-send btn">Send</button>
         </form>
     </div>
 

@@ -1,5 +1,5 @@
 from . import email_customers
-from app.emails import send_email,customer_email_interactions,delete_customer_email
+from app.emails import send_email,contact_email_interactions,delete_contacts_email
 from flask import request, redirect, url_for, flash
 from flask_login import login_required,current_user
 
@@ -20,7 +20,7 @@ def send_customer_email():
 
    
 
-    store_email_details = customer_email_interactions(contact_id, subject, body, status,user)
+    store_email_details = contact_email_interactions(contact_id, subject, body, status, user)
 
     return redirect(url_for('profiles.customer_profile', contact_id=contact_id))
 
@@ -29,6 +29,6 @@ def send_customer_email():
 @email_customers.route('/delete-email/<int:contact_id>/<int:email_id>',methods=['POST'])
 @login_required
 def delete_email(email_id,contact_id):
-    delete_the_email=delete_customer_email(email_id)
+    delete_the_email=delete_contacts_email(email_id)
     contact_id= contact_id
     return redirect(url_for('profiles.customer_profile', contact_id=contact_id))

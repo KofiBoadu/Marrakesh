@@ -1,7 +1,5 @@
 from .models import create_database_connection
 
-
-
 known_fields = {
     'message',
     'how_many_travelers',
@@ -23,17 +21,15 @@ known_fields = {
     'time',
     'page_url',
     'form_name',
-     "Accommodation Type",
-     "Budget (Budget Excluding Flights)",
+    "Accommodation Type",
+    "Budget (Budget Excluding Flights)",
     " Destination",
-     "Message",
-     "Time",
+    "Message",
+    "Time",
     " What Is The Best Way To Contact You?",
     'Are you prepared to secure your spot with a deposit within the next week?'
 
-  }
-
-
+}
 
 
 def profile_details(contact_id):
@@ -69,7 +65,10 @@ def profile_details(contact_id):
             return results[0]
         else:
             # Handle case where the contact exists but has no bookings
-            cursor.execute("SELECT CONCAT(first_name, ' ', last_name) AS full_name, email_address, phone_number, state_address, lead_status, gender FROM contacts WHERE contact_id = %s", (contact_id,))
+            cursor.execute(
+                "SELECT CONCAT(first_name, ' ', last_name) AS full_name, email_address, phone_number, state_address, "
+                "lead_status, gender FROM contacts WHERE contact_id = %s",
+                (contact_id,))
             results = cursor.fetchall()
             return results[0] + ('', 0) if results else None
     except Exception as e:
@@ -80,9 +79,6 @@ def profile_details(contact_id):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
-
-
 
 
 def get_customer_bookings(contact_id):
@@ -123,11 +119,8 @@ def get_customer_bookings(contact_id):
             database_connection.close()
 
 
-
-
-
 def contact_submissions(contact_id):
-    query="""
+    query = """
 
         SELECT
             c.first_name,
@@ -159,11 +152,5 @@ def contact_submissions(contact_id):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
-
-
-# print(contact_submissions(413))
-
-
 
 

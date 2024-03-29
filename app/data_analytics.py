@@ -1,18 +1,19 @@
-from  .models import create_database_connection
-import sys 
-
-
-
-
-
-
-
-
-
-
+from .models import create_database_connection
 
 
 def customers_location_by_state():
+    """
+        Retrieves a count of customers grouped by their state address.
+
+        This function queries the database to count how many customers are from each state or territory, including handling unknown or non-standard state addresses by grouping them under 'Unknown' or 'Other'.
+
+        Returns:
+        - A list of tuples, where each tuple contains a state or territory name (or 'Unknown'/'Other') and the count of customers from that location, ordered by count in descending order.
+
+        Note:
+        - The function handles exceptions by printing an error message but does not interrupt execution flow. The database connection is always closed before the function exits.
+    """
+
     query = """
         SELECT 
         CASE 
@@ -37,7 +38,7 @@ def customers_location_by_state():
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
         cursor.execute(query)
-        result = cursor.fetchall()  # Fetch all the rows in a list of lists.
+        result = cursor.fetchall()
         return result
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -48,19 +49,22 @@ def customers_location_by_state():
             database_connection.close()
 
 
-# data=customers_location_by_state()
-# state_group=[]
-# counts= []
-# for states,count in data:
-# 	state_group.append(states)
-# 	counts.append(count)
+def contacts_by_gender(year=None):
+    """
+        Retrieves a count of contacts grouped by gender, optionally filtered by year.
 
-# print(state_group)
-# print(counts)
+        This function can operate in two modes: if a year is provided, it returns the count of contacts by gender for tours starting or ending in that year; otherwise, it returns the count of all contacts by gender.
 
+        Parameters:
+        - year (int, optional): The year to filter the tour start and end dates. Defaults to None, in which case no year filter is applied.
 
+        Returns:
+        - A list of tuples, where each tuple contains a gender group ('male', 'female', or 'Other') and the count of contacts in that group.
 
-def customers_by_gender(year=None):
+        Note:
+        - Handles database exceptions by printing an error message. The function ensures the database connection is closed before exiting.
+    """
+
     if year:
         query = """
             SELECT 
@@ -94,8 +98,8 @@ def customers_by_gender(year=None):
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, params)  # Use params to safely pass the year
-        result = cursor.fetchall()  # Fetch all the rows in a list of lists.
+        cursor.execute(query, params)
+        result = cursor.fetchall()
         return result
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -106,11 +110,25 @@ def customers_by_gender(year=None):
             database_connection.close()
 
 
-
-
-
 def get_travellers_by_destination_query(year=None):
-    # SQL query to count the number of bookings grouped by destination names
+    """
+        Counts the number of bookings for each destination, optionally filtered by year.
+
+        This function aggregates the total number of bookings for each destination. If a year is specified, it filters the bookings to only those starting within the given year.
+
+        Parameters:
+        - year (int, optional): The year to filter bookings by their start date. If None, bookings for all years are counted.
+
+        Returns:
+        - A list of tuples, each containing a destination name and the number of bookings for that destination, ordered by the number of bookings in descending order.
+
+        Raises:
+        - Exception: If an error occurs during query execution, an exception is raised with details of the error.
+
+        Note:
+        - The database connection is always properly closed before the function exits, regardless of whether an error occurred.
+    """
+
     query_parts = [
         """
         SELECT
@@ -124,12 +142,9 @@ def get_travellers_by_destination_query(year=None):
             tour_bookings tb ON t.tour_id = tb.tour_id
         """
     ]
-    
-    # If a year is provided, add a WHERE clause to filter the results by that year
+
     if year is not None:
         query_parts.append(f"WHERE YEAR(t.start_date) = {year}")
-
-    # Add GROUP BY and ORDER BY clauses to the query
     query_parts.extend([
         """
         GROUP BY
@@ -139,18 +154,16 @@ def get_travellers_by_destination_query(year=None):
         """
     ])
 
-    # Combine all parts of the query into one full string
     query = " ".join(query_parts)
-    
-    # Execute the query against your database
+
     database_connection = None
     cursor = None
     try:
         database_connection = create_database_connection()  # replace with your actual connection function
         cursor = database_connection.cursor()
         cursor.execute(query)
-        results = cursor.fetchall()  # Fetch the results of the query
-        return results  # Return the results to the caller
+        results = cursor.fetchall()
+        return results
     except Exception as e:
         raise Exception(f"An error occurred while executing the query: {e}")
     finally:
@@ -160,15 +173,23 @@ def get_travellers_by_destination_query(year=None):
             database_connection.close()
 
 
-
-
-
-
-
-
-
 def calculate_annual_gross_revenue(year=None):
-    # Base query to calculate total revenue
+    """
+        Calculates the annual gross revenue from tour bookings, optionally filtered by a specific year.
+
+        This function aggregates the total revenue from all tour bookings, grouping the results by year. If a specific year is provided, it calculates the total revenue for that year only.
+
+        Parameters:
+        - year (int, optional): The year for which to calculate gross revenue. If None, gross revenue for all years is calculated and grouped by year.
+
+        Returns:
+        - A list of tuples, where each tuple contains the year and the corresponding total revenue formatted as a string with two decimal places, or None if an error occurs.
+
+        Note:
+        - The function handles exceptions by printing an error message and returns None in such cases. The database connection is always closed before the function exits.
+    """
+    database_connection = None
+    cursor = None
     query_parts = [
         """
         SELECT
@@ -180,37 +201,32 @@ def calculate_annual_gross_revenue(year=None):
             tours t ON tb.tour_id = t.tour_id
         """
     ]
-    
-    # If a year is provided, add a WHERE clause to filter by that year
+
     if year is not None:
         query_parts.append("WHERE YEAR(t.start_date) = %s")
-    
-    # Add GROUP BY clause, grouping by year unless a specific year is given
+
     query_parts.append("GROUP BY revenue_year")
 
-    # Combine all parts of the query into one full string
     query = " ".join(query_parts)
-    
+
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        
-        # Execute the query with or without the year parameter
+
         if year is not None:
             cursor.execute(query, (year,))
         else:
             cursor.execute(query)
-        
+
         results = cursor.fetchall()
         formatted_results = []
 
-        # Format each year's revenue
         for result in results:
             revenue_year, total_revenue = result
             revenue = float(total_revenue)
             formatted_revenue = f"{revenue:,.2f}"
             formatted_results.append((revenue_year, formatted_revenue))
-        
+
         return formatted_results
 
     except Exception as e:
@@ -221,11 +237,3 @@ def calculate_annual_gross_revenue(year=None):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
-
-
-
-
-
-   

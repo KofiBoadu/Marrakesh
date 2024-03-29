@@ -1,20 +1,18 @@
-from flask import render_template, request, redirect, url_for, flash
+import logging
+
+from flask import render_template, request, redirect, url_for, jsonify
 from . import email_marketing
-from app.mass_email_marketing import send_emails_asynchronously
 from app.user import get_all_users
-from app.emails import our_customers_sincebyYear, get_customers_by_year_or_all
-from app.mass_email_marketing import marketing_Email, all_email_campaign, campaign_open_rate, get_unique_opens, \
-    get_total_opens
+from app.emails import our_customers_since_by_year, get_customers_by_year_or_all
+from app.mass_email_marketing import marketing_email, all_email_campaign, campaign_open_rate, get_unique_opens
 from flask_login import login_required, current_user
 import app.mass_email_marketing as market
-import bleach
 
 
 @email_marketing.route('/emails', methods=['GET'])
 @login_required
 def marketing_emails():
     campaigns = all_email_campaign()
-
     return render_template("email_marketing.html", campaigns=campaigns)
 
 
@@ -24,7 +22,7 @@ def email_campaign_performance(campaign_id):
     # Your code to fetch and display the campaign performance for the given campaign_id
     open_rate = campaign_open_rate(campaign_id)
     unique_opens = get_unique_opens(campaign_id)  # This function would get the number of unique opens
-    total_opens = get_total_opens(campaign_id)
+    total_opens = market.get_total_opens(campaign_id)
 
     click_rate = market.get_click_rate(campaign_id)
     unique_clicks = market.get_unique_clicks(campaign_id)
@@ -50,40 +48,49 @@ def email_campaign_performance(campaign_id):
                            unique_opens=unique_opens, total_opens=total_opens)
 
 
-@email_marketing.route('/sending-emails', methods=['GET', 'POST'])
-@login_required
-def create_marketingEmails():
-    if request.method == 'POST':
-
-        from_address = request.form.get('fromAddress')
-        # print(from_address)
-        email_subject = request.form.get('emailSubject')
-        raw_email_body = request.form.get('emailBody')
-        customers_type = request.form.get('customerType')
-        # email_list=get_customers_by_year_or_all(customers_type)
+@email_marketing.route('/sending-marketing-emails/sending-email-campaign/', methods=['GET', 'POST'])
+def send_marketing_emails():
+    if request.method == "POST":
+        data = request.json
+        print(data)
+        from_address = data['fromAddress']
+        contacts_type = data['customerType']
+        email_subject = data['emailSubject']
+        email_body = data['emailBody']
         user_id = current_user.id
-        email_list = [('daniel', "mrboadu3@gmail.com")]
+        recipient_list = get_customers_by_year_or_all(contacts_type)
+        # email_list = [('daniel', "mrboadu3@gmail.com"), ('kofi', "kboadu16@gmail.com")]
 
-        campaign_id = marketing_Email(
+        campaign_id = marketing_email(
+
             user_id=user_id,
-            total_email_list=len(email_list),
+            total_number_of_email_list=len(recipient_list),
             campaign_subject=email_subject,
-            campaign_body=raw_email_body,
+            campaign_body=email_body,
             campaign_status="sent"
         )
+        try:
+            if campaign_id:
+                market.enqueue_email_task(recipient_list, email_subject, from_address, email_body, campaign_id)
+                performance_url = url_for('marketing.email_campaign_performance',
+                                          campaign_id=campaign_id) + "?message=email_processing" + "&campaign_id=" + str(
+                    campaign_id)
+                return jsonify({"message": "Email tasks queued for sending", "redirectUrl": performance_url})
+            else:
+                logging.error("Failed to create campaign entry in the database.")
+                return jsonify({"error": "Failed to create campaign entry in the database."}), 500
+        except Exception as e:
+            logging.error(f"Error queuing marketing emails: {e}")
+            return jsonify(
+                {"error": "An error occurred while queuing marketing emails.", "redirectUrl": "/marketing/emails"}), 500
 
-        if campaign_id:
+    else:
 
-            send_emails_asynchronously(email_list, email_subject, from_address, raw_email_body, campaign_id)
-        else:
-            print("Failed to create campaign entry in the database.")
+        senders = get_all_users()
 
-        return redirect(url_for("marketing.marketing_emails"))
+        customer_list_by_year = our_customers_since_by_year()
 
-    senders = get_all_users()
-
-    customer_list_byYear = our_customers_sincebyYear()
-    return render_template("sendEmail_marketing.html", senders=senders, customer_list_byYear=customer_list_byYear)
+        return render_template("sendEmail_marketing.html", senders=senders, customer_list_byYear=customer_list_by_year)
 
 
 @email_marketing.route('/campaign/delete/', methods=['POST'])

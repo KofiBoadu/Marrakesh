@@ -4,90 +4,12 @@
 
 {% block content %}
 
-<style>
 
-.metrics-container {
-            width: 100%;
-            text-align: center;
-            border-style: solid;
-        }
-.metric {
-            display: inline-block;
-            margin: 0 20px;
-        }
-.metric-number {
-            font-size: 2em;
-            color: #007bff;
-        }
-.metric-description {
-            font-size: 1em;
-            color: #333;
-        }
+<!--message for emails processing-->
 
-
-
-.receipient-metrics-container {
-            width: 300px; /* Adjust width as needed */
-            background-color: #f9f9f9; /* Light grey background, adjust color as needed */
-            border-left: 4px solid #00bfff; /* Blue left border, adjust color as needed */
-            padding: 10px;
-            box-sizing: border-box;
-            margin-bottom: 100px;
-        }
-.receipient-metrics-container h2 {
-            color: #00bfff; /* Blue text for 'Sent', adjust color as needed */
-            margin: 0;
-            padding: 5px 0; /* Spacing around the 'Sent' title */
-        }
-.receipient-metric-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0; /* Spacing around each metric item */
-        }
-.receipient-metric-item strong {
-            color: #333; /* Dark text for metric names */
-        }
-.receipient-metric-item span {
-            color: #666; /* Lighter text for metric values, adjust as needed */
-        }
-
-
-
-
-
-.recipient-table{
-    margin-top: 20px;
-
-   
-}
-.email-table {
- 
-    border-collapse: collapse;
-   
-  }
-  .email-table th,
-  .email-table td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  .email-table th {
-    background-color: #f2f2f2;
-  }
-  .email-table tr:hover {background-color: #f5f5f5;}
-  .opened {
-    color: green;
-  }
-  .delivered {
-    color: grey;
-  }
-
-
-</style>
-
-
-
-
-
+<div id="email-processing-message"  style="display:none;" >
+    <p>Email sending is currently processing . Return back in a few minutes to see metrics!</p>
+</div>
 
 
 
@@ -208,7 +130,7 @@
       <tr>
         <td>
           <!-- Full name as a clickable link -->
-          <a href="{{ url_for('profiles.customer_profile', contact_id=contact_id) }}">
+          <a href="{{ url_for('profiles.contact_profile', contact_id=contact_id) }}">
             {{ full_name }}
           </a>
           <!-- Hidden inputs for storing additional data -->
@@ -221,12 +143,6 @@
     </tbody>
   </table>
 </div>
-
-
-
-
-
-
 
 
 
