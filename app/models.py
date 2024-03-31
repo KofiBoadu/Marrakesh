@@ -214,7 +214,7 @@ def get_all_contacts_information(page=1, items_per_page=25, search_query=''):
 
     if len(contacts) == 0:
 
-        return False
+        return []
 
     else:
 

@@ -1,15 +1,15 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
-from app.contacts_models import updating_contact_status, update_contact_name, update_contact_phone, \
+from app.contacts_models import updating_contact_status, update_contact_phone, \
     change_contact_bookings, get_contact_activities, updating_contact_state, \
     bookings_updates_logs, update_contact_email, update_contact_name
 from app.contacts_notes import save_contact_notes, delete_contacts_notes
 from app.emails import send_email
 from app.models import book_a_tour_for_a_contact, format_phone_number, get_all_upcoming_travel_packages, \
     get_travel_package_id, all_states
-from app.profile_models import get_customer_bookings, contact_submissions
-from app.profile_models import profile_details
+from app.profile_models import profile_details, get_customer_bookings, contact_submissions, contact_gender_update
+
 from . import contacts_profile
 
 
@@ -193,4 +193,17 @@ def confirm_contact_tour_bookings():
             updating_contact_status(new_status, contact_id)
         return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
     else:
+        return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+@contacts_profile.route('/update-contact=gender', methods=['POST'])
+@login_required
+def update_contact_gender():
+    contact_id = request.form.get('contact_id')
+    gender = request.form.get('new_gender')
+    if contact_id:
+        contact_gender_update(contact_id, gender)
+        return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+    else:
+        print("there was an issue with updating the gender")
         return redirect(url_for("profiles.contact_profile", contact_id=contact_id))

@@ -23,7 +23,7 @@ def create_app():
     logger = create_logger(app)
     logger.setLevel(logging.DEBUG)
 
-    @app.route('/')
+    @app.route('/contacts/home')
     def redirect_to_login():
         return redirect(url_for('users.login'))
 

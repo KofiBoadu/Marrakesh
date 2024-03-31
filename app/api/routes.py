@@ -37,16 +37,24 @@ spammy_patterns = {
 def add_new_lead():
     request_data = request.form.to_dict()
     source = "wordpress"
-    if is_spam(request_data):
-        print("spam")
-        abort(400, description="Spam detected")
+    # if is_spam(request_data):
+    #     print("spam")
+    #     abort(400, description="Spam detected")
+    #
+    # spam_status, reasons = is_spam(request_data)
+    # if spam_status:
+    #     print(f"Submission flagged as spam for the following reasons: {reasons}")
+    #     # Handle spam submission accordingly
+    # else:
+    #     print("Submission not flagged as spam.")
 
-    token = request.args.get('token')
-    if token != SECRET_TOKEN:
-        abort(403)
+    # token = request.args.get('token')
+    # if token != SECRET_TOKEN:
+    #     abort(403)
 
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
+        print(data)
     else:
         data = request.json
 

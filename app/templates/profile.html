@@ -223,12 +223,6 @@
 
 
 
-
-
-
-
-
-
   <!-- tours booked -->
 
   <div class="profile-detail-container">
@@ -253,7 +247,6 @@
           </li>
           {% endfor %}
         </ul>
-
 
 
       </form>
@@ -504,6 +497,28 @@
 </div>
 
 
+<!--update contact gender-->
+<div class="update-contact-status" id="statusformContainer" class="hidden" style="display: block;">
+  <img class="updateStatusClose" onclick="closeUpdateStatusForm()" width="16" height="16"
+    src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
+  <form action="{{ url_for('profiles.update_contact_gender') }}" method="post">
+    <input type="hidden" id="status_of_the_contact" name="contact_id" value="{{ contact_id }}">
+    <div class="update-status">
+      <label for="state">Gender</label>
+      <select name="new_gender">
+
+        <option>Male</option>
+        <option>Female</option>
+
+      </select>
+    </div>
+    <div>
+      <button class="save_new_name" type="submit">Save</button>
+    </div>
+
+  </form>
+
+</div>
 
 
 

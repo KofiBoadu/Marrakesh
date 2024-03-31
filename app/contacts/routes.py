@@ -14,18 +14,16 @@ from app.contacts_models import fetch_contact_details, update_full_contact_detai
 from flask import jsonify
 
 
-@contacts_bp.route('/', methods=['GET', 'POST'])
+@contacts_bp.route('/contacts/home', methods=['GET', 'POST'])
 @login_required
-# @cache.cached(timeout=240)
 def home_page():
-    if request.method == 'GET' or request.method == "POST":
+    if request.method == 'GET':
         login_user = current_user
         login_user_email = login_user.email_address
         page = request.args.get('page', 1, type=int)
         search = request.form.get('search_query')
         items_per_page = request.args.get('items_per_page', default=50, type=int)
         username = session.get('username', 'Guest')
-        # year = datetime.datetime.now().year
         customers = get_all_contacts_information(page, items_per_page, search)
 
         destinations = get_all_destinations()
@@ -36,6 +34,24 @@ def home_page():
         return render_template("homepage.html", items_per_page=items_per_page, states=states,
                                login_user_email=login_user_email, customers=customers, destinations=destinations,
                                username=username, customers_total=customers_total, page=page, total_pages=total_pages)
+
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        data = request.get_json()
+
+        search = data.get('search_query', '')
+        page = request.args.get('page', 1, type=int)
+        items_per_page = request.args.get('items_per_page', default=50, type=int)
+
+        customers = get_all_contacts_information(page, items_per_page, search)
+        search_results_total = len(customers)
+
+        customers_total = get_total_num_of_contacts() if search == '' else search_results_total
+
+        if not customers:
+            customers = []
+
+        html = render_template('table_body.html', customers=customers)
+        return jsonify(html=html, total_records=customers_total)
 
 
 @contacts_bp.route('/details', methods=['GET'])

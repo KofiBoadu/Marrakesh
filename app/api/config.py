@@ -25,7 +25,8 @@ def verify_password(email, password):
         return user
 
 
-def create_new_leads(first_name=None, last_name=None, email=None, phone=None, gender=None, lead_status="lead", state=None):
+def create_new_leads(first_name=None, last_name=None, email=None, phone=None, gender=None, lead_status="lead",
+                     state=None):
     query = """
         INSERT INTO contacts
         (first_name, last_name, state_address, email_address, phone_number, gender, lead_status)
@@ -189,14 +190,33 @@ def is_gibberish_name(name):
     return False
 
 
-def is_spam(submission):
-    if is_invalid_date(submission.get('From Date', '')) or is_invalid_date(submission.get('To Date', '')):
-        return True
-    if has_unrealistic_numbers(submission):
-        return True
-    if contains_spam_content(submission):
-        return True
-    if is_gibberish_name(submission.get('First Name', '')) or is_gibberish_name(submission.get('Last Name', '')):
-        return True
-    return False
+# def is_spam(submission):
+#     if is_invalid_date(submission.get('From Date', '')) or is_invalid_date(submission.get('To Date', '')):
+#         return True
+#     if has_unrealistic_numbers(submission):
+#         return True
+#     if contains_spam_content(submission):
+#         return True
+#     if is_gibberish_name(submission.get('First Name', '')) or is_gibberish_name(submission.get('Last Name', '')):
+#         return True
+#     return False
 
+def is_spam(submission):
+    spam_reasons = []
+
+    if is_invalid_date(submission.get('From Date', '')) or is_invalid_date(submission.get('To Date', '')):
+        spam_reasons.append('Invalid date format')
+
+    if has_unrealistic_numbers(submission):
+        spam_reasons.append('Unrealistic numbers')
+
+    if contains_spam_content(submission):
+        spam_reasons.append('Spam content detected')
+
+    if is_gibberish_name(submission.get('First Name', '')) or is_gibberish_name(submission.get('Last Name', '')):
+        spam_reasons.append('Gibberish name')
+
+    if spam_reasons:
+        print(f"Spam detected due to: {', '.join(spam_reasons)}")  # Log the reasons for debugging or monitoring
+        return True, spam_reasons  # Return both the spam status and the reasons
+    return False, spam_reasons

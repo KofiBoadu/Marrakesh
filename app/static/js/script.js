@@ -188,52 +188,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // dynamically submits and reoute to homepage when there is any search in the search box
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const form = document.getElementById('searchForm');
-    // Assuming you have a way to define or get the home URL
-    const homeUrl = form.getAttribute('data-home-url') || '/'; // Fallback to root if not specified
-
-    // Function to clear search input and storage
-    function clearSearch() {
-        searchInput.value = '';
-        localStorage.removeItem('searchQuery'); // Using localStorage for persistence
-    }
-
-    // Redirect to home page if input is empty
-    function redirectToHomePage() {
-        window.location.href = homeUrl; // Redirect user to the home page
-    }
-
-    // Load any saved search query from storage and set it as the input value
-    const savedQuery = localStorage.getItem('searchQuery');
-    if (savedQuery) {
-        searchInput.value = savedQuery;
-    }
-
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value.trim();
-        localStorage.setItem('searchQuery', query);
-
-        // Auto-submit logic: submit form if query length is at least 3 characters
-        if (query.length >= 3) {
-            form.submit(); // Trigger form submission
-        } else if (query.length === 0) {
-            // Redirect to home page if the input becomes empty
-            redirectToHomePage();
-        }
-    });
-
-    form.addEventListener('submit', function(event) {
-        const query = searchInput.value.trim();
-        if (query.length === 0) {
-            event.preventDefault();
-
-            return false;
-        }
-
-    });
-});
+//document.addEventListener('DOMContentLoaded', function() {
+//    const searchInput = document.getElementById('searchInput');
+//    const form = document.getElementById('searchForm');
+//    // Assuming you have a way to define or get the home URL
+//    const homeUrl = form.getAttribute('data-home-url') || '/'; // Fallback to root if not specified
+//
+//    // Function to clear search input and storage
+//    function clearSearch() {
+//        searchInput.value = '';
+//        localStorage.removeItem('searchQuery'); // Using localStorage for persistence
+//    }
+//
+//    // Redirect to home page if input is empty
+//    function redirectToHomePage() {
+//        window.location.href = homeUrl; // Redirect user to the home page
+//    }
+//
+//    // Load any saved search query from storage and set it as the input value
+//    const savedQuery = localStorage.getItem('searchQuery');
+//    if (savedQuery) {
+//        searchInput.value = savedQuery;
+//    }
+//
+//    searchInput.addEventListener('input', function() {
+//        const query = searchInput.value.trim();
+//        localStorage.setItem('searchQuery', query);
+//
+//        // Auto-submit logic: submit form if query length is at least 3 characters
+//        if (query.length >= 3) {
+//            form.submit(); // Trigger form submission
+//        } else if (query.length === 0) {
+//            // Redirect to home page if the input becomes empty
+//            redirectToHomePage();
+//        }
+//    });
+//
+//    form.addEventListener('submit', function(event) {
+//        const query = searchInput.value.trim();
+//        if (query.length === 0) {
+//            event.preventDefault();
+//
+//            return false;
+//        }
+//
+//    });
+//});
 
 
 
@@ -314,6 +314,76 @@ document.addEventListener("DOMContentLoaded", function() {
   
     document.getElementById("popUp").style.display = 'none';
 });
+
+
+
+
+
+//This optimizes the search function by just updating the table records and not the whole page
+document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    const homeUrl = searchForm.getAttribute('data-home-url') || '/';
+
+    // Load any saved search query from storage and set it as the input value
+    const savedQuery = localStorage.getItem('searchQuery');
+    if (savedQuery) {
+        searchInput.value = savedQuery;
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+        localStorage.setItem('searchQuery', query);
+
+        if (query.length === 0) {
+            performSearch(); // Redirect user to the home page
+        } else if (query.length >= 3) {
+            performSearch(); // Perform the AJAX search
+        }
+    });
+
+    searchForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        performSearch();
+    });
+});
+
+function performSearch() {
+    console.log("performSearch called");
+    const homeUrl = searchForm.getAttribute('data-home-url');
+    const searchQuery = document.getElementById('searchInput').value.trim();
+
+    if (searchQuery.length >= 3 || searchQuery.length ===0) {
+        fetch(homeUrl, {
+            method: 'POST',
+            body: JSON.stringify({ search_query: searchQuery }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            updateTable(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+
+function updateTable(data) {
+    document.getElementById('table-body').innerHTML = data.html;
+    if (data.total_records !== undefined) {
+        const totalElement = document.getElementById('total');
+        totalElement.textContent = `${parseInt(data.total_records).toLocaleString()} Records`;
+    }
+}
 
 
 

@@ -154,3 +154,29 @@ def contact_submissions(contact_id):
             database_connection.close()
 
 
+def contact_gender_update(contact_id, gender):
+    query = """
+    UPDATE contacts
+    SET gender = %s
+    WHERE contact_id = %s;
+    """
+    cursor = None
+    database_connection = None
+    try:
+
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (gender, contact_id))
+
+        database_connection.commit()
+    except Exception as e:
+
+        print(f"An error occurred: {e}")
+        if database_connection:
+            database_connection.rollback()
+    finally:
+
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
