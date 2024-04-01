@@ -145,38 +145,36 @@ function validateDeleteInput(input) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Function to handle changes in items per page
-    function changeItemsPerPage(selectObject) {
-        var selectedValue = selectObject.value; // Get the selected value from the dropdown
-        var currentItemsPerPage = getCurrentItemsPerPage(); // Get the current items per page from the URL
+// document.addEventListener('DOMContentLoaded', function() {
+  
+//     function changeItemsPerPage(selectObject) {
+//         var selectedValue = selectObject.value; 
+//         var currentItemsPerPage = getCurrentItemsPerPage(); 
 
-        // Only redirect if the selected value is different from the current value
-        if (selectedValue.toString() !== currentItemsPerPage) {
-            var searchParams = new URLSearchParams(window.location.search);
-            searchParams.set('items_per_page', selectedValue);
-            searchParams.set('page', 1); // Optionally reset to the first page
+        
+//         if (selectedValue.toString() !== currentItemsPerPage) {
+//             var searchParams = new URLSearchParams(window.location.search);
+//             searchParams.set('items_per_page', selectedValue);
+//             searchParams.set('page', 1); 
 
-            // Redirect to the same route with updated query parameters
-            window.location.search = searchParams.toString();
-        }
-    }
+            
+//             window.location.search = searchParams.toString();
+//         }
+//     }
 
-    // Function to get the current 'items_per_page' value from the URL
-    function getCurrentItemsPerPage() {
-        var params = new URLSearchParams(window.location.search);
-        return params.get('items_per_page') || '50'; // Default to 50 if not present
-    }
+   
+//     function getCurrentItemsPerPage() {
+//         var params = new URLSearchParams(window.location.search);
+//         return params.get('items_per_page') || '50'; 
+//     }
 
-    // Attach the change event listener to the dropdown
-    var selectElement = document.getElementById('items-per-page');
-    if (selectElement) {
-        selectElement.addEventListener('change', function() {
-            changeItemsPerPage(this);
-        });
-    }
-});
-
+//     var selectElement = document.getElementById('items-per-page');
+//     if (selectElement) {
+//         selectElement.addEventListener('change', function() {
+//             changeItemsPerPage(this);
+//         });
+//     }
+// });
 
 
 
@@ -186,55 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-// dynamically submits and reoute to homepage when there is any search in the search box
-//document.addEventListener('DOMContentLoaded', function() {
-//    const searchInput = document.getElementById('searchInput');
-//    const form = document.getElementById('searchForm');
-//    // Assuming you have a way to define or get the home URL
-//    const homeUrl = form.getAttribute('data-home-url') || '/'; // Fallback to root if not specified
-//
-//    // Function to clear search input and storage
-//    function clearSearch() {
-//        searchInput.value = '';
-//        localStorage.removeItem('searchQuery'); // Using localStorage for persistence
-//    }
-//
-//    // Redirect to home page if input is empty
-//    function redirectToHomePage() {
-//        window.location.href = homeUrl; // Redirect user to the home page
-//    }
-//
-//    // Load any saved search query from storage and set it as the input value
-//    const savedQuery = localStorage.getItem('searchQuery');
-//    if (savedQuery) {
-//        searchInput.value = savedQuery;
-//    }
-//
-//    searchInput.addEventListener('input', function() {
-//        const query = searchInput.value.trim();
-//        localStorage.setItem('searchQuery', query);
-//
-//        // Auto-submit logic: submit form if query length is at least 3 characters
-//        if (query.length >= 3) {
-//            form.submit(); // Trigger form submission
-//        } else if (query.length === 0) {
-//            // Redirect to home page if the input becomes empty
-//            redirectToHomePage();
-//        }
-//    });
-//
-//    form.addEventListener('submit', function(event) {
-//        const query = searchInput.value.trim();
-//        if (query.length === 0) {
-//            event.preventDefault();
-//
-//            return false;
-//        }
-//
-//    });
-//});
-
+   
 
 
 
@@ -384,6 +334,71 @@ function updateTable(data) {
         totalElement.textContent = `${parseInt(data.total_records).toLocaleString()} Records`;
     }
 }
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const itemsPerPageSelect = document.getElementById('items-per-page');
+    const homeUrl = searchForm.getAttribute('data-home-url') || '/'; // Assuming '/contacts/home' is the correct endpoint
+
+    function fetchAndUpdateContent(page) {
+        const itemsPerPage = itemsPerPageSelect.value;
+        const searchQuery = searchInput ? searchInput.value.trim() : '';
+
+        fetch(`${homeUrl}?page=${page}&items_per_page=${itemsPerPage}&search_query=${encodeURIComponent(searchQuery)}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById('table-body');
+            const paginationControls = document.querySelector('.pagination-controls');
+            if (tableBody && paginationControls) {
+                tableBody.innerHTML = data.table_body_html;
+                paginationControls.innerHTML = data.pagination_html;
+                attachEventListenersToPaginationLinks();
+            } else {
+                console.error('Could not find table body or pagination controls elements.');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+    }
+
+    function attachEventListenersToPaginationLinks() {
+        document.querySelectorAll('.pagination-controls .pagination a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const page = new URL(this.href).searchParams.get('page');
+                fetchAndUpdateContent(page);
+            });
+        });
+    }
+
+    attachEventListenersToPaginationLinks();
+
+    if (itemsPerPageSelect) {
+        itemsPerPageSelect.addEventListener('change', function() {
+            fetchAndUpdateContent(1);
+        });
+    }
+});
+
+
+
+
 
 
 

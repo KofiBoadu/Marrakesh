@@ -8,7 +8,6 @@ from app.contacts import contacts_bp
 
 import math
 from flask_login import login_required, current_user
-
 from app.models import format_phone_number, remove_a_paid_contact, get_total_num_of_contacts
 from app.contacts_models import fetch_contact_details, update_full_contact_details
 from flask import jsonify
@@ -31,9 +30,28 @@ def home_page():
 
         customers_total = get_total_num_of_contacts()
         total_pages = math.ceil(customers_total / items_per_page)
+
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            table_body_html = render_template('table_body.html', customers=customers)
+            pagination_html = render_template('home_paginations.html', page=page, total_pages=total_pages)
+            return jsonify({
+                'table_body_html': table_body_html,
+                'pagination_html': pagination_html
+            })
+
+
+
+
+
+
         return render_template("homepage.html", items_per_page=items_per_page, states=states,
                                login_user_email=login_user_email, customers=customers, destinations=destinations,
                                username=username, customers_total=customers_total, page=page, total_pages=total_pages)
+
+
+
+
 
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         data = request.get_json()
@@ -52,6 +70,8 @@ def home_page():
 
         html = render_template('table_body.html', customers=customers)
         return jsonify(html=html, total_records=customers_total)
+
+
 
 
 @contacts_bp.route('/details', methods=['GET'])
@@ -78,6 +98,9 @@ def get_customer_details():
         return jsonify({"error": "Customer not found"}), 404
 
 
+
+
+
 @contacts_bp.route('/update_details', methods=['POST'])
 @login_required
 def send_update():
@@ -94,10 +117,15 @@ def send_update():
     return redirect(url_for("contacts.home_page"))
 
 
+
+
 @contacts_bp.context_processor
 @login_required
 def context_processor():
     return dict(format_phone_number=format_phone_number)
+
+
+
 
 
 @contacts_bp.route('/delete_customer', methods=['POST'])
@@ -109,6 +137,9 @@ def delete_customer():
     else:
         remove_a_paid_contact(customer_id)
         return redirect(url_for("contacts.home_page"))
+
+
+
 
 
 @contacts_bp.route('/add_customer', methods=['POST'])
@@ -131,6 +162,10 @@ def adding_new_contact():
                 return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
+
+
 @contacts_bp.route('/add_new_tours', methods=['POST'])
 @login_required
 def add_new_tours():
@@ -145,6 +180,10 @@ def add_new_tours():
         create_new_tour_packages(tour_name, start_date, end_date, tour_price, destination_id, tour_type)
 
     return redirect(url_for("contacts.home_page"))
+
+
+
+
 
 
 @contacts_bp.route('/check-email/contact-existence', methods=['POST'])

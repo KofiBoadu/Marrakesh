@@ -90,6 +90,9 @@ def add_new_lead():
             return jsonify({"error": "Invalid contact data"}), 400
 
 
+
+
+
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['POST'])
 @auth.login_required
 def face_book_leads():

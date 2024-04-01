@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
-
 from app.contacts_models import updating_contact_status, update_contact_phone, \
     change_contact_bookings, get_contact_activities, updating_contact_state, \
     bookings_updates_logs, update_contact_email, update_contact_name
@@ -64,6 +63,13 @@ def contact_profile(contact_id):
                                phone_number=phone_number)
 
 
+
+
+
+
+
+
+
 @contacts_profile.route('/update-customer-reservations', methods=['POST'])
 @login_required
 def change_bookings():
@@ -109,6 +115,11 @@ def change_bookings():
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
+
+
+
 @contacts_profile.route('/change-contacts-name', methods=['POST'])
 @login_required
 def customer_name():
@@ -119,6 +130,11 @@ def customer_name():
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
+
+
+
 @contacts_profile.route('/change-contacts-email', methods=['POST'])
 @login_required
 def customer_email():
@@ -126,6 +142,11 @@ def customer_email():
     email = request.form.get('update_email')
     update_contact_email(email, contact_id)
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
+
+
 
 
 @contacts_profile.route('/change-contact-phone', methods=['POST'])
@@ -139,6 +160,9 @@ def update_contact_phone_number():
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
+
 @contacts_profile.route('/update_customer_state', methods=['POST'])
 @login_required
 def update_state_of_contact():
@@ -146,6 +170,9 @@ def update_state_of_contact():
     new_state = request.form.get('new_state')
     updating_contact_state(new_state, contact_id)
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
 
 
 @contacts_profile.route('/notes', methods=['POST'])
@@ -158,6 +185,8 @@ def contact_notes():
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
 @contacts_profile.route('/delete_notes', methods=['POST'])
 @login_required
 def deleting_contact_notes():
@@ -167,6 +196,9 @@ def deleting_contact_notes():
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
+
+
+
 @contacts_profile.route('/change-contact-status', methods=['POST'])
 @login_required
 def new_contact_status():
@@ -174,6 +206,10 @@ def new_contact_status():
     new_status = request.form.get('new_contact_status_name')
     updating_contact_status(new_status, contact_id)
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
+
 
 
 @contacts_profile.route('/making-tour-reservation', methods=['POST'])
@@ -194,6 +230,10 @@ def confirm_contact_tour_bookings():
         return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
     else:
         return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
+
 
 
 @contacts_profile.route('/update-contact=gender', methods=['POST'])
