@@ -339,16 +339,20 @@ function updateTable(data) {
 
 
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
-    const itemsPerPageSelect = document.getElementById('items-per-page');
     const homeUrl = searchForm.getAttribute('data-home-url') || '/'; // Assuming '/contacts/home' is the correct endpoint
 
     function fetchAndUpdateContent(page) {
+        const itemsPerPageSelect = document.getElementById('items-per-page'); // Ensure fresh selection
         const itemsPerPage = itemsPerPageSelect.value;
         const searchQuery = searchInput ? searchInput.value.trim() : '';
 
-        fetch(`${homeUrl}?page=${page}&items_per_page=${itemsPerPage}&search_query=${encodeURIComponent(searchQuery)}`, {
+        console.log(`Fetching content for page ${page}, items per page: ${itemsPerPage}, search query: "${searchQuery}"`);
+
+        fetch(`${homeUrl}?page=${page}&items_per_page=${itemsPerPage}&search_query=${encodeURIComponent(searchQuery)}&_=${new Date().getTime()}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -356,18 +360,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .then(response => {
+            console.log('Response status:', response.status); // Log the response status
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(data => {
+            console.log('Received data:', data); // Log the received data
             const tableBody = document.getElementById('table-body');
             const paginationControls = document.querySelector('.pagination-controls');
             if (tableBody && paginationControls) {
                 tableBody.innerHTML = data.table_body_html;
                 paginationControls.innerHTML = data.pagination_html;
+
                 attachEventListenersToPaginationLinks();
+                reinitializeItemsPerPageListener(); // Reinitialize event listener for the "items per page" dropdown
+                
+                updateItemsPerPageSelection(itemsPerPage); // Update the dropdown to reflect the current selection
             } else {
                 console.error('Could not find table body or pagination controls elements.');
             }
@@ -379,28 +389,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function attachEventListenersToPaginationLinks() {
         document.querySelectorAll('.pagination-controls .pagination a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-                const page = new URL(this.href).searchParams.get('page');
-                fetchAndUpdateContent(page);
-            });
+            link.removeEventListener('click', paginationLinkClicked); // Remove existing event listener to prevent duplicates
+            link.addEventListener('click', paginationLinkClicked);
         });
     }
 
-    attachEventListenersToPaginationLinks();
-
-    if (itemsPerPageSelect) {
-        itemsPerPageSelect.addEventListener('change', function() {
-            fetchAndUpdateContent(1);
-        });
+    function paginationLinkClicked(event) {
+        event.preventDefault();
+        const page = new URL(this.href).searchParams.get('page');
+        console.log(`Pagination link clicked, navigating to page: ${page}`);
+        fetchAndUpdateContent(page);
     }
+
+    function reinitializeItemsPerPageListener() {
+        const itemsPerPageSelect = document.getElementById('items-per-page');
+        if (itemsPerPageSelect) {
+            itemsPerPageSelect.removeEventListener('change', handleItemsPerPageChange); // Prevent duplicating listeners
+            itemsPerPageSelect.addEventListener('change', handleItemsPerPageChange);
+        }
+    }
+
+    function handleItemsPerPageChange() {
+        console.log('Items per page changed to:', this.value);
+        fetchAndUpdateContent(1); // Always revert back to the first page after a change in 'items per page'
+    }
+
+    function updateItemsPerPageSelection(selectedValue) {
+        const itemsPerPageSelect = document.getElementById('items-per-page');
+        if (itemsPerPageSelect) {
+            itemsPerPageSelect.value = selectedValue;
+        }
+    }
+
+    attachEventListenersToPaginationLinks(); // Initial call to attach event listeners to pagination links
+    reinitializeItemsPerPageListener(); // Initial call to attach event listener to the "items per page" dropdown
 });
-
-
-
-
-
-
 
 
 
