@@ -36,6 +36,7 @@ spammy_patterns = {
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     request_data = request.form.to_dict()
+    print(request_data)
     source = "wordpress"
     # if is_spam(request_data):
     #     print("spam")
