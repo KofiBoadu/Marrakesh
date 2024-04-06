@@ -9,6 +9,7 @@ from .contacts_profiles import contacts_profile
 from .send_emails import email_customers
 from .emails import mail
 from app.file_export import fileExport_bp
+from app.file_imports import fileImport_bp
 from app.analytics import analytics
 from app.events_schedule import events
 from .api import api_blueprint
@@ -40,6 +41,7 @@ def create_app():
     app.register_blueprint(email_customers, url_prefix='/send_emails')
     app.register_blueprint(email_marketing, url_prefix='/marketing')
     app.register_blueprint(fileExport_bp, url_prefix='/exportingFile')
+    app.register_blueprint(fileImport_bp, url_prefix='/importing')
     app.register_blueprint(analytics, url_prefix='/analytics')
     app.register_blueprint(events, url_prefix='/events')
     app.register_blueprint(api_blueprint, url_prefix='/api')

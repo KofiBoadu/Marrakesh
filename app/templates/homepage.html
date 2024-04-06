@@ -256,6 +256,35 @@
 </div>
 
 
+<!-- importing contacts pop up form  -->
+
+<div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+<form action="{{ url_for('importing.upload_file') }}" method="post" enctype="multipart/form-data">
+    <div class="importing-contacts">
+        <label for="contact_file">Import Contacts:</label>
+        <input type="file" id="contact_file" name="file" accept=".csv">
+    </div>
+    <div class="importing-contacts">
+        <button type="submit">Import Contacts</button>
+    </div>
+</form>
+
+</div>  
+
+
+
+
 
 <!-- exporting file pop up form or container  -->
 
@@ -321,6 +350,11 @@
         <div id="table-action">
             <button id="createCustomerBtn">Create contact</button>
             <!-- <button id="tourBtn">Create Tour</button> -->
+        </div>
+
+        <div id="table-action" >
+            <button  id="createCustomerBtn">Import</button>
+           
         </div>
     </div>
 

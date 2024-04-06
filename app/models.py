@@ -5,8 +5,55 @@ from urllib.parse import urlparse
 import mysql.connector
 import phonenumbers
 from dotenv import load_dotenv
+from mysql.connector import pooling
 
 load_dotenv()
+
+
+
+def connection_pool_management():
+    database_url = os.getenv('JAWSDB_URL')
+    if not database_url:
+        raise ValueError("DATABASE_URL not set")
+
+    parsed_url = urlparse(database_url)
+    db_config = {
+        "user": parsed_url.username,
+        "password": parsed_url.password,
+        "host": parsed_url.hostname,
+        "database": parsed_url.path.lstrip('/'),
+        "port": parsed_url.port
+    }
+    
+
+    pool_size = 5
+    
+    pool = pooling.MySQLConnectionPool(pool_size=pool_size,
+                                       pool_name="crm_pool",
+                                       **db_config)
+    return pool
+
+
+
+connection_pool=connection_pool_management()
+
+
+
+def create_database_connection():
+    """
+    Retrieves a database connection from the pool.
+
+    Returns:
+    - A pooled database connection object if successful, None otherwise.
+    """
+    try:
+        return connection_pool.get_connection()
+    except mysql.connector.Error as e:
+        logging.error(f"An error occurred while retrieving a connection from the pool: {e}")
+        return None
+
+
+
 
 
 def format_phone_number(number, country_code='US'):
@@ -45,41 +92,44 @@ def all_states():
     return states
 
 
-def create_database_connection():
-    """
-        Establishes a database connection using the connection string from environment variables.
+# def create_database_connection():
+#     """
+#         Establishes a database connection using the connection string from environment variables.
 
-        Returns:
-        - A database connection object if successful, None otherwise.
+#         Returns:
+#         - A database connection object if successful, None otherwise.
 
-        Raises:
-        - ValueError: If the DATABASE_URL environment variable is not set.
-        - Logs an error message if the connection fails for any other reason.
-    """
-    database_url = os.getenv('JAWSDB_URL')
-    if database_url:
-        parsed_url = urlparse(database_url)
-        db_user = parsed_url.username
-        db_password = parsed_url.password
-        db_host = parsed_url.hostname
-        db_name = parsed_url.path.lstrip('/')
-        db_port = parsed_url.port
-        try:
-            sql_connection = mysql.connector.connect(
-                user=db_user,
-                password=db_password,
-                host=db_host,
-                database=db_name,
-                port=db_port
-            )
-            return sql_connection
+#         Raises:
+#         - ValueError: If the DATABASE_URL environment variable is not set.
+#         - Logs an error message if the connection fails for any other reason.
+#     """
+#     database_url = os.getenv('JAWSDB_URL')
+#     if database_url:
+#         parsed_url = urlparse(database_url)
+#         db_user = parsed_url.username
+#         db_password = parsed_url.password
+#         db_host = parsed_url.hostname
+#         db_name = parsed_url.path.lstrip('/')
+#         db_port = parsed_url.port
+#         try:
+#             sql_connection = mysql.connector.connect(
+#                 user=db_user,
+#                 password=db_password,
+#                 host=db_host,
+#                 database=db_name,
+#                 port=db_port
+#             )
+#             return sql_connection
 
-        except mysql.connector.Error as e:
-            logging.error(f"An error occurred while connecting to the database: {e}")
+#         except mysql.connector.Error as e:
+#             logging.error(f"An error occurred while connecting to the database: {e}")
 
-    else:
-        logging.error("DATABASE_URL not set")
-        raise ValueError("DATABASE_URL not set")
+#     else:
+#         logging.error("DATABASE_URL not set")
+#         raise ValueError("DATABASE_URL not set")
+
+
+
 
 
 def create_get_customer_tour_details_procedure():
@@ -441,6 +491,13 @@ def add_new_contact(first_name, last_name, email, phone=None, gender=None, state
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
+
+
+
 
 
 def get_all_destinations():
