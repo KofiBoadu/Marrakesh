@@ -159,7 +159,7 @@
                 placeholder="Type 'delete' to confirm">
 
 
-            <form id="deleteConfirmForm" action="{{ url_for('contacts.delete_customer') }}" method="post"
+            <form id="deleteConfirmForm" action="{{ url_for('contacts.delete_contact') }}" method="post"
                 style="display: none;">
                 <input type="hidden" id="customerIdToDelete" name="customer_id" value="">
                 <div class="delete-buttons">

@@ -16,11 +16,11 @@ from . import contacts_profile
 @login_required
 def contact_profile(contact_id):
     if not contact_id:
-        return redirect(url_for("customers.home_page"))
+        return redirect(url_for("contacts.home_page"))
     else:
         profile = profile_details(contact_id)
         if not profile:
-            return redirect(url_for("customers.home_page"))
+            return redirect(url_for("contacts.home_page"))
 
         tour_names = profile[6]
         tour_list = tour_names.split(', ') if tour_names else []
@@ -37,9 +37,7 @@ def contact_profile(contact_id):
 
         results = contact_submissions(contact_id)
 
-        # known_field = known_fields
-
-        # form_fields_dict = {field: '' for field in known_field }
+        
         form_fields_dict = {}
 
         common_data = {}
@@ -52,7 +50,7 @@ def contact_profile(contact_id):
             }
 
             for _, _, _, _, field_name, field_value in results:
-                # if field_name in known_field:
+        
                 field_display_name = field_name.replace('_', ' ').title()
                 form_fields_dict[field_display_name] = field_value
 
@@ -76,6 +74,7 @@ def change_bookings():
     contact_id = request.form.get('updatingbooking_contact_id')
     print("ID", contact_id)
     new_tour_type = request.form.get('updatetour_date')
+    print("new tour type")
     checkbox_checked = 'notify-customer' in request.form
     customer_details = profile_details(contact_id)
 
@@ -84,6 +83,7 @@ def change_bookings():
     tour_date = new_tour_type.split()
     tour_year = tour_date.pop()
     tour_name = " ".join(tour_date)
+    print("new tour name",tour_name)
 
     old_tour_name = request.form.get("modify_from")
     old_tour_date = old_tour_name.split()
@@ -217,12 +217,16 @@ def new_contact_status():
 def confirm_contact_tour_bookings():
     contact_id = request.form.get('contact_id')
     selected_tour = request.form.get('tour_date')
+    print("selected_tour", selected_tour)
     profile = profile_details(contact_id)
     if contact_id and selected_tour:
         tour_date = selected_tour.split()
+        print("tour_date", tour_date)
         tour_year = tour_date.pop()
         tour_name = " ".join(tour_date)
+        print("tour_name", tour_name)
         tour_id = get_travel_package_id(tour_name, tour_year)
+        print("tour id",tour_id)
         book_a_tour_for_a_contact(tour_id, contact_id)
         if profile[4] != "customer":
             new_status = "customer"

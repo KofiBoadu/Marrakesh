@@ -7,6 +7,9 @@ import os
 import paypalrestsdk
 from app.models import check_contact_exists
 
+
+
+
 paypalrestsdk.configure({
     'mode': 'live',
     'client_id': os.getenv('PAYPAL_CLIENT_ID'),
@@ -33,25 +36,15 @@ spammy_patterns = {
 }
 
 
+
+
+
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     request_data = request.form.to_dict()
     print(request_data)
     source = "wordpress"
-    # if is_spam(request_data):
-    #     print("spam")
-    #     abort(400, description="Spam detected")
-    #
-    # spam_status, reasons = is_spam(request_data)
-    # if spam_status:
-    #     print(f"Submission flagged as spam for the following reasons: {reasons}")
-    #     # Handle spam submission accordingly
-    # else:
-    #     print("Submission not flagged as spam.")
-
-    # token = request.args.get('token')
-    # if token != SECRET_TOKEN:
-    #     abort(403)
+  
 
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
@@ -89,6 +82,7 @@ def add_new_lead():
             return jsonify({"contact_id": contact_id}), 200
         else:
             return jsonify({"error": "Invalid contact data"}), 400
+
 
 
 

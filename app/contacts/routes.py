@@ -8,9 +8,11 @@ from app.contacts import contacts_bp
 
 import math
 from flask_login import login_required, current_user
-from app.models import format_phone_number, remove_a_paid_contact, get_total_num_of_contacts
+from app.models import format_phone_number, remove_contacts, get_total_num_of_contacts
 from app.contacts_models import fetch_contact_details, update_full_contact_details
 from flask import jsonify
+
+
 
 
 @contacts_bp.route('/contacts/home', methods=['GET', 'POST'])
@@ -128,16 +130,21 @@ def context_processor():
 
 
 
-@contacts_bp.route('/delete_customer', methods=['POST'])
+@contacts_bp.route('/delete_contacts', methods=['POST'])
 @login_required
-def delete_customer():
-    customer_id = request.form.get("customer_id")
-    if not customer_id:
-        return redirect(url_for("customers.home_page"))
-    else:
-        remove_a_paid_contact(customer_id)
+def delete_contact():
+    customer_ids = request.form.get("customer_id")
+    if customer_ids:
+        customer_ids = customer_ids.split(',')
+        customer_ids = [int(id) for id in customer_ids if id.isdigit()]
+        remove_contacts(customer_ids)
         return redirect(url_for("contacts.home_page"))
 
+    else:
+        return redirect(url_for("contacts.home_page"))
+
+
+        
 
 
 
@@ -170,7 +177,8 @@ def adding_new_contact():
 @login_required
 def add_new_tours():
     if request.method == 'POST':
-        tour_name = request.form.get('name')
+        tour_raw_name = request.form.get('name')
+        tour_name= " ".join(tour_raw_name.split())
         start_date = request.form.get('start_date')
         end_date = request.form.get('end_date')
         tour_price = request.form.get('price')

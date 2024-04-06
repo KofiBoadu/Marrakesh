@@ -2,25 +2,6 @@
 
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   const checkboxes = document.querySelectorAll('.user-checkbox');
-//   checkboxes.forEach(function(checkbox) {
-//     checkbox.addEventListener('change', function() {
-//       if (this.checked) {
-//         // Retrieve the user ID from the data attribute
-//         const userId = this.getAttribute('data-user-id');
-//         // Update the hidden input's value
-//         document.getElementById('remove-user-id').value = userId;
-//         document.getElementById('deactivate-user-id').value = userId;
-//         document.getElementById('reactivate-user-id').value = userId;
-//         document.getElementById('make-new-user-admin-id').value = userId;
-//         document.getElementById('remove-new-user-admin-id').value = userId;
-//       }
-//     });
-//   });
-// });
-
-
 document.addEventListener('DOMContentLoaded', function() {
   // Retrieve and check the user's role ID
   const roleId = parseInt(document.getElementById('login-user-role-id').value, 10);
@@ -47,4 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+});
+
+
+document.getElementById('tourForm').addEventListener('submit', function() {
+    // Trim the values of text inputs
+    this.querySelectorAll('input[type=text]').forEach(input => {
+        input.value = input.value.trim();
+
+    });
 });

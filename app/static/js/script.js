@@ -29,18 +29,95 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 
+
+
+
+
+
+
+
+
+
+
 //delete functionality
+// Array to store the IDs of selected contacts
+let selectedContactIds = [];
+console.log(selectedContactIds)
+
 function toggleDeleteButton(checkbox) {
     let deleteButton = document.getElementById('deleteButton');
-    deleteButton.style.display = checkbox.checked ? 'flex' : 'none';
-    let id;
+    const contactId = checkbox.value;
+
+    // Add or remove the contact ID from the array based on checkbox state
     if (checkbox.checked) {
-        id=document.getElementById('customerIdToDelete').value = checkbox.value;
-        console.log('Checkbox is checked, ID:', id);
-        
-    
+        selectedContactIds.push(contactId);
+    } else {
+        selectedContactIds = selectedContactIds.filter(id => id !== contactId);
     }
+
+    // Show or hide the delete button based on if any contacts are selected
+    deleteButton.style.display = selectedContactIds.length > 0 ? 'flex' : 'none';
+    
+    console.log('Selected IDs:', selectedContactIds);
 }
+
+
+function showModal() {
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteMessage1 = document.querySelector('.delete-message-1');
+    const deleteTitle = document.querySelector('.delete-title');
+    
+    // Update modal title and message based on the number of selected contacts
+    const deleteCount = selectedContactIds.length;
+    deleteTitle.textContent = `Delete ${deleteCount} Record${deleteCount > 1 ? 's' : ''}?`;
+    deleteMessage1.textContent = `You're about to delete ${deleteCount} record${deleteCount > 1 ? 's' : ''}. Deleted records can't be restored.`;
+    
+    // Populate the hidden input with the IDs of all selected contacts
+    document.getElementById('customerIdToDelete').value = selectedContactIds.join(',');
+
+    deleteModal.style.display = 'block';
+}
+
+
+function closeModal() {
+    // Hide the modal
+    document.getElementById('deleteModal').style.display = 'none';
+
+    // Clear the input field where the user types 'delete'
+    var deleteConfirmInput = document.getElementById('deleteConfirmInput');
+    deleteConfirmInput.value = '';
+
+    // Disable the 'Delete' button since the input is now empty
+    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    confirmDeleteButton.disabled = true;
+
+    // Hide the delete confirmation form
+    var deleteConfirmForm = document.getElementById('deleteConfirmForm');
+    deleteConfirmForm.style.display = 'none';
+
+
+    document.getElementById('customerIdToDelete').value = '';
+
+}
+
+
+function validateDeleteInput(input) {
+    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    // Check if the input value is the word 'delete'
+    var isDeleteTyped = input.value.toLowerCase() === 'delete';
+    confirmDeleteButton.disabled = !isDeleteTyped; // Enable button only if 'delete' is typed
+    // Show or hide the confirmation form based on the input
+    document.getElementById('deleteConfirmForm').style.display = isDeleteTyped ? 'block' : 'none';
+}
+
+
+
+
+
+
+
+
+
 
 
 //update details functionality 
@@ -58,9 +135,7 @@ function updateCustomerDetails(checkbox) {
 
 
 
-function showModal() {
-    document.getElementById('deleteModal').style.display = 'block';
-}
+
 
 
 
@@ -98,26 +173,6 @@ function showUpdateModal() {
 
 
 
-function closeModal() {
-    // Hide the modal
-    document.getElementById('deleteModal').style.display = 'none';
-
-    // Clear the input field where the user types 'delete'
-    var deleteConfirmInput = document.getElementById('deleteConfirmInput');
-    deleteConfirmInput.value = '';
-
-    // Disable the 'Delete' button since the input is now empty
-    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
-    confirmDeleteButton.disabled = true;
-
-    // Hide the delete confirmation form
-    var deleteConfirmForm = document.getElementById('deleteConfirmForm');
-    deleteConfirmForm.style.display = 'none';
-
-
-    document.getElementById('customerIdToDelete').value = '';
-
-}
 
 
 
@@ -134,57 +189,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function validateDeleteInput(input) {
-    var confirmDeleteButton = document.getElementById('confirmDeleteButton');
-    // Check if the input value is the word 'delete'
-    var isDeleteTyped = input.value.toLowerCase() === 'delete';
-    confirmDeleteButton.disabled = !isDeleteTyped; // Enable button only if 'delete' is typed
-    // Show or hide the confirmation form based on the input
-    document.getElementById('deleteConfirmForm').style.display = isDeleteTyped ? 'block' : 'none';
-}
 
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-  
-//     function changeItemsPerPage(selectObject) {
-//         var selectedValue = selectObject.value; 
-//         var currentItemsPerPage = getCurrentItemsPerPage(); 
-
-        
-//         if (selectedValue.toString() !== currentItemsPerPage) {
-//             var searchParams = new URLSearchParams(window.location.search);
-//             searchParams.set('items_per_page', selectedValue);
-//             searchParams.set('page', 1); 
-
-            
-//             window.location.search = searchParams.toString();
-//         }
-//     }
-
-   
-//     function getCurrentItemsPerPage() {
-//         var params = new URLSearchParams(window.location.search);
-//         return params.get('items_per_page') || '50'; 
-//     }
-
-//     var selectElement = document.getElementById('items-per-page');
-//     if (selectElement) {
-//         selectElement.addEventListener('change', function() {
-//             changeItemsPerPage(this);
-//         });
-//     }
-// });
-
-
-
-
-
-
-
-
-
-   
 
 
 
@@ -325,6 +332,8 @@ function performSearch() {
         .catch(error => console.error('Error:', error));
     }
 }
+
+
 
 
 function updateTable(data) {

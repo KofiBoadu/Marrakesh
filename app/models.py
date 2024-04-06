@@ -651,41 +651,47 @@ def calculate_gross_revenue(year):
             database_connection.close()
 
 
-def remove_a_paid_contact(contact_id):
+
+
+def remove_contacts(contact_ids):
     """
-        Deletes a contact from the database, typically after their account has been settled or closed.
+    Deletes multiple contacts from the database based on their IDs. This operation is 
+    typically performed after their accounts have been settled or closed.
 
-        Parameters:
-        - contact_id (int): The ID of the contact to remove.
+    Parameters:
+    - contact_ids (list of int): The IDs of the contacts to remove.
 
-        Returns:
-        - True if the contact was successfully deleted, False otherwise.
+    Returns:
+    - int: The number of contacts successfully deleted. This can be used to provide feedback or log the operation's success.
 
-        Note:
-        - This operation is transactional and will be rolled back if any error occurs during execution.
+    Note:
+    - This operation is transactional and will be rolled back if any errors occur during execution.
     """
-    deleted = False
+    deleted_count = 0  # Initialize the count of deleted contacts
     database_connection = None
     cursor = None
     try:
-        database_connection = create_database_connection()
-        database_connection.autocommit = False
+        database_connection = create_database_connection()  
+        database_connection.autocommit = False  
         cursor = database_connection.cursor()
-        cursor.execute("DELETE FROM contacts WHERE contact_id=%s", (contact_id,))
-        customer_deleted = cursor.rowcount > 0
-        if customer_deleted:
-            database_connection.commit()
-            deleted = True
+
+        # Prepare the SQL query with placeholders for the list of IDs
+        format_strings = ','.join(['%s'] * len(contact_ids))
+        cursor.execute(f"DELETE FROM contacts WHERE contact_id IN ({format_strings})", tuple(contact_ids))
+
+        deleted_count = cursor.rowcount  
+        if deleted_count > 0:
+            database_connection.commit()  
         else:
-            database_connection.rollback()
-        cursor.close()
+            database_connection.rollback()  
     except Exception as e:
-        logging.error(f"An error occurred while deleting customer: {e}")
+        logging.error(f"An error occurred while deleting contacts: {e}")
         if database_connection:
-            database_connection.rollback()
+            database_connection.rollback()  
     finally:
         if cursor:
-            cursor.close()
+            cursor.close()  
         if database_connection:
-            database_connection.close()
-    return deleted
+            database_connection.close()  
+    return deleted_count  
+

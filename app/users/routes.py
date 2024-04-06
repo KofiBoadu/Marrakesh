@@ -7,6 +7,7 @@ from app.user import get_user, User, create_user_account, generate_secure_passwo
 from flask_login import login_required, current_user
 from app.user import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles
 from app.emails import send_email
+from app.models import get_all_destinations
 
 
 @users_bp.route('/login', methods=["GET"])
@@ -76,11 +77,20 @@ def password_reset():
             return redirect(url_for('customers.home_page'))  # Make sure 'customers_bp' is your Blueprint name
 
 
+
+
+
+
 @users_bp.route('/settings/user/profile', methods=['GET'])
 @login_required
 def user_profile():
     user = current_user
     return render_template('general.html', user=user)
+
+
+
+
+
 
 
 @users_bp.route('/settings/users/', methods=['GET', "POST"])
@@ -90,13 +100,17 @@ def settings_users():
 
     available_roles = user_roles()
 
+
     return render_template('users_teams.html', users=users, available_roles=available_roles)
+
+
 
 
 @users_bp.route('/settings/services/management/', methods=['GET', "POST"])
 @login_required
 def services():
-    return render_template('service_management.html')
+    destinations= get_all_destinations()
+    return render_template('service_management.html',destinations=destinations)
 
 
 @users_bp.route('/remove_user', methods=["POST"])
