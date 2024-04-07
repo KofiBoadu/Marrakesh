@@ -15,6 +15,7 @@ from app.events_schedule import events
 from .api import api_blueprint
 from flask.logging import create_logger
 import logging
+# from app.models import connection_pool_management
 
 
 def create_app():
@@ -23,6 +24,8 @@ def create_app():
 
     logger = create_logger(app)
     logger.setLevel(logging.DEBUG)
+
+    # connection_pool = connection_pool_management()
 
     @app.route('/contacts/home')
     def redirect_to_login():
@@ -53,6 +56,7 @@ def create_app():
     app.config['MAIL_USE_SSL'] = True
     app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
     app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+    # app.config['DB_CONNECTION_POOL'] = connection_pool
 
     mail.init_app(app)
     login_manager.init_app(app)
