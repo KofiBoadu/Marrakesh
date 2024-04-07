@@ -755,4 +755,8 @@ button#cancel:hover {
   position: absolute;
   margin-top: 0px;
   border-style: solid;
+}
+
+#import_button {
+  margin-right: 100px;
 }/*# sourceMappingURL=hompage.css.map */
