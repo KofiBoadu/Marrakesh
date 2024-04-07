@@ -3,31 +3,18 @@
 
 
 {% block content %}
-  
-  <button class="send-button"><a href="{{ url_for('marketing.send_marketing_emails') }}">Create Email</a></button>
+<div class="Marketing-header-container">
+    <div class="Marketing-header">
+        <h3> Marketing Email</h3>
+        <h5>3 Records</h5>
 
-<style >
-  
-#email_marketing_campaign_page {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-#email_marketing_campaign_page table, th, td {
-            border: 1px solid black;
-        }
-#email_marketing_campaign_page th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-#email_marketing_campaign_page th {
-            background-color: #f2f2f2;
-           
- }
+    </div>
+    <button class="send-button"><a href="{{ url_for('marketing.send_marketing_emails') }}">Create Email</a></button>
+</div>
 
 
-</style>
+
+
 
 
 
@@ -43,9 +30,9 @@
 
 
 
-   <table id="email_marketing_campaign_page">
+<table  id="email_marketing_campaign_page">
     <tr>
-        <th><input type="checkbox"> </th> <!-- New header for the select column -->
+        <th><input class="marketing-checkbox" input type="checkbox"> </th> <!-- New header for the select column -->
         <th>EMAIL NAME</th>
         <th>TOTAL EMAILS</th>
         <th>DELIVERED</th>
@@ -59,8 +46,10 @@
 
 
     <tr>
-        <td><input type="checkbox" name="selected_campaigns" value="{{ campaign[3] }}"></td> <!-- Assuming campaign_id is now at index 3 -->
-        <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0] }}</a></td>
+        <td><input  class="marketing-select" input type="checkbox" name="selected_campaigns" value="{{ campaign[3] }}"></td>
+        <!-- Assuming campaign_id is now at index 3 -->
+        <td><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign[3]) }}">{{ campaign[0]
+                }}</a></td>
         <td>{{ campaign[1] }}</td>
         <td>{{ campaign[5] }}</td> <!-- Delivered count -->
         <td>{{ campaign[6] }}%</td> <!-- Open rate -->
@@ -74,6 +63,6 @@
 
 
 
-  
+
 
 {% endblock %}

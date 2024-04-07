@@ -1,9 +1,7 @@
-body, html {
-  background-image: url('https://images.pexels.com/photos/17831035/pexels-photo-17831035/free-photo-of-people-sitting-on-chairs-in-savanna.jpeg?');
+body,
+html {
   height: 100%;
   margin: 0;
-  
-  background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,16 +13,23 @@ body, html {
 }
 
 
-  .login-container h3 {
-    text-align: center;
-    color: #03989E;
-    margin: 0px;
-    font-size: 20px;
-    font-family: Helvitica;
-    font-weight: 800;
-  }
+.login-container h1{
+  text-align: center;
+  color: #03989E;
+  margin: 0px;
+  font-size: 20px;
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 800;
+
+}
+.logo-img{
+  margin: auto;
+  width: 150px;
+  height: 70px;
+  padding-bottom: 40PX;
   
-  /*.login-container {
+}
+/*.login-container {
     width: 500px; 
     height:500px;
     padding: 40px;
@@ -71,20 +76,34 @@ body, html {
 
 
 .login-container {
-  background: #fff; /* White background */
-  border-radius: 8px; /* Rounded corners */
-  padding: 40px; /* Padding around the content */
-  width: 350px; /* Set a fixed width */
-  margin: 100px auto; /* Center the form on the page vertically and horizontally */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  position: relative; /* Needed for absolute positioning of children */
-  font-family: Arial, sans-serif; /* Font styling */
+  background: #fff;
+  /* White background */
+  border-radius: 8px;
+  /* Rounded corners */
+  padding: 40px;
+  /* Padding around the content */
+  width: 350px;
+  /* Set a fixed width */
+  margin: 100px auto;
+  /* Center the form on the page vertically and horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  position: relative;
+  /* Needed for absolute positioning of children */
+  
+  /* Font styling */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .login-container .auth-message {
-  color: red; /* Color for authentication message, if any */
-  text-align: center; /* Center the text */
-  margin-bottom: 20px; /* Space below the message */
+  color: red;
+  /* Color for authentication message, if any */
+  text-align: center;
+  /* Center the text */
+  margin-bottom: 20px;
+  /* Space below the message */
 }
 
 .login-container form {
@@ -93,38 +112,54 @@ body, html {
 }
 
 .login-container .form-group {
-  margin-bottom: 15px; /* Space between form groups */
+  margin-bottom: 15px;
+  /* Space between form groups */
 }
 
 .login-container .form-group input {
-  border: 1px solid #ccc; /* Border around the inputs */
-  border-radius: 4px; /* Rounded corners for the inputs */
-  padding: 10px; /* Padding inside the inputs */
-  font-size: 16px; /* Increase font size for better readability */
-  width: calc(100% - 22px); /* Width minus padding and border */
+  border: 1px solid #ccc;
+  /* Border around the inputs */
+  border-radius: 4px;
+  /* Rounded corners for the inputs */
+  padding: 10px;
+  /* Padding inside the inputs */
+  font-size: 16px;
+  /* Increase font size for better readability */
+  width: calc(100% - 22px);
+  /* Width minus padding and border */
+  font-family: "Lexend Deca", sans-serif; 
 }
 
 .login-container .form-group input[type="submit"] {
-  background-color: #ff6a00; /* Bright orange background */
-  color: white; /* White text color */
-  cursor: pointer; /* Cursor to signify it's clickable */
-  border: none; /* No border for the submit input */
+  background-color:#FF914C;
+  /* Bright orange background */
+  color: white;
+  /* White text color */
+  cursor: pointer;
+  /* Cursor to signify it's clickable */
+  border: none;
+  /* No border for the submit input */
   margin-left: 10px;
+  
 }
 
 .login-container .form-group input[type="submit"]:hover {
-  background-color: #e65a00; /* Slightly darker orange on hover */
+  background-color:#03989E;
+  /* Slightly darker orange on hover */
 }
 
 /* Centering the login container on the viewport */
 
 /* Additional styling for placeholder text */
 ::placeholder {
-  color: #aaa; /* Light grey color */
+  color: #aaa;
+  /* Light grey color */
 }
 
 /* Styling for focus on inputs */
 input:focus {
-  outline: none; /* Remove default focus outline */
-  border: 1px solid #ff6a00; /* Orange border to match the button */
+  outline: none;
+  /* Remove default focus outline */
+  border: 1px solid #ff6a00;
+  /* Orange border to match the button */
 }
