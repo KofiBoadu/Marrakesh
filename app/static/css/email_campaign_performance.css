@@ -7,7 +7,15 @@
 	
 	background-color: #fff;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 
+
+}
+.metrics{
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  flex-wrap: nowrap;
 }
 .metrics-container h2 {
   margin-bottom: 40PX;
@@ -18,7 +26,8 @@
 }
 .metric {
   display: inline-block;
-  margin: 0 150px;
+  margin: 0 50px;
+
 
 }
 

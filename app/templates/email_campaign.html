@@ -24,34 +24,37 @@
 
   <div class="metrics-container">
     <h2>Delivery</h2>
-    <div class="metric">
+    <div class="metrics">
+      <div class="metric">
 
-      <h3 class="metric-description">Successful Deliveries</h3>
-      <h5 class="metric-number">{{ successful_deliveries }}</h5>
-      <p class="percentage" id="successful-deliveries-percentage">{{ delivery_percentage }}%</p>
+        <h3 class="metric-description">Successful Deliveries</h3>
+        <h5 class="metric-number">{{ successful_deliveries }}</h5>
+        <p class="percentage" id="successful-deliveries-percentage">{{ delivery_percentage }}%</p>
+      </div>
+  
+      <div class="metric">
+  
+        <h3 class="metric-description">Bounces</h3>
+        <h5 class="metric-number">{{ bounces }}</h5>
+        <p class="percentage" id="bounces-percentage">{{ bounce_percentage }}%</p>
+  
+      </div>
+  
+      <div class="metric">
+  
+        <h3 class="metric-description">Unsubscribes</h3>
+        <h5 class="metric-number">{{ unsubscribes }}</h5>
+        <p class="percentage" id="unsubscribes-percentage">{{ unsubscribe_percentage }}%</p>
+      </div>
+  
+      <div class="metric">
+  
+        <h3 class="metric-description">Spam Reports</h3>
+        <h5 class="metric-number">{{ spam_reports }}</h5>
+        <p class="percentage" id="spam-reports-percentage">{{ spam_report_percentage }}%</p>
+      </div>
     </div>
-
-    <div class="metric">
-
-      <h3 class="metric-description">Bounces</h3>
-      <h5 class="metric-number">{{ bounces }}</h5>
-      <p class="percentage" id="bounces-percentage">{{ bounce_percentage }}%</p>
-
-    </div>
-
-    <div class="metric">
-
-      <h3 class="metric-description">Unsubscribes</h3>
-      <h5 class="metric-number">{{ unsubscribes }}</h5>
-      <p class="percentage" id="unsubscribes-percentage">{{ unsubscribe_percentage }}%</p>
-    </div>
-
-    <div class="metric">
-
-      <h3 class="metric-description">Spam Reports</h3>
-      <h5 class="metric-number">{{ spam_reports }}</h5>
-      <p class="percentage" id="spam-reports-percentage">{{ spam_report_percentage }}%</p>
-    </div>
+    
   </div>
 
 
