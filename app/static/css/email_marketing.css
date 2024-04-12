@@ -16,7 +16,8 @@
 #email_marketing_campaign_page table,
 th,
 td {
-	border: 1px solid #ccc;
+	border-bottom: 1px solid #959494;
+     padding: 10px;
 }
 
 #email_marketing_campaign_page th,

@@ -273,6 +273,47 @@ function statusHideEditButton(event) {
 }
 
 
+//Gender
+//status edit
+
+function showUpdateGenderForm() {
+  var genderForm = document.getElementById('genderformContainer')
+  var genderEditButton = document.querySelector(".genderEdit")
+  genderForm.style.display = "block"
+  genderEditButton.style.display = "block"
+
+}
+function closeUpdateGenderForm() {
+  document.getElementById('genderformContainer').style.display = 'none';
+  var genderForm = document.getElementById('genderformContainer').querySelector('.update_contact_gender');
+  if (genderForm) {
+    genderForm.reset();
+  }
+  var genderEditButton = document.querySelector(".genderEdit")
+  genderEditButton.style.display = "none"
+}
+function genderEditButtonDisplay() {
+  document.querySelector('.genderEdit').style.display = 'none'
+}
+
+function showGenderEditButton() {
+  let genderEditButton = document.querySelector(".genderEdit")
+  genderEditButton.style.display = "inline-block"
+}
+function genderHideEditButton(event) {
+  let genderEditButton = document.querySelector(".genderEdit")
+  var genderForm = document.getElementById('genderformContainer').querySelector('.update-gender');
+
+  // Check if the mouseout occurred outside the nameForm and outside the editButton
+  if (genderForm.contains(event.relatedTarget)) {
+    // Hide the edit button
+    genderEditButton.style.display = "block";
+  }
+  if (event.relatedTarget !== genderEditButton) {
+    genderEditButton.style.display = "none";
+  }
+}
+
 
 
 // update bookings

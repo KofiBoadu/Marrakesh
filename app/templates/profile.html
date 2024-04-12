@@ -89,9 +89,15 @@
 
     </div>
 
-    <div class="profile-info-container">
+    <div class="profile-info-container"onmouseover="showGenderEditButton()" onmouseout="genderHideEditButton(event)">
       <h4>Gender</h4>
-      <p id="state-info">{{ profile[5] }}</p> <!-- Assuming the fourth element is the gender-->
+      <div class="phone-wrap">
+        <p id="state-info">{{ profile[5] }}</p> <!-- Assuming the fourth element is the gender-->
+        <img style="display: none" class="genderEdit" width="20" height="20"
+            src="https://img.icons8.com/windows/32/FF914C/create-new.png" alt="create-new"
+            onclick="showUpdateGenderForm()" />
+      </div>
+      
     </div>
 
     <div class="profile-info-container">
@@ -498,12 +504,12 @@
 
 
 <!--update contact gender-->
-<div class="update-contact-status" id="statusformContainer" class="hidden" style="display: block;">
-  <img class="updateStatusClose" onclick="closeUpdateStatusForm()" width="16" height="16"
+<div class="update-contact-gender" id="genderformContainer" class="hidden" style="display: none;">
+  <img class="updateGenderClose" onclick="closeUpdateGenderForm()" width="16" height="16"
     src="https://img.icons8.com/material-outlined/24/000000/delete-sign.png" alt="delete-sign" />
   <form action="{{ url_for('profiles.update_contact_gender') }}" method="post">
     <input type="hidden" id="status_of_the_contact" name="contact_id" value="{{ contact_id }}">
-    <div class="update-status">
+    <div class="update_gender">
       <label for="state">Gender</label>
       <select name="new_gender">
 

@@ -14,7 +14,8 @@
 
 
 <div id="contactExists" class="contact-exists-popup" style="display: none;">
-    <p>Hold the phone! It looks like a contact with the email address <a id="existingEmailLink" href="#"></a> already exists.</p>
+    <p>Hold the phone! It looks like a contact with the email address <a id="existingEmailLink" href="#"></a> already
+        exists.</p>
     <!-- Your content here like the initial image and name -->
 </div>
 
@@ -38,92 +39,92 @@
     </div>
 
     <form class="modal__form" action="{{ url_for('contacts.adding_new_contact') }}" method="post">
-                <!-- Email -->
-                <div class="modal_wrap">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+        <!-- Email -->
+        <div class="modal_wrap">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+
+
+        <!-- First Name -->
+        <div class="modal_wrap">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" required>
+        </div>
+
+        <!-- Last Name -->
+        <div class="modal_wrap">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" required>
+        </div>
+
+
+
+
+        <!-- alternate forms  -->
+
+        <div id="additionalFields" style="display:none;">
+
+            <!-- Phone -->
+            <div class="modal_wrap">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+
+            <!-- State (Dropdown with all states and initials) -->
+            <div class="modal_wrap">
+                <label for="state">State:</label>
+                <select id="state" name="state">
+                    <option value="">None</option>
+                    {% for state in states %}
+                    <option value="{{ state }}">{{ state }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <!-- Gender Option -->
+            <div class="modal_wrap">
+                <label>Gender</label>
+                <div class="modal_wrap--gender">
+                    <input class="radio" id='radio' type="radio" id="male" name="gender" value="male">
+                    <label id='gender' for="male">Male</label>
+                    <input class="radio" id='radio' type="radio" id="female" name="gender" value="female">
+                    <label id='gender' for="female">Female</label>
+
                 </div>
+            </div>
 
 
 
-                <!-- First Name -->
-                <div class="modal_wrap">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="first_name" required>
-                </div>
-
-                <!-- Last Name -->
-                <div class="modal_wrap">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="last_name" required>
-                </div>
+            <!-- contact status -->
+            <div class="contact-status">
+                <label>Contact status</label>
+                <select name="lead_status">
+                    <option>Lead</option>
+                    <option>Customer</option>
+                </select>
+            </div>
 
 
 
-
-                 <!-- alternate forms  -->
-
-                 <div  id="additionalFields" style="display:none;">
-
-                       <!-- Phone -->
-                    <div class="modal_wrap">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
+        </div>
 
 
-                    <!-- State (Dropdown with all states and initials) -->
-                    <div class="modal_wrap">
-                        <label for="state">State:</label>
-                        <select id="state" name="state">
-                            <option value="">None</option> 
-                        {% for state in states %}
-                            <option value="{{ state }}">{{ state }}</option>
-                        {% endfor %}
-                        </select>
-                    </div> 
 
 
-                    <!-- Gender Option -->
-                    <div class="modal_wrap">
-                        <label>Gender</label>
-                        <div class="modal_wrap--gender">
-                            <input class="radio" id='radio' type="radio" id="male" name="gender" value="male">
-                            <label id='gender' for="male">Male</label>
-                            <input class="radio" id='radio' type="radio" id="female" name="gender" value="female">
-                            <label id='gender' for="female">Female</label>
-
-                        </div>
-                    </div>
-
-                      
-
-                      <!-- contact status -->
-                    <div class="contact-status">
-                        <label>Contact status</label>
-                        <select name="lead_status">
-                            <option>Lead</option>
-                            <option>Customer</option>
-                        </select>
-                    </div>
-
-
-                         
-                     </div>
-             
-                
-       
- 
-                <!-- Submit Button -->
-                <div class="modal_wrap">
-                    <button class="modal_submit" id="contact-submit-button" type="submit">Create contact</button>
-                </div>
+        <!-- Submit Button -->
+        <div class="modal_wrap">
+            <button class="modal_submit" id="contact-submit-button" type="submit">Create contact</button>
+        </div>
 
     </form>
 
 </div>
 
- 
+
 
 
 
@@ -243,7 +244,7 @@
                     </div>
                 </div>
             </div>
-         
+
 
 
 
@@ -258,29 +259,41 @@
 
 <!-- importing contacts pop up form  -->
 
-<div class="container">
-{% with messages = get_flashed_messages(with_categories=true) %}
+<div class="import-container" style="display: none;" id='import_form'>
+    <div class="importForm">
+        <div class="export-header">
+
+            <h3>Import</h3>
+            <img class="closeExport-button" id="exportClose" width="24" height="24" onclick="closeimportModal()"
+                src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+    
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% endif %}
-    {% endwith %}
+        {% endwith %}
+    
+    
+        <form action="{{ url_for('importing.upload_file') }}" method="post" enctype="multipart/form-data" class="import">
+            <div class="importing-contacts">
+                <label for="contact_file">Upload File:</label>
+                <input type="file" id="contact_file" name="file" accept=".csv">
+            </div>
+            <div class="importing-contacts">
+                <button type="submit">Import Contacts</button>
+            </div>
+        </form>
 
-
-<form action="{{ url_for('importing.upload_file') }}" method="post" enctype="multipart/form-data">
-    <div class="importing-contacts">
-        <label for="contact_file">Import Contacts:</label>
-        <input type="file" id="contact_file" name="file" accept=".csv">
     </div>
-    <div class="importing-contacts">
-        <button type="submit">Import Contacts</button>
-    </div>
-</form>
+    
 
-</div>  
+</div>
 
 
 
@@ -308,7 +321,7 @@
             </div>
 
             <h3 class='export-header2'>Choose file format</h3>
-            <select class="export-select"  id="option-select" name="export_file_type">
+            <select class="export-select" id="option-select" name="export_file_type">
                 <option value="csv">csv</option>
                 <option value="excel">excel</option>
             </select>
@@ -339,7 +352,7 @@
         <div class="loader"></div>
     </div>
 
-    
+
     <!-- Table Header -->
     <div id="table-header">
         <div id="customer-header">
@@ -351,41 +364,45 @@
             <button id="createCustomerBtn">Create contact</button>
             <!-- <button id="tourBtn">Create Tour</button> -->
         </div>
-       
+
     </div>
 
     <!-- Search and Actions Container -->
     <div class="search-container">
-        <form id="searchForm" class="search-form" action="{{ url_for('contacts.home_page') }}" data-home-url="{{ url_for('contacts.home_page') }}" method="post">
+        <form id="searchForm" class="search-form" action="{{ url_for('contacts.home_page') }}"
+            data-home-url="{{ url_for('contacts.home_page') }}" method="post">
             <input id="searchInput" type="search" name="search_query" placeholder="Search name">
             <button class="search" type="submit">
-                <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png" alt="search-icon" />
+                <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FF914C/search--v1.png"
+                    alt="search-icon" />
             </button>
         </form>
 
         <div class="action-container">
             <div id="deleteButton" onclick="showModal()">
-                <img id="delete-button-icon" width="16" height="16" src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete-icon" />
+                <img id="delete-button-icon" width="16" height="16"
+                    src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete-icon" />
                 <p>delete</p>
             </div>
 
             <form action="{{ url_for('contacts.get_customer_details') }}" method="get">
                 <div id="updateButton" onclick="showUpdateModal()">
-                    <img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FF914C/create-new.png" alt="edit-icon" />
+                    <img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FF914C/create-new.png"
+                        alt="edit-icon" />
                     <input type="hidden" id="customerIdToUpdate" name="customer_id" value="">
                     <p>edit</p>
                 </div>
             </form>
         </div>
-        
+
 
         <div class="export-div">
-            <button class="export" id="import_button">import</button>
-            
+            <button class="export" id="import_button" onclick="show_importButton()">import</button>
+
             <button onclick="show_exportButton()" id="export_button" class="export ">export</button>
         </div>
 
-        
+
     </div>
 
     <!-- Static Table Header -->
@@ -401,8 +418,8 @@
                 <th>State</th>
                 <th>Phone Number</th>
                 <th>Contact Status</th>
-             
-               
+
+
             </tr>
         </thead>
     </table>
@@ -411,7 +428,7 @@
     <div class="table-container-scroll-bar">
         <table>
             <tbody id="table-body">
-                 {% include 'table_body.html' %}
+                {% include 'table_body.html' %}
             </tbody>
         </table>
     </div>
