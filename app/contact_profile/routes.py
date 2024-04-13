@@ -5,18 +5,14 @@ from .profile_models import updating_contact_status, update_contact_phone, \
     bookings_updates_logs, update_contact_email, update_contact_name
 from .profile_models import save_contact_notes, delete_contacts_notes
 from  app.utils.main  import send_email,all_states,format_phone_number
-
 from app.utils.tours import get_all_upcoming_travel_packages,get_travel_package_id,book_a_tour_for_a_contact
-
 from .profile_models import profile_details, get_customer_bookings, contact_submissions, contact_gender_update
-
 from . import contacts_profile
 from app.utils.main import cache
 
 
 @contacts_profile.route('/<int:contact_id>', methods=['GET'])
 @login_required
-@cache.cached(timeout=5 * 60, key_prefix=lambda: f'contact_profile_{request.view_args["contact_id"]}')
 def contact_profile(contact_id):
     if not contact_id:
         return redirect(url_for("contacts.home_page"))

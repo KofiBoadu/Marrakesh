@@ -10,7 +10,6 @@ import app.marketing.mass_email_marketing as market
 
 @email_marketing.route('/emails', methods=['GET'])
 @login_required
-@cache.cached(timeout=50, key_prefix='marketing_emails_cache')
 def marketing_emails():
     campaigns = all_email_campaign()
     return render_template("email_campaigns.html", campaigns=campaigns)
