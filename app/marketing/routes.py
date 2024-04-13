@@ -1,22 +1,23 @@
 import logging
-
 from flask import render_template, request, redirect, url_for, jsonify
 from . import email_marketing
-from app.user import get_all_users
-from app.emails import our_customers_since_by_year, get_customers_by_year_or_all
-from app.mass_email_marketing import marketing_email, all_email_campaign, campaign_open_rate, get_unique_opens
+from app.users.admin_models import get_all_users
+from app.utils.main import our_customers_since_by_year, get_customers_by_year_or_all,cache
+from .mass_email_marketing import marketing_email, all_email_campaign, campaign_open_rate, get_unique_opens
 from flask_login import login_required, current_user
-import app.mass_email_marketing as market
+import app.marketing.mass_email_marketing as market
 
 
 @email_marketing.route('/emails', methods=['GET'])
 @login_required
+@cache.cached(timeout=50, key_prefix='marketing_emails_cache')
 def marketing_emails():
     campaigns = all_email_campaign()
-    return render_template("email_marketing.html", campaigns=campaigns)
+    return render_template("email_campaigns.html", campaigns=campaigns)
 
 
 @email_marketing.route('/campaign/performance/<int:campaign_id>', methods=['GET'])
+@cache.cached(timeout=50, key_prefix=lambda: f'email_campaign_performance_cache_{request.view_args["campaign_id"]}')
 @login_required
 def email_campaign_performance(campaign_id):
     # Your code to fetch and display the campaign performance for the given campaign_id
@@ -43,7 +44,7 @@ def email_campaign_performance(campaign_id):
 
     # delivery_events={"total_bounce":total_bounce,"total_delivery":total_delivery,"total_unsubscribe":total_unsubscribe,"total_spam":total_spam}
 
-    return render_template("email_campaign.html", events=events, total_emails_sent=total_emails_sent, **event_metrics,
+    return render_template("campaign_performance.html", events=events, total_emails_sent=total_emails_sent, **event_metrics,
                            click_events=click_events, campaign_id=campaign_id, open_rate=open_rate,
                            unique_opens=unique_opens, total_opens=total_opens)
 
@@ -90,7 +91,12 @@ def send_marketing_emails():
 
         customer_list_by_year = our_customers_since_by_year()
 
-        return render_template("sendEmail_marketing.html", senders=senders, customer_list_byYear=customer_list_by_year)
+        return render_template("send_marketing_email.html", senders=senders, customer_list_byYear=customer_list_by_year)
+
+
+
+
+
 
 
 @email_marketing.route('/campaign/delete/', methods=['POST'])

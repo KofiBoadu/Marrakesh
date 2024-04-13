@@ -1,0 +1,866 @@
+/* Reset margins and padding for all elements, pseudo-elements, body, and html */
+*,
+*::before,
+*::after,
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.customer-dashboard {
+    display: flex;
+
+}
+
+/* Apply styles to the .profile-container */
+.profile-container {
+    width: 400px;
+    margin: 0;
+    /* This ensures no margin at the top and flush with the left side */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 0px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: none;
+
+
+    /* In case you need to position something absolutely inside */
+}
+
+.profile-avatar {
+
+    background-color: #e1e1e1;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.profile-avatar-letter {
+
+    text-transform: uppercase;
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 3em;
+    font-weight: 500;
+    padding-top: 25px;
+    color: #ffffff;
+
+
+}
+
+.profile-name {
+    text-align: center;
+    margin-top: 5%;
+    padding-bottom: 5%;
+    border-bottom: 2px solid #e1e1e1;
+}
+
+.profile-name h1 {
+    text-transform: capitalize;
+    font-family: "Lexend Deca", sans-serif;
+    color: #03989E;
+
+
+}
+
+.profile-name p {
+    font-family: "Lexend Deca", sans-serif;
+    color: #646464;
+}
+
+.profile-actions {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.actions-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.actions-container p {
+    font-size: .8em;
+}
+
+.profile-info-container {
+    margin-left: 5%;
+    font-family: "Lexend Deca", sans-serif;
+    margin-bottom: 5%;
+    color: #646464;
+}
+
+.profile-title {
+    font-family: "Lexend Deca", sans-serif;
+    color: #03989E;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+#state-info {
+    text-transform: uppercase;
+}
+
+/* Style the main header without top margin */
+.profile-container>h1 {
+    font-size: 1.75rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Style the email and other details without top margin */
+.profile-container>p {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #646464;
+    margin-bottom: 0.5rem;
+}
+
+/* Style sub-headers without top margin */
+.profile-container>h2 {
+
+    margin-top: 40px;
+    /* Reset top margin to 0 */
+    margin-bottom: 0.5rem;
+
+    padding-bottom: 0.25rem;
+}
+
+/* right side of the profile */
+@keyframes slideIn {
+    from {
+        right: -100%;
+        /* Start off-screen to the right */
+    }
+
+    to {
+        right: 0;
+        /* Move to the original position */
+    }
+}
+
+#submit_booking {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+
+    z-index: 1000;
+    width: 25%;
+    height: 100%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+    animation: slideIn 0.5s ease;
+    margin: auto;
+
+}
+
+#submit_booking h1 {
+    background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgb(175, 213, 214) 100%);
+    padding: 20px;
+    color: #FFF
+}
+
+#submit_booking p {
+    width: 80%;
+    font-size: 16px;
+    PADDING: 9PX;
+    BORDER-RADIUS: 2PX;
+    color: #03989E;
+    padding-left: 3px;
+    border: 1px solid rgb(180, 180, 180);
+
+}
+
+.modify-container {
+    margin-left: 40px;
+    margin-top: 40px;
+}
+
+.modify-label {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    color: #959494;
+}
+
+
+
+.profile-form-actions {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #e1e1e1;
+
+}
+
+.profile-form-button1 {
+    background-color: #FF914C;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 100px;
+    margin-left: 20px;
+}
+
+.profile-form-button2 {
+    background-color: #d9d9d9;
+    color: #646464;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 100px;
+    margin-left: 20px;
+
+}
+
+.profile-detail-container {
+    border-left: 1px solid #e1e1e1;
+    width: 20%;
+}
+
+.profile-tour-form {
+    margin: auto;
+    margin-top: 20px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-tour-form label {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #959494;
+}
+
+.tour-selection {
+    width: 80%;
+    font-size: 16px;
+    height: 2.5em;
+    /* font-size: 16px; */
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #03989E;
+    border: 1px solid rgb(180, 180, 180);
+   
+
+}
+
+.profile-bookings {
+    margin-top: 20px;
+    padding: 10px;
+    width: 95%;
+    text-align: center;
+    margin: auto;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e1e1e1;
+
+}
+
+.profile-form-notify {
+    margin-bottom: 100%;
+    color: #03989E;
+}
+
+
+.profile-bookings ul {
+    list-style: none;
+    padding-left: 20px;
+    text-align: center;
+
+
+}
+
+.tour-container {
+    display: flex;
+    justify-content: center;
+}
+
+.tour-container button {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+}
+
+
+
+.tour-container:hover .update-btn {
+  display: block !important; /* Temporarily use !important to test */
+}
+
+
+.profile-bookings ul li {
+
+    margin-bottom: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    color: #64646499;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 300;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+    border: 1px solid #e1e1e1;
+    width: 90%;
+    margin-top: 2%;
+
+}
+
+.profile-bookings ul li:hover {
+    background-color: #03999e6d;
+}
+
+.profile-bookings h3 {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #03989E;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+/* Total payment styling without top margin */
+.revenue {
+    display: flex;
+
+
+
+
+    margin-top: 5%;
+}
+
+.revenue-container {
+    margin-left: 2%;
+
+}
+
+.revenue-amt {
+    font: 1.5em helvetica;
+    color: #FF8C00;
+
+}
+
+.revenue-title {
+    color: #646464;
+    font: 1em helvetica;
+
+}
+
+/*button {
+    margin:50px;
+    background-color: #FF8C00; 
+    color: #FFF; 
+    border: none; 
+    padding: 10px 20px; 
+    font-family: 'Arial', sans-serif; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+
+button:hover {
+    background-color: #e47600; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+button:active {
+    background-color: #cc6b00; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+/* /* email form styling */
+
+.profile-name-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.profile-name-container img {
+    margin-left: 15px;
+}
+
+
+
+.edit {
+    display: none;
+    margin-left: 5px;
+
+}
+
+
+
+#formContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 450px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 250px;
+    left: 350px;
+    z-index: 1000;
+
+
+}
+
+#formContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+
+.update_first_name {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_last_name {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.update_first_name input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+}
+
+.update_last_name input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_first_name label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.update_last_name label {
+    font-weight: 200;
+    color: #c3c3c3;
+}
+
+.update_wrap {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.save_new_name {
+    background-color: #FF914C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.updateNameClose {
+    margin-left: 400px;
+
+}
+
+.phone-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.phoneEdit {
+    margin-left: 10px;
+}
+
+#phoneformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 450px;
+    left: 200px;
+    z-index: 1000;
+}
+
+#phoneformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+
+.update_number {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_number input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_number label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updatePhoneClose {
+    margin-left: 250px;
+
+}
+
+.phone-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.emailEdit {
+    margin-left: 10px;
+}
+
+#emailformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 20px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 520px;
+    left: 200px;
+    z-index: 1000;
+}
+
+#emailformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+
+.update_email {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_email input {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+
+.update_email label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updateEmailClose {
+    margin-left: 250px;
+
+}
+
+
+#stateformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 15px;
+    POSITION: absolute;
+    background-color: #FFF;
+
+    top: 580px;
+    left: 100px;
+    z-index: 1000;
+}
+
+#stateformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update_customer_state {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update_customer_state  select {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+.update_customer_state label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updateStateClose {
+    margin-left: 250px;
+
+}
+
+#statusformContainer {
+    border: #c3c3c3 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 24px rgba(0, 0, 0, .08);
+    width: 300px;
+    padding: 15px;
+    POSITION: absolute;
+    background-color: #FFF;
+    top: 640px;
+    left: 200px;
+    z-index: 1000;
+}
+
+#statusformContainer::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -20px;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FFF transparent transparent;
+
+}
+.update-status {
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.update-status  select {
+    height: 2em;
+    border: #03989E 1px solid;
+    margin-top: 5px;
+
+}
+.update-status label {
+    font-weight: 200;
+    color: #c3c3c3;
+
+}
+
+.updateStatusClose {
+    margin-left: 250px;
+
+}
+
+
+
+/* book a tour form */
+.bookTourButton{
+    background-color:transparent;
+    color:#FF914C;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.bookTourButton p{
+   font-weight: 400;
+}
+#bookingTour{
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+
+    z-index: 1000;
+    width: 25%;
+    height: 100%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+    animation: slideIn 0.5s ease;
+    margin: auto;
+
+}
+
+#bookingTour h1 {
+    background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgb(175, 213, 214) 100%);
+    padding: 20px;
+    color: #FFF
+}
+
+#bookingTour p {
+    width: 80%;
+    font-size: 16px;
+    PADDING: 9PX;
+    BORDER-RADIUS: 2PX;
+    color: #03989E;
+    padding-left: 3px;
+    border: 1px solid rgb(180, 180, 180);
+
+}
+.save-bookings {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #e1e1e1;
+
+}
+
+.book-now {
+    background-color: #FF914C;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 120px;
+    margin-left: 20px;
+}
+
+.closeBookingForm {
+    background-color: #d9d9d9;
+    color: #646464;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 120px;
+    margin-left: 20px;
+
+}
+.create-tour-bookings {
+    margin: auto;
+    margin-top: 20px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+.tour-bookings{
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-bottom: 100%;
+}
+.tour-bookings label {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #959494;
+}
+
+.tour-select {
+    width: 80%;
+    font-size: 16px;
+    height: 2.5em;
+    /* font-size: 16px; */
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #03989E;
+    border: 1px solid rgb(180, 180, 180);
+   
+
+}
+/*spinning styling */
+
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 1000; /* High z-index to cover the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    border: 5px solid #f3f3f3; /* Light grey border */
+    border-top: 5px solid #3498db; /* Blue border for the top side */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

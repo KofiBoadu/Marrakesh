@@ -1,0 +1,133 @@
+
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="print_page">
+    <button id="printPageButton" onclick="printPage()">Print</button>
+</div>
+
+<div class="analytics">
+
+  
+
+
+
+
+    <div class="dashboard">
+
+        <div class="dashboard_card">
+           
+            <div class="dashboard_container2">
+                <h1 class="dashboard_header">${{revenue}}</h1>
+                <h5 class="dashboard_subheader">Gross revenue in {{ current_year}} </h5>
+            </div>
+
+        </div>
+        <div class="dashboard_card">
+           
+            <div class="dashboard_container2">
+                <h1 class="dashboard_header">{{total_travelers}}</h1>
+                <h5 class="dashboard_subheader">Total number of travellers in {{ current_year}}</h5>
+            </div>
+
+        </div>
+        <div class="dashboard_card">
+           
+            <div class="dashboard_container2">
+                <h1 class="dashboard_header">Not yet</h1>
+                <h5 class="dashboard_subheader">Profit generated in {{ current_year}}</h5>
+            </div>
+
+        </div>
+        <div class="dashboard_card">
+         
+            <div class="dashboard_container2">
+                <h1 class="dashboard_header">Not yet</h1>
+                <h5 class="dashboard_subheader">Expenses in{{ current_year}}</h5>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="chart-container">
+
+
+        <div class="chart-background-state">
+            <div class="location-chart-container" style="width: 90%;">
+                <h2>Customer distribution by state </h2>
+                <div class="chart-and-legend">
+                    <canvas id="customerLocationChart" width="50" height="50"></canvas>
+                    <div class="state-legend"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="small-chart-container"> 
+            <div class="chart-background">
+                <!-- customers gender bar chart  -->
+    
+                <div id="gender-chart-container" style="width: 90%;">
+                    <h2> Customer Distribution by Gender, Including Unspecified </h2>
+                    <div class="chart-options">
+                        <label for="genderSelectyear">filter by</label>
+                        <select name="gender_year" id="genderSelectyear">
+                            <option value="">lifetime</option>
+                            {% for year in list_years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <canvas id="genderChart"></canvas>
+                </div>
+    
+            </div>
+            <div class="chart-background">
+                <!-- bookings chart  -->
+                <div id="bookings-chart-container" style="width: 90%;">
+                    <h2> Customer Bookings Distribution by Destination </h2>
+                    <div class="chart-options">
+                        <label for="bookingsSelectyear">filter by</label>
+                        <select name="bookings_year" id="bookingsSelectyear">
+                            <option value="">lifetime bookings</option>
+                            {% for year in list_years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <canvas id="bookings-Chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-background">
+                <!-- revenue charts -->
+                <div id="revenue-chart-container" style="width: 90%;">
+                    <h2> Revenue Distribution by Year </h2>
+                    <h3>Lifetime revenue: <span id="total-revenue">${{ '{:,.2f}'.format(0) }}</span></h3>
+                    <canvas id="revenue-Chart"></canvas> <!-- Corrected the id here -->
+                </div>
+    
+            </div>
+    
+
+        </div>
+
+       
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

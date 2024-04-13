@@ -1,16 +1,17 @@
 from flask import render_template, request
 from . import analytics
-from app.models import get_total_number_of_travellers, calculate_gross_revenue
+from .analytics_model import get_total_number_of_travellers, calculate_gross_revenue
 import datetime
-from app.data_analytics import customers_location_by_state, contacts_by_gender, get_travellers_by_destination_query, \
+from  .analytics_model  import customers_location_by_state, contacts_by_gender, get_travellers_by_destination_query, \
     calculate_annual_gross_revenue
 from flask import Flask, jsonify
-from app.emails import our_customers_since_by_year
+from app.utils.main import our_customers_since_by_year,cache
 from flask_login import login_required
 
 
 @analytics.route('/analytics', methods=['GET'])
 @login_required
+@cache.cached(timeout=5 * 60, key_prefix="analytics_home")
 def analytics_home():
     current_year = datetime.datetime.now().year
 
@@ -30,6 +31,7 @@ def analytics_home():
 
 @analytics.route('/location_chart')
 @login_required
+@cache.cached(timeout=5 * 60, key_prefix="location_chart")
 def contacts_location_charts():
     data = customers_location_by_state()
     data_list = [{'state_group': state, 'customer_count': count} for state, count in data]
@@ -38,6 +40,7 @@ def contacts_location_charts():
 
 @analytics.route('/gender_chart')
 @login_required
+@cache.cached(timeout=5 * 60, key_prefix="gender_chart")
 def contacts_gender_charts():
     year = request.args.get("gender_year", default=None)
     gender_data = contacts_by_gender(year)
@@ -46,6 +49,7 @@ def contacts_gender_charts():
 
 @analytics.route('/revenue_chart')
 @login_required
+@cache.cached(timeout=5 * 60, key_prefix="revenue_chart")
 def annual_revenue_charts():
     revenue_data = calculate_annual_gross_revenue()
     return jsonify(revenue_data)
@@ -53,6 +57,7 @@ def annual_revenue_charts():
 
 @analytics.route('/bookings_chart')
 @login_required
+@cache.cached(timeout=5 * 60, key_prefix="bookings_chart")
 def contacts_bookings_charts():
     year = request.args.get("bookings_year", default=None)
     bookings_data = get_travellers_by_destination_query(year)

@@ -2,7 +2,7 @@ from . import fileImport_bp
 from flask import  render_template, request,redirect,url_for,flash
 from werkzeug.utils import secure_filename
 import os
-from app.importing_file import process_csv
+from  .import_model   import process_csv
 
 @fileImport_bp.route('/upload', methods=['POST'])
 def upload_file():

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+
+<!--message for emails processing-->
+
+<div id="email-processing-message"  style="display:none;" >
+    <p>Email sending is currently processing . Return back in a few minutes to see metrics!</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- open rate div -->
+<div style="border-style: solid;">
+	
+  {% if open_rate is not none %}
+        <h2>Open rate: {{ open_rate }}%</h2>
+    {% else %}
+        <h2>Open rate: None</h2>
+    {% endif %}
+
+   <p>Unique opens: {{ unique_opens }}</p>
+   <p>Total opens: {{ total_opens }}</p>
+
+</div>
+
+
+
+<!-- clicks rate div -->
+<div style="border-style: solid;">
+
+    <h2>Click Rate: {{ click_events.click_rate }}%</h2>
+    <p>Unique Clicks: {{ click_events.unique_clicks }}</p>
+    <p>Total Clicks: {{ click_events.total_clicks }}</p>
+
+</div>
+
+
+
+<!-- delivery metrics  -->
+
+
+<div class="metrics-container">
+    <h2>Delivery</h2>
+        <div class="metric">
+            
+            <div class="metric-description">Successful Deliveries</div>
+            <div class="metric-number">{{  successful_deliveries }}</div>
+            <p class="percentage" id="successful-deliveries-percentage">{{ delivery_percentage }}%</p>
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Bounces</div>
+            <div class="metric-number">{{ bounces }}</div>
+            <p class="percentage" id="bounces-percentage">{{ bounce_percentage }}%</p>
+ 
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Unsubscribes</div>
+            <div class="metric-number">{{ unsubscribes }}</div>
+            <p class="percentage" id="unsubscribes-percentage">{{ unsubscribe_percentage }}%</p>
+        </div>
+
+        <div class="metric">
+            
+            <div class="metric-description">Spam Reports</div>
+            <div class="metric-number">{{ spam_reports }}</div>
+             <p class="percentage" id="spam-reports-percentage">{{ spam_report_percentage }}%</p>
+        </div>
+    </div>
+
+
+
+
+
+<div class="receipient-metrics-container">
+     
+        <div class="metric-item">
+            <strong>Sent</strong><span>{{ total_emails_sent }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Delivered</strong><span>{{  successful_deliveries }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Opened</strong><span>{{ total_opens }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Clicked</strong><span>{{ click_events.total_clicks }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Bounced</strong><span>{{ bounces }}</span>
+        </div>
+        <div class="metric-item">
+            <strong>Unsubscribed</strong><span>{{ unsubscribes }}</span>
+
+         </div>
+
+
+
+
+
+
+
+<div class="recipient-table">
+  <table class="email-table">
+    <thead>
+      <tr>
+        <th>Recipient</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact_id, full_name, campaign_id, event_type in events %}
+      <tr>
+        <td>
+          <!-- Full name as a clickable link -->
+          <a href="{{ url_for('profiles.contact_profile', contact_id=contact_id) }}">
+            {{ full_name }}
+          </a>
+          <!-- Hidden inputs for storing additional data -->
+          <input type="hidden" name="campaign_id" value="{{ campaign_id }}">
+          <input type="hidden" name="event_type" value="{{ event_type }}">
+        </td>
+        <td class="{{ event_type|lower }}">{{ event_type }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+{% endblock %}

@@ -1,16 +1,14 @@
 from flask import render_template, request, redirect, url_for, session
-from app.models import get_all_contacts_information, add_new_contact, \
-    get_destination_id
-from app.models import get_contact_id, get_all_destinations, \
-    create_new_tour_packages
-from app.models import check_contact_exists, all_states
+from app.utils.tours import  create_new_tour_packages,get_all_destinations,get_destination_id
 from app.contacts import contacts_bp
-
 import math
 from flask_login import login_required, current_user
-from app.models import format_phone_number, remove_contacts, get_total_num_of_contacts
-from app.contacts_models import fetch_contact_details, update_full_contact_details
+from app.utils.main import format_phone_number,all_states
+from  .contact_models import  remove_contacts, get_total_num_of_contacts,check_contact_exists,add_new_contact
+from .contact_models import  update_full_contact_details, get_contact_id,get_all_contacts_information
+from app.contact_profile.profile_models import fetch_contact_details
 from flask import jsonify
+from app.utils.main import cache
 
 
 
@@ -36,7 +34,7 @@ def home_page():
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             table_body_html = render_template('table_body.html', customers=customers)
-            pagination_html = render_template('home_paginations.html', page=page, total_pages=total_pages)
+            pagination_html = render_template('table_paginations.html', page=page, total_pages=total_pages)
             return jsonify({
                 'table_body_html': table_body_html,
                 'pagination_html': pagination_html
@@ -78,6 +76,7 @@ def home_page():
 
 @contacts_bp.route('/details', methods=['GET'])
 @login_required
+@cache.cached(timeout=50, key_prefix='get_customer_details')
 def get_customer_details():
     customer_id = request.args.get('customer_id')
     print("Requested Customer ID:", customer_id)

@@ -1,13 +1,13 @@
 from . import users_bp
 from flask import render_template, request, redirect, url_for, flash, session
 from werkzeug.security import check_password_hash
-from flask_login import login_user, UserMixin, logout_user
-from app.user import get_user, User, create_user_account, generate_secure_password, deactivate_user_account, \
+from flask_login import login_user, logout_user
+from .admin_models import get_user, User, create_user_account, generate_secure_password, deactivate_user_account, \
     reactivate_user_account, remove_super_admin, make_super_admin
 from flask_login import login_required, current_user
-from app.user import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles
-from app.emails import send_email
-from app.models import get_all_destinations
+from .admin_models import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles
+from app.utils.main import send_email
+from app.utils.tours import get_all_destinations
 
 
 @users_bp.route('/login', methods=["GET"])
@@ -118,7 +118,7 @@ def services():
 def remove_a_user():
     user_id = request.form.get('user_id')
     if user_id:
-        remover_user_from_account(user_id)  # Implement this function to deactivate/remove the user
+        remover_user_from_account(user_id)  
     return redirect(url_for('users.settings_users'))
 
 

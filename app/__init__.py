@@ -1,31 +1,30 @@
 from flask import Flask, redirect, url_for, session
-from app.extension import login_manager, cache
+from app.utils.main import login_manager, cache
 from .contacts import contacts_bp
 from .marketing import email_marketing
 from app.users import users_bp
 from dotenv import load_dotenv
 import os
-from .contacts_profiles import contacts_profile
+from .contact_profile import contacts_profile
 from .send_emails import email_customers
-from .emails import mail
+from .utils.main import mail
 from app.file_export import fileExport_bp
 from app.file_imports import fileImport_bp
 from app.analytics import analytics
 from app.events_schedule import events
-from .api import api_blueprint
+from .webhooks import api_blueprint
 from flask.logging import create_logger
 import logging
-# from app.models import connection_pool_management
+
 
 
 def create_app():
     load_dotenv()
-    app = Flask(__name__, static_folder='static')
+    app = Flask(__name__, template_folder='utils/templates', static_folder='utils/static',static_url_path='/static')
 
     logger = create_logger(app)
     logger.setLevel(logging.DEBUG)
 
-    # connection_pool = connection_pool_management()
 
     @app.route('/contacts/home')
     def redirect_to_login():
