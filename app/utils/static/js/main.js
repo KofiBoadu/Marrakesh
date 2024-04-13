@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
 //delete functionality
 // Array to store the IDs of selected contacts
 let selectedContactIds = [];
+console.log(selectedContactIds)
+
 function toggleDeleteButton(checkbox) {
     let deleteButton = document.getElementById('deleteButton');
     const contactId = checkbox.value;
@@ -60,8 +62,6 @@ function toggleDeleteButton(checkbox) {
 }
 
 
-
-
 function showModal() {
     const deleteModal = document.getElementById('deleteModal');
     const deleteMessage1 = document.querySelector('.delete-message-1');
@@ -77,8 +77,6 @@ function showModal() {
 
     deleteModal.style.display = 'block';
 }
-
-
 
 
 function closeModal() {
@@ -103,8 +101,6 @@ function closeModal() {
 }
 
 
-
-
 function validateDeleteInput(input) {
     var confirmDeleteButton = document.getElementById('confirmDeleteButton');
     // Check if the input value is the word 'delete'
@@ -113,6 +109,11 @@ function validateDeleteInput(input) {
     // Show or hide the confirmation form based on the input
     document.getElementById('deleteConfirmForm').style.display = isDeleteTyped ? 'block' : 'none';
 }
+
+
+
+
+
 
 
 
@@ -140,6 +141,7 @@ function updateCustomerDetails(checkbox) {
 
 function showUpdateModal() {
     const customerId = document.getElementById('customerIdToUpdate').value;
+
 
     fetch(`/contacts/details?customer_id=${customerId}`)
     .then(response => {
@@ -201,17 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-document.addEventListener('DOMContentLoaded', function() {
-  const roleId = parseInt(document.getElementById('login-user-role-id').value, 10);
-  if (roleId > 1) {
-    const exportButton = document.querySelector('.export');
-    if (exportButton) {
-      exportButton.disabled = true;
-      exportButton.classList.add('disabled'); // Use 'disabled' class for styling
-    }
-  }
-});
 
 
 
@@ -280,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const homeUrl = searchForm.getAttribute('data-home-url') || '/';
 
+    // Load any saved search query from storage and set it as the input value
     const savedQuery = localStorage.getItem('searchQuery');
     if (savedQuery) {
         searchInput.value = savedQuery;
@@ -301,9 +293,6 @@ document.addEventListener('DOMContentLoaded', function () {
         performSearch();
     });
 });
-
-
-
 
 function performSearch() {
     console.log("performSearch called");
@@ -433,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function() {
     attachEventListenersToPaginationLinks(); // Initial call to attach event listeners to pagination links
     reinitializeItemsPerPageListener(); // Initial call to attach event listener to the "items per page" dropdown
 });
+
 
 
 

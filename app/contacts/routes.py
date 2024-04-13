@@ -76,7 +76,6 @@ def home_page():
 
 @contacts_bp.route('/details', methods=['GET'])
 @login_required
-@cache.cached(timeout=50, key_prefix='get_customer_details')
 def get_customer_details():
     customer_id = request.args.get('customer_id')
     print("Requested Customer ID:", customer_id)
