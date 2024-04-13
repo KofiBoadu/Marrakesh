@@ -204,17 +204,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  const roleId = parseInt(document.getElementById('login-user-role-id').value, 10);
-  if (roleId > 1) {
-    const exportButton = document.querySelector('.export');
-    if (exportButton) {
-      exportButton.disabled = true;
-      exportButton.classList.add('disabled'); // Use 'disabled' class for styling
-    }
-  }
-});
-
 
 
 

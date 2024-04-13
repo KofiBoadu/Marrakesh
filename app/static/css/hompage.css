@@ -757,6 +757,19 @@ button#cancel:hover {
   border-style: solid;
 }
 
+.import {
+  width: 70px;
+  height: 30px;
+  padding: 5px;
+  border: #FF914C 1px solid;
+  color: #FF914C;
+  border-radius: 5px;
+  background-color: transparent;
+  position: absolute;
+  margin-top: 0px;
+  border-style: solid;
+}
+
 #import_button {
   margin-right: 100px;
 }/*# sourceMappingURL=hompage.css.map */
