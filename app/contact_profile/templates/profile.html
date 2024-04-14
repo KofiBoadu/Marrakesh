@@ -8,6 +8,10 @@
 <!-- customer profile -->
 <div class="customer-dashboard">
   <div class="profile-container">
+   <!-- link to go back to the home page  -->
+    <h3 class="back-to-contacts-page"><a href="{{ url_for('contacts.home_page') }}"> Contacts</a> </h3>
+    
+  
     <div class="profile-avatar">
       <h1 class="profile-avatar-letter">{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
     </div>

@@ -1,17 +1,32 @@
-//add customer functionality
+// add customer functionality
 document.addEventListener('DOMContentLoaded', function() {
-    let customerBtn= document.getElementById("createCustomerBtn");
-    let popUpForm=document.getElementById("popUp");
-    let close=document.getElementById("close");
+    let customerBtn = document.getElementById("createCustomerBtn");
+    let popUpForm = document.getElementById("popUp");
+    let close = document.getElementById("close");
+    let form = document.querySelector('.modal__form'); 
+    customerBtn.addEventListener('click', function() {
+        popUpForm.style.display = 'block';
+    });
 
-    customerBtn.addEventListener('click',function(){
-        popUpForm.style.display='block'
-    })
+    close.addEventListener('click', function() {
+        popUpForm.style.display = 'none';
+        let contact_exist_div= document.getElementById("contactExists")
+        let additionalFields = document.getElementById("additionalFields")
+        contact_exist_div.style.display = "none"
+        additionalFields.style.display = "none"
 
-    close.addEventListener('click',function(){
-        popUpForm.style.display='none'
-    })
-})
+        form.reset(); 
+    });
+});
+
+
+
+
+
+
+
+
+
 
 //add tour modal form
 document.addEventListener('DOMContentLoaded', function() {
@@ -233,7 +248,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             var contactExistsDiv = document.getElementById("contactExists");
             var additionalFieldsDiv = document.getElementById("additionalFields");
-            var existingEmailLink = document.getElementById("existingEmailLink");
+            var existing_contact_link = document.getElementById("existing_contact_link");
+            var contact_profile_avatar= document.getElementById("contact-profile-avatar");
+            var existing_contact_email = document.getElementById("existing-contact-email");
             var create_contact_btn=document.getElementById("contact-submit-button");
 
             if (data.exists) {
@@ -241,10 +258,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     contactExistsDiv.style.display = 'block';
                     create_contact_btn.style.display="none"
                     additionalFieldsDiv.style.display = 'none';
-                    existingEmailLink.textContent = email;
+                    existing_contact_link.textContent = data.first_name + data.last_name;
+                    contact_profile_avatar.textContent = data.first_name[0] + data.last_name[0];
+                    existing_contact_email.textContent= data.email_address
                     // Update the href attribute with the correct blueprint prefix and contact_id
-                    existingEmailLink.href = '/profiles/' + data.contact_id;
-                    existingEmailLink.classList.add('active-link'); // Add your styling for an active link
+                    existing_contact_link.href = '/profiles/' + data.contact_id;
+                    existing_contact_link.classList.add('active-link'); // Add your styling for an active link
                 } // Make sure to style this class as needed
             } else {
                 contactExistsDiv.style.display = 'none';

@@ -198,6 +198,14 @@ def validate_contact_existence():
     email = data.get('email')
     contact_id = check_contact_exists(email)
     if contact_id:
-        return jsonify({'exists': True, 'contact_id': contact_id})
+        contact = fetch_contact_details(contact_id)
+        contact_details = {
+            "exists": True,
+            "contact_id": contact[0][0],
+            "first_name": contact[0][1],
+            "last_name": contact[0][2],
+            "email_address": contact[0][4]
+        }
+        return jsonify(contact_details)
     else:
         return jsonify({'exists': False})

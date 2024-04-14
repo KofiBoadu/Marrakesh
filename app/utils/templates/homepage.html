@@ -13,18 +13,6 @@
 
 
 
-<div id="contactExists" class="contact-exists-popup" style="display: none;">
-    <p>Hold the phone! It looks like a contact with the email address <a id="existingEmailLink" href="#"></a> already
-        exists.</p>
-    <!-- Your content here like the initial image and name -->
-</div>
-
-
-
-
-
-
-
 
 
 
@@ -57,6 +45,22 @@
         <div class="modal_wrap">
             <label for="lastName">Last Name</label>
             <input type="text" id="lastName" name="last_name" required>
+        </div>
+
+
+         <!-- display this container if the contact exist  -->
+
+        <div id="contactExists" class="contact-exists-popup" style="display: none;">
+            <p>Hold up! It looks like a contact with the email address <strong id="existing-contact-email"> </strong>  already
+                exists.</p>
+
+               
+
+                <div class="profile-avatar">
+                    <h1 id="contact-profile-avatar"> </h1>
+                    <h3 ><a id="existing_contact_link" href="#"></a></h3>
+                </div>
+           
         </div>
 
 
@@ -101,7 +105,7 @@
 
             <!-- contact status -->
             <div class="contact-status">
-                <label>Contact status</label>
+                <label>status</label>
                 <select name="lead_status">
                     <option>Lead</option>
                     <option>Customer</option>

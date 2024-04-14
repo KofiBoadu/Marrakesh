@@ -920,3 +920,32 @@ button:active {
     border: #03989E 1px solid;
     margin-top: 5px;
 }
+
+
+
+/* the back arrow to click to go back to the home page  */
+.back-to-contacts-page {
+    display: flex;
+    align-items: center;
+  }
+
+  .back-to-contacts-page a {
+    text-decoration: none;
+    color: #000; /* Adjust the color as necessary */
+    transition: text-decoration 0.3s ease; /* Smooth transition for the underline */
+  }
+
+  .back-to-contacts-page a {
+    text-decoration: none;
+  }
+
+  .back-to-contacts-page a:hover {
+    text-decoration: underline; /* Adds an underline on hover */
+  }
+
+
+  .back-to-contacts-page a::before {
+    content: '<  '; /* This is the back arrow */
+    display: inline-block;
+    margin-right: 4px;
+  }
