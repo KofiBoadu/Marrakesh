@@ -141,7 +141,7 @@ Thank you for joining the Marrakesh team. Below are your temporary credentials t
 
 Login email: {new_user_email}
 Temporary password: {temp_password}
-URL: https://africatravellers-crm-7ca32dc61ea0.herokuapp.com
+URL: https://africatravellers-crm-7ca32dc61ea0.herokuapp.com/contacts/contacts/home
 
 Thank you,
 Marrakesh Team

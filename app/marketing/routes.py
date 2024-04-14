@@ -1,9 +1,10 @@
 import logging
+import math
 from flask import render_template, request, redirect, url_for, jsonify
 from . import email_marketing
 from app.users.admin_models import get_all_users
 from app.utils.main import our_customers_since_by_year, get_customers_by_year_or_all,cache
-from .mass_email_marketing import marketing_email, all_email_campaign, campaign_open_rate, get_unique_opens
+from .mass_email_marketing import marketing_email, all_email_campaign, campaign_open_rate, get_unique_opens,get_email_campaign_subject
 from flask_login import login_required, current_user
 import app.marketing.mass_email_marketing as market
 
@@ -34,18 +35,18 @@ def email_campaign_performance(campaign_id):
 
     total_emails_sent = market.total_email_list(campaign_id)
 
-    events = market.get_customer_campaign_events(campaign_id)
+    page = request.args.get('page', 1, type=int)
+    items_per_page = request.args.get('per_page', 25, type=int)
 
-    # total_bounce=market.get_bounces(campaign_id)
-    # total_delivery=market.get_successful_deliveries(campaign_id)
-    # total_unsubscribe=market.get_unsubscribes(campaign_id)
-    # total_spam=market.get_spam_reports(campaign_id)
+    events = market.get_customer_campaign_events(campaign_id, page, items_per_page)
+    total_pages = math.ceil(total_emails_sent / items_per_page)
 
-    # delivery_events={"total_bounce":total_bounce,"total_delivery":total_delivery,"total_unsubscribe":total_unsubscribe,"total_spam":total_spam}
+    campaign_subject= get_email_campaign_subject(campaign_id)
+
 
     return render_template("campaign_performance.html", events=events, total_emails_sent=total_emails_sent, **event_metrics,
                            click_events=click_events, campaign_id=campaign_id, open_rate=open_rate,
-                           unique_opens=unique_opens, total_opens=total_opens)
+                           unique_opens=unique_opens, total_opens=total_opens,campaign_subject=campaign_subject,page=page,total_pages=total_pages)
 
 
 @email_marketing.route('/sending-marketing-emails/sending-email-campaign/', methods=['GET', 'POST'])

@@ -16,7 +16,7 @@
 
 
   <div class="email-marketing-header">
-    <h3 class="email-marketing-title">Dive into Our New Language Guide! : Explore Africa with Confidence </h3>
+    <h3 class="email-marketing-title">{{campaign_subject}} </h3>
   </div>
 
   <!-- delivery metrics  -->
@@ -146,35 +146,9 @@
 
 
 
-    <div class="recipient-table">
-      <table class="email-table">
-        <thead>
-          <tr>
-            <th>Recipient</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for contact_id, full_name, campaign_id, event_type in events %}
-          <tr>
-            <td>
-              <!-- Full name as a clickable link -->
-              <a href="{{ url_for('profiles.contact_profile', contact_id=contact_id) }}">
-                {{ full_name }}
-              </a>
-              <!-- Hidden inputs for storing additional data -->
-              <input type="hidden" name="campaign_id" value="{{ campaign_id }}">
-              <input type="hidden" name="event_type" value="{{ event_type }}">
-            </td>
-            <td class="{{ event_type|lower }}">{{ event_type }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    {% include 'performance_table_body.html' %}
 
-
-    {% include 'marketing_pagination.html' %}
+   
 
 
     {% endblock %}

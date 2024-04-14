@@ -1,0 +1,35 @@
+
+
+
+
+
+ <div class="recipient-table">
+    <table class="email-table">
+      <thead>
+        <tr>
+          <th>Recipient</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contact_id, full_name, campaign_id, event_type in events %}
+        <tr>
+          <td>
+            
+            <a href="{{ url_for('profiles.contact_profile', contact_id=contact_id) }}">
+              {{ full_name }}
+            </a>
+       
+            <input type="hidden" name="campaign_id" value="{{ campaign_id }}">
+            <input type="hidden" name="event_type" value="{{ event_type }}">
+          </td>
+          <td class="{{ event_type|lower }}">{{ event_type }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% include 'marketing_pagination.html' %}
+  </div>  
+
+

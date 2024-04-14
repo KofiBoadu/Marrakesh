@@ -134,6 +134,9 @@ def send_email_marketing(contact_name, receiver_email, subject, sender_email, te
         print(f"Failed to send email to {receiver_email}: {e.response['Error']['Message']}")
 
 
+
+
+
 def all_email_campaign():
     """
         Retrieves all email campaigns from the database with their delivery statistics.
@@ -178,6 +181,35 @@ def all_email_campaign():
             cursor.close()
         if database_connection and database_connection.is_connected():
             database_connection.close()
+
+
+
+def get_email_campaign_subject(campaign_id):
+    query = "SELECT campaign_subject FROM marketing_emails WHERE campaign_id = %s"
+    database_connection = None 
+    cursor = None 
+    try:
+        database_connection= create_database_connection()
+        cursor= database_connection.cursor()
+        cursor.execute(query, (campaign_id,))
+        subject= cursor.fetchone()
+        if subject:
+            return subject[0]
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None 
+
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+
+
 
 
 def campaign_open_rate(campaign_id):
@@ -422,7 +454,45 @@ def total_email_list(campaign_id):
     return execute_query(query, campaign_id)
 
 
-def get_customer_campaign_events(campaign_id):
+# def get_customer_campaign_events(campaign_id):
+#     query = """
+#         SELECT
+#             c.contact_id,
+#             CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+#             m.campaign_id,
+#             m.event_type
+#         FROM contacts c
+#         JOIN (
+#             SELECT
+#                 contact_id,
+#                 campaign_id,
+#                 event_type,
+#                 MAX(metric_id) AS MaxMetricId
+#             FROM marketing_email_metrics
+#             WHERE campaign_id = %s
+#             GROUP BY contact_id
+#         ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
+#         JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
+#     """
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_database_connection()
+#         cursor = database_connection.cursor()
+#         cursor.execute(query, (campaign_id,))
+#         results = cursor.fetchall()
+#         return results
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
+
+def get_customer_campaign_events(campaign_id, page, per_page=50):  
+    offset = (page - 1) * per_page
     query = """
         SELECT
             c.contact_id,
@@ -441,13 +511,15 @@ def get_customer_campaign_events(campaign_id):
             GROUP BY contact_id
         ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
         JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
+        LIMIT %s OFFSET %s
     """
     database_connection = None
     cursor = None
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (campaign_id,))
+        # Include the LIMIT and OFFSET values in the parameters for the SQL query
+        cursor.execute(query, (campaign_id, per_page, offset))
         results = cursor.fetchall()
         return results
     except Exception as e:
@@ -458,6 +530,17 @@ def get_customer_campaign_events(campaign_id):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
+
+
+
+
+
+
+
 
 
 def delete_campaign(campaign_id):
