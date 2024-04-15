@@ -2,14 +2,61 @@
 
 
 
-<div class="pagination">
-    {% if page > 1 %}
-    <a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=page-1) }}">Previous</a>
-    {% endif %}
-    <span>Page {{ page }} of {{ total_pages }}</span>
-    {% if page < total_pages %}
-    <a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=page+1) }}">Next</a>
-    {% endif %}
+
+
+
+<div class="marketing-pagination-controls">
+    <ul class="marketing-pagination">
+        <!-- Previous Page Button -->
+        {% if page > 1 %}
+        <li>
+            <a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=page-1, items_per_page=items_per_page) }}" class="marketing-prev">Prev</a>
+        </li>
+        {% else %}
+        <li class="disabled"><span>Prev</span></li>
+        {% endif %}
+
+        <!-- Dynamic Page Number Links -->
+        {% set window = 5 %}
+        {% set left_range = (page - window) if (page - window) > 0 else 1 %}
+        {% set right_range = (page + window) if (page + window) <= total_pages else total_pages %}
+
+        {% if left_range > 1 %}
+        <li><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=1, items_per_page=items_per_page) }}">1</a></li>
+        <li class="disabled"><span>...</span></li>
+        {% endif %}
+
+        {% for i in range(left_range, right_range + 1) %}
+        <li {% if i == page %}class="active" {% endif %}>
+            <a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=i, items_per_page=items_per_page) }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        <!-- Show last page and '...' if there's a gap -->
+        {% if right_range < total_pages %}
+        <li class="disabled"><span>...</span></li>
+        <li><a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=total_pages, items_per_page=items_per_page) }}">{{ total_pages }}</a></li>
+        {% endif %}
+
+        <!-- Next Page Button -->
+        {% if page < total_pages %}
+        <li>
+            <a href="{{ url_for('marketing.email_campaign_performance', campaign_id=campaign_id, page=page+1, items_per_page=items_per_page) }}" class="marketing-next">Next</a>
+        </li>
+        {% else %}
+        <li class="disabled"><span>Next</span></li>
+        {% endif %}
+    </ul>
 </div>
 
-  
+
+
+
+
+
+
+
+
+
+
+

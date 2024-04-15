@@ -43,8 +43,6 @@ def home_page():
 
 
 
-
-
         return render_template("homepage.html", items_per_page=items_per_page, states=states,
                                login_user_email=login_user_email, customers=customers, destinations=destinations,
                                username=username, customers_total=customers_total, page=page, total_pages=total_pages)

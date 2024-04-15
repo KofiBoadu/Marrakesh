@@ -491,36 +491,72 @@ def total_email_list(campaign_id):
 #         if database_connection:
 #             database_connection.close()
 
-def get_customer_campaign_events(campaign_id, page, per_page=50):  
-    offset = (page - 1) * per_page
-    query = """
-        SELECT
-            c.contact_id,
-            CONCAT(c.first_name, ' ', c.last_name) AS full_name,
-            m.campaign_id,
-            m.event_type
-        FROM contacts c
-        JOIN (
+
+
+
+def campaign_events_procedure():
+    create_procedure_query = """
+        CREATE PROCEDURE GetCampaignEvents(
+            IN _campaign_id INT,
+            IN _items_per_page INT,
+            IN _page_number INT
+        )
+        BEGIN
+            DECLARE _offset INT DEFAULT (_page_number - 1) * _items_per_page;
+            
             SELECT
-                contact_id,
-                campaign_id,
-                event_type,
-                MAX(metric_id) AS MaxMetricId
-            FROM marketing_email_metrics
-            WHERE campaign_id = %s
-            GROUP BY contact_id
-        ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
-        JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
-        LIMIT %s OFFSET %s
+                c.contact_id,
+                CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+                m.campaign_id,
+                m.event_type
+            FROM contacts c
+            JOIN (
+                SELECT
+                    contact_id,
+                    campaign_id,
+                    event_type,
+                    MAX(metric_id) AS MaxMetricId
+                FROM marketing_email_metrics
+                WHERE campaign_id = _campaign_id
+                GROUP BY contact_id
+            ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
+            JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
+            ORDER BY c.contact_id
+            LIMIT _items_per_page OFFSET _offset;
+        END;
     """
     database_connection = None
     cursor = None
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        # Include the LIMIT and OFFSET values in the parameters for the SQL query
-        cursor.execute(query, (campaign_id, per_page, offset))
-        results = cursor.fetchall()
+        cursor.execute("DROP PROCEDURE IF EXISTS GetCampaignEvents")
+        cursor.execute(create_procedure_query)
+        database_connection.commit()
+        print("Stored procedure created successfully.")
+        return True
+    except Exception as e:
+        raise Exception(f"An error occurred while creating the procedure: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+  
+
+
+
+def get_customer_campaign_events(campaign_id, page, per_page=50):
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.callproc('GetCampaignEvents', [campaign_id, per_page, page])
+        results = []
+        for result in cursor.stored_results():  
+            results.extend(result.fetchall())
         return results
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -530,6 +566,10 @@ def get_customer_campaign_events(campaign_id, page, per_page=50):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+# print(get_customer_campaign_events(21,2,25))
 
 
 
