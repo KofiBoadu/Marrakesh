@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchAndUpdateContent(page) {
         const campaignId = document.getElementById('campaign_id').value;
         const itemsPerPageSelect = document.getElementById('items-per-page');
-        const itemsPerPage = itemsPerPageSelect ? itemsPerPageSelect.value : 50;
+        const itemsPerPage = itemsPerPageSelect ? itemsPerPageSelect.value : 10;
         const url = `/marketing/campaign/performance/${campaignId}?page=${page}&items_per_page=${itemsPerPage}`;
 
         fetch(url, {

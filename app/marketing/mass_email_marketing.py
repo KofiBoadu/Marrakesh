@@ -547,7 +547,7 @@ def campaign_events_procedure():
 
 
 
-def get_customer_campaign_events(campaign_id, page, per_page=50):
+def get_customer_campaign_events(campaign_id, page, per_page=10):
     database_connection = None
     cursor = None
     try:

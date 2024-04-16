@@ -55,7 +55,7 @@ def marketing_emails():
 @login_required
 def email_campaign_performance(campaign_id):
     page = request.args.get('page', 1, type=int)
-    items_per_page = request.args.get('items_per_page', default=50, type=int)
+    items_per_page = request.args.get('items_per_page', default=10, type=int)
 
     print(f'Received page: {page}, items per page: {items_per_page}')
 
