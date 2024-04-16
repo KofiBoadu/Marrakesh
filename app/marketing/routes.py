@@ -52,7 +52,6 @@ def marketing_emails():
 
 
 @email_marketing.route('/campaign/performance/<int:campaign_id>', methods=['GET',])
-@cache.cached(timeout=50, key_prefix=lambda: f'email_campaign_performance_cache_{request.view_args["campaign_id"]}')
 @login_required
 def email_campaign_performance(campaign_id):
     page = request.args.get('page', 1, type=int)
@@ -79,18 +78,22 @@ def email_campaign_performance(campaign_id):
 
     campaign_subject = get_email_campaign_subject(campaign_id)
 
+    
+
     # Check if the request is an AJAX request for dynamic content update
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        print(request.headers,"getting the JS SCRIPT REQUEST")
+        
+        table_body_html=render_template('performance_table_body.html', events=events,page=page, total_pages=total_pages, campaign_id=campaign_id)
+        pagination_html= render_template('marketing_pagination.html', page=page, total_pages=total_pages, campaign_id=campaign_id)
+        print("Rendering pagination with:", page, total_pages, campaign_id)
 
-        data = {
-        'table_body_html': render_template('performance_table_body.html', events=events),
-        'pagination_html': render_template('marketing_pagination.html', 
-                                           page=page, 
-                                           total_pages=total_pages, 
-                                           campaign_id=campaign_id)
-    }
-        print("jason data sent")
-        return jsonify(data)
+    
+    
+        return jsonify({
+            'marketing_table_body_html': table_body_html,
+            'marketing_pagination_html':pagination_html
+            })
 
     else:
 

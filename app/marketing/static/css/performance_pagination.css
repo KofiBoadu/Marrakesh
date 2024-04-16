@@ -1,0 +1,11 @@
+.marketing-pagination-controls{
+
+    display: flex;
+    justify-content: center;
+}
+
+.marketing-pagination li{
+    display: inline;
+    text-decoration: none;
+    margin: 5px;
+}

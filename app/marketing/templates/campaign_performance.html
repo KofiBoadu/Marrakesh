@@ -3,6 +3,11 @@
 
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('marketing.static', filename='css/performance_pagination.css') }}">
+
+
+
+
 
 <div class="email-marketing-analytics">
   <!--message for emails processing-->
@@ -146,15 +151,35 @@
 
 
 
-    {% include 'performance_table_body.html' %}
+    <!-- table  -->
+    <div class="recipient-table"   >
+      
+      
+      <table class="email-table">
+          <thead>
+              <tr>
+                  <th>Recipient</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody id="performance-table-body">
+            
+            {% include 'performance_table_body.html' %}
 
-    
+            
+          </tbody>
 
+          
+      </table>
+      
+        {% include 'marketing_pagination.html' %}
+      
+      
+    </div>
    
-
-    {% endblock %}
+   
   </div>
 
-
-
 </div>
+
+{% endblock %}
