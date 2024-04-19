@@ -3,6 +3,8 @@
 	width: 300px;
 	margin-top: 0%;
 	border: 1px solid #e1e1e1;
+	position: fixed; 
+	height: 100%;
 }
 
 .settings-navheader h1{
