@@ -1,0 +1,95 @@
+.tour {
+	margin-top: 1%;
+	margin-left: 20%;
+}
+
+.tour_header--title {
+	font-family: "Lexend Deca", sans-serif;
+	margin-right: 50px;
+	border-bottom: 2px solid rgb(238, 234, 234);
+	width: 100%;
+	padding-bottom: 20px;
+	font-weight: 400;
+	color: #959494;
+}
+
+.tour_header--close {
+	margin-top: 2%;
+	margin-right: 2%;
+	cursor: pointer;
+}
+
+.tour_form {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.tour_wrap {
+	margin: 1%;
+	display: flex;
+	flex-direction: column;
+	WIDTH: 60%;
+}
+.tour_wrap input {
+	padding: 9px 10px;
+    border-radius: 3px;
+    border: 1px solid rgb(3, 152, 158);
+    font-size: 16px;
+    transition: all .15s ease-out;
+    background-color: #f3f7fa;
+    color: rgb(3, 152, 158);
+    display: block;
+    height: 40px;
+    line-height: 22px;
+    text-align: left;
+    width: 50%;
+}
+
+.tour_wrap label {
+	font-family: "Lexend Deca", sans-serif;
+	MARGIN-BOTTOM: 20PX;
+}
+
+.tour_wrap--type {
+	display: flex;
+	width: 30%;
+	margin-top: 40px;
+	align-items: center;
+	gap: 5%;
+}
+.tour_submit {
+	margin-top: 2%;
+	padding: 10px;
+	width: 150px;
+	height: 50px;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-family: "Lexend Deca", sans-serif;
+	margin-left: 20%;
+	margin-bottom: 5%;
+	background-color: #FF914C;
+}
+
+
+#tour_destination {
+	padding: 9px 10px;
+    border-radius: 3px;
+    border: 1px solid rgb(3, 152, 158);
+    font-size: 16px;
+    transition: all .15s ease-out;
+    background-color: #f3f7fa;
+    color: rgb(3, 152, 158);
+    display: block;
+    height: 40px;
+    line-height: 22px;
+    text-align: left;
+    width: 50%;
+}
+
+
+.tour_wrap--type label {
+	margin-bottom: 0%;
+	
+}

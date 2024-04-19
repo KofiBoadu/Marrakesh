@@ -1,0 +1,44 @@
+.settings-nav{
+	background-color:#19a1a60e;
+	width: 300px;
+	margin-top: 0%;
+	border: 1px solid #e1e1e1;
+}
+
+.settings-navheader h1{
+	padding:20px 0px 50px 10px;
+}
+
+.settings-navlink{
+	padding:0px 0px 100px 10px;
+}
+.settings-navlink a :hover{
+	border-left: 2px solid #03989E;
+    background-color: rgba(151, 194, 195, 0.717647058);
+}
+
+.settings-navlink a li{
+	text-decoration: none;
+	list-style: none;
+	padding-top: 20px;
+	color: grey;
+	font-weight: 200;
+}
+
+.settings-navlink h2{
+	font-size: 1.2em;
+	font-weight: 400;
+}
+
+.settings-navlink a {
+	text-decoration: none;
+}
+
+.last{
+  margin-bottom: 100%;
+}
+
+.settings-nav {
+	float: left; /* Or use position: absolute; */
+	width: 300px; /* Adjust width as needed */
+}
