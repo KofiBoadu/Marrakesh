@@ -1,22 +1,9 @@
 {% block content %}
 {% include "settings_base.html" %}
 
-<h1>Service Management</h1>
-
-
-
-
-<div>
-    <button id="tourBtn">Add new tour</button>
-</div>
-
-
-
-<div class="tour" id="tourForm">
+<div class="tour" id="tourForm" style="display: block;">
     <div class="tour_header">
-        <h2 class="tour_header--title">Add new tour</h2>
-        <img class="tour_header--close" id="exit" width="24" height="24"
-            src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+        <h1 class="tour_header--title">Add New Tour</h1>
     </div>
 
     <form class="tour_form" action="{{ url_for('contacts.add_new_tours') }}" method="post">
@@ -40,9 +27,9 @@
         <div class="tour_wrap">
             <label>Type of Tour</label>
             <div class="tour_wrap--type">
-                <input id="type" type="radio" name="tour_type" value="private">
+                <input  class="radio" type="radio" name="tour_type" value="private">
                 <label for="male">Private</label>
-                <input type="radio" id="type" name="tour_type" value="group">
+                <input class="radio" type="radio"  name="tour_type" value="group">
                 <label for="female">Group</label>
             </div>
 
@@ -50,7 +37,7 @@
 
         <div class="tour_wrap">
             <label for="destination">Choose Destination:</label>
-            <select id="destination" name="destination">
+            <select id="tour_destination" name="destination">
                 {% for destination in destinations %}
                 <option value="{{ destination }}">{{ destination }}</option>
                 {% endfor %}

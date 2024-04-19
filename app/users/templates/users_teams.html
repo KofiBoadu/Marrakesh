@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 {% block content %}
 {% include "settings_base.html" %}
 
@@ -12,112 +5,140 @@
 
 
 
-<div class="user-actions-forms" id="user-action-div">
+<div class="user-actions-forms" id="user-action-div" style="display:none">
 
-				<!-- remove user from account  forms-->
-				<form id="remove-user-form"  action="{{ url_for('users.remove_a_user') }}" method="post">
-					<input type="hidden" name="user_id" id="remove-user-id" value="">
-				    <button type="submit" class="user-action-button" >Remove from account</button>
-				</form>
-
-
-
-				
-
-
-				<!-- deactivate the user -->
-				<form class="deactivate-user" action="{{ url_for('users.deactivate_user') }}" method="post">
-					 <input type="hidden" name="user_id" id="deactivate-user-id" value="">
-					 <button type="submit" class="user-action-button">Deactivate user</button>
-				</form>
+	<!-- remove user from account  forms-->
+	<form id="remove-user-form" action="{{ url_for('users.remove_a_user') }}" method="post">
+		<input type="hidden" name="user_id" id="remove-user-id" value="">
+		<button type="submit" class="user-action-button">Remove from account</button>
+	</form>
 
 
 
 
-				<!-- reactivate the user -->
-				<form class="reactivate-user" action="{{ url_for('users.reactivate_user') }}" method="post">
-					 <input type="hidden" name="user_id" id="reactivate-user-id" value="">
-					 <button type="submit" class="user-action-button">reactivate user</button>
-				</form>
+
+
+	<!-- deactivate the user -->
+	<form class="deactivate-user" action="{{ url_for('users.deactivate_user') }}" method="post">
+		<input type="hidden" name="user_id" id="deactivate-user-id" value="">
+		<button type="submit" class="user-action-button">Deactivate user</button>
+	</form>
 
 
 
-				<!-- make user admin -->
-				<form class="make-user-admin" action="{{ url_for('users.make_admin_role') }}" method="post">
-					 <input type="hidden" name="user_id" id="make-new-user-admin-id" value="">
-					 <button type="submit" class="user-action-button">Make Super Admin</button>
-				</form>
+
+	<!-- reactivate the user -->
+	<form class="reactivate-user" action="{{ url_for('users.reactivate_user') }}" method="post">
+		<input type="hidden" name="user_id" id="reactivate-user-id" value="">
+		<button type="submit" class="user-action-button">reactivate user</button>
+	</form>
 
 
 
-				<!-- remove super- admin -->
-				<form class="remove-user-admin-role" action="{{ url_for('users.remove_admin_role') }}" method="post">
-					 <input type="hidden" name="user_id" id="remove-new-user-admin-id" value="">
-					 <button type="submit" class="user-action-button">Remove Super Admin</button>
-				</form>
+	<!-- make user admin -->
+	<form class="make-user-admin" action="{{ url_for('users.make_admin_role') }}" method="post">
+		<input type="hidden" name="user_id" id="make-new-user-admin-id" value="">
+		<button type="submit" class="user-action-button">Make Super Admin</button>
+	</form>
+
+
+
+	<!-- remove super- admin -->
+	<form class="remove-user-admin-role" action="{{ url_for('users.remove_admin_role') }}" method="post">
+		<input type="hidden" name="user_id" id="remove-new-user-admin-id" value="">
+		<button type="submit" class="user-action-button">Remove Super Admin</button>
+	</form>
 
 
 </div>
 
 
-<!-- create user button  -->
-				 <div class="create-user-button">
-				 	 <button type="button" class="user-action-button">Create new user</button>
-				 </div>
-				   
 
 
+<div class="user-table">
 
-<!-- create user forms  -->
-<form class="new-user-form" id="inviting-new-user" action="{{ url_for('users.creating_users') }}" method="post">
-	<label>Add a new user to your Marrakesh account</label>
-	<label>first name</label>
-	<input type="text" name="user_first_name" required>
-	<label>last name</label>
-	<input type="text" name="user_last_name" required>
-		<label>Email</label>
-	<input type="Email" name="new-user-email" required>
+	<div id="user-table-header">
+		<div id="customer-header">
+			<h3 id="table-title">Users</h3>
 
-	<label>Chose new user role and access</label>
-	<select name="role_id" required>
-		{% for role in available_roles%}
-		
-		<option value="{{ role[0] }}">{{role[1]}}</option>
+		</div>
 
+		<!-- create user button  -->
+		<div class="create-user-button" onclick="show_userButton()">
+			<button type="button" class="user-action-button">Create new user</button>
+		</div>
+
+	</div>
+	<table class="user-table-head">
+		<tr>
+			<th><input type="checkbox"></th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Access Role</th>
+		</tr>
+		{% for user in users %}
+		<tr>
+			<td><input type="checkbox" data-user-id="{{ user[0] }}" class="user-checkbox"> </td>
+			<td>
+				{{ user[1] }} {{ user[2] }}
+
+			</td>
+
+			<td>{{ user[3] }}</td>
+			<td>{{ user[4] if user[4] else 'No role assigned' }}</td>
+		</tr>
 		{% endfor %}
-		
-	</select>
+	</table>
 
-
-	<button type="submit">invite user </button>
-	
-</form>
+</div>
 
 
 
+<div class="user" id="user" style="display:none">
+	<div class="new-user-container">
+		<div class="user_header">
+			<h2 class="user_header--title">Create User</h2>
+			<img class="user_header--close" id="exit" width="24" height="24" onclick="closeUserModal()"
+				src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+		</div>
+		<!-- create user forms  -->
+		<form class="new-user-form" id="inviting-new-user" action="{{ url_for('users.creating_users') }}" method="post">
+			<h5>Add a new user to your Marrakesh account</h5>
+
+			<label>First Name</label>
+			<input type="text" name="user_first_name" required>
 
 
-<!-- users in the account table -->
-<table>
-  <tr>
-    <th><input type="checkbox"></th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Access Role</th>
-  </tr>
-  {% for user in users %}
-  <tr>
-    <td><input type="checkbox" data-user-id="{{ user[0] }}" class="user-checkbox"> </td>
-    <td>
-    {{ user[1] }} {{ user[2] }}
-    
-    </td>
+			<label>Last Name</label>
+			<input type="text" name="user_last_name" required>
 
-    <td>{{ user[3] }}</td>
-    <td>{{ user[4] if user[4] else 'No role assigned' }}</td>
-  </tr>
-  {% endfor %}
-</table>
+			<label>Email</label>
+			<input type="Email" name="new-user-email" required>
+
+
+
+			<label>Chose new user role and access</label>
+			<select name="role_id" required>
+				{% for role in available_roles%}
+
+				<option value="{{ role[0] }}">{{role[1]}}</option>
+
+				{% endfor %}
+
+			</select>
+
+
+
+
+			<button type="submit">invite user </button>
+
+		</form>
+
+	</div>
+
+
+
+</div>
 
 
 

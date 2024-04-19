@@ -1,34 +1,41 @@
-
-
-
-
 {% block content %}
-{% include "settings_base.html" %}
+<div class="settings-container">
 
-<h1>General Profile</h1>
-
-<form>
-
-<div>
-	<div>
-        <label for="profileImage">Profile Image</label>
-        <h1 style="color: red;" class="profile-avatar-letter">{{ user.first_name[0]+ user.last_name[0] }}</h1>
+    {% include "settings_base.html" %}
+    
+   
+    <div class="general-container">
         
+        <h1 class="general-title">General</h1>
+        <label class="general-header"for="profileImage">Profile Image</label>
+        <div class="general-profile">
+            
+                
+            <h1 class="profile-avatar-letter" >{{ user.first_name[0]+ user.last_name[0] }}
+            </h1>
+
+        </div>
+        <form>
+
+            <div class="general-form">
+                
+
+                <div class="general-form">
+                    <label for="firstName">First name</label>
+                    <input type="text" id="firstName" name="first_name" value="{{ user.first_name }}">
+                </div>
+
+                <div class="general-form">
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" name="last_name" value="{{ user.last_name }}">
+                </div>
+            </div>
+
+
+        </form>
+
     </div>
 
-    <div>
-        <label for="firstName">First name</label>
-        <input type="text" id="firstName" name="first_name" value="{{ user.first_name }}">
-    </div>
-
-    <div>
-        <label for="lastName">Last name</label>
-        <input type="text" id="lastName" name="last_name" value="{{ user.last_name }}">
-    </div>
-
-	
-
-</form>
-
+</div>
 
 {% endblock %}

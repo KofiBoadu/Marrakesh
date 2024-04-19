@@ -89,6 +89,7 @@
     width: 60%;
     max-width: 500px;
 	margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 
@@ -126,6 +127,7 @@
     border-radius: 4px;
     cursor: pointer;
 	margin: auto;
+    margin-bottom: 20px;
 }
 
 .importing-contacts label{
