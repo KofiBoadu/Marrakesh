@@ -114,19 +114,41 @@ strong {
   justify-content: center;
   flex-direction: column;
   margin-top: 5%;
+  margin: auto;
 }
 .modal_wrap {
-  margin: 2%;
-  margin-left: 15%;
+  MARGIN-LEFT: 5%;
+  margin-top: 5%;
 }
 .modal_wrap input {
-  width: 20em;
+  width: 90%;
   height: 2.5em;
-  border: 1px solid rgb(180, 180, 180);
-  border-radius: 2px 2px 2px 2px;
-  margin-bottom: 5%;
-  color: #03989E;
-  font-size: 1em;
+  padding: 9px 10px;
+  border-radius: 3px;
+  border: 1px solid rgb(3, 152, 158);
+  font-size: 16px;
+  transition: all 0.15s ease-out;
+  background-color: #f3f7fa;
+  color: rgb(3, 152, 158);
+  display: block;
+  line-height: 22px;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.modal_wrap select {
+  width: 90%;
+  height: 2.5em;
+  padding: 9px 10px;
+  border-radius: 3px;
+  border: 1px solid rgb(3, 152, 158);
+  font-size: 16px;
+  transition: all 0.15s ease-out;
+  background-color: #f3f7fa;
+  color: rgb(3, 152, 158);
+  display: block;
+  line-height: 22px;
+  text-align: left;
+  margin-bottom: 30px;
 }
 .modal_wrap label {
   margin-right: 50%;
@@ -148,8 +170,30 @@ strong {
   border-radius: 5px;
   cursor: pointer;
   font-family: "Lexend Deca", sans-serif;
-  margin-left: 20%;
+  margin-left: 30%;
   margin-bottom: 5%;
+}
+
+.contact-exists-popup {
+  text-align: center;
+  margin-top: 2%;
+}
+
+.contact-exists-popup p {
+  color: #959494;
+}
+
+.contact-exists-popup h3 a {
+  color: rgb(3, 152, 158);
+}
+
+#contact-profile-avatar {
+  text-transform: uppercase;
+  font-family: "Lexend Deca", sans-serif;
+  font-size: 3em;
+  font-weight: 500;
+  padding-top: 20px;
+  color: #ffffff;
 }
 
 .tour-select {
@@ -307,50 +351,61 @@ strong {
   margin-bottom: 0%;
 }
 
-#data-table, .table-container-scroll-bar table {
+#data-table,
+.table-container-scroll-bar table {
   width: 100%;
   border-collapse: collapse;
 }
 
-#data-table th, .table-container-scroll-bar table td {
+#data-table th,
+.table-container-scroll-bar table td {
   text-align: center;
   padding: 8px;
 }
 
 /* Example widths for each column - adjust these as needed */
-#data-table th:nth-child(1), .table-container-scroll-bar table td:nth-child(1) {
+#data-table th:nth-child(1),
+.table-container-scroll-bar table td:nth-child(1) {
   width: 5%;
 }
 
-#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) {
+#data-table th:nth-child(2),
+.table-container-scroll-bar table td:nth-child(2) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) {
+#data-table th:nth-child(3),
+.table-container-scroll-bar table td:nth-child(3) {
   width: 15%;
 }
 
-#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) {
+#data-table th:nth-child(4),
+.table-container-scroll-bar table td:nth-child(4) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) {
+#data-table th:nth-child(5),
+.table-container-scroll-bar table td:nth-child(5) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) {
+#data-table th:nth-child(6),
+.table-container-scroll-bar table td:nth-child(6) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) {
+#data-table th:nth-child(7),
+.table-container-scroll-bar table td:nth-child(7) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) {
+#data-table th:nth-child(8),
+.table-container-scroll-bar table td:nth-child(8) {
   width: 11.875%;
 }
 
-#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) {
+#data-table th:nth-child(9),
+.table-container-scroll-bar table td:nth-child(9) {
   width: 11.875%;
 }
 
@@ -360,10 +415,12 @@ strong {
 
 .table-container-scroll-bar {
   overflow-y: auto;
-  max-height: 580px; /* Adjust based on your needs */
+  max-height: 580px;
+  /* Adjust based on your needs */
   border: 1px solid #ccc;
   border-bottom: none;
-  margin-top: -1px; /* Helps align the top border with the bottom of the header table */
+  margin-top: -1px;
+  /* Helps align the top border with the bottom of the header table */
 }
 
 th {

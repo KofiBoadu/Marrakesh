@@ -145,7 +145,7 @@ div.user-actions-forms form .user-action-button:not(:disabled):hover {
     transform: translate(0%, -50%);
     background-color: #fff;
     z-index: 1000;
-    width: 20%;
+    width: 25%;
     height: 100%;
     border-radius: 2px 2px;
     box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543)
@@ -158,6 +158,7 @@ div.user-actions-forms form .user-action-button:not(:disabled):hover {
 .new-user-form label{
     margin-top: 50px;
     margin-left: 5%;
+    color: #959494;
 }
 
 .new-user-form input{
@@ -215,7 +216,7 @@ div.user-actions-forms form .user-action-button:not(:disabled):hover {
 }
 
 .user_header--title{
-    color:#FF914C;
+    color:#fff;
 }
 .user-form-wrap{
     margin-bottom: 40px;

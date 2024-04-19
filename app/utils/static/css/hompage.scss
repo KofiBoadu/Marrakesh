@@ -11,10 +11,12 @@ h1 {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 500;
 }
+
 h2 {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 500;
 }
+
 h4 {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 400;
@@ -45,13 +47,16 @@ label {
 select {
     font-family: "Lexend Deca", sans-serif;
 }
-a{
+
+a {
     font-family: "Lexend Deca", sans-serif;
 }
-strong{
+
+strong {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 500;
 }
+
 .create {
     display: flex;
     justify-content: center;
@@ -123,22 +128,48 @@ strong{
         justify-content: center;
         flex-direction: column;
         margin-top: 5%;
+        margin: auto;
 
     }
 
     &_wrap {
-        margin: 2%;
-        margin-left: 15%;
+        MARGIN-LEFT: 5%;
+        margin-top: 5%;
     }
 
     &_wrap input {
-        width: 20em;
+        width: 90%;
         height: 2.5em;
-        border: 1px solid rgb(180, 180, 180);
-        border-radius: 2px 2px 2px 2px;
-        margin-bottom: 5%;
-        color: $ATblue;
-        font-size: 1em;
+        padding: 9px 10px;
+        border-radius: 3px;
+        border: 1px solid rgb(3, 152, 158);
+        font-size: 16px;
+        transition: all .15s ease-out;
+        background-color: #f3f7fa;
+        color: rgb(3, 152, 158);
+        display: block;
+
+        line-height: 22px;
+        text-align: left;
+      
+        margin-bottom: 30px;
+    }
+    &_wrap select {
+        width: 90%;
+        height: 2.5em;
+        padding: 9px 10px;
+        border-radius: 3px;
+        border: 1px solid rgb(3, 152, 158);
+        font-size: 16px;
+        transition: all .15s ease-out;
+        background-color: #f3f7fa;
+        color: rgb(3, 152, 158);
+        display: block;
+
+        line-height: 22px;
+        text-align: left;
+      
+        margin-bottom: 30px;
     }
 
     &_wrap label {
@@ -156,7 +187,7 @@ strong{
     }
 
     &_submit {
-        margin-top:  11.875%;
+        margin-top: 11.875%;
         padding: 10px;
 
         background-color: $ATorange;
@@ -167,11 +198,30 @@ strong{
         border-radius: 5px;
         cursor: pointer;
         font-family: "Lexend Deca", sans-serif;
-        margin-left: 20%;
+        margin-left: 30%;
         margin-bottom: 5%;
     }
 }
-
+.contact-exists-popup{
+    text-align: center;
+    margin-top: 2%;
+}
+.contact-exists-popup p{
+  
+  color:#959494;
+}
+.contact-exists-popup h3 a{
+    color:rgb(3, 152, 158);
+   
+}
+#contact-profile-avatar{
+    text-transform: uppercase;
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 3em;
+    font-weight: 500;
+    padding-top: 20px;
+    color: #ffffff;
+}
 .tour-select {
     width: 20em;
     height: 2.5em;
@@ -185,7 +235,7 @@ strong{
 
 
 .modal_wrap--gender input {
-    width:  11.875%;
+    width: 11.875%;
     margin-top: 4%;
 }
 
@@ -217,7 +267,7 @@ strong{
 }
 
 .tour_wrap--type input {
-    width:  11.875%;
+    width: 11.875%;
     margin-top: 4%;
 }
 
@@ -234,7 +284,7 @@ strong{
 }
 
 .tour_wrap--type label {
-    margin-right:  11.875%;
+    margin-right: 11.875%;
 }
 
 
@@ -325,7 +375,7 @@ strong{
 
 #deleteButton {
     margin-left: 100px;
-    margin-right:  11.875%;
+    margin-right: 11.875%;
     margin-top: 30px;
 
 
@@ -358,37 +408,76 @@ strong{
     margin-bottom: 0%;
 }
 
-#data-table, .table-container-scroll-bar table {
+#data-table,
+.table-container-scroll-bar table {
     width: 100%;
     border-collapse: collapse;
 }
 
-#data-table th, .table-container-scroll-bar table td {
+#data-table th,
+.table-container-scroll-bar table td {
     text-align: center;
     padding: 8px;
 }
 
 /* Example widths for each column - adjust these as needed */
-#data-table th:nth-child(1), .table-container-scroll-bar table td:nth-child(1) { width: 5%; }
-#data-table th:nth-child(2), .table-container-scroll-bar table td:nth-child(2) { width: 11.875%; }
-#data-table th:nth-child(3), .table-container-scroll-bar table td:nth-child(3) { width:  15%; }
-#data-table th:nth-child(4), .table-container-scroll-bar table td:nth-child(4) { width:  11.875%; }
-#data-table th:nth-child(5), .table-container-scroll-bar table td:nth-child(5) { width:  11.875%; }
-#data-table th:nth-child(6), .table-container-scroll-bar table td:nth-child(6) { width:  11.875%; }
-#data-table th:nth-child(7), .table-container-scroll-bar table td:nth-child(7) { width:  11.875%; }
-#data-table th:nth-child(8), .table-container-scroll-bar table td:nth-child(8) { width:  11.875%; }
-#data-table th:nth-child(9), .table-container-scroll-bar table td:nth-child(9) { width: 11.875%; }
+#data-table th:nth-child(1),
+.table-container-scroll-bar table td:nth-child(1) {
+    width: 5%;
+}
 
-.state{
+#data-table th:nth-child(2),
+.table-container-scroll-bar table td:nth-child(2) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(3),
+.table-container-scroll-bar table td:nth-child(3) {
+    width: 15%;
+}
+
+#data-table th:nth-child(4),
+.table-container-scroll-bar table td:nth-child(4) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(5),
+.table-container-scroll-bar table td:nth-child(5) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(6),
+.table-container-scroll-bar table td:nth-child(6) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(7),
+.table-container-scroll-bar table td:nth-child(7) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(8),
+.table-container-scroll-bar table td:nth-child(8) {
+    width: 11.875%;
+}
+
+#data-table th:nth-child(9),
+.table-container-scroll-bar table td:nth-child(9) {
+    width: 11.875%;
+}
+
+.state {
     padding: 0%;
 }
 
 .table-container-scroll-bar {
     overflow-y: auto;
-    max-height: 580px; /* Adjust based on your needs */
+    max-height: 580px;
+    /* Adjust based on your needs */
     border: 1px solid #ccc;
     border-bottom: none;
-    margin-top: -1px; /* Helps align the top border with the bottom of the header table */
+    margin-top: -1px;
+    /* Helps align the top border with the bottom of the header table */
 }
 
 
@@ -421,7 +510,7 @@ td {
     font: 1em;
     font-weight: 200;
     font-family: "Lexend Deca", sans-serif;
-    
+
 
 }
 
@@ -439,9 +528,9 @@ tbody {
     // padding: 1%; /* Remove padding */
     padding-top: 1%;
     padding-bottom: 1%;
-    
+
     border: 1px solid #dddddd;
-   
+
 }
 
 #table-body tr:nth-child(even) td {
@@ -474,7 +563,7 @@ td a {
     text-decoration: none;
     color: $ATblue;
     font-weight: 300;
-    
+
 }
 
 
@@ -494,7 +583,7 @@ td a {
 .modal-content {
     position: relative;
     background-color: #fff;
-    margin:  11.875% auto;
+    margin: 11.875% auto;
 
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -552,14 +641,15 @@ td a {
     background-color: #d9534f;
     color: white;
     display: block;
-  
+
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
 }
-.delete-buttons-2{
+
+.delete-buttons-2 {
     color: white;
     display: block;
     background-color: #FF914C;
@@ -569,6 +659,7 @@ td a {
     cursor: pointer;
     margin-top: 10px;
 }
+
 #confirmDeleteButton:hover {
     background-color: #c9302c;
 }
@@ -596,8 +687,8 @@ button#cancel:hover {
     display: flex;
     margin-left: 10px;
     gap: 10px;
-   
-  
+
+
 }
 
 
@@ -656,7 +747,7 @@ button#cancel:hover {
     list-style-type: none;
     display: flex;
     justify-content: center;
-    padding-top:  1%;
+    padding-top: 1%;
 }
 
 .pagination li {
@@ -766,6 +857,7 @@ button#cancel:hover {
     border-style: solid;
 
 }
+
 .import {
     width: 70px;
     height: 30px;
@@ -781,6 +873,8 @@ button#cancel:hover {
 
 }
 
-#import_button{
+#import_button {
     margin-right: 100px;
 }
+
+

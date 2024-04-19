@@ -1,21 +1,37 @@
 // add customer functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let customerBtn = document.getElementById("createCustomerBtn");
     let popUpForm = document.getElementById("popUp");
     let close = document.getElementById("close");
-    let form = document.querySelector('.modal__form'); 
-    customerBtn.addEventListener('click', function() {
+    let form = document.querySelector('.modal__form');
+    let additionalFields = document.getElementById("additionalFields")
+    let phoneInput = document.getElementById("phone");
+    let stateSelect = document.getElementById("state");
+    let maleRadio = document.getElementById("male");
+    let femaleRadio = document.getElementById("female");
+    let statusSelect = document.getElementsByName("lead_status")[0]; // Assuming there's only one element with the name "lead_status"
+    customerBtn.addEventListener('click', function () {
+        additionalFields.style.display = "block"
+
         popUpForm.style.display = 'block';
+        additionalFields.style.filter = "blur(5px)";
+        phoneInput.disabled = true;
+        stateSelect.disabled = true;
+        maleRadio.disabled = true;
+        femaleRadio.disabled = true;
+        statusSelect.disabled = true;
+        ;
+
     });
 
-    close.addEventListener('click', function() {
+    close.addEventListener('click', function () {
         popUpForm.style.display = 'none';
-        let contact_exist_div= document.getElementById("contactExists")
-        let additionalFields = document.getElementById("additionalFields")
+        let contact_exist_div = document.getElementById("contactExists")
+
         contact_exist_div.style.display = "none"
         additionalFields.style.display = "none"
 
-        form.reset(); 
+        form.reset();
     });
 });
 
@@ -72,7 +88,7 @@ function toggleDeleteButton(checkbox) {
 
     // Show or hide the delete button based on if any contacts are selected
     deleteButton.style.display = selectedContactIds.length > 0 ? 'flex' : 'none';
-    
+
     console.log('Selected IDs:', selectedContactIds);
 }
 
@@ -81,12 +97,12 @@ function showModal() {
     const deleteModal = document.getElementById('deleteModal');
     const deleteMessage1 = document.querySelector('.delete-message-1');
     const deleteTitle = document.querySelector('.delete-title');
-    
+
     // Update modal title and message based on the number of selected contacts
     const deleteCount = selectedContactIds.length;
     deleteTitle.textContent = `Delete ${deleteCount} Record${deleteCount > 1 ? 's' : ''}?`;
     deleteMessage1.textContent = `You're about to delete ${deleteCount} record${deleteCount > 1 ? 's' : ''}. Deleted records can't be restored.`;
-    
+
     // Populate the hidden input with the IDs of all selected contacts
     document.getElementById('customerIdToDelete').value = selectedContactIds.join(',');
 
@@ -141,7 +157,7 @@ function updateCustomerDetails(checkbox) {
     updateButton.style.display = checkbox.checked ? 'flex' : 'none';
     let id;
     if (checkbox.checked) {
-        id=document.getElementById('customerIdToUpdate').value = checkbox.value;
+        id = document.getElementById('customerIdToUpdate').value = checkbox.value;
         console.log('Checkbox is checked, ID:', id);
     }
 
@@ -159,26 +175,26 @@ function showUpdateModal() {
 
 
     fetch(`/contacts/details?customer_id=${customerId}`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Populate the form fields in the modal with the customer details
-        let name= document.getElementById('updatefirstName').value = data.first_name || '';
-        document.getElementById('updatelastName').value = data.last_name || '';
-        document.getElementById('updateemail').value = data.email_address || '';
-        document.getElementById('updatephone').value = data.phone_number || '';
-        document.getElementById('updatestate').value = data.state_address || '';
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Populate the form fields in the modal with the customer details
+            let name = document.getElementById('updatefirstName').value = data.first_name || '';
+            document.getElementById('updatelastName').value = data.last_name || '';
+            document.getElementById('updateemail').value = data.email_address || '';
+            document.getElementById('updatephone').value = data.phone_number || '';
+            document.getElementById('updatestate').value = data.state_address || '';
 
-        // Display the modal
-        document.getElementById('updateModal').style.display = 'block';
-        console.log(customerId,"customer ID after click the logo ")
-        console.log(name,"customer name")
-    })
-    .catch(error => console.error('Error:', error));
+            // Display the modal
+            document.getElementById('updateModal').style.display = 'block';
+            console.log(customerId, "customer ID after click the logo ")
+            console.log(name, "customer name")
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 
@@ -193,10 +209,10 @@ function showUpdateModal() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var closeButton = document.querySelector('#updateModal .close-button');
     if (closeButton) {
-        closeButton.addEventListener('click', function() {
+        closeButton.addEventListener('click', function () {
             document.querySelector('#updateModal').style.display = 'none';
         });
     }
@@ -211,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // table loading spinner 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Hide the spinner once the page is fully loaded
     document.getElementById('loadingSpinner').style.display = 'none';
 });
@@ -227,10 +243,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var emailField = document.getElementById("email");
 
-    emailField.addEventListener("input", function() {
+    emailField.addEventListener("input", function (event) {
         var email = this.value.trim();
         if (email.length === 0) {
             // If the email is empty, don't make the fetch call.
@@ -244,40 +260,55 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ email: email }),
         })
-        .then(response => response.json())
-        .then(data => {
-            var contactExistsDiv = document.getElementById("contactExists");
-            var additionalFieldsDiv = document.getElementById("additionalFields");
-            var existing_contact_link = document.getElementById("existing_contact_link");
-            var contact_profile_avatar= document.getElementById("contact-profile-avatar");
-            var existing_contact_email = document.getElementById("existing-contact-email");
-            var create_contact_btn=document.getElementById("contact-submit-button");
+            .then(response => response.json())
+            .then(data => {
+                var contactExistsDiv = document.getElementById("contactExists");
+                var additionalFieldsDiv = document.getElementById("additionalFields");
+                var existing_contact_link = document.getElementById("existing_contact_link");
+                var contact_profile_avatar = document.getElementById("contact-profile-avatar");
+                var existing_contact_email = document.getElementById("existing-contact-email");
+                var create_contact_btn = document.getElementById("contact-submit-button");
+                let phoneInput = document.getElementById("phone");
+                let stateSelect = document.getElementById("state");
+                let maleRadio = document.getElementById("male");
+                let femaleRadio = document.getElementById("female");
+                let statusSelect = document.getElementsByName("lead_status")[0]; // Assuming there's only one element with the name "lead_status"
 
-            if (data.exists) {
+                // Enable the input elements
+
                 if (data.exists) {
-                    contactExistsDiv.style.display = 'block';
-                    create_contact_btn.style.display="none"
-                    additionalFieldsDiv.style.display = 'none';
-                    existing_contact_link.textContent = data.first_name + data.last_name;
-                    contact_profile_avatar.textContent = data.first_name[0] + data.last_name[0];
-                    existing_contact_email.textContent= data.email_address
-                    // Update the href attribute with the correct blueprint prefix and contact_id
-                    existing_contact_link.href = '/profiles/' + data.contact_id;
-                    existing_contact_link.classList.add('active-link'); // Add your styling for an active link
-                } // Make sure to style this class as needed
-            } else {
-                contactExistsDiv.style.display = 'none';
-                additionalFieldsDiv.style.display = 'block';
-                create_contact_btn.style.display='block';
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+                    if (data.exists) {
+                        contactExistsDiv.style.display = 'block';
+                        create_contact_btn.style.display = "none"
+                        additionalFieldsDiv.style.display = 'none';
+                        existing_contact_link.textContent = data.first_name + data.last_name;
+                        contact_profile_avatar.textContent = data.first_name[0] + data.last_name[0];
+                        existing_contact_email.textContent = data.email_address
+                        // Update the href attribute with the correct blueprint prefix and contact_id
+                        existing_contact_link.href = '/profiles/' + data.contact_id;
+                        existing_contact_link.classList.add('active-link'); // Add your styling for an active link
+                    } // Make sure to style this class as needed
+                } else {
+                    contactExistsDiv.style.display = 'none';
+                    additionalFieldsDiv.style.display = 'block';
+                    create_contact_btn.style.display = 'block';
+                    additionalFieldsDiv.style.filter = "none";
+                    phoneInput.disabled = false;
+                    stateSelect.disabled = false;
+                    maleRadio.disabled = false;
+                    femaleRadio.disabled = false;
+                    statusSelect.disabled = false;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            event.preventDefault();
     });
 
-  
+
     document.getElementById("popUp").style.display = 'none';
+    
 });
 
 
@@ -296,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.value = savedQuery;
     }
 
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
         const query = searchInput.value.trim();
         localStorage.setItem('searchQuery', query);
 
@@ -307,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    searchForm.addEventListener('submit', function(event) {
+    searchForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent the default form submission
         performSearch();
     });
@@ -318,7 +349,7 @@ function performSearch() {
     const homeUrl = searchForm.getAttribute('data-home-url');
     const searchQuery = document.getElementById('searchInput').value.trim();
 
-    if (searchQuery.length >= 3 || searchQuery.length ===0) {
+    if (searchQuery.length >= 3 || searchQuery.length === 0) {
         fetch(homeUrl, {
             method: 'POST',
             body: JSON.stringify({ search_query: searchQuery }),
@@ -328,16 +359,16 @@ function performSearch() {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            updateTable(data);
-        })
-        .catch(error => console.error('Error:', error));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateTable(data);
+            })
+            .catch(error => console.error('Error:', error));
     }
 }
 
@@ -358,7 +389,7 @@ function updateTable(data) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const homeUrl = searchForm.getAttribute('data-home-url') || '/'; // Assuming '/contacts/home' is the correct endpoint
 
@@ -376,32 +407,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => {
-            console.log('Response status:', response.status); // Log the response status
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Received data:', data); // Log the received data
-            const tableBody = document.getElementById('table-body');
-            const paginationControls = document.querySelector('.pagination-controls');
-            if (tableBody && paginationControls) {
-                tableBody.innerHTML = data.table_body_html;
-                paginationControls.innerHTML = data.pagination_html;
+            .then(response => {
+                console.log('Response status:', response.status); // Log the response status
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received data:', data); // Log the received data
+                const tableBody = document.getElementById('table-body');
+                const paginationControls = document.querySelector('.pagination-controls');
+                if (tableBody && paginationControls) {
+                    tableBody.innerHTML = data.table_body_html;
+                    paginationControls.innerHTML = data.pagination_html;
 
-                attachEventListenersToPaginationLinks();
-                reinitializeItemsPerPageListener(); // Reinitialize event listener for the "items per page" dropdown
-                
-                updateItemsPerPageSelection(itemsPerPage); // Update the dropdown to reflect the current selection
-            } else {
-                console.error('Could not find table body or pagination controls elements.');
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
+                    attachEventListenersToPaginationLinks();
+                    reinitializeItemsPerPageListener(); // Reinitialize event listener for the "items per page" dropdown
+
+                    updateItemsPerPageSelection(itemsPerPage); // Update the dropdown to reflect the current selection
+                } else {
+                    console.error('Could not find table body or pagination controls elements.');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
     }
 
     function attachEventListenersToPaginationLinks() {
