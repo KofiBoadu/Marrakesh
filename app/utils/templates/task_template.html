@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {{
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4; /* Light grey background */
+      margin: 0;
+      padding: 0;
+    }}
+    .container {{
+      background-color: #fff; /* White background for the content container */
+      margin: 20px auto;
+      border: 1px solid #ddd; /* Light grey border, you might want to change this to one of your brand colors */
+      border-radius: 5px;
+    }}
+    .header {{
+      font-size: 24px;
+      color: #fff; /* White color for text on colored background */
+      background-color: #03989E; /* Your company teal-like blue color */
+      padding: 10px;
+      border-radius: 5px 5px 0 0;
+    }}
+    .header h2 {{
+      text-align: center;
+    }}
+    .content {{
+      font-size: 16px;
+      color: #666; /* Dark grey text, consider changing if you have a brand color */
+      margin-top: 10px;
+    }}
+    .content h2{{
+      text-align: center;
+      margin-top: 20px;
+    }}
+    .contact-info {{
+      font-size: 20px;
+      padding-top: 50px;
+      border-top: 1px solid #ddd; 
+      display: flex;
+      justify-content: center;
+    }}
+    #task-contact{{
+      margin-right: 30%;
+    }}
+    .note_description{{
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      padding-top: 10px;
+      border-top: 1px solid #ddd; /* Light grey border, change to a brand color if needed */
+      border-radius: 0 0 5px 5px;
+      color: red;
+    }}
+    .task_button{{
+      display: flex;
+      justify-content: center;
+      margin-top: 60px;
+    }}
+    .task_button button{{
+      background-color: #FF914C;
+      width: 130px;
+      padding: 10px;
+      margin: 20px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: sans-serif;
+      font-weight: 300;
+      font-size: 20px;
+    }}
+    .footer {{
+      font-size: 12px;
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd; /* Light grey border, change to a brand color if needed */
+      border-radius: 0 0 5px 5px;
+      margin-bottom: 10px;
+    }}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2> Hi, { user_first_name } { user_last_name }</h2>
+  </div>
+  <div class="content">
+    <h2>Your task "{ title }" is due today</h2>
+  </div>
+  <div class="note_description" style="{{ display_style }}">
+    <div id="note-info">
+      <p>{ description }</p>
+    </div>
+  </div>
+  <div class="contact-info">
+    <div id="task-contact">
+      <strong>CONTACT</strong><br>
+      { contact_first_name } { contact_last_name }<br>
+      <a href="mailto:{{ contact_email }}">{contact_email }</a><br>
+      {phone_number }
+    </div>
+  </div>
+  <div class="task_button">
+    <div id="view-task">
+      <button>view task</button>
+    </div>
+  </div>
+  <div class="footer">
+    This is an automated task reminder.
+  </div>
+</div>
+</body>
+</html>

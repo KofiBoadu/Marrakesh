@@ -1,7 +1,22 @@
 {% block content %}
 {% include "settings_base.html" %}
 
+
 <div class="tour" id="tourForm" style="display: block;">
+
+<h1>Tours</h1>
+
+
+
+
+<div>
+    <button id="tourBtn">Add new tour</button>
+</div>
+
+
+
+<div class="tour" id="tourForm">
+
     <div class="tour_header">
         <h1 class="tour_header--title">Add New Tour</h1>
     </div>
@@ -55,6 +70,33 @@
 
 
 
+
+
+<!-- available tours table -->
+<table>
+    <tr>
+      <th><input type="checkbox"></th>
+      <th>Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Price</th>
+      <th>Destination</th>
+      <th>Tour Type</th>
+    </tr>
+    {% for tours in tours_scheduled %}
+    <tr>
+      <td><input type="checkbox" data-user-id="{{ tours[0] }}" class="user-checkbox"> </td>
+      <td>{{ tours[1]}}</td>
+      <td>{{ tours[2]}}</td>
+      <td>{{ tours[3]}}</td>
+      <td>{{ tours[4]}}</td>
+      <td>{{ tours[5]}}</td>
+      <td>{{ tours[6]}}</td>
+     
+  
+    </tr>
+    {% endfor %}
+  </table>
 
 
 {% endblock %}

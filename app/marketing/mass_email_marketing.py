@@ -82,18 +82,7 @@ def enqueue_email_task(recipient_list, subject, sender_email, text_body, campaig
     return True
 
 
-# test_recipient_list = [
-#     ('kofi', 'kboadu16@gmail.com'),
-#     ('daniel', 'mrboadu3@gmail.com')
-# ]
-#
-# print(enqueue_email_task(
-#     recipient_list=test_recipient_list,
-#     subject="Test Subject again 3",
-#     sender_email="bookings@africatravellers.com",
-#     text_body="This is a test email body.",
-#     campaign_id=70
-# ))
+
 
 
 def send_email_marketing(contact_name, receiver_email, subject, sender_email, text_body, campaign_id,

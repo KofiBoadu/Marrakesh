@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, session
+from flask import Flask, redirect, url_for, session,render_template
 from app.utils.main import login_manager, cache
 from .contacts import contacts_bp
 from .marketing import email_marketing
@@ -18,12 +18,31 @@ import logging
 
 
 
+
+
+
+
+
+
+
+
 def create_app():
     load_dotenv()
     app = Flask(__name__, template_folder='utils/templates', static_folder='utils/static',static_url_path='/static')
 
     logger = create_logger(app)
     logger.setLevel(logging.DEBUG)
+   
+
+
+
+
+    # Setup scheduler with the Flask app
+    # check_due_tasks(app)
+    
+
+
+
 
 
     @app.route('/contacts/home')
@@ -63,3 +82,7 @@ def create_app():
 
     cache.init_app(app)
     return app
+
+
+
+# marrakesh= create_app()

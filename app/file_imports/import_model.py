@@ -7,10 +7,10 @@ import re
 
 
 HEADER_MAPPING = {
-    'first_name': ['first name', 'firstname', 'first', 'fname'],
-    'last_name': ['last name', 'lastname', 'last', 'lname', 'surname'],
+    'first_name': ['first name', 'firstname', 'first', 'fname','First Name'],
+    'last_name': ['last name', 'lastname', 'last', 'lname', 'surname','Last Name'],
     'email': ['email', 'email_address', 'email address'],
-    'phone': ['phone number', 'phonenumber', 'phone', 'mobile', 'contact'],
+    'phone': ['phone number', 'phonenumber', 'phone', 'mobile', 'contact','Phone Number'],
     'gender': ['gender', 'sex'],
     'state': ['state', 'province', 'region', 'location'],
     'lead_status': ['lead status', 'status']
@@ -37,7 +37,22 @@ def normalize_header(header):
 
 
 
+def derive_names_from_email(email):
+    """
+    Derive plausible first and last names from an email address after removing whitespace.
+    Uses the first two characters of the trimmed username part as the first name, and the rest as the last name.
 
+    Parameters:
+    - email (str): The email address from which to derive names.
+
+    Returns:
+    - tuple: A tuple containing the derived first and last names.
+    """
+    username = email.split('@')[0].strip()  # Extract and strip the part before '@'
+    # Ensure the username has sufficient length after trimming whitespace
+    first_name = username[:2] if len(username) > 1 else username
+    last_name = username[2:] if len(username) > 2 else ''
+    return (first_name, last_name)
 
 
 
@@ -137,9 +152,15 @@ def process_csv(file, chunk_size=500):
         print("email from csv:", email)
         if email and email not in existing_emails:
             phone=clean_phone_number(row.get(header_map.get('phone', ''), '').strip())
+            first_name = row.get(header_map.get('first_name', ''), '').strip()
+            last_name = row.get(header_map.get('last_name', ''), '').strip()
+
+            if not first_name and not last_name:
+                first_name,last_name=derive_names_from_email(email)
+              
             contact = (
-                row.get(header_map.get('first_name', ''), '').strip(),
-                row.get(header_map.get('last_name', ''), '').strip(),
+                first_name,
+                last_name,
                 email,
                 phone,
                 row.get(header_map.get('gender', ''), '').strip(),

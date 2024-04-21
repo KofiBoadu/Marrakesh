@@ -8,6 +8,12 @@ from flask_login import login_required, current_user
 from .admin_models import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles
 from app.utils.main import send_email
 from app.utils.tours import get_all_destinations
+from app.users.tour_packages import get_all_tours_scheduled
+
+
+
+
+
 
 
 @users_bp.route('/login', methods=["GET"])
@@ -43,6 +49,7 @@ def user():
     if username:
         return {'username': username}
     return {'username': None}
+
 
 
 @users_bp.route('/logout')
@@ -97,20 +104,25 @@ def user_profile():
 @login_required
 def settings_users():
     users = get_all_users()
-
     available_roles = user_roles()
-
-
     return render_template('users_teams.html', users=users, available_roles=available_roles)
 
 
 
 
-@users_bp.route('/settings/services/management/', methods=['GET', "POST"])
-@login_required
-def services():
-    destinations= get_all_destinations()
-    return render_template('service_management.html',destinations=destinations)
+
+
+
+
+# @users_bp.route('/settings/services/management/', methods=['GET', "POST"])
+# @login_required
+# def services():
+#     destinations= get_all_destinations()
+#     return render_template('service_management.html',destinations=destinations)
+
+
+
+
 
 
 @users_bp.route('/remove_user', methods=["POST"])
@@ -120,6 +132,10 @@ def remove_a_user():
     if user_id:
         remover_user_from_account(user_id)  
     return redirect(url_for('users.settings_users'))
+
+
+
+
 
 
 @users_bp.route('/settings/user-created/', methods=["POST"])
@@ -151,6 +167,9 @@ Marrakesh Team
     return redirect(url_for('users.settings_users'))
 
 
+
+
+
 @users_bp.route('/settings/deactivate/user', methods=["POST"])
 @login_required
 def deactivate_user():
@@ -160,6 +179,9 @@ def deactivate_user():
     else:
         print("could not fine the user ID ")
     return redirect(url_for('users.settings_users'))
+
+
+
 
 
 @users_bp.route('/settings/reactivate/user', methods=["POST"])
@@ -173,6 +195,9 @@ def reactivate_user():
     return redirect(url_for('users.settings_users'))
 
 
+
+
+
 @users_bp.route('/settings/remove-admin-role/', methods=["POST"])
 @login_required
 def remove_admin_role():
@@ -184,6 +209,9 @@ def remove_admin_role():
     return redirect(url_for('users.settings_users'))
 
 
+
+
+
 @users_bp.route('/settings/make-admin-role/', methods=["POST"])
 @login_required
 def make_admin_role():
@@ -193,3 +221,16 @@ def make_admin_role():
     else:
         print("could not fine the user ID ")
     return redirect(url_for('users.settings_users'))
+
+
+
+
+
+
+@users_bp.route('/settings/tour/packages', methods=["GET"])
+def tour_services():
+    tours_scheduled= get_all_tours_scheduled()
+    destinations= get_all_destinations()
+    tour_id= tours_scheduled[0][0]
+    return render_template('service_management.html',tour_id=tour_id,tours_scheduled=tours_scheduled,destinations=destinations)
+    

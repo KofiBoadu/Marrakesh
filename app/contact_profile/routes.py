@@ -5,10 +5,12 @@ from .profile_models import updating_contact_status, update_contact_phone, \
     bookings_updates_logs, update_contact_email, update_contact_name
 from .profile_models import save_contact_notes, delete_contacts_notes
 from  app.utils.main  import send_email,all_states,format_phone_number
+from app.utils.task_models import generate_due_dates,generate_time_intervals,adding_new_task
 from app.utils.tours import get_all_upcoming_travel_packages,get_travel_package_id,book_a_tour_for_a_contact
 from .profile_models import profile_details, get_customer_bookings, contact_submissions, contact_gender_update
 from . import contacts_profile
 from app.utils.main import cache
+
 
 
 @contacts_profile.route('/<int:contact_id>', methods=['GET'])
@@ -36,6 +38,12 @@ def contact_profile(contact_id):
 
         results = contact_submissions(contact_id)
 
+        due_dates= generate_due_dates()
+        due_dates_names = list(due_dates.keys())
+        due_times= generate_time_intervals()
+        due_time_options= [ times['value'] for times in due_times]
+
+    
         
         form_fields_dict = {}
 
@@ -57,10 +65,7 @@ def contact_profile(contact_id):
         return render_template('profile.html', common_data=common_data, form_fields=form_fields_dict, states=states,
                                activities=activities, available_dates=available_dates, booking_info=booking_info,
                                login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id,
-                               phone_number=phone_number)
-
-
-
+                               phone_number=phone_number,due_dates_names=due_dates_names,due_time_options=due_time_options)
 
 
 
@@ -250,3 +255,27 @@ def update_contact_gender():
     else:
         print("there was an issue with updating the gender")
         return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
+@contacts_profile.route('/creating_task', methods=['POST'])
+def creating_new_task():
+    task_title = request.form.get('taskTitle')
+    due_date = request.form.get('dueDate')
+    due_date_value= generate_due_dates()
+    date= due_date_value[due_date]["date"]
+
+    print(date)
+    
+    due_time = request.form.get('dueTime')
+    task_description = request.form.get('notes')
+    contact_id = request.form.get('contact_num')
+    user_id = current_user.id
+
+    if contact_id and user_id:
+        print("Contact ID:", contact_id)  # Debug: Check what's captured
+        adding_new_task(task_title, date, due_time, task_description, contact_id,user_id)
+    else:
+        print("No contact ID provided")  # Debug: Identify if no ID is captured
+
+    return redirect(url_for("profiles.contact_profile", contact_id=contact_id))

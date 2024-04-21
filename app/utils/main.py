@@ -6,6 +6,8 @@ from datetime import datetime
 from flask_caching import Cache
 from flask_login import LoginManager
 
+
+
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 login_manager = LoginManager()
@@ -18,6 +20,8 @@ login_manager = LoginManager()
 
 
 mail = Mail()
+
+
 
 
 def send_email(subject, recipients, text_body, sender="bookings@africatravellers.com", html_body=None):
@@ -48,6 +52,15 @@ def send_email(subject, recipients, text_body, sender="bookings@africatravellers
         except Exception as e:
             current_app.logger.error(f'Failed to send email: {e}')
             return False
+
+
+
+
+
+
+
+
+
 
 
 
