@@ -1,5 +1,6 @@
 aiosmtplib==3.0.1
 amqp==5.2.0
+APScheduler==3.10.4
 async-timeout==4.0.3
 beautifulsoup4==4.12.3
 billiard==4.2.0
@@ -22,6 +23,7 @@ crontab==1.0.1
 cryptography==42.0.5
 et-xmlfile==1.1.0
 Flask==3.0.0
+Flask-APScheduler==1.13.1
 Flask-Caching==2.1.0
 Flask-HTTPAuth==4.8.0
 Flask-Login==0.6.3
@@ -72,6 +74,7 @@ s3transfer==0.10.1
 six==1.16.0
 soupsieve==2.5
 tzdata==2023.4
+tzlocal==5.2
 uritemplate==4.1.1
 urllib3==2.2.1
 vine==5.1.0

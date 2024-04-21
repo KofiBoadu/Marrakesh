@@ -114,11 +114,11 @@ def settings_users():
 
 
 
-# @users_bp.route('/settings/services/management/', methods=['GET', "POST"])
-# @login_required
-# def services():
-#     destinations= get_all_destinations()
-#     return render_template('service_management.html',destinations=destinations)
+@users_bp.route('/settings/services/management/', methods=['GET', "POST"])
+@login_required
+def services():
+    destinations= get_all_destinations()
+    return render_template('service_management.html',destinations=destinations)
 
 
 
