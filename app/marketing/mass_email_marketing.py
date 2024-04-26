@@ -163,7 +163,9 @@ def all_email_campaign():
         results = cursor.fetchall()
         return results
     except Exception as e:
-        print(f"An error occurred: {e}")  # Log or print the exception information.
+
+        print(f"An error occurred: {e}")
+
         return []
     finally:
         if cursor:

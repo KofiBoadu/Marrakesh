@@ -104,8 +104,9 @@ def user_profile():
 @login_required
 def settings_users():
     users = get_all_users()
+    total_users= len(users)
     available_roles = user_roles()
-    return render_template('users_teams.html', users=users, available_roles=available_roles)
+    return render_template('users_teams.html', users=users, available_roles=available_roles, total_users= total_users)
 
 
 
