@@ -92,15 +92,15 @@ def send_marketing_emails():
         email_subject = data['emailSubject']
         email_body = data['emailBody']
         user_id = current_user.id
-        # recipient_list = get_customers_by_year_or_all(contacts_type)
-        email_list = [('daniel', "mrboadu3@gmail.com"), ('kofi', "kboadu16@gmail.com")]
+        recipient_list = get_customers_by_year_or_all(contacts_type)
+        # email_list = [('daniel', "mrboadu3@gmail.com"), ('kofi', "kboadu16@gmail.com")]
 
-        print(f"From address: {from_address}, Contacts type: {contacts_type}, Email subject: {email_subject}, Email body: {email_body[:50]}, User ID: {user_id}")
+        # print(f"From address: {from_address}, Contacts type: {contacts_type}, Email subject: {email_subject}, Email body: {email_body[:50]}, User ID: {user_id}")
 
         campaign_id = marketing_email(
 
             user_id=user_id,
-            total_number_of_email_list=len(email_list),
+            total_number_of_email_list=len( recipient_list),
             campaign_subject=email_subject,
             campaign_body=email_body,
             campaign_status="sent"
@@ -109,8 +109,8 @@ def send_marketing_emails():
         print("Campaign ID returned:", campaign_id)
         try:
             if campaign_id:
-                print("Enqueuing email tasks...")
-                market.enqueue_email_task(email_list, email_subject, from_address, email_body, campaign_id)
+                # print("Enqueuing email tasks...")
+                market.enqueue_email_task( recipient_list, email_subject, from_address, email_body, campaign_id)
                 performance_url = url_for('marketing.email_campaign_performance',campaign_id=campaign_id) + "?message=email_processing" + "&campaign_id=" + str(campaign_id)
                 print("Redirect URL:", performance_url)
                 return jsonify({"message": "Email tasks queued for sending", "redirectUrl": performance_url})
@@ -124,7 +124,7 @@ def send_marketing_emails():
     else:
         senders = get_all_users()
         customer_list_by_year = our_customers_since_by_year()
-        print("Senders and customer list retrieved for GET request.")
+        # print("Senders and customer list retrieved for GET request.")
         return render_template("send_marketing_email.html", senders=senders, customer_list_byYear=customer_list_by_year)
 
 
