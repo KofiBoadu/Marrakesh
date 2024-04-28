@@ -1,5 +1,5 @@
 from . import users_bp
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session,jsonify
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user
 from .admin_models import get_user, User, create_user_account, generate_secure_password, deactivate_user_account, \
@@ -8,7 +8,8 @@ from flask_login import login_required, current_user
 from .admin_models import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles
 from app.utils.main import send_email
 from app.utils.tours import get_all_destinations
-from app.users.tour_packages import get_all_tours_scheduled
+from app.users.tour_packages import get_all_tours_scheduled,get_total_tour_packages
+import math
 
 
 
@@ -21,22 +22,27 @@ def login():
     return render_template("login.html")
 
 
-@users_bp.route('/user', methods=['POST'])
+@users_bp.route('/current_login_user', methods=['POST'])
 def login_user_route():
     email = request.form.get('email')
+    print(email)
     password = request.form.get('password')
-    user = get_user(email)
-    old_password = check_password_hash(user[4], password)
-    if user and old_password and user[6]:
-        old_password = check_password_hash(user[4], password)
-        print("old password", old_password)
-        user_object = User(user[0], user[1], user[2], user[3], user[4], user[5])
+    print(password)
+    current_login_user = get_user(email)
+    print(current_login_user)
+
+    old_password = check_password_hash(current_login_user[4], password)
+
+    if current_login_user and old_password and current_login_user[6]:
+        old_password = check_password_hash(current_login_user[4], password)
+        print(old_password)
+        user_object = User(current_login_user[0], current_login_user[1], current_login_user[2], current_login_user[3], current_login_user[4], current_login_user[5])
         login_user(user_object)
-        user_id = user[0]
-        first_name = user[1]
-        last_name = user[2]
+        user_id = current_login_user[0]
+        first_name = current_login_user[1]
+        last_name = current_login_user[2]
         session['username'] = [user_id, first_name, last_name]
-        role_id = user[5]
+        role_id = current_login_user[5]
         session['user_role_id'] = role_id
         return redirect(url_for("contacts.home_page"))
     else:
@@ -69,8 +75,8 @@ def password_reset():
     if request.method == "POST":
         new_password = request.form.get("new_password")
         confirm_password = request.form.get("confirm_password")
-        user = session.get('username')
-        user_id = user[0]
+        current_login_user = session.get('username')
+        user_id = current_login_user[0]
 
         if not pass_word_checker(new_password):
             flash("Password does not meet requirements.")
@@ -81,7 +87,7 @@ def password_reset():
             return redirect(url_for('users.password_reset'))
         else:
             password_change(user_id, new_password)
-            return redirect(url_for('customers.home_page'))  # Make sure 'customers_bp' is your Blueprint name
+            return redirect(url_for('contacts.home_page'))  # Make sure 'customers_bp' is your Blueprint name
 
 
 
@@ -230,8 +236,21 @@ def make_admin_role():
 
 @users_bp.route('/settings/tour/packages', methods=["GET"])
 def tour_services():
-    tours_scheduled= get_all_tours_scheduled()
-    destinations= get_all_destinations()
-    tour_id= tours_scheduled[0][0]
-    return render_template('service_management.html',tour_id=tour_id,tours_scheduled=tours_scheduled,destinations=destinations)
-    
+    page = request.args.get('page', 1, type=int)
+    items_per_page = request.args.get('items_per_page', 10, type=int)
+
+    tours_scheduled = get_all_tours_scheduled(page, items_per_page)
+    total_tours = get_total_tour_packages()
+    total_pages = math.ceil(total_tours / items_per_page)
+
+    destinations = get_all_destinations()
+    tour_id = tours_scheduled[0][0] if tours_scheduled else None
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        tours_table_body_html = render_template('tours_table_body.html', tours_scheduled=tours_scheduled)
+        tours_pagination_html = render_template('tours_pagination.html', page=page, total_pages=total_pages, items_per_page=items_per_page)
+        return jsonify({'tours_table_body_html': tours_table_body_html, 'tours_pagination_html': tours_pagination_html})
+    else:
+
+        return render_template('service_management.html', total_pages=total_pages, page=page, items_per_page=items_per_page, tour_id=tour_id, tours_scheduled=tours_scheduled, destinations=destinations)
+

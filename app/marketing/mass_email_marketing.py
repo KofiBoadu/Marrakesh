@@ -445,42 +445,6 @@ def total_email_list(campaign_id):
     return execute_query(query, campaign_id)
 
 
-# def get_customer_campaign_events(campaign_id):
-#     query = """
-#         SELECT
-#             c.contact_id,
-#             CONCAT(c.first_name, ' ', c.last_name) AS full_name,
-#             m.campaign_id,
-#             m.event_type
-#         FROM contacts c
-#         JOIN (
-#             SELECT
-#                 contact_id,
-#                 campaign_id,
-#                 event_type,
-#                 MAX(metric_id) AS MaxMetricId
-#             FROM marketing_email_metrics
-#             WHERE campaign_id = %s
-#             GROUP BY contact_id
-#         ) AS LatestEvent ON c.contact_id = LatestEvent.contact_id
-#         JOIN marketing_email_metrics m ON m.contact_id = LatestEvent.contact_id AND m.metric_id = LatestEvent.MaxMetricId
-#     """
-#     database_connection = None
-#     cursor = None
-#     try:
-#         database_connection = create_database_connection()
-#         cursor = database_connection.cursor()
-#         cursor.execute(query, (campaign_id,))
-#         results = cursor.fetchall()
-#         return results
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         return []
-#     finally:
-#         if cursor:
-#             cursor.close()
-#         if database_connection:
-#             database_connection.close()
 
 
 
@@ -557,6 +521,10 @@ def get_customer_campaign_events(campaign_id, page, per_page=10):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
 
 
 

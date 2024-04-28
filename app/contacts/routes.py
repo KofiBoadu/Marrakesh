@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session,jsonify
 from app.utils.tours import  create_new_tour_packages,get_all_destinations,get_destination_id
 from app.contacts import contacts_bp
 import math
@@ -7,7 +7,6 @@ from app.utils.main import format_phone_number,all_states
 from  .contact_models import  remove_contacts, get_total_num_of_contacts,check_contact_exists,add_new_contact
 from .contact_models import  update_full_contact_details, get_contact_id,get_all_contacts_information
 from app.contact_profile.profile_models import fetch_contact_details
-from flask import jsonify
 from app.utils.main import cache
 
 

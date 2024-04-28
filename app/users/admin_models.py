@@ -26,6 +26,9 @@ def generate_secure_password(length=12):
     return secure_password
 
 
+
+
+
 def add_new_user(first_name, last_name, email_address, pass_word, role_id):
     cursor = None
     database_connection = None
@@ -52,12 +55,15 @@ def add_new_user(first_name, last_name, email_address, pass_word, role_id):
 
 def create_user_account(first_name, last_name, email_address, pass_word, role_id):
     hash_password = generate_password_hash(pass_word)
-    add_new_user(first_name, last_name, email_address, hash_password, role_id)
-    if not add_new_user:
+    add_user=add_new_user(first_name, last_name, email_address, hash_password, role_id)
+    if not add_user:
         return False
     return True
 
-
+# password=generate_secure_password()
+# print(password)
+# add=create_user_account("Africa","Travellers","bookings@africatravellers.com",password,1)
+# print(add)
 
 def get_user(email):
     cursor = None
@@ -79,6 +85,8 @@ def get_user(email):
         if database_connection:
             database_connection.close()
 
+
+# print(get_user("bookings@africatravellers.com"))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -311,3 +319,5 @@ def make_super_admin(user_id):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+

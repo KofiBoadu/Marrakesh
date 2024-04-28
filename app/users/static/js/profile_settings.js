@@ -1,4 +1,41 @@
 
+//update tours content
+document.addEventListener('DOMContentLoaded', function() {
+    const tour_paginationContainer = document.querySelector('.tours-pagination-controls');
+
+    // Check if the pagination container exists
+    if (tour_paginationContainer) {
+        tour_paginationContainer.addEventListener('click', function(e) {
+            // Prevent the default link behavior
+            e.preventDefault();
+
+            // Target only anchor tags
+            const target = e.target.closest('a');
+            if (!target || target.parentElement.classList.contains('disabled')) {
+                return;
+            }
+
+            const url = target.getAttribute('href');
+            if (url) {
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' } // Important to differentiate between AJAX and regular requests on the server
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming the server sends back JSON with the HTML fragments
+                    document.getElementById('toursTableData').innerHTML = data.tours_table_body_html; // Update the table body
+                    document.querySelector('.tours-pagination-controls').innerHTML = data.tours_pagination_html; // Update the pagination controls
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+});
+
+
+
 
 
 
@@ -12,23 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // // Setup for checkboxes and updating form values based on the selected user
-  // const checkboxes = document.querySelectorAll('.user-checkbox');
-  // checkboxes.forEach(function(checkbox) {
-  //   checkbox.addEventListener('change', function() {
-  //     if (this.checked) {
-  //       // Retrieve the user ID from the data attribute
-  //       const userId = this.getAttribute('data-user-id');
-  //       // Update the hidden input's value for various forms
-  //       document.getElementById('remove-user-id').value = userId;
-  //       document.getElementById('deactivate-user-id').value = userId;
-  //       document.getElementById('reactivate-user-id').value = userId;
-  //       document.getElementById('make-new-user-admin-id').value = userId;
-  //       document.getElementById('remove-new-user-admin-id').value = userId;
-  //     }
-  //   });
-  // });
-  // Setup for checkboxes and updating form values based on the selected user
+
   const checkboxes = document.querySelectorAll('.user-checkbox');
   const menu = document.getElementById('user-action-div'); // Assuming you have a menu div in your HTML
   const forms = menu.querySelectorAll('form');
@@ -72,3 +93,10 @@ function show_userButton() {
 function closeUserModal() {
   document.getElementById('user').style.display = 'None';
 }
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+
+
+
+
+
+
+
+
+{% for tours in tours_scheduled %}
+            <tr>
+              <td><input type="checkbox" data-user-id="{{ tours[0] }}" class="user-checkbox"> </td>
+              <td>{{ tours[1]}}</td>
+              <td>{{ tours[2]}}</td>
+              <td>{{ tours[3]}}</td>
+              <td>{{ tours[4]}}</td>
+              <td>{{ tours[5]}}</td>
+              <td>{{ tours[6]}}</td>
+
+            </tr>
+{% endfor %}

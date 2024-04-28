@@ -73,30 +73,28 @@
 
 
 <!-- available tours table -->
-<table>
-    <tr>
-      <th><input type="checkbox"></th>
-      <th>Name</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Price</th>
-      <th>Destination</th>
-      <th>Tour Type</th>
-    </tr>
-    {% for tours in tours_scheduled %}
-    <tr>
-      <td><input type="checkbox" data-user-id="{{ tours[0] }}" class="user-checkbox"> </td>
-      <td>{{ tours[1]}}</td>
-      <td>{{ tours[2]}}</td>
-      <td>{{ tours[3]}}</td>
-      <td>{{ tours[4]}}</td>
-      <td>{{ tours[5]}}</td>
-      <td>{{ tours[6]}}</td>
-     
-  
-    </tr>
-    {% endfor %}
-  </table>
+    <div class="tours_table_container">
+        <table class="tours_table">
+              <thead>
+                  <th><input type="checkbox"></th>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Price</th>
+                  <th>Destination</th>
+                  <th>Tour Type</th>
+              </thead>
+              <tbody id="toursTableData" >
+               {% include 'tours_table_body.html' %}
+              </tbody>
+        </table>
 
+        {% include 'tours_pagination.html' %}
+
+        </div>
 
 {% endblock %}
+
+
+
+
