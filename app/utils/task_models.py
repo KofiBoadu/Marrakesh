@@ -46,7 +46,7 @@ def generate_due_dates():
         "2 Months": {"date": (now + timedelta(weeks=8)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=8)).strftime('%A')},
         "3 Months": {"date": (now + timedelta(weeks=12)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=12)).strftime('%A')},
         "6 Months": {"date": (now + timedelta(weeks=24)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=24)).strftime('%A')},
-        "Custom Date": {"date": None, "day": None}
+        # "Custom Date": {"date": None, "day": None}
     }
     return dates
 

@@ -142,6 +142,7 @@ def password_change(user_id, new_password):
         cursor = database_connection.cursor()
         cursor.execute(query, (hash_password, user_id))
         database_connection.commit()
+        return  True
 
     except Exception as e:
         print(f"Error updating password: {e}")
@@ -151,8 +152,11 @@ def password_change(user_id, new_password):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
+#
+# password=generate_secure_password()
+# print("new password",password)
+# add=password_change(1,password)
+# print(add)
 
 def get_all_users():
     query = """ 

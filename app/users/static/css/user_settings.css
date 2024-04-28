@@ -135,6 +135,9 @@ div.user-actions-forms form .user-action-button:not(:disabled):hover {
     font-weight: 300;
 }
 
+#add_admin_button.disabled {
+    color: #FF914C !important; /* Overrides other styling */
+}
 
 
 

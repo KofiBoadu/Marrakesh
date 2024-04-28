@@ -252,5 +252,5 @@ def tour_services():
         return jsonify({'tours_table_body_html': tours_table_body_html, 'tours_pagination_html': tours_pagination_html})
     else:
 
-        return render_template('service_management.html', total_pages=total_pages, page=page, items_per_page=items_per_page, tour_id=tour_id, tours_scheduled=tours_scheduled, destinations=destinations)
+        return render_template('service_management.html', total_tours= total_tours, total_pages=total_pages, page=page, items_per_page=items_per_page, tour_id=tour_id, tours_scheduled=tours_scheduled, destinations=destinations)
 

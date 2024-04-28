@@ -1,5 +1,5 @@
 
-//update tours content
+//update tours content IN THE TABLE INSTEAD OF REFRESHING THE WHOLE PAGE
 document.addEventListener('DOMContentLoaded', function() {
     const tour_paginationContainer = document.querySelector('.tours-pagination-controls');
 
@@ -38,16 +38,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+//disables the user functionalities and buttons if its A STANDARD USER
 document.addEventListener('DOMContentLoaded', function () {
   // Retrieve and check the user's role ID
   const roleId = parseInt(document.getElementById('login-user-role-id').value, 10);
   if (roleId > 1) {
     // Select and disable all buttons with the 'user-action-button' class
+     const create_AdminsButton = document.getElementById('add_admin_button');
+     if (create_AdminsButton) {
+		create_AdminsButton.disabled = true;
+		create_AdminsButton.classList.add('disabled'); // Use 'disabled' class for styling
+		create_AdminsButton.style.backgroundColor ="#d3d3d357"
+		create_AdminsButton.style.border="none"
+//		createAdminsButton.style.color = "#FF914C";
+		create_AdminsButton.innerHTML = '<img src="https://img.icons8.com/material-rounded/10/FF914C/lock-2.png" alt="Export icon"> Create new user';
+	  }
     document.querySelectorAll('.user-action-button').forEach(button => {
       button.disabled = true;
     });
   }
+
+
+
 
 
   const checkboxes = document.querySelectorAll('.user-checkbox');

@@ -18,11 +18,13 @@
     
     <div class="form-group">
       <label for="dueDate">Due date</label>
-      <select id="dueDate" name="dueDate">
+      <select id="dueDate" name="dueDate"  onchange="toggleCustomDate(this)">
         {% for date in due_dates_names %}
           <option value="{{ date }}">{{ date }}</option>
         {% endfor %}
+        <option value="custom">Custom date</option>
       </select>
+       <input type="date" id="customDueDate" name="customDueDate" style="display:none;" />
     </div>
 
     <div class="form-group">

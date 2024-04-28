@@ -261,12 +261,22 @@ def update_contact_gender():
 @contacts_profile.route('/creating_task', methods=['POST'])
 def creating_new_task():
     task_title = request.form.get('taskTitle')
-    due_date = request.form.get('dueDate')
-    due_date_value= generate_due_dates()
-    date= due_date_value[due_date]["date"]
+    custom_date = request.form.get('customDueDate')
+    due_date_value = generate_due_dates()
+    date = ""
+    if custom_date:
+        date = custom_date
+        print(f"Custom date used: {custom_date}")
 
-    print(date)
-    
+    else:
+        due_date = request.form.get('dueDate')
+        if due_date:
+            date = due_date_value[due_date]["date"]
+            print(f"Predefined date used: {date}")
+        else:
+            print(f"Invalid date selected: {due_date}")
+
+
     due_time = request.form.get('dueTime')
     task_description = request.form.get('notes')
     contact_id = request.form.get('contact_num')
