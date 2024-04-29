@@ -2,10 +2,42 @@
 
     display: flex;
     justify-content: center;
+   
+   
+    width: 80%;
+    margin: auto;
+    height: 50px;
+    background-color: white;
 }
 
+.marketing-pagination{
+    margin-top: 20px;
+}
 .marketing-pagination li{
     display: inline;
     text-decoration: none;
     margin: 5px;
+   
+   
+}
+
+
+
+.marketing-pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.marketing-pagination li a:hover,
+.marketing-pagination li.active a {
+    background-color: #03989e;
+    color: white;
+}
+
+.marketing-pagination li.disabled span {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #ccc;
 }
