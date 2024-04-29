@@ -111,4 +111,11 @@ function closeUserModal() {
 
 
 
+function show_TourButton() {
+  document.getElementById('tourForm').style.display = 'block';
 
+}
+
+function closeTourModal() {
+  document.getElementById('tourForm').style.display = 'None';
+}

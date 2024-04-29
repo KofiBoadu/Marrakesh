@@ -1,0 +1,36 @@
+.tours-pagination-controls {
+    width: 80%;
+    
+    box-shadow: 0px -10px 15px -5px rgba(181, 181, 181, 0.5);
+}
+
+
+.tours-pagination {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    padding-top: 1%;
+}
+
+.tours-pagination li {
+    margin: 0 5px;
+}
+
+.tours-pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.tours-pagination li a:hover,
+.tours-pagination li.active a {
+    background-color: #03989e;
+    color: white;
+}
+
+.tours-pagination li.disabled span {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #ccc;
+}

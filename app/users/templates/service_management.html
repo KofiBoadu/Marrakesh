@@ -2,8 +2,6 @@
 {% include "settings_base.html" %}
 
 
-<div class="tour" id="tourForm" style="display: block;">
-
 
 
 
@@ -15,10 +13,12 @@
 
 
 
-<div class="tour" id="tourForm">
+<div class="tour" id="tourForm" style="display: none;">
 
     <div class="tour_header">
-        <h1 class="tour_header--title">Add New Tour</h1>
+        <h2 class="tour_header--title">Add New Tour</h2>
+        <img class="tour_header--close" id="exit" width="24" height="24" onclick="closeTourModal()" src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+
     </div>
 
     <form class="tour_form" action="{{ url_for('contacts.add_new_tours') }}" method="post">
@@ -43,9 +43,9 @@
             <label>Type of Tour</label>
             <div class="tour_wrap--type">
                 <input  class="radio" type="radio" name="tour_type" value="private">
-                <label for="male">Private</label>
+                <label id="tour_type" for="male">Private</label>
                 <input class="radio" type="radio"  name="tour_type" value="group">
-                <label for="female">Group</label>
+                <label id="tour_type" for="female">Group</label>
             </div>
 
         </div>
@@ -71,13 +71,20 @@
 
 
 
-        <div id="tours-header">
-			<h3 id="tours_table-title">Tours</h3>
-			<h5>{{ total_tours}} total tour packages</h5>
-
-		</div>
+       
 <!-- available tours table -->
     <div class="tours_table_container">
+        <div id="tours-header">
+            <div id="tours-header-container">
+                <h3 id="tours_table-title">Tours</h3>
+                <h5>{{ total_tours}} total tour packages</h5>
+            </div>
+			
+            <div class="create-user-button" onclick="show_TourButton()">
+                <button id="add_tour_button" type="button" class="user-action-button">Add New Tour</button>
+            </div>
+    
+		</div>
         <table class="tours_table">
               <thead>
                   <th><input type="checkbox"></th>

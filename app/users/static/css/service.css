@@ -1,17 +1,3 @@
-.tour {
-	margin-top: 1%;
-	margin-left: 320px;
-}
-
-.tour_header--title {
-	font-family: "Lexend Deca", sans-serif;
-	margin-right: 50px;
-	border-bottom: 2px solid rgb(238, 234, 234);
-	width: 100%;
-	padding-bottom: 20px;
-	font-weight: 400;
-	color: #959494;
-}
 
 .tour_header--close {
 	margin-top: 2%;
@@ -24,31 +10,15 @@
 	justify-content: center;
 	flex-direction: column;
 }
+
 .tour_wrap {
 	margin: 1%;
 	display: flex;
 	flex-direction: column;
-	WIDTH: 60%;
-}
-.tour_wrap input {
-	padding: 9px 10px;
-    border-radius: 3px;
-    border: 1px solid rgb(3, 152, 158);
-    font-size: 16px;
-    transition: all .15s ease-out;
-    background-color: #f3f7fa;
-    color: rgb(3, 152, 158);
-    display: block;
-    height: 40px;
-    line-height: 22px;
-    text-align: left;
-    width: 50%;
+	WIDTH: 90%;
 }
 
-.tour_wrap label {
-	font-family: "Lexend Deca", sans-serif;
-	MARGIN-BOTTOM: 20PX;
-}
+
 
 .tour_wrap--type {
 	display: flex;
@@ -57,6 +27,7 @@
 	align-items: center;
 	gap: 5%;
 }
+
 .tour_submit {
 	margin-top: 2%;
 	padding: 10px;
@@ -75,6 +46,112 @@
 
 #tour_destination {
 	padding: 9px 10px;
+	border-radius: 3px;
+	border: 1px solid rgb(3, 152, 158);
+	font-size: 16px;
+	transition: all .15s ease-out;
+	background-color: #f3f7fa;
+	color: rgb(3, 152, 158);
+	display: block;
+	height: 40px;
+	line-height: 22px;
+	text-align: left;
+	width: 90%;
+}
+
+
+
+
+
+
+
+#tours-header {
+
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 2px solid rgb(238, 234, 234);
+	width: 80%;
+	margin-top: 5%;
+
+}
+
+
+
+#tours-header-container h3 {
+
+	font-weight: 400;
+	font-size: 2em;
+	color: #959494;
+
+}
+
+.tours_table_container {
+	margin-top: 1%;
+	margin-left: 320px;
+	width: 80%;
+}
+.tours_table{
+	width: 80%;
+	border-collapse: collapse;
+	margin-top: 2%;
+}
+.tours_table thead {
+	background-color: rgba(151, 194, 195, 0.7176470588);
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 1px;
+}
+
+.tours_table tr td {
+	margin: 0;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	border: 1px solid #dddddd;
+	text-align: center;
+}
+
+.tours_table tr:nth-child(even) td {
+	background-color: #f2f2f2;
+	/* Light background color for even rows */
+}
+
+.tours_table tr:nth-child(odd) td {
+	background-color: #ffffff;
+	/* White background color for odd rows */
+}
+
+.tours_table_container {
+	margin-top: 1%;
+	margin-left: 320px;
+	width: 80%;
+}
+#tourForm{
+
+	position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+    z-index: 1000;
+    width: 25%;
+    height: 100%;
+    border-radius: 2px 2px;
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.543);
+}
+
+.tour_wrap h5{
+    width: 100%;
+    margin-left: 5%;
+    margin-top: 20px;
+}
+.tour_wrap label{
+    margin-top: 20px;
+    margin-left: 5%;
+    color: #959494;
+}
+
+.tour_wrap  input{
+    padding: 9px 10px;
     border-radius: 3px;
     border: 1px solid rgb(3, 152, 158);
     font-size: 16px;
@@ -85,16 +162,58 @@
     height: 40px;
     line-height: 22px;
     text-align: left;
-    width: 50%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+    
 }
-
-
-.tour_wrap--type label {
-	margin-bottom: 0%;
+.tour_wrap select{
+    padding: 9px 10px;
+    border-radius: 3px;
+    border: 1px solid rgb(3, 152, 158);
+    font-size: 16px;
+    transition: all .15s ease-out;
+    background-color: #f3f7fa;
+    color: rgb(3, 152, 158);
+    display: block;
+    height: 40px;
+    line-height: 22px;
+    text-align: left;
+    margin-left: 5%;
+    margin-bottom: 30px;
 	
 }
+.tour_wrap button{
+    margin-top: 11.875%;
+    padding: 10px;
+    background-color: #FF914C;
+    width: 150px;
+    height: 50px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Lexend Deca", sans-serif;
+    margin-left: 30%;
+    margin-bottom: 5%;
+}
 
+.tour_header{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    background: rgb(3, 152, 158);
+    padding: 4%;
+    background: linear-gradient(90deg, rgb(3, 152, 158) 32%, rgb(191, 232, 233) 100%);
+}
 
+.tour_header--title {
+    color:#fff;
+}
+.user-form-wrap{
+    margin-bottom: 40px;
+}
 
-
-
+.tour_wrap  input[type='radio']{
+    width: 11.875%;
+    margin-top: 4%;
+}
