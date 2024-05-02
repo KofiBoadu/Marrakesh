@@ -8,43 +8,6 @@
 
 
 
-<div class="task-form-container">
-  <form action="{{ url_for('profiles.creating_new_task') }}" method="post">
-    <input type="hidden" name="contact_num" value="{{ contact_id }}">
-    <div class="form-group">
-      <label for="taskTitle">Enter your task</label>
-      <input type="text" id="taskTitle" name="taskTitle" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="dueDate">Due date</label>
-      <select id="dueDate" name="dueDate"  onchange="toggleCustomDate(this)">
-        {% for date in due_dates_names %}
-          <option value="{{ date }}">{{ date }}</option>
-        {% endfor %}
-        <option value="custom">Custom date</option>
-      </select>
-       <input type="date" id="customDueDate" name="customDueDate" style="display:none;" />
-    </div>
-
-    <div class="form-group">
-      <label for="dueTime">Due time</label>
-      <select id="dueTime" name="dueTime">
-        {% for time in due_time_options %}
-          <option value="{{ time }}">{{ time }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="notes">Notes</label>
-      <textarea id="notes" name="notes"></textarea>
-    </div>
-
-    <button type="submit">Create</button>
-  </form>
-</div>
-
 
 
 
@@ -73,6 +36,11 @@
 
       <p> {{ profile[1] }}</p> <!-- Assuming the second element is the email -->
       <div class="profile-actions">
+        <div class="actions-container"  onclick="openTaskForm()" >
+          <img width="30" height="30"
+          src="{{ url_for('profiles.static', filename='images/icons8-task-50.png') }}" alt="checklist--v1" />
+          <p>Task</p>
+        </div>
         <div class="actions-container" onclick="openNoteForm()">
           <img width="30" height="30"
             src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/FF914C/external-pencil-whatsapp-flatart-icons-outline-flatarticons.png"
@@ -317,6 +285,50 @@
   </div>
 </div>
 
+<div class="task-form-container" style="display: none;">
+  <div class="task-title">
+    <h2>Task</h2>
+    <img onclick="expandNoteForm()" class="down" width="16" height="16"
+      src="https://img.icons8.com/ios/50/FFFFFF/expand-arrow--v1.png" alt="expand-arrow--v1" />
+    <img onclick="closeTaskForm()" class="note-close" id="exit" width="24" height="24"
+      src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+  </div>
+  <form  class="task-form" action="{{ url_for('profiles.creating_new_task') }}" method="post">
+    <input type="hidden" name="contact_num" value="{{ contact_id }}">
+    <div class="task-form-group">
+      
+      <input type="text" id="taskTitle" name="taskTitle" placeholder="Enter your task" required>
+    </div>
+    
+    <div class="task-form-group">
+      <label for="dueDate">Due date</label>
+      <select id="dueDate" name="dueDate"  onchange="toggleCustomDate(this)">
+        {% for date in due_dates_names %}
+          <option value="{{ date }}">{{ date }}</option>
+        {% endfor %}
+        <option value="custom">Custom date</option>
+      </select>
+       <input type="date" id="customDueDate" name="customDueDate" style="display:none;" />
+    </div>
+
+    <div class="task-form-group">
+      <label for="dueTime">Due time</label>
+      <select id="dueTime" name="dueTime">
+        {% for time in due_time_options %}
+          <option value="{{ time }}">{{ time }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="task-form-group">
+      
+      <textarea class="tasknotes" placeholder="Notes.." name="notes"></textarea>
+    </div>
+
+    <button class="task-button" type="submit">Create</button>
+  </form>
+</div>
+
 
 
 
@@ -334,7 +346,7 @@
 
     <input type="hidden" name="contact_id" value="{{ contact_id }}">
 
-    <textarea id="notes" name="notes" placeholder="Write your notes here" required></textarea>
+    <textarea id="notes" name="notes" placeholder="Write your notes here..." required></textarea>
 
     <button type="submit" class="send-note-button">save note </button>
   </form>

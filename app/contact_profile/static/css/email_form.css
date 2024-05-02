@@ -15,8 +15,8 @@ html, body {
     border-radius: 10px;
     overflow: hidden;
     position: ABSOLUTE;
-      left: 78%;
-      TOP: 50%;
+      left: 50%;
+      TOP: 55%;
     transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
   }
   .email-title{
@@ -103,6 +103,11 @@ html, body {
     border-bottom: #e1e1e1 1px solid;
     padding: 10px;
   }
+  #notes::placeholder{
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1.5em;
+    font-weight: 200;
+  }
   .note-form-container{
     width:550px;
     background-color: #f9f9f9;
@@ -116,8 +121,8 @@ html, body {
     border-radius: 10px;
     overflow: hidden;
     position: ABSOLUTE;
-    left: 78%;
-    TOP: 60%;
+    left: 50%;
+    TOP: 70%;
     transform: translate(-50%, -50%); /* Shift it back by its own dimensions */
     height: 470px;
   }

@@ -259,7 +259,7 @@ body {
     margin-bottom: 20px;
     color: #03989E;
     border: 1px solid rgb(180, 180, 180);
-   
+
 
 }
 
@@ -303,7 +303,8 @@ body {
 
 
 .tour-container:hover .update-btn {
-  display: block !important; /* Temporarily use !important to test */
+    display: block !important;
+    /* Temporarily use !important to test */
 }
 
 
@@ -649,6 +650,7 @@ button:active {
     border-color: transparent #FFF transparent transparent;
 
 }
+
 .update_customer_state {
     display: flex;
     flex-direction: column;
@@ -657,12 +659,13 @@ button:active {
 
 }
 
-.update_customer_state  select {
+.update_customer_state select {
     height: 2em;
     border: #03989E 1px solid;
     margin-top: 5px;
 
 }
+
 .update_customer_state label {
     font-weight: 200;
     color: #c3c3c3;
@@ -698,6 +701,7 @@ button:active {
     border-color: transparent #FFF transparent transparent;
 
 }
+
 .update-status {
     display: flex;
     flex-direction: column;
@@ -706,12 +710,13 @@ button:active {
 
 }
 
-.update-status  select {
+.update-status select {
     height: 2em;
     border: #03989E 1px solid;
     margin-top: 5px;
 
 }
+
 .update-status label {
     font-weight: 200;
     color: #c3c3c3;
@@ -726,9 +731,9 @@ button:active {
 
 
 /* book a tour form */
-.bookTourButton{
-    background-color:transparent;
-    color:#FF914C;
+.bookTourButton {
+    background-color: transparent;
+    color: #FF914C;
     padding: 15px 20px;
     border: none;
     border-radius: 4px;
@@ -738,10 +743,12 @@ button:active {
     justify-content: center;
     margin: auto;
 }
-.bookTourButton p{
-   font-weight: 400;
+
+.bookTourButton p {
+    font-weight: 400;
 }
-#bookingTour{
+
+#bookingTour {
     position: fixed;
     top: 50%;
     right: 0;
@@ -774,6 +781,7 @@ button:active {
     border: 1px solid rgb(180, 180, 180);
 
 }
+
 .save-bookings {
     display: flex;
     gap: 20px;
@@ -805,6 +813,7 @@ button:active {
     margin-left: 20px;
 
 }
+
 .create-tour-bookings {
     margin: auto;
     margin-top: 20px;
@@ -812,11 +821,13 @@ button:active {
     display: flex;
     flex-direction: column;
 }
-.tour-bookings{
+
+.tour-bookings {
     margin-top: 20px;
     margin-left: 40px;
     margin-bottom: 100%;
 }
+
 .tour-bookings label {
     font-size: 16px;
     margin-top: 20px;
@@ -833,9 +844,10 @@ button:active {
     margin-bottom: 20px;
     color: #03989E;
     border: 1px solid rgb(180, 180, 180);
-   
+
 
 }
+
 /*spinning styling */
 
 #loadingOverlay {
@@ -844,16 +856,20 @@ button:active {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-    z-index: 1000; /* High z-index to cover the content */
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black background */
+    z-index: 1000;
+    /* High z-index to cover the content */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .loader {
-    border: 5px solid #f3f3f3; /* Light grey border */
-    border-top: 5px solid #3498db; /* Blue border for the top side */
+    border: 5px solid #f3f3f3;
+    /* Light grey border */
+    border-top: 5px solid #3498db;
+    /* Blue border for the top side */
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -861,8 +877,13 @@ button:active {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #genderformContainer {
@@ -889,6 +910,7 @@ button:active {
     border-color: transparent #FFF transparent transparent;
 
 }
+
 .update_gender {
     display: flex;
     flex-direction: column;
@@ -915,7 +937,7 @@ button:active {
 
 }
 
-.update_gender  select {
+.update_gender select {
     height: 2em;
     border: #03989E 1px solid;
     margin-top: 5px;
@@ -927,25 +949,134 @@ button:active {
 .back-to-contacts-page {
     display: flex;
     align-items: center;
-  }
+}
 
-  .back-to-contacts-page a {
+.back-to-contacts-page a {
     text-decoration: none;
-    color: #000; /* Adjust the color as necessary */
-    transition: text-decoration 0.3s ease; /* Smooth transition for the underline */
-  }
+    color:#FF914C;
+    font-weight: 400;
+    /* Adjust the color as necessary */
+    transition: text-decoration 0.3s ease;
+    /* Smooth transition for the underline */
+}
 
-  .back-to-contacts-page a {
+.back-to-contacts-page a {
     text-decoration: none;
-  }
+}
 
-  .back-to-contacts-page a:hover {
-    text-decoration: underline; /* Adds an underline on hover */
-  }
+.back-to-contacts-page a:hover {
+    text-decoration: underline;
+    /* Adds an underline on hover */
+}
 
 
-  .back-to-contacts-page a::before {
-    content: '<  '; /* This is the back arrow */
+.back-to-contacts-page a::before {
+    content: '<  ';
+    /* This is the back arrow */
     display: inline-block;
     margin-right: 4px;
-  }
+}
+
+
+.task-form-container {
+
+    width: 550px;
+
+    background-color: #ffffff;
+    
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    position: ABSOLUTE;
+    left: 50%;
+    TOP: 60%;
+    transform: translate(-50%, -50%);
+    
+
+}
+
+
+
+.task-form-group {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+    margin-top: 5%;
+}
+
+#taskTitle {
+    height: 40px;
+    border-style: none;
+    border-bottom: 1px solid #03989E;
+    font: 1em Helvetica;
+    color: #FF914C;
+}
+#taskTitle:focus {
+    outline: none; /* Remove the default outline */
+    box-shadow: none; /* Remove any box shadow */
+}
+#taskTitle::placeholder {
+
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1.2em;
+    font-weight: 200;
+
+}
+.tasknotes::placeholder {
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1.5em;
+    font-weight: 200;
+}
+.tasknotes {
+    width: 95%;
+    height: 200px;
+    border-style: none;
+    resize: none;
+    border-bottom: #e1e1e1 1px solid;
+    padding: 10px;
+}
+
+.task-button {
+    background-color: #FF914C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 40px;
+    margin-bottom: 40px;
+    margin-top: 5%;
+}
+
+.task-form-group select{
+    height: 40px;
+    border-style: none;
+    border-bottom: 1px solid #03989E;
+    font: 1em Helvetica;
+    color: #FF914C;
+}
+.task-form-group label{
+        
+        margin-bottom: 5px;
+        font-weight: 600;
+        margin-top: 10px;
+        color: #646464;
+   
+}
+textarea:focus {
+    outline: none; /* Remove the default outline */
+    box-shadow: none; /* Remove any box shadow */
+}
+.task-form-group select:focus {
+    outline: none; /* Remove the default outline */
+    box-shadow: none; /* Remove any box shadow */
+}
+.task-title{
+    background: linear-gradient(90deg, rgba(3, 152, 158, 1) 32%, rgb(175, 213, 214) 100%);
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    color: #fff;
+    border-radius: 10px 10px 0px 0px;
+}

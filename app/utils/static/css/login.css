@@ -1,4 +1,4 @@
-body,
+
 html {
   height: 100%;
   margin: 0;
@@ -6,12 +6,16 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+ 
 
+}
+/* body{
+  background-size: 50% 100% !important;
+
+  background-repeat:no-repeat !important;
+  background-attachment: fixed !important;
+  background:url("../images/background.png");
+}  */
 
 .login-container h1{
   text-align: center;

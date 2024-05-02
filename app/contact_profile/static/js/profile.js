@@ -33,7 +33,16 @@ function expandNoteForm(){
     emailBody.style.display = 'block';
   }
 }
+//task
 
+function openTaskForm() {
+  // Show the email form when the button is clicked
+  document.querySelector('.task-form-container').style.display = 'block';
+}
+
+function closeTaskForm() {
+  document.querySelector('.task-form-container').style.display = 'none';
+}
 function toggleEmailBody(header) {
   // Find the closest email container
   var emailContainer = header.closest('.email-activity-container');
