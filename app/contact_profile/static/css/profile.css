@@ -13,7 +13,7 @@ body {
 
 .customer-dashboard {
     display: flex;
-
+ height: 100vh;
 }
 
 /* Apply styles to the .profile-container */
