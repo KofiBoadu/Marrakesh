@@ -191,6 +191,30 @@ def get_all_upcoming_travel_packages():
             database_connection.close()
 
 
+def get_all_tour_names():
+    query = """
+        SELECT CONCAT(tour_name, ' ', YEAR(t.start_date))
+        FROM tours t
+        ORDER BY YEAR(t.start_date) DESC;"""
+    database_connection = None
+    cursor = None
+
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query)
+        date_tuples = cursor.fetchall()
+        dates = [date[0] for date in date_tuples]
+        return dates
+    except Exception as e:
+        logging.error(f"Error in getting all tour names: {e}")
+        return []
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
 
 
 def book_a_tour_for_a_contact(tour_id, contact_id):

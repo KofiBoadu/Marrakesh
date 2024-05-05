@@ -13,6 +13,79 @@
 
 
 
+<!--filtering form-->
+<form id="filtering-form" method="POST" action="{{ url_for('contacts.home_page') }}">
+
+    <select name="status">
+        <option value="">Contact Status</option>
+        <option value="customer">Customer</option>
+        <option value="Lead">Lead</option>
+        <!-- Add other statuses as needed -->
+    </select>
+    <select name="gender">
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+    <select name="state">
+        <option value="">Select State</option>
+        <!-- Dynamically populate states -->
+        {% for state in states %}
+            <option value="{{ state }}">{{ state }}</option>
+        {% endfor %}
+    </select>
+    <select name="tour_name">
+        <option value="">Select a tour package </option>
+        <!-- Dynamically populate states -->
+        {% for tour in  all_tours %}
+            <option value="{{ tour }}">{{ tour }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Apply Filters</button>
+</form>
+
+
+<!-- Active filters will be dynamically inserted here -->
+<div id="active-filters">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--assigned users form pop up-->
+<div id="user-list-popup" style="display: none;">
+    <ul>
+        <li onclick="selectUser('none')">No owner</li>
+        {% for user in all_users %}
+        <li onclick="selectUser({{ user[0] }})">
+            <strong>{{ user[1] }} {{ user[2] }}</strong><br>
+            <strong>{{ user[3] }}</strong>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!--#save the new assigned contact owner-->
+<!-- Update owner form -->
+<div id="update-owner" style="display:none;">
+    <form id="update-owner-form" action="#" method="post" data-url="{{ url_for('contacts.assigning_contact_owner') }}">
+        <input type="hidden" id="selected-user-id" name="user_id">
+        <input type="hidden" id="selected-contact-id" name="contact_id">
+        <button type="submit">Save</button>
+        <button type="button" onclick="closeForm()">Cancel</button>
+    </form>
+</div>
+
 
 
 
@@ -420,9 +493,10 @@
                 </th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Contact Owner</th>
                 <th>State</th>
                 <th>Phone Number</th>
-                <th>Contact Status</th>
+                <th>Status</th>
 
 
             </tr>

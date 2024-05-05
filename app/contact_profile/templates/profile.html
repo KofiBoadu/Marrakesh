@@ -8,6 +8,47 @@
 
 
 
+<<<<<<< Updated upstream
+=======
+<div class="task-form-container">
+  <form action="{{ url_for('profiles.creating_new_task') }}" method="post">
+    <input type="hidden" name="contact_num" value="{{ contact_id }}">
+    <div class="form-group">
+      <label for="taskTitle">Enter your task</label>
+      <input type="text" id="taskTitle" name="taskTitle" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="dueDate">Due date</label>
+      <select id="dueDate" name="dueDate"  onchange="toggleCustomDate(this)">
+        {% for date in due_dates_names %}
+          <option value="{{ date }}">{{ date }}</option>
+        {% endfor %}
+        <option value="custom">Custom date</option>
+      </select>
+       <input type="date" id="customDueDate"  name="customDueDate" style="display:none;" />
+
+    </div>
+
+    <div class="form-group">
+      <label for="dueTime">Due time</label>
+      <select id="dueTime" name="dueTime">
+        {% for time in due_time_options %}
+          <option value="{{ time }}">{{ time }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea id="notes" name="notes"></textarea>
+    </div>
+
+    <button type="submit">Create</button>
+  </form>
+</div>
+
+>>>>>>> Stashed changes
 
 
 
@@ -133,6 +174,109 @@
     <div class="email-activity-header">
       <h2 class="email-activity-title">ACTIVITY TIMELINE</h2>
     </div>
+
+      <!--    Contact task-->
+          {% for task, time_label in tasks_with_labels %}
+          <div class="task-container">
+              <div class="task-header">
+                  <h3>Task assigned to {{ task[5] }}</h3>
+
+
+                <form id="task-delete-form" action="{{ url_for('profiles.delete_a_task') }}" method="post">
+                  <select class="task-actions" onchange="handleChange(this);">
+                      <option value="" disabled selected>Actions</option>
+                      <option value="delete">Delete Task</option>
+                  </select>
+                  <button type="submit" style="display: none;" id="submit-button">Delete Task</button>
+                  <input type="hidden" value="{{ task[0] }}" name="task_id">
+                  <input type="hidden" value="{{ contact_id }}" name="contact_id">
+                </form>
+
+
+              </div>
+
+              <div class="task-details">
+                  <!-- task title that can be edited-->
+                 <form class="task-title-form" data-action-url="{{ url_for('profiles.add_new_task_title') }}" id="form-{{ task[0] }}">
+                    <label >Title:</label>
+                    <input type="text" id="task-title-text-input"  value="{{ task[1] }}" name="taskTitle">
+                    <input type="hidden" value="{{ task[0] }}" name="task_id">
+                    <div class="task-title-buttons"  style="display: none;">
+                        <button type="submit" name="task-title-saveButton">Save</button>
+                        <button type="button" name="task-title-cancelButton">Cancel</button>
+                    </div>
+                  </form>
+
+
+
+
+                <!--    task due date -->
+                  <form class="task-due-date-form"  action="{{ url_for('profiles.add_new_task_due_date') }}" method="post">
+                      <label >Due Date:</label>
+                      <select id="update-due-date" class="date-input" name="update-dueDate" onchange="toggleUpdateCustomDate(this)">
+                           <option  value="{{ task[2] }}" selected>{{ task[2] }}</option>
+                            {% for date in due_dates_names %}
+                               <option value="{{ date }}">{{ date }}</option>
+                            {% endfor %}
+                             <option value="update-custom-date">Custom date</option>
+                      </select>
+                        <input type="date" id="update-customDueDate"  name="update-customDueDate" style="display:none" />
+                        <input type="hidden" value="{{ task[0] }}" name="task_id">
+                        <input type="hidden" value="{{ contact_id }}" name="update-task-contact_id">
+
+                     <div class="update-due-date-button" style="display:none">
+                       <button type="submit">save</button>
+                     </div>
+
+                  </form>
+
+
+
+
+                  <!-- update task due time -->
+                       <form class="task-due-time-form" action="{{ url_for('profiles.updating_task_new_due_time') }}">
+                          <label>Due Time:</label>
+                          <select id="update-task-due-time" class="due-time" name="update-due-time">
+                              <option value="{{ task[3] }}" selected>{{ time_label }}</option>
+                              {% for time in due_time_options %}
+                              <option value="{{ time }}">{{ time }}</option>
+                              {% endfor %}
+                          </select>
+                          <input type="hidden" value="{{ task[0] }}" name="task_id">
+                        </form>
+
+
+
+
+
+<!--                  updating task description -->
+
+                  <form class="task-description-form" action="{{ url_for('profiles.update_new_task_description') }}">
+                    <label id="hover-label" style="cursor: pointer;">{{ task[4] }}</label>
+                    <div class="description-container" style="display: none;">
+
+                        <textarea id="task-description" rows="4" class="task_description-input" name="task-description">{{ task[4] }}</textarea>
+                        <input type="hidden" value="{{ task[0] }}" name="task_id">
+
+                        <div class="task-description-buttons" style="display: none;">
+                            <button type="submit">Save</button>
+                            <button type="button" onclick="cancelEdit()">Cancel</button>
+                        </div>
+                      </div>
+                  </form>
+
+              </div>
+
+          </div>
+          {% endfor %}
+
+
+      <!--    contact task-->
+
+
+
+
+
     {% for activity in activities %}
     <div
       class="activity-container {{ 'email-activity-container' if not activity.get('is_note', False) and activity.get('subject') != 'Booking Update' and activity.get('type') != 'submission' else 'note-activity-container' }}">

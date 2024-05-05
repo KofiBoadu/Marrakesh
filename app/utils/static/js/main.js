@@ -314,165 +314,252 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-//This optimizes the search function by just updating the table records and not the whole page
 document.addEventListener('DOMContentLoaded', function () {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
-    const homeUrl = searchForm.getAttribute('data-home-url') || '/';
+    const itemsPerPageSelect = document.getElementById('items-per-page');
+    const tableBody = document.getElementById('table-body');
+    const paginationControls = document.querySelector('.pagination-controls');
+    const homeUrl = searchForm.getAttribute('data-home-url') || '/contacts/home';
 
-    // Load any saved search query from storage and set it as the input value
+    // Load any saved search query from local storage
     const savedQuery = localStorage.getItem('searchQuery');
     if (savedQuery) {
         searchInput.value = savedQuery;
     }
 
-    searchInput.addEventListener('input', function () {
-        const query = searchInput.value.trim();
-        localStorage.setItem('searchQuery', query);
+    // Function to perform search and update page content
+    function performSearch(page = 1) {
+        const searchQuery = searchInput.value.trim();
+        const itemsPerPage = itemsPerPageSelect.value;
 
-        if (query.length === 0) {
-            performSearch(); // Redirect user to the home page
-        } else if (query.length >= 3) {
-            performSearch(); // Perform the AJAX search
-        }
-    });
-
-    searchForm.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
-        performSearch();
-    });
-});
-
-function performSearch() {
-    console.log("performSearch called");
-    const homeUrl = searchForm.getAttribute('data-home-url');
-    const searchQuery = document.getElementById('searchInput').value.trim();
-
-    if (searchQuery.length >= 3 || searchQuery.length === 0) {
         fetch(homeUrl, {
             method: 'POST',
-            body: JSON.stringify({ search_query: searchQuery }),
+            body: JSON.stringify({
+                search_query: searchQuery,
+                page: page,
+                items_per_page: itemsPerPage
+            }),
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                updateTable(data);
-            })
-            .catch(error => console.error('Error:', error));
-    }
-}
-
-
-
-
-function updateTable(data) {
-    document.getElementById('table-body').innerHTML = data.html;
-    if (data.total_records !== undefined) {
-        const totalElement = document.getElementById('total');
-        totalElement.textContent = `${parseInt(data.total_records).toLocaleString()} Records`;
-    }
-}
-
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('searchInput');
-    const homeUrl = searchForm.getAttribute('data-home-url') || '/'; // Assuming '/contacts/home' is the correct endpoint
-
-    function fetchAndUpdateContent(page) {
-        const itemsPerPageSelect = document.getElementById('items-per-page'); // Ensure fresh selection
-        const itemsPerPage = itemsPerPageSelect.value;
-        const searchQuery = searchInput ? searchInput.value.trim() : '';
-
-        console.log(`Fetching content for page ${page}, items per page: ${itemsPerPage}, search query: "${searchQuery}"`);
-
-        fetch(`${homeUrl}?page=${page}&items_per_page=${itemsPerPage}&search_query=${encodeURIComponent(searchQuery)}&_=${new Date().getTime()}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
             }
+            return response.json();
         })
-            .then(response => {
-                console.log('Response status:', response.status); // Log the response status
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Received data:', data); // Log the received data
-                const tableBody = document.getElementById('table-body');
-                const paginationControls = document.querySelector('.pagination-controls');
-                if (tableBody && paginationControls) {
-                    tableBody.innerHTML = data.table_body_html;
-                    paginationControls.innerHTML = data.pagination_html;
-
-                    attachEventListenersToPaginationLinks();
-                    reinitializeItemsPerPageListener(); // Reinitialize event listener for the "items per page" dropdown
-
-                    updateItemsPerPageSelection(itemsPerPage); // Update the dropdown to reflect the current selection
-                } else {
-                    console.error('Could not find table body or pagination controls elements.');
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
+        .then(data => {
+            updatePageContent(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load data: ' + error.message);
+        });
     }
 
+    // Function to update the table and pagination controls
+    function updatePageContent(data) {
+        tableBody.innerHTML = data.html; // Make sure the key matches with what's sent from server
+        paginationControls.innerHTML = data.pagination_html;// Match the key
+        document.getElementById('total').textContent = `${data.total_records.toLocaleString()} Records`;
+        attachEventListenersToPaginationLinks();
+    }
+
+    // Function to attach event listeners to pagination links
     function attachEventListenersToPaginationLinks() {
         document.querySelectorAll('.pagination-controls .pagination a').forEach(link => {
-            link.removeEventListener('click', paginationLinkClicked); // Remove existing event listener to prevent duplicates
+            link.removeEventListener('click', paginationLinkClicked);
             link.addEventListener('click', paginationLinkClicked);
         });
     }
 
+    // Function to handle pagination link clicks
     function paginationLinkClicked(event) {
         event.preventDefault();
         const page = new URL(this.href).searchParams.get('page');
-        console.log(`Pagination link clicked, navigating to page: ${page}`);
-        fetchAndUpdateContent(page);
+        performSearch(page);
     }
 
-    function reinitializeItemsPerPageListener() {
-        const itemsPerPageSelect = document.getElementById('items-per-page');
-        if (itemsPerPageSelect) {
-            itemsPerPageSelect.removeEventListener('change', handleItemsPerPageChange); // Prevent duplicating listeners
-            itemsPerPageSelect.addEventListener('change', handleItemsPerPageChange);
+    // Event listeners
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim();
+        localStorage.setItem('searchQuery', query);
+        if (query.length === 0 || query.length >= 3) {
+            performSearch();
         }
-    }
+    });
 
-    function handleItemsPerPageChange() {
-        console.log('Items per page changed to:', this.value);
-        fetchAndUpdateContent(1); // Always revert back to the first page after a change in 'items per page'
-    }
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        performSearch();
+    });
 
-    function updateItemsPerPageSelection(selectedValue) {
-        const itemsPerPageSelect = document.getElementById('items-per-page');
-        if (itemsPerPageSelect) {
-            itemsPerPageSelect.value = selectedValue;
-        }
-    }
+    itemsPerPageSelect.addEventListener('change', function () {
+        performSearch(1); // Reset to first page when changing items per page
+    });
 
-    attachEventListenersToPaginationLinks(); // Initial call to attach event listeners to pagination links
-    reinitializeItemsPerPageListener(); // Initial call to attach event listener to the "items per page" dropdown
+    // Initial call to attach event listeners to existing pagination links
+    attachEventListenersToPaginationLinks();
 });
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const filterForm = document.getElementById('filtering-form');
+    const activeFiltersContainer = document.getElementById('active-filters');
+
+    filterForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(filterForm);
+        updateActiveFilters(formData);
+        performFilterRequest(formData);
+    });
+
+    function updateActiveFilters(formData) {
+        activeFiltersContainer.innerHTML = ''; // Clear current filters display
+        formData.forEach((value, key) => {
+            if (value) {
+                const filterTag = document.createElement('div');
+                filterTag.textContent = `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`;
+                const closeButton = document.createElement('button');
+                closeButton.textContent = '×';
+                closeButton.onclick = function() {
+                    removeFilter(key);
+                };
+                filterTag.appendChild(closeButton);
+                activeFiltersContainer.appendChild(filterTag);
+            }
+        });
+    }
+
+    function removeFilter(key) {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+            input.value = ''; // Reset the filter
+            filterForm.submit(); // Re-submit the form to update filters
+        }
+    }
+
+    function performFilterRequest(formData) {
+        const filterData = {};
+        formData.forEach((value, key) => {
+            if (value) filterData[key] = value;
+        });
+
+        fetch(filterForm.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(filterData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the table body with filtered data
+            document.getElementById('table-body').innerHTML = data.html;
+            document.getElementById('total').textContent = `${data.total_records} Records`;
+            // Update pagination controls if needed
+            if (data.pagination_html) {
+                document.querySelector('.pagination-controls').innerHTML = data.pagination_html;
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//UPDATE CONTACT OWNER FUNCTIONS in the rows
+function showUserList(contactId) {
+    document.getElementById('selected-contact-id').value = contactId;
+    document.getElementById('user-list-popup').style.display = 'block';
+}
+
+function selectUser(userId) {
+    document.getElementById('selected-user-id').value = userId;
+    document.getElementById('update-owner').style.display = 'block';
+    document.getElementById('user-list-popup').style.display = 'none';
+}
+
+function closeForm() {
+    document.getElementById('update-owner').style.display = 'none';
+}
+
+
+//Function to handle form submission using Fetch API
+function submitForm(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const form = document.getElementById('update-owner-form');
+    const url = form.getAttribute('data-url'); // Get the URL from data attribute
+    const userId = document.getElementById('selected-user-id').value;
+    const contactId = document.getElementById('selected-contact-id').value;
+
+    const data = new FormData();
+    data.append('user_id', userId);
+    data.append('contact_id', contactId);
+
+    fetch(url, {
+        method: 'POST',
+        body: data
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.owner) {
+            // Update the owner cell directly
+            document.getElementById('contact-owner-' + contactId).textContent = data.owner;
+            closeForm(); // Close the form
+        } else {
+            alert('Failed to update contact owner: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update contact owner.');
+    });
+}
+
+// Add event listener to the form
+document.getElementById('update-owner-form').addEventListener('submit', submitForm);

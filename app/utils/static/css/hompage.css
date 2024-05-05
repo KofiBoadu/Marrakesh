@@ -754,3 +754,19 @@ button#cancel:hover {
 #import_button {
   margin-right: 100px;
 }/*# sourceMappingURL=hompage.css.map */
+
+
+#active-filters div {
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+#active-filters button {
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}

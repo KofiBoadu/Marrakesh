@@ -459,6 +459,7 @@ function deleteNote(notesId, customerId) {
 //  custom dates display
  function toggleCustomDate(select) {
     var customDateInput = document.getElementById('customDueDate');
+
     // Check if the "Custom date..." option is selected
     if (select.value === 'custom') {
         customDateInput.style.display = 'block';  // Show the custom date input
@@ -466,5 +467,29 @@ function deleteNote(notesId, customerId) {
         customDateInput.style.display = 'none';  // Hide the custom date input
     }
 }
+
+//update custom dates
+//function  toggleUpdateCustomDate(select){
+//
+//   var customDateInput = document.getElementById('update-customDueDate');
+//    // Check if the "Custom date..." option is selected
+//    if (select.value === 'update-custom-date') {
+//        customDateInput.style.display = 'block';  // Show the custom date input
+//    } else {
+//        customDateInput.style.display = 'none';  // Hide the custom date input
+//    }
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
 
 

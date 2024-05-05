@@ -164,22 +164,27 @@ def check_contact_exists(email):
 
 
 
-def get_total_num_of_contacts():
-    """
-        Counts the total number of contacts in the database.
 
-        Returns:
-        - The total number of contacts as an integer, or raises an Exception on error.
+def get_total_num_of_contacts(search_query=''):
+    """
+    Counts the number of contacts in the database filtered by a search query if provided.
     """
     cursor = None
     database_connection = None
-    query = "SELECT COUNT(*) FROM contacts"
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query)
+        if search_query:
+            query = """
+            SELECT COUNT(*) FROM contacts
+            WHERE LOWER(CONCAT(first_name, ' ', last_name, ' ', email_address, ' ', phone_number)) LIKE LOWER(%s)
+            """
+            cursor.execute(query, [f'%{search_query}%'])
+        else:
+            query = "SELECT COUNT(*) FROM contacts"
+            cursor.execute(query)
         result = cursor.fetchone()
-        return result[0]
+        return result[0] if result else 0
     except Exception as e:
         raise Exception(f"An error occurred while counting: {e}")
     finally:
@@ -189,6 +194,46 @@ def get_total_num_of_contacts():
             database_connection.close()
 
 
+
+
+def get_filtered_contacts_count(status=None, gender=None, state=None, tour_name=None):
+    """ Counts filtered contacts based on provided criteria. """
+    query_parts = []
+    params = []
+
+    if status:
+        query_parts.append("lead_status = %s")  # Ensure this matches the column name in the database.
+        params.append(status)
+    if gender:
+        query_parts.append("gender = %s")
+        params.append(gender)
+    if state:
+        query_parts.append("state_address = %s")  # Ensure this matches your stored procedure and actual column names.
+        params.append(state)
+    if tour_name:
+        query_parts.append("tour_name LIKE %s")  # Using LIKE for partial matches.
+        params.append(f"%{tour_name}%")
+
+    query = "SELECT COUNT(*) FROM contacts"
+    if query_parts:
+        query += " WHERE " + " AND ".join(query_parts)
+
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, tuple(params))
+        result = cursor.fetchone()
+        return result[0] if result else 0
+    except Exception as e:
+        print("An error occurred:", e)
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
 
@@ -239,49 +284,50 @@ def create_get_customer_tour_details_procedure():
         Returns:
         - True if the procedure is successfully created, raises an Exception otherwise.
     """
-    procedure_query = """
+    procedure_query= """
         CREATE PROCEDURE GetCustomerTourDetails(
-IN search_query VARCHAR(255),
-IN items_per_page INT,
-IN offset INT)
-BEGIN
-    IF search_query IS NULL OR search_query = '' THEN
-        -- Query modified to return all contacts without booking details,
-        -- ordering by contact_id in descending order to show recent contacts first
-        SELECT DISTINCT
-            c.contact_id,
-            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-            c.state_address AS `State`,
-            c.email_address AS `Email`,
-            c.phone_number AS `Mobile`,
-            c.lead_status AS  `Lead Status`
-        FROM
-            contacts c
-        ORDER BY
-            c.contact_id DESC
-        LIMIT items_per_page OFFSET offset;
-    ELSE
-        -- Query with enhanced filtering based on search_query
-        SELECT DISTINCT
-            c.contact_id,
-            CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
-            c.state_address AS `State`,
-            c.email_address AS `Email`,
-            c.phone_number AS `Mobile`,
-            c.lead_status AS  `Lead Status`
-        FROM
-            contacts c
-        WHERE
-            c.first_name LIKE CONCAT('%', search_query, '%') OR
-            c.last_name LIKE CONCAT('%', search_query, '%') OR
-            CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%') OR
-            c.phone_number LIKE CONCAT('%', search_query, '%') OR
-            c.email_address LIKE CONCAT('%', search_query, '%')
-        ORDER BY
-            c.contact_id DESC
-        LIMIT items_per_page OFFSET offset;
-    END IF;
-END;
+            IN search_query VARCHAR(255),
+            IN items_per_page INT,
+            IN offset INT)
+        BEGIN
+            IF search_query IS NULL OR search_query = '' THEN
+                SELECT DISTINCT
+                    c.contact_id,
+                    CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+                    c.state_address AS `State`,
+                    c.email_address AS `Email`,
+                    c.phone_number AS `Mobile`,
+                    c.lead_status AS `Lead Status`,
+                    COALESCE(CONCAT(u.first_name, ' ', u.last_name), 'unassigned') AS `Owner_Name`
+                FROM
+                    contacts c
+                LEFT JOIN users u ON c.owner = u.user_id
+                ORDER BY
+                    c.contact_id DESC
+                LIMIT items_per_page OFFSET offset;
+            ELSE
+                SELECT DISTINCT
+                    c.contact_id,
+                    CONCAT(c.first_name, ' ', c.last_name) AS `Full_Name`,
+                    c.state_address AS `State`,
+                    c.email_address AS `Email`,
+                    c.phone_number AS `Mobile`,
+                    c.lead_status AS `Lead Status`,
+                    COALESCE(CONCAT(u.first_name, ' ', u.last_name), 'unassigned') AS `Owner_Name`
+                FROM
+                    contacts c
+                LEFT JOIN users u ON c.owner = u.user_id
+                WHERE
+                    c.first_name LIKE CONCAT('%', search_query, '%') OR
+                    c.last_name LIKE CONCAT('%', search_query, '%') OR
+                    CONCAT(c.first_name, ' ', c.last_name) LIKE CONCAT('%', search_query, '%') OR
+                    c.phone_number LIKE CONCAT('%', search_query, '%') OR
+                    c.email_address LIKE CONCAT('%', search_query, '%')
+                ORDER BY
+                    c.contact_id DESC
+                LIMIT items_per_page OFFSET offset;
+            END IF;
+        END;
 
     """
 
@@ -302,7 +348,6 @@ END;
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
 
 
 
@@ -347,7 +392,7 @@ def get_all_contacts_information(page=1, items_per_page=25, search_query=''):
 
         return contacts
 
-
+# print(get_all_contacts_information())
 
 
 
@@ -395,3 +440,116 @@ def add_new_contact(first_name, last_name, email, phone=None, gender=None, state
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
+
+
+
+def filter_contacts_procedure():
+    procedure_query="""
+                CREATE PROCEDURE GetFilteredContacts(
+                IN p_status VARCHAR(50),
+                IN p_gender VARCHAR(10),
+                IN p_state VARCHAR(50),
+                IN p_tour_name VARCHAR(255),
+                IN items_per_page INT,
+                IN offset INT
+            )
+            BEGIN
+                SET @sql = CONCAT('
+                    SELECT DISTINCT
+                        c.contact_id,
+                        CONCAT(c.first_name, " ", c.last_name) AS `Full_Name`,
+                        c.state_address AS `State`,
+                        c.email_address AS `Email`,
+                        c.phone_number AS `Mobile`,
+                        c.lead_status AS `Lead Status`,
+                        COALESCE(CONCAT(u.first_name, " ", u.last_name), "unassigned") AS `Owner_Name`
+                    FROM
+                        contacts c
+                    LEFT JOIN users u ON c.owner = u.user_id
+                    LEFT JOIN tour_bookings tb ON c.contact_id = tb.contact_id
+                    LEFT JOIN tours t ON tb.tour_id = t.tour_id
+                    WHERE 1=1
+                ');
+            
+                IF p_status IS NOT NULL AND p_status != '' THEN
+                    SET @sql = CONCAT(@sql, ' AND c.lead_status = "', p_status, '"');
+                END IF;
+                IF p_gender IS NOT NULL AND p_gender != '' THEN
+                    SET @sql = CONCAT(@sql, ' AND c.gender = "', p_gender, '"');
+                END IF;
+                IF p_state IS NOT NULL AND p_state != '' THEN
+                    SET @sql = CONCAT(@sql, ' AND c.state_address = "', p_state, '"');
+                END IF;
+                IF p_tour_name IS NOT NULL AND p_tour_name != '' THEN
+                    SET @sql = CONCAT(@sql, ' AND t.tour_name LIKE "%', p_tour_name, '%"');
+                END IF;
+            
+                SET @sql = CONCAT(@sql, ' ORDER BY c.contact_id DESC LIMIT ', items_per_page, ' OFFSET ', offset);
+            
+                PREPARE stmt FROM @sql;
+                EXECUTE stmt;
+                DEALLOCATE PREPARE stmt;
+            END;
+    """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute("DROP PROCEDURE IF EXISTS GetFilteredContacts")
+        cursor.execute(procedure_query)
+        database_connection.commit()
+        return True
+    except Exception as e:
+        raise Exception(f"An error occurred while creating procedure: {e}")
+
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection is not None:
+            database_connection.close()
+
+# print(filter_contacts_procedure())
+
+def get_filtered_information(page=1, items_per_page=25, status=None, gender=None, state=None, tour_name=None):
+    """
+        Fetches contact information from the database with optional pagination and filtering.
+
+        Parameters:
+        - page (int, optional): The current page number for pagination.
+        - items_per_page (int, optional): The number of items per page for pagination.
+        - status (str, optional): Filter by contact status.
+        - gender (str, optional): Filter by gender.
+        - state (str, optional): Filter by state.
+        - tour_name (str, optional): Filter by tour name.
+
+        Returns:
+        - A list of contacts matching the criteria or an empty list if no contacts found. Raises an Exception on error.
+    """
+    offset = (page - 1) * items_per_page
+    database_connection = None
+    contacts = []
+    cursor = None
+
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        # Prepare parameters list for the stored procedure
+        params = [status, gender, state, tour_name, items_per_page, offset]
+        cursor.callproc('GetFilteredContacts', params)
+        for result in cursor.stored_results():
+            contacts.extend(result.fetchall())
+    except Exception as e:
+        raise Exception(f"An error occurred while fetching contact information: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+    return contacts if contacts else []
+
+# print(get_filtered_information(status='customer'))
+# print(get_filtered_contacts_count(status='customer'))

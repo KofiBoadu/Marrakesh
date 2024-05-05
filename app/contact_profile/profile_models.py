@@ -1,8 +1,7 @@
 
 import logging
 from app.utils.database import create_database_connection
-import datetime 
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import groupby
 
 
@@ -899,4 +898,39 @@ def update_tour_bookings(tour_id, contact_id):
 
 
 
+def get_contact_task(contact_id):
+    # Corrected SQL query to properly format the CONCAT function and include a space between first and last name
+    query = """
+    SELECT task.task_id, task.title, task.due_date, task.due_time, task.description, 
+           CONCAT(users.first_name, ' ', users.last_name) AS assigned_user
+    FROM task
+    JOIN users ON users.user_id = task.user_id
+    WHERE task.contact_id = %s
+    """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        # Execute the query with the contact_id as a parameter to filter the tasks
+        cursor.execute(query, (contact_id,))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        print("An error occurred:", e)
+        return []
+    finally:
+        # Ensure resources are freed by closing the cursor and the database connection
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
+
+
+# date=get_contact_task(6457)[0][2]
+# print(date)
+
+
+
+# print(timedelta_to_time_str(timedelta(seconds=9900)))

@@ -183,7 +183,7 @@ def get_all_users():
         if database_connection:
             database_connection.close()
 
-
+# print(get_all_users())
 
 
 

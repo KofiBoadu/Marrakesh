@@ -254,3 +254,5 @@ def tour_services():
 
         return render_template('service_management.html', total_tours= total_tours, total_pages=total_pages, page=page, items_per_page=items_per_page, tour_id=tour_id, tours_scheduled=tours_scheduled, destinations=destinations)
 
+
+

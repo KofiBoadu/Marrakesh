@@ -285,3 +285,37 @@ def all_states():
     return states
 
 
+def update_contact_owner(contact_id, user_id):
+    update_query = "UPDATE contacts SET owner=%s WHERE contact_id=%s"
+    fetch_query = "SELECT first_name, last_name FROM users WHERE user_id=%s"
+    database_connection = None
+    cursor = None
+    try:
+        # Create database connection
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+
+        # Execute the update
+        cursor.execute(update_query, (user_id, contact_id))
+        database_connection.commit()
+
+        # Fetch the new owner's full name
+        if user_id:
+            cursor.execute(fetch_query, (user_id,))
+            result = cursor.fetchone()
+            new_owner_name = f"{result[0]} {result[1]}" if result else 'Unassigned'
+        else:
+            new_owner_name = 'Unassigned'
+
+        return new_owner_name
+    except Exception as e:
+        if database_connection:
+            database_connection.rollback()
+        print("An error occurred:", e)
+        return None
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+

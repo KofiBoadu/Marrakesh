@@ -1,5 +1,5 @@
 from . import email_customers
-from app.utils.main import send_email,contact_email_interactions,delete_contacts_email
+from app.utils.main import send_email,contact_email_interactions,delete_contacts_email,update_contact_owner
 from flask import request, redirect, url_for
 from flask_login import login_required,current_user
 
@@ -14,10 +14,12 @@ def send_customer_email():
     contact_id= request.form.get('contact_id')
     status = "email not sent"
     user= f"{current_user.first_name} {current_user.last_name}"
+    user_id= current_user.id
     email_sent = send_email(subject, [to_email], body)
     if email_sent:
         status = "sent"
-    store_email_details = contact_email_interactions(contact_id, subject, body, status, user)
+        contact_email_interactions(contact_id, subject, body, status, user)
+        update_contact_owner(contact_id,user_id)
 
     return redirect(url_for('profiles.contact_profile', contact_id=contact_id))
 

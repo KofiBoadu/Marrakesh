@@ -1,11 +1,12 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for,jsonify
 from flask_login import login_required, current_user
 from .profile_models import updating_contact_status, update_contact_phone, \
     change_contact_bookings, get_contact_activities, updating_contact_state, \
     bookings_updates_logs, update_contact_email, update_contact_name
-from .profile_models import save_contact_notes, delete_contacts_notes
+from .profile_models import save_contact_notes, delete_contacts_notes,get_contact_task
 from  app.utils.main  import send_email,all_states,format_phone_number
-from app.utils.task_models import generate_due_dates,generate_time_intervals,adding_new_task
+from app.utils.task_models import generate_due_dates,generate_time_intervals,adding_new_task,update_task_title,update_task_due_date,\
+    update_task_due_time,find_matching_interval,update_task_with_new_description,delete_contact_task
 from app.utils.tours import get_all_upcoming_travel_packages,get_travel_package_id,book_a_tour_for_a_contact
 from .profile_models import profile_details, get_customer_bookings, contact_submissions, contact_gender_update
 from . import contacts_profile
@@ -43,7 +44,13 @@ def contact_profile(contact_id):
         due_times= generate_time_intervals()
         due_time_options= [ times['value'] for times in due_times]
 
-    
+        contact_tasks=get_contact_task(contact_id)
+        tasks_with_labels= []
+        for task in contact_tasks:
+            task_time= task[3]
+            matched_interval = find_matching_interval(task_time, due_times)
+            time_label = matched_interval if matched_interval else "No matching interval"
+            tasks_with_labels.append((task, time_label))
         
         form_fields_dict = {}
 
@@ -65,7 +72,7 @@ def contact_profile(contact_id):
         return render_template('profile.html', common_data=common_data, form_fields=form_fields_dict, states=states,
                                activities=activities, available_dates=available_dates, booking_info=booking_info,
                                login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id,
-                               phone_number=phone_number,due_dates_names=due_dates_names,due_time_options=due_time_options)
+                               phone_number=phone_number,due_dates_names=due_dates_names,due_time_options=due_time_options,contact_tasks=contact_tasks, tasks_with_labels= tasks_with_labels)
 
 
 
@@ -289,3 +296,76 @@ def creating_new_task():
         print("No contact ID provided")  # Debug: Identify if no ID is captured
 
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
+
+
+
+@contacts_profile.route('/update_task_title/', methods=['POST'])
+def add_new_task_title():
+    task_new_title= request.form.get('taskTitle')
+    new_task_id= request.form.get('task_id')
+    if new_task_id and task_new_title:
+        success = update_task_title(new_task_id, task_new_title)
+        return jsonify({'success': success}), 200
+    return jsonify({'success': False}), 400
+
+
+@contacts_profile.route('/update_task/due_date',methods=['POST'])
+def add_new_task_due_date():
+    custom_date= request.form.get('update-customDueDate')
+    due_date_value = generate_due_dates()
+    task_id=request.form.get('task_id')
+
+    if custom_date:
+        new_custom_date= custom_date
+        success=update_task_due_date(new_custom_date, task_id)
+        return jsonify({'success': success}), 200
+
+    due_date = request.form.get('update-dueDate')
+    if due_date:
+        print(due_date)
+        selected_date = due_date_value[due_date]["date"]
+        print("selected date",selected_date)
+        if task_id and selected_date:
+            success=update_task_due_date(selected_date,task_id)
+            return jsonify({'success': success}), 200
+
+    return jsonify({'success': False}), 400
+
+
+
+@contacts_profile.route('/update_task_due_time/new_time',methods=['POST'])
+def updating_task_new_due_time():
+    new_due_time= request.form.get("update-due-time")
+    task_id= request.form.get("task_id")
+    print(task_id)
+    due_times= generate_time_intervals()
+    time= ""
+    for times in due_times:
+        if times['value']==new_due_time:
+            time= times['key']
+
+    if new_due_time and task_id:
+        success=update_task_due_time(time, task_id)
+        return jsonify({'success': success}), 200
+
+    return jsonify({'success': False}), 400
+
+
+@contacts_profile.route('/update_task/description',methods=['POST'])
+def update_new_task_description():
+    new_task_description= request.form.get("task-description")
+    task_id= request.form.get("task_id")
+    if new_task_description and task_id:
+        success= update_task_with_new_description(new_task_description,task_id)
+        return jsonify({'success': success}), 200
+    else:
+        return jsonify({'success': False}),  400
+
+
+@contacts_profile.route('/delete/contact/task',methods=['POST'])
+def delete_a_task():
+    task_id= request.form.get("task_id")
+    contact_id= request.form.get("contact_id")
+    if task_id and contact_id:
+        delete_contact_task(task_id)
+        return redirect(url_for("profiles.contact_profile", contact_id=contact_id))

@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
+
 import pytz
-from datetime import datetime, timedelta
 from .database import create_database_connection
 from tzlocal import get_localzone
 from flask_apscheduler import APScheduler
@@ -9,7 +8,8 @@ import os
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from app.users.tour_packages import get_all_tours_scheduled
-
+import datetime
+from datetime import timedelta, datetime
 load_dotenv()
 
 
@@ -54,6 +54,7 @@ def generate_due_dates():
 
 
 def generate_time_intervals():
+    from datetime import datetime
     base_time = datetime.strptime('00:00', '%H:%M')
     intervals = []
     for i in range(96):  # 24 hours * 4 intervals per hour
@@ -64,7 +65,7 @@ def generate_time_intervals():
     return intervals
 
 
-
+# print(generate_time_intervals())
 
 
 
@@ -318,7 +319,143 @@ def schedule_task_reminders():
         print(f"Failed to retrieve due tasks: {e}")
 
 
+def update_task_title(task_id, task_title):
+    """
+    Updates the title of a task in the database.
 
-# print(schedule_task_reminders())
+    Parameters:
+        task_id (int): The unique identifier for the task.
+        task_title (str): The new title for the task.
+
+    Returns:
+        bool: True if the task was successfully updated, False otherwise.
+    """
+    query = "UPDATE task SET title = %s WHERE task_id = %s"
+    database_connection = None
+    cursor = None
+
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (task_title, task_id))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print("An error occurred:", e)
+        database_connection.rollback()
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+def update_task_due_date(new_date,task_id):
+    query= """ UPDATE task SET due_date = %s WHERE task_id = %s """
+    database_connection= None
+    cursor= None
+    try:
+        database_connection= create_database_connection()
+        cursor=database_connection.cursor()
+        cursor.execute(query, (new_date, task_id))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        print("An error occurred:", e)
+        database_connection.rollback()
+        return False
+
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 
 
+def update_task_due_time(new_due_time,task_id):
+    query= """UPDATE task SET due_time=%s WHERE task_id= %s"""
+    database_connection= None
+    cursor= None
+    try:
+        database_connection= create_database_connection()
+        cursor= database_connection.cursor()
+        cursor.execute(query,(new_due_time,task_id))
+        database_connection.commit()
+        return True
+    except Exeception as e :
+        database_connection.rollback()
+        print("An error occurred updating :",e)
+        return False
+    finally:
+        if database_connection:
+            database_connection.close()
+        if cursor:
+            database_connection.close()
+
+def update_task_with_new_description(task_description, task_id):
+    query= """UPDATE task SET description =%s WHERE task_id = %s """
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query,(task_description,task_id))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        database_connection.rollback()
+        print("An error occurred updating the task description",e)
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+def delete_contact_task(task_id):
+    query = "DELETE FROM task WHERE task_id=%s"  # Corrected the column name in the SQL query
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (task_id,))  # Ensure task_id is passed as a tuple
+        database_connection.commit()
+    except Exception as e:  # Corrected the spelling error
+        if database_connection:
+            database_connection.rollback()
+        print("An error occurred:", e)
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+
+def timedelta_to_time_str(timedelta_obj):
+    import datetime
+    from datetime import timedelta
+    total_seconds= timedelta_obj.seconds
+    hours = int(total_seconds // 3600)
+    minutes = int((total_seconds % 3600) // 60)
+    return f"{hours:02}:{minutes:02}"
+
+
+
+def find_matching_interval(timedelta_obj, time_intervals):
+    time_str = timedelta_to_time_str(timedelta_obj)
+    for interval in time_intervals:
+        if interval['key'] == time_str:
+            return interval['value']
+    return None
+
+
+
+
+#
+# tin= generate_time_intervals()
+# obj=datetime.timedelta(seconds=9900)
+# print(find_matching_interval(obj,tin))
