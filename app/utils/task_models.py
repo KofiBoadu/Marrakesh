@@ -359,6 +359,7 @@ def update_task_due_date(new_date,task_id):
         cursor=database_connection.cursor()
         cursor.execute(query, (new_date, task_id))
         database_connection.commit()
+        update_task_status(task_id, "pending")
         return True
     except Exception as e:
         print("An error occurred:", e)
@@ -381,6 +382,7 @@ def update_task_due_time(new_due_time,task_id):
         cursor= database_connection.cursor()
         cursor.execute(query,(new_due_time,task_id))
         database_connection.commit()
+        update_task_status(task_id, "pending")
         return True
     except Exeception as e :
         database_connection.rollback()
@@ -401,6 +403,7 @@ def update_task_with_new_description(task_description, task_id):
         cursor = database_connection.cursor()
         cursor.execute(query,(task_description,task_id))
         database_connection.commit()
+        update_task_status(task_id,"pending")
         return True
     except Exception as e:
         database_connection.rollback()

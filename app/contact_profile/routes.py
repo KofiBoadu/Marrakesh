@@ -336,16 +336,10 @@ def add_new_task_due_date():
 @contacts_profile.route('/update_task_due_time/new_time',methods=['POST'])
 def updating_task_new_due_time():
     new_due_time= request.form.get("update-due-time")
+    print("new due time",new_due_time)
     task_id= request.form.get("task_id")
-    print(task_id)
-    due_times= generate_time_intervals()
-    time= ""
-    for times in due_times:
-        if times['value']==new_due_time:
-            time= times['key']
-
     if new_due_time and task_id:
-        success=update_task_due_time(time, task_id)
+        success=update_task_due_time(new_due_time, task_id)
         return jsonify({'success': success}), 200
 
     return jsonify({'success': False}), 400
