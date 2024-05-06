@@ -176,7 +176,7 @@
     </div>
 
       <!--    Contact task-->
-          {% for task, time_label in tasks_with_labels %}
+          {% for task  in contact_tasks %}
           <div class="task-container">
               <div class="task-header">
                   <h3>Task assigned to {{ task[5] }}</h3>
@@ -214,7 +214,7 @@
                   <form class="task-due-date-form"  action="{{ url_for('profiles.add_new_task_due_date') }}" method="post">
                       <label >Due Date:</label>
                       <select id="update-due-date" class="date-input" name="update-dueDate" onchange="toggleUpdateCustomDate(this)">
-                           <option  value="{{ task[2] }}" selected>{{ task[2] }}</option>
+                           <option  value="{{ task[2] }}" selected>{{ task[2] }} </option>
                             {% for date in due_dates_names %}
                                <option value="{{ date }}">{{ date }}</option>
                             {% endfor %}
@@ -237,7 +237,7 @@
                        <form class="task-due-time-form" action="{{ url_for('profiles.updating_task_new_due_time') }}">
                           <label>Due Time:</label>
                           <select id="update-task-due-time" class="due-time" name="update-due-time">
-                              <option value="{{ task[3] }}" selected>{{ time_label }}</option>
+                              <option value="{{ task[3] }}" selected>{{ task[3] }}</option>
                               {% for time in due_time_options %}
                               <option value="{{ time }}">{{ time }}</option>
                               {% endfor %}

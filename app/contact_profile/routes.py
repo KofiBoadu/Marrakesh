@@ -6,7 +6,7 @@ from .profile_models import updating_contact_status, update_contact_phone, \
 from .profile_models import save_contact_notes, delete_contacts_notes,get_contact_task
 from  app.utils.main  import send_email,all_states,format_phone_number
 from app.utils.task_models import generate_due_dates,generate_time_intervals,adding_new_task,update_task_title,update_task_due_date,\
-    update_task_due_time,find_matching_interval,update_task_with_new_description,delete_contact_task
+    update_task_due_time,find_matching_interval,update_task_with_new_description,delete_contact_task,timedelta_to_time_str
 from app.utils.tours import get_all_upcoming_travel_packages,get_travel_package_id,book_a_tour_for_a_contact
 from .profile_models import profile_details, get_customer_bookings, contact_submissions, contact_gender_update
 from . import contacts_profile
@@ -42,16 +42,26 @@ def contact_profile(contact_id):
         due_dates= generate_due_dates()
         due_dates_names = list(due_dates.keys())
         due_times= generate_time_intervals()
+
         due_time_options= [ times['value'] for times in due_times]
 
+
         contact_tasks=get_contact_task(contact_id)
-        tasks_with_labels= []
+        time_formats = generate_time_intervals()
+        time_intervals = {interval['key']: interval['value'] for interval in time_formats}
+
+        updated_contact_task= []
+
         for task in contact_tasks:
-            task_time= task[3]
-            matched_interval = find_matching_interval(task_time, due_times)
-            time_label = matched_interval if matched_interval else "No matching interval"
-            tasks_with_labels.append((task, time_label))
-        
+            time_24hr_format= timedelta_to_time_str(task[3])
+            task_list= list(task)
+            time_12hr_format= time_intervals.get(time_24hr_format,"not found")
+            task_list[3]=time_12hr_format
+            updated_contact_task.append(task_list)
+
+
+
+
         form_fields_dict = {}
 
         common_data = {}
@@ -71,8 +81,8 @@ def contact_profile(contact_id):
         login_user = current_user.email_address
         return render_template('profile.html', common_data=common_data, form_fields=form_fields_dict, states=states,
                                activities=activities, available_dates=available_dates, booking_info=booking_info,
-                               login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id,
-                               phone_number=phone_number,due_dates_names=due_dates_names,due_time_options=due_time_options,contact_tasks=contact_tasks, tasks_with_labels= tasks_with_labels)
+                               login_user=login_user, profile=profile, tour_list=tour_list, contact_id=contact_id,due_dates=due_dates,
+                               phone_number=phone_number,due_dates_names=due_dates_names,due_time_options=due_time_options,contact_tasks=updated_contact_task)
 
 
 
@@ -285,13 +295,17 @@ def creating_new_task():
 
 
     due_time = request.form.get('dueTime')
+    time_formats= generate_time_intervals()
+    time_intervals={interval['value']: interval['key'] for interval in time_formats}
+    due_time_24= time_intervals.get(due_time)
+
     task_description = request.form.get('notes')
     contact_id = request.form.get('contact_num')
     user_id = current_user.id
 
     if contact_id and user_id:
         print("Contact ID:", contact_id)  # Debug: Check what's captured
-        adding_new_task(task_title, date, due_time, task_description, contact_id,user_id)
+        adding_new_task(task_title, date, due_time_24, task_description, contact_id,user_id)
     else:
         print("No contact ID provided")  # Debug: Identify if no ID is captured
 
@@ -314,21 +328,16 @@ def add_new_task_due_date():
     custom_date= request.form.get('update-customDueDate')
     due_date_value = generate_due_dates()
     task_id=request.form.get('task_id')
-
     if custom_date:
         new_custom_date= custom_date
         success=update_task_due_date(new_custom_date, task_id)
         return jsonify({'success': success}), 200
-
     due_date = request.form.get('update-dueDate')
     if due_date:
-        print(due_date)
         selected_date = due_date_value[due_date]["date"]
-        print("selected date",selected_date)
         if task_id and selected_date:
             success=update_task_due_date(selected_date,task_id)
             return jsonify({'success': success}), 200
-
     return jsonify({'success': False}), 400
 
 
@@ -336,12 +345,13 @@ def add_new_task_due_date():
 @contacts_profile.route('/update_task_due_time/new_time',methods=['POST'])
 def updating_task_new_due_time():
     new_due_time= request.form.get("update-due-time")
-    print("new due time",new_due_time)
     task_id= request.form.get("task_id")
+    time_formats = generate_time_intervals()
+    time_intervals = {interval['value']: interval['key'] for interval in time_formats}
+    new_time_24hrs= time_intervals.get(new_due_time)
     if new_due_time and task_id:
-        success=update_task_due_time(new_due_time, task_id)
+        success=update_task_due_time(new_time_24hrs, task_id)
         return jsonify({'success': success}), 200
-
     return jsonify({'success': False}), 400
 
 
