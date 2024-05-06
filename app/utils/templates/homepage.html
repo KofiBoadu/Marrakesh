@@ -14,41 +14,41 @@
 
 
 <!--filtering form-->
-<form id="filtering-form" method="POST" action="{{ url_for('contacts.home_page') }}">
+<!--<form id="filtering-form" method="POST" action="{{ url_for('contacts.home_page') }}">-->
 
-    <select name="status">
-        <option value="">Contact Status</option>
-        <option value="customer">Customer</option>
-        <option value="Lead">Lead</option>
-        <!-- Add other statuses as needed -->
-    </select>
-    <select name="gender">
-        <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-    </select>
-    <select name="state">
-        <option value="">Select State</option>
-        <!-- Dynamically populate states -->
-        {% for state in states %}
-            <option value="{{ state }}">{{ state }}</option>
-        {% endfor %}
-    </select>
-    <select name="tour_name">
-        <option value="">Select a tour package </option>
-        <!-- Dynamically populate states -->
-        {% for tour in  all_tours %}
-            <option value="{{ tour }}">{{ tour }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Apply Filters</button>
-</form>
+<!--    <select name="status">-->
+<!--        <option value="">Contact Status</option>-->
+<!--        <option value="customer">Customer</option>-->
+<!--        <option value="Lead">Lead</option>-->
+<!--        &lt;!&ndash; Add other statuses as needed &ndash;&gt;-->
+<!--    </select>-->
+<!--    <select name="gender">-->
+<!--        <option value="">Select Gender</option>-->
+<!--        <option value="male">Male</option>-->
+<!--        <option value="female">Female</option>-->
+<!--    </select>-->
+<!--    <select name="state">-->
+<!--        <option value="">Select State</option>-->
+<!--        &lt;!&ndash; Dynamically populate states &ndash;&gt;-->
+<!--        {% for state in states %}-->
+<!--            <option value="{{ state }}">{{ state }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <select name="tour_name">-->
+<!--        <option value="">Select a tour package </option>-->
+<!--        &lt;!&ndash; Dynamically populate states &ndash;&gt;-->
+<!--        {% for tour in  all_tours %}-->
+<!--            <option value="{{ tour }}">{{ tour }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <button type="submit">Apply Filters</button>-->
+<!--</form>-->
 
 
 <!-- Active filters will be dynamically inserted here -->
-<div id="active-filters">
+<!--<div id="active-filters">-->
 
-</div>
+<!--</div>-->
 
 
 
