@@ -41,6 +41,7 @@ def contact_profile(contact_id):
 
         due_dates= generate_due_dates()
         due_dates_names = list(due_dates.keys())
+        print(due_dates_names)
         due_times= generate_time_intervals()
 
         due_time_options= [ times['value'] for times in due_times]
@@ -93,9 +94,9 @@ def contact_profile(contact_id):
 @login_required
 def change_bookings():
     contact_id = request.form.get('updatingbooking_contact_id')
-    print("ID", contact_id)
+
     new_tour_type = request.form.get('updatetour_date')
-    print("new tour type")
+
     checkbox_checked = 'notify-customer' in request.form
     customer_details = profile_details(contact_id)
 
@@ -104,7 +105,7 @@ def change_bookings():
     tour_date = new_tour_type.split()
     tour_year = tour_date.pop()
     tour_name = " ".join(tour_date)
-    print("new tour name",tour_name)
+
 
     old_tour_name = request.form.get("modify_from")
     old_tour_date = old_tour_name.split()
@@ -174,9 +175,9 @@ def customer_email():
 @login_required
 def update_contact_phone_number():
     contact_id = request.form.get('contact_id')
-    print(contact_id)
+
     phone = request.form.get('update_phone')
-    print(phone)
+
     update_contact_phone(contact_id, phone)
     return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
@@ -238,16 +239,16 @@ def new_contact_status():
 def confirm_contact_tour_bookings():
     contact_id = request.form.get('contact_id')
     selected_tour = request.form.get('tour_date')
-    print("selected_tour", selected_tour)
+
     profile = profile_details(contact_id)
     if contact_id and selected_tour:
         tour_date = selected_tour.split()
-        print("tour_date", tour_date)
+
         tour_year = tour_date.pop()
         tour_name = " ".join(tour_date)
-        print("tour_name", tour_name)
+
         tour_id = get_travel_package_id(tour_name, tour_year)
-        print("tour id",tour_id)
+
         book_a_tour_for_a_contact(tour_id, contact_id)
         if profile[4] != "customer":
             new_status = "customer"
@@ -287,6 +288,7 @@ def creating_new_task():
 
     else:
         due_date = request.form.get('dueDate')
+
         if due_date:
             date = due_date_value[due_date]["date"]
             print(f"Predefined date used: {date}")
@@ -327,14 +329,18 @@ def add_new_task_title():
 def add_new_task_due_date():
     custom_date= request.form.get('update-customDueDate')
     due_date_value = generate_due_dates()
+    print("due_date_value",due_date_value)
     task_id=request.form.get('task_id')
+    due_date = request.form.get('update-dueDate')
+    print("due_date", due_date)
     if custom_date:
         new_custom_date= custom_date
         success=update_task_due_date(new_custom_date, task_id)
         return jsonify({'success': success}), 200
-    due_date = request.form.get('update-dueDate')
+
     if due_date:
         selected_date = due_date_value[due_date]["date"]
+        print("selected_date", selected_date)
         if task_id and selected_date:
             success=update_task_due_date(selected_date,task_id)
             return jsonify({'success': success}), 200

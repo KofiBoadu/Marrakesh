@@ -61,22 +61,70 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //update due date the task form
+//document.addEventListener('DOMContentLoaded', function() {
+//    const form = document.querySelector('.task-due-date-form');
+//    const select = document.getElementById('update-due-date');
+//    const customDateInput = document.getElementById('update-customDueDate');
+//
+//    window.toggleUpdateCustomDate = function toggleUpdateCustomDate(select) {
+//        if (select.value === 'update-custom-date') {
+//            customDateInput.style.display = 'block';
+//            customDateInput.focus();  // Optionally focus the input to prompt the user
+//        } else {
+//            customDateInput.style.display = 'none';
+//            if (select.value) {
+//                submitForm();  // Programmatically submit form when a predefined date is selected
+//            }
+//        }
+//    }
+//
+//    customDateInput.addEventListener('change', function() {
+//        if (this.value) {
+//            submitForm();  // Programmatically submit form when a custom date is entered
+//        }
+//    });
+//
+//    function submitForm() {
+//        const formData = new FormData(form);
+//        fetch(form.action, {
+//            method: 'POST',
+//            body: formData
+//        }).then(response => response.json())
+//          .then(data => {
+//              console.log('Success:', data);
+//              // Handle success here, e.g., showing a success message
+//          })
+//          .catch((error) => {
+//              console.error('Error:', error);
+//              // Handle errors here, e.g., showing an error message
+//          });
+//    }
+//
+//    // Initial check to handle pre-selected values when the page loads
+//    toggleUpdateCustomDate(select);
+//});
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.task-due-date-form');
     const select = document.getElementById('update-due-date');
     const customDateInput = document.getElementById('update-customDueDate');
 
-    window.toggleUpdateCustomDate = function toggleUpdateCustomDate(select) {
+    window.toggleUpdateCustomDate = function toggleUpdateCustomDate(select, init=false) {
         if (select.value === 'update-custom-date') {
             customDateInput.style.display = 'block';
             customDateInput.focus();  // Optionally focus the input to prompt the user
         } else {
             customDateInput.style.display = 'none';
-            if (select.value) {
-                submitForm();  // Programmatically submit form when a predefined date is selected
+            // Only submit the form if it's not the initial page load
+            if (select.value && !init) {
+                submitForm();
             }
         }
     }
+
+    // Listen to changes in the dropdown to handle user interactions
+    select.addEventListener('change', function() {
+        toggleUpdateCustomDate(this);  // Pass 'this' which is the select element
+    });
 
     customDateInput.addEventListener('change', function() {
         if (this.value) {
@@ -101,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Initial check to handle pre-selected values when the page loads
-    toggleUpdateCustomDate(select);
+    toggleUpdateCustomDate(select, true);
 });
 
 
