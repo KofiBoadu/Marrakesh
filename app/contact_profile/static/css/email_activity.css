@@ -63,7 +63,7 @@
     font-size: 0.8em; /* Adjust font size if needed */
     color: #646464;
     display: inline; /* Make sure it's inline */
-    margin-top: 20px;
+  
     
 }
 
@@ -74,7 +74,7 @@
     flex: 1; /* Allow it to take up remaining space */
 }
 .form-dropdown {
-    margin-top: 20px;
+    
     cursor: pointer;
 }
 .form-feilds{
@@ -153,7 +153,7 @@
 
 
 .delete-form {
-    margin-right: 10px;
+    margin-right: 25px;
     width: 50px;
 
 }
