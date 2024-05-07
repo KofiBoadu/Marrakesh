@@ -980,7 +980,7 @@ button:active {
 
 
 .task-container {
-    max-width: 60%;
+    max-width: 90%;
     margin: 20px auto;
     padding: 20px;
    box-shadow:  0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1020,7 +1020,8 @@ button:active {
     height: 40px;
     border-style: none;
     border-bottom: 1px solid #03989E;
-    font: 1em Helvetica;
+    font-size: 1.2em;
+    
     color: #FF914C;
     width: 100%;
 }
@@ -1070,6 +1071,10 @@ select:focus {
     color: #FF914C;
     
 }
+/* #update-task-due-time{
+   
+} */
+
 button {
     padding: 8px 16px;
     margin-right: 10px;
