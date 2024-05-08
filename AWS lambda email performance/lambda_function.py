@@ -7,6 +7,8 @@ from datetime import datetime
 import boto3
 from botocore.exceptions import ClientError
 import pytz
+
+
 # creates a connection my database
 def create_database_connection():
     database_url = os.getenv('JAWSDB_URL')
@@ -33,19 +35,14 @@ def create_database_connection():
         raise ValueError("DATABASE_URL not set")
 
 
-
-
-
-
-
 def check_due_tasks():
     database_connection = create_database_connection()
     cursor = None
     local_tz = pytz.timezone('America/Chicago')  # Adjust timezone as necessary
-    now = datetime.now(local_tz).strftime('%Y-%m-%d %H:%M:%S') 
-    
+    now = datetime.now(local_tz).strftime('%Y-%m-%d %H:%M:%S')
+
     # print(now) # Local time in properly formatted string
-    
+
     try:
         cursor = database_connection.cursor(dictionary=True)
         query = """
@@ -60,7 +57,7 @@ def check_due_tasks():
         """
 
         cursor.execute(query, (now,))
-    
+
         due_tasks = cursor.fetchall()
         return due_tasks
 
@@ -72,12 +69,9 @@ def check_due_tasks():
             cursor.close()
         if database_connection:
             database_connection.close()
-    
 
 
-
-
-def update_task_status(task_id,new_status):
+def update_task_status(task_id, new_status):
     database_connection = create_database_connection()
     cursor = None
     try:
@@ -93,14 +87,11 @@ def update_task_status(task_id,new_status):
             database_connection.close()
 
 
-
-
-
 def send_task_reminder(task):
     aws_region = os.getenv("REGION", "us-east-2")
     ses_client = boto3.client('ses', region_name=aws_region)
     subject = f"Reminder: Task '{task['title']}' Due Today"
-    
+
     # Directly using HTML with Python f-strings for content insertion
     html_body = f"""
 <!DOCTYPE html>
@@ -204,7 +195,7 @@ def send_task_reminder(task):
 </body>
 </html>
     """
-    
+
     text_body = f"Hello {task['user_email']}, just a reminder that the task '{task['title']}' is due today."
 
     try:
@@ -222,14 +213,10 @@ def send_task_reminder(task):
             ConfigurationSetName='sendingTaskreminders'
         )
         print(f"Email sent successfully to {task['user_email']}. Message ID: {response['MessageId']}")
-        return True 
+        return True
     except ClientError as e:
         print(f"Failed to send email to {task['user_email']}: {e.response['Error']['Message']}")
         return False
-
-
-
-
 
 
 def lambda_handler(event, context):
@@ -251,5 +238,3 @@ def lambda_handler(event, context):
             print("no due task ")
     except Exception as e:
         print(f"Failed to retrieve due tasks: {e}")
-
-   

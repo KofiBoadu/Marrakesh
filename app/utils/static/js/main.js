@@ -44,20 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// //add tour modal form
-// document.addEventListener('DOMContentLoaded', function() {
-//     let tourBtn= document.getElementById("tourBtn");
-//     let tourForm=document.getElementById("tourForm");
-//     let exit=document.getElementById("exit");
-
-//     tourBtn.addEventListener('click',function(){
-//         tourForm.style.display='block'
-//     })
-
-//     exit.addEventListener('click',function(){
-//         tourForm.style.display='none'
-//     })
-// })
 
 
 
@@ -563,3 +549,8 @@ function submitForm(event) {
 
 // Add event listener to the form
 document.getElementById('update-owner-form').addEventListener('submit', submitForm);
+
+
+
+
+

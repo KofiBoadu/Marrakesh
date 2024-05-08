@@ -1,17 +1,17 @@
-from flask import render_template, request, redirect, url_for, session,jsonify
-from app.utils.tours import  create_new_tour_packages,get_all_destinations,get_destination_id
+from flask import render_template, request, redirect, url_for, session, jsonify
+from app.utils.tours import create_new_tour_packages, get_all_destinations, get_destination_id
 from app.contacts import contacts_bp
 import math
 from flask_login import login_required, current_user
-from app.utils.main import format_phone_number,all_states,update_contact_owner
-from  .contact_models import  remove_contacts, get_total_num_of_contacts,check_contact_exists,add_new_contact,get_filtered_contacts_count
-from .contact_models import  update_full_contact_details, get_contact_id,get_all_contacts_information,get_filtered_information
+from app.utils.main import format_phone_number, all_states, update_contact_owner
+from .contact_models import remove_contacts, get_total_num_of_contacts, check_contact_exists, add_new_contact, \
+    get_filtered_contacts_count
+from .contact_models import update_full_contact_details, get_contact_id, get_all_contacts_information, \
+    get_filtered_information
 from app.contact_profile.profile_models import fetch_contact_details
 from app.utils.main import cache
 from app.utils.tours import get_all_tour_names
 from app.users.admin_models import get_all_users
-
-
 
 
 @contacts_bp.route('/contacts/home', methods=['GET', 'POST'])
@@ -46,12 +46,13 @@ def home_page():
             return jsonify({
                 'table_body_html': table_body_html,
                 'pagination_html': pagination_html,
-                'total_records':customers_total
+                'total_records': customers_total
             })
 
         return render_template("homepage.html", items_per_page=items_per_page, states=states, all_tours=all_tours,
                                login_user_email=login_user_email, customers=customers, destinations=destinations,
-                               username=username, customers_total=customers_total, page=page, total_pages=total_pages, all_users=all_users)
+                               username=username, customers_total=customers_total, page=page, total_pages=total_pages,
+                               all_users=all_users)
 
     elif request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         # AJAX POST request processing
@@ -74,8 +75,6 @@ def home_page():
         })
 
     return render_template("error_page.html"), 404
-
-
 
 
 #
@@ -105,8 +104,6 @@ def home_page():
 #     return jsonify({'error': 'Invalid request'}), 400
 
 
-
-
 @contacts_bp.route('/details', methods=['GET'])
 @login_required
 def get_customer_details():
@@ -131,9 +128,6 @@ def get_customer_details():
         return jsonify({"error": "Customer not found"}), 404
 
 
-
-
-
 @contacts_bp.route('/update_details', methods=['POST'])
 @login_required
 def send_update():
@@ -150,15 +144,10 @@ def send_update():
     return redirect(url_for("contacts.home_page"))
 
 
-
-
 @contacts_bp.context_processor
 @login_required
 def context_processor():
     return dict(format_phone_number=format_phone_number)
-
-
-
 
 
 @contacts_bp.route('/delete_contacts', methods=['POST'])
@@ -173,11 +162,6 @@ def delete_contact():
 
     else:
         return redirect(url_for("contacts.home_page"))
-
-
-        
-
-
 
 
 @contacts_bp.route('/add_customer', methods=['POST'])
@@ -200,16 +184,12 @@ def adding_new_contact():
                 return redirect(url_for("profiles.contact_profile", contact_id=contact_id))
 
 
-
-
-
-
 @contacts_bp.route('/add_new_tours', methods=['POST'])
 @login_required
 def add_new_tours():
     if request.method == 'POST':
         tour_raw_name = request.form.get('name')
-        tour_name= " ".join(tour_raw_name.split())
+        tour_name = " ".join(tour_raw_name.split())
         start_date = request.form.get('start_date')
         end_date = request.form.get('end_date')
         tour_price = request.form.get('price')
@@ -219,10 +199,6 @@ def add_new_tours():
         create_new_tour_packages(tour_name, start_date, end_date, tour_price, destination_id, tour_type)
 
     return redirect(url_for("contacts.home_page"))
-
-
-
-
 
 
 @contacts_bp.route('/check-email/contact-existence', methods=['POST'])
@@ -244,8 +220,7 @@ def validate_contact_existence():
         return jsonify({'exists': False})
 
 
-
-@contacts_bp.route('/contact/owner/assigned', methods=['GET','POST'])
+@contacts_bp.route('/contact/owner/assigned', methods=['GET', 'POST'])
 def assigning_contact_owner():
     user_id = request.form.get('user_id')
     contact_id = request.form.get('contact_id')

@@ -1,4 +1,3 @@
-
 import pytz
 from .database import create_database_connection
 from tzlocal import get_localzone
@@ -10,10 +9,8 @@ from dotenv import load_dotenv
 from app.users.tour_packages import get_all_tours_scheduled
 import datetime
 from datetime import timedelta, datetime
+
 load_dotenv()
-
-
-# print(get_all_tours_scheduled())
 
 
 def add_business_days(start_date, add_days):
@@ -21,36 +18,38 @@ def add_business_days(start_date, add_days):
     current_date = start_date
     while business_days_to_add > 0:
         current_date += timedelta(days=1)
-        if current_date.weekday() < 5:  
+        if current_date.weekday() < 5:
             business_days_to_add -= 1
     return current_date
 
 
-
-
-
 def generate_due_dates():
     local_tz = get_localzone()
-    now = datetime.now(local_tz)  
+    now = datetime.now(local_tz)
     tomorrow = now + timedelta(days=1)
-    two_business_days = add_business_days(tomorrow, 1)  
-    three_business_days = add_business_days(tomorrow, 2)  
+    two_business_days = add_business_days(tomorrow, 1)
+    three_business_days = add_business_days(tomorrow, 2)
     dates = {
         "Today": {"date": now.strftime('%Y-%m-%d'), "day": now.strftime('%A')},
         "Tomorrow": {"date": tomorrow.strftime('%Y-%m-%d'), "day": tomorrow.strftime('%A')},
         "2 Business Days": {"date": two_business_days.strftime('%Y-%m-%d'), "day": two_business_days.strftime('%A')},
-        "3 Business Days": {"date": three_business_days.strftime('%Y-%m-%d'), "day": three_business_days.strftime('%A')},
-        "1 Week": {"date": (now + timedelta(weeks=1)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=1)).strftime('%A')},
-        "2 Weeks": {"date": (now + timedelta(weeks=2)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=2)).strftime('%A')},
-        "1 Month": {"date": (now + timedelta(weeks=4)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=4)).strftime('%A')},
-        "2 Months": {"date": (now + timedelta(weeks=8)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=8)).strftime('%A')},
-        "3 Months": {"date": (now + timedelta(weeks=12)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=12)).strftime('%A')},
-        "6 Months": {"date": (now + timedelta(weeks=24)).strftime('%Y-%m-%d'), "day": (now + timedelta(weeks=24)).strftime('%A')},
+        "3 Business Days": {"date": three_business_days.strftime('%Y-%m-%d'),
+                            "day": three_business_days.strftime('%A')},
+        "1 Week": {"date": (now + timedelta(weeks=1)).strftime('%Y-%m-%d'),
+                   "day": (now + timedelta(weeks=1)).strftime('%A')},
+        "2 Weeks": {"date": (now + timedelta(weeks=2)).strftime('%Y-%m-%d'),
+                    "day": (now + timedelta(weeks=2)).strftime('%A')},
+        "1 Month": {"date": (now + timedelta(weeks=4)).strftime('%Y-%m-%d'),
+                    "day": (now + timedelta(weeks=4)).strftime('%A')},
+        "2 Months": {"date": (now + timedelta(weeks=8)).strftime('%Y-%m-%d'),
+                     "day": (now + timedelta(weeks=8)).strftime('%A')},
+        "3 Months": {"date": (now + timedelta(weeks=12)).strftime('%Y-%m-%d'),
+                     "day": (now + timedelta(weeks=12)).strftime('%A')},
+        "6 Months": {"date": (now + timedelta(weeks=24)).strftime('%Y-%m-%d'),
+                     "day": (now + timedelta(weeks=24)).strftime('%A')},
         # "Custom Date": {"date": None, "day": None}
     }
     return dates
-
-
 
 
 def generate_time_intervals():
@@ -65,18 +64,15 @@ def generate_time_intervals():
     return intervals
 
 
-# print(generate_time_intervals())
-
-
-
-def adding_new_task(task_title, due_date, due_time, description, contact_id,user_id):
-    query = "INSERT INTO task (title, due_date, due_time, description, status, contact_id,user_id) VALUES (%s, %s, %s, %s, 'pending', %s,%s)"
+def adding_new_task(task_title, due_date, due_time, description, contact_id, user_id):
+    query = ("INSERT INTO task (title, due_date, due_time, description, status, contact_id,user_id) VALUES (%s, %s, "
+             "%s, %s, 'pending', %s,%s)")
     cursor = None
     database_connection = None
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query, (task_title, due_date, due_time, description, contact_id,user_id))
+        cursor.execute(query, (task_title, due_date, due_time, description, contact_id, user_id))
         database_connection.commit()
     except Exception as e:
         if database_connection:
@@ -89,38 +85,69 @@ def adding_new_task(task_title, due_date, due_time, description, contact_id,user
             database_connection.close()
 
 
-
-
-
-
-
-
-
+# def check_due_tasks():
+#     database_connection = create_database_connection()
+#     cursor = None
+#     local_tz = pytz.timezone('America/Chicago')  # Adjust timezone as necessary
+#     now = datetime.now(local_tz).strftime('%Y-%m-%d %H:%M:%S')
+#
+#
+#     try:
+#         cursor = database_connection.cursor(dictionary=True)
+#         query = """
+#             SELECT t.task_id, t.title, t.due_date, t.due_time, t.description, t.status,
+#                    c.first_name AS contact_first_name, c.last_name AS contact_last_name, c.email_address AS contact_email, c.phone_number,
+#                    u.first_name AS user_first_name, u.last_name AS user_last_name, u.email_address AS user_email
+#             FROM task t
+#             INNER JOIN contacts c ON t.contact_id = c.contact_id
+#             INNER JOIN users u ON t.user_id = u.user_id
+#             WHERE TIMESTAMP(t.due_date, t.due_time) <= %s
+#             AND t.status = 'pending'
+#         """
+#
+#         cursor.execute(query, (now,))
+#
+#         due_tasks = cursor.fetchall()
+#         return due_tasks
+#
+#     except Exception as e:
+#         print(f"Failed to retrieve due tasks: {e}")
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()
 
 def check_due_tasks():
     database_connection = create_database_connection()
     cursor = None
-    local_tz = pytz.timezone('America/Chicago')  # Adjust timezone as necessary
-    now = datetime.now(local_tz).strftime('%Y-%m-%d %H:%M:%S') 
-    
-    # print(now) # Local time in properly formatted string
-    
     try:
         cursor = database_connection.cursor(dictionary=True)
-        query = """
-            SELECT t.task_id, t.title, t.due_date, t.due_time, t.description, t.status,
-                   c.first_name AS contact_first_name, c.last_name AS contact_last_name, c.email_address AS contact_email, c.phone_number,
-                   u.first_name AS user_first_name, u.last_name AS user_last_name, u.email_address AS user_email
-            FROM task t
-            INNER JOIN contacts c ON t.contact_id = c.contact_id
-            INNER JOIN users u ON t.user_id = u.user_id
-            WHERE TIMESTAMP(t.due_date, t.due_time) <= %s
-            AND t.status = 'pending'
-        """
+        # Query to fetch users with their respective time zones
+        user_query = "SELECT user_id, timezone FROM users WHERE timezone IS NOT NULL"
+        cursor.execute(user_query)
+        users = cursor.fetchall()
+        due_tasks = []
+        for user in users:
+            user_id = user['user_id']
+            user_timezone = pytz.timezone(user['timezone'])
+            current_time_in_tz = datetime.now(user_timezone).strftime('%Y-%m-%d %H:%M:%S')
 
-        cursor.execute(query, (now,))
-    
-        due_tasks = cursor.fetchall()
+            # Query to fetch pending tasks for the user
+            task_query = """
+                SELECT t.task_id, t.title, t.due_date, t.due_time, t.description, t.status,
+                       c.first_name AS contact_first_name, c.last_name AS contact_last_name, c.email_address AS contact_email, c.phone_number,
+                       u.first_name AS user_first_name, u.last_name AS user_last_name, u.email_address AS user_email
+                FROM task t
+                INNER JOIN contacts c ON t.contact_id = c.contact_id
+                INNER JOIN users u ON t.user_id = u.user_id
+                WHERE t.user_id = %s AND t.status = 'pending' AND
+                      TIMESTAMP(t.due_date, t.due_time) <= %s
+            """
+            cursor.execute(task_query, (user_id, current_time_in_tz))
+            due_tasks += cursor.fetchall()
+
         return due_tasks
 
     except Exception as e:
@@ -132,12 +159,11 @@ def check_due_tasks():
         if database_connection:
             database_connection.close()
 
-    
+
 # print(check_due_tasks())
 
 
-
-def update_task_status(task_id,new_status):
+def update_task_status(task_id, new_status):
     database_connection = create_database_connection()
     cursor = None
     try:
@@ -153,20 +179,11 @@ def update_task_status(task_id,new_status):
             database_connection.close()
 
 
-
-
-
-
-
-
-
-
-
 def send_task_reminder(task):
     aws_region = os.getenv("REGION", "us-east-2")
     ses_client = boto3.client('ses', region_name=aws_region)
     subject = f"Reminder: Task '{task['title']}' Due Today"
-    
+
     # Directly using HTML with Python f-strings for content insertion
     html_body = f"""
 <!DOCTYPE html>
@@ -270,7 +287,7 @@ def send_task_reminder(task):
 </body>
 </html>
     """
-    
+
     text_body = f"Hello {task['user_email']}, just a reminder that the task '{task['title']}' is due today."
 
     try:
@@ -288,13 +305,10 @@ def send_task_reminder(task):
             ConfigurationSetName='sendingTaskreminders'
         )
         print(f"Email sent successfully to {task['user_email']}. Message ID: {response['MessageId']}")
-        return True 
+        return True
     except ClientError as e:
         print(f"Failed to send email to {task['user_email']}: {e.response['Error']['Message']}")
         return False
-
-
-
 
 
 def schedule_task_reminders():
@@ -314,9 +328,12 @@ def schedule_task_reminders():
                     print(f"Error sending reminder for task ID {task_id}: {e}")
         else:
             print("no due task ")
-            return False 
+            return False
     except Exception as e:
         print(f"Failed to retrieve due tasks: {e}")
+
+
+
 
 
 def update_task_title(task_id, task_title):
@@ -350,13 +367,14 @@ def update_task_title(task_id, task_title):
         if database_connection:
             database_connection.close()
 
-def update_task_due_date(new_date,task_id):
-    query= """ UPDATE task SET due_date = %s WHERE task_id = %s """
-    database_connection= None
-    cursor= None
+
+def update_task_due_date(new_date, task_id):
+    query = """ UPDATE task SET due_date = %s WHERE task_id = %s """
+    database_connection = None
+    cursor = None
     try:
-        database_connection= create_database_connection()
-        cursor=database_connection.cursor()
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
         cursor.execute(query, (new_date, task_id))
         database_connection.commit()
         update_task_status(task_id, "pending")
@@ -373,20 +391,20 @@ def update_task_due_date(new_date,task_id):
             database_connection.close()
 
 
-def update_task_due_time(new_due_time,task_id):
-    query= """UPDATE task SET due_time=%s WHERE task_id= %s"""
-    database_connection= None
-    cursor= None
+def update_task_due_time(new_due_time, task_id):
+    query = """UPDATE task SET due_time=%s WHERE task_id= %s"""
+    database_connection = None
+    cursor = None
     try:
-        database_connection= create_database_connection()
-        cursor= database_connection.cursor()
-        cursor.execute(query,(new_due_time,task_id))
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (new_due_time, task_id))
         database_connection.commit()
         update_task_status(task_id, "pending")
         return True
-    except Exeception as e :
+    except Exception as e:
         database_connection.rollback()
-        print("An error occurred updating :",e)
+        print("An error occurred updating :", e)
         return False
     finally:
         if database_connection:
@@ -394,20 +412,21 @@ def update_task_due_time(new_due_time,task_id):
         if cursor:
             database_connection.close()
 
+
 def update_task_with_new_description(task_description, task_id):
-    query= """UPDATE task SET description =%s WHERE task_id = %s """
+    query = """UPDATE task SET description =%s WHERE task_id = %s """
     database_connection = None
     cursor = None
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.execute(query,(task_description,task_id))
+        cursor.execute(query, (task_description, task_id))
         database_connection.commit()
-        update_task_status(task_id,"pending")
+        update_task_status(task_id, "pending")
         return True
     except Exception as e:
         database_connection.rollback()
-        print("An error occurred updating the task description",e)
+        print("An error occurred updating the task description", e)
         return False
     finally:
         if cursor:
@@ -436,16 +455,13 @@ def delete_contact_task(task_id):
             database_connection.close()
 
 
-
-
 def timedelta_to_time_str(timedelta_obj):
     import datetime
     from datetime import timedelta
-    total_seconds= timedelta_obj.seconds
+    total_seconds = timedelta_obj.seconds
     hours = int(total_seconds // 3600)
     minutes = int((total_seconds % 3600) // 60)
     return f"{hours:02}:{minutes:02}"
-
 
 
 def find_matching_interval(timedelta_obj, time_intervals):
@@ -454,9 +470,6 @@ def find_matching_interval(timedelta_obj, time_intervals):
         if interval['key'] == time_str:
             return interval['value']
     return None
-
-
-
 
 #
 # tin= generate_time_intervals()

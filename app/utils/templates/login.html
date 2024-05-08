@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Torch</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-   <!--  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
 
 </head>
 
@@ -28,13 +26,25 @@
     <div class="form-group">
       <input type="password" id="password" name="password" placeholder="Password" required>
     </div>
+
+
+    <input type="hidden" id="timezone" name="timezone">
     <div class="form-group">
-     
-      <input type="submit" value="Log in">
+     <input type="submit" id="submit-button" value="Log in" >
     </div>
+
   </form>
 </div>
 
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Capture the user's timezone and set it in the hidden input field
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('timezone').value = timezone;
+});
+</script>
 
 
 </body>

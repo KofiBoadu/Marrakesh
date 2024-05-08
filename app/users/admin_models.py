@@ -6,8 +6,6 @@ from app.utils.main import login_manager
 from flask_login import login_user, UserMixin
 
 
-
-
 class User(UserMixin):
     def __init__(self, user_id, first_name, last_name, email_address, pass_word, role_id=None):
         self.id = user_id
@@ -26,9 +24,6 @@ def generate_secure_password(length=12):
     return secure_password
 
 
-
-
-
 def add_new_user(first_name, last_name, email_address, pass_word, role_id):
     cursor = None
     database_connection = None
@@ -39,7 +34,7 @@ def add_new_user(first_name, last_name, email_address, pass_word, role_id):
         cursor = database_connection.cursor()
         cursor.execute(query, values)
         database_connection.commit()
-        
+
         return True
     except Exception as e:
         if database_connection:
@@ -55,10 +50,11 @@ def add_new_user(first_name, last_name, email_address, pass_word, role_id):
 
 def create_user_account(first_name, last_name, email_address, pass_word, role_id):
     hash_password = generate_password_hash(pass_word)
-    add_user=add_new_user(first_name, last_name, email_address, hash_password, role_id)
+    add_user = add_new_user(first_name, last_name, email_address, hash_password, role_id)
     if not add_user:
         return False
     return True
+
 
 # password=generate_secure_password()
 # print(password)
@@ -131,7 +127,6 @@ def pass_word_checker(password):
     return False
 
 
-
 def password_change(user_id, new_password):
     cursor = None
     database_connection = None
@@ -142,7 +137,7 @@ def password_change(user_id, new_password):
         cursor = database_connection.cursor()
         cursor.execute(query, (hash_password, user_id))
         database_connection.commit()
-        return  True
+        return True
 
     except Exception as e:
         print(f"Error updating password: {e}")
@@ -152,6 +147,8 @@ def password_change(user_id, new_password):
             cursor.close()
         if database_connection:
             database_connection.close()
+
+
 #
 # password=generate_secure_password()
 # print("new password",password)
@@ -183,8 +180,8 @@ def get_all_users():
         if database_connection:
             database_connection.close()
 
-# print(get_all_users())
 
+# print(get_all_users())
 
 
 def remover_user_from_account(user_id):
@@ -209,9 +206,6 @@ def remover_user_from_account(user_id):
             cursor.close()
 
 
-
-
-
 def user_roles():
     query = "SELECT role_id, role_name FROM user_roles"
     database_connection = None
@@ -232,7 +226,6 @@ def user_roles():
             cursor.close()
 
 
-
 def deactivate_user_account(user_id):
     query = "UPDATE users SET is_active = 0 WHERE user_id = %s"
     database_connection = None
@@ -242,7 +235,7 @@ def deactivate_user_account(user_id):
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
-       
+
         return True
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -253,8 +246,6 @@ def deactivate_user_account(user_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
 
 
 def reactivate_user_account(user_id):
@@ -266,7 +257,7 @@ def reactivate_user_account(user_id):
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
-  
+
         return True
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -277,7 +268,6 @@ def reactivate_user_account(user_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
 
 
 def remove_super_admin(user_id):
@@ -289,7 +279,7 @@ def remove_super_admin(user_id):
         cursor = database_connection.cursor()  # Fixed from .close() to .cursor()
         cursor.execute(query, (user_id,))
         database_connection.commit()
-       
+
         return True
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -300,7 +290,6 @@ def remove_super_admin(user_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
 
 
 def make_super_admin(user_id):
@@ -324,4 +313,31 @@ def make_super_admin(user_id):
         if database_connection:
             database_connection.close()
 
+
+def update_user_time_zone(user_id, time_zone):
+    query = """UPDATE users SET timezone = %s WHERE user_id = %s"""
+    cursor = None
+    database_connection = None
+    try:
+
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+
+        cursor.execute(query, (time_zone, user_id))
+        database_connection.commit()
+
+        return True
+
+    except Exception as e:
+
+        if database_connection:
+            database_connection.rollback()
+        return False
+
+    finally:
+
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
 

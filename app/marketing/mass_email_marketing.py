@@ -59,6 +59,7 @@ def marketing_email(user_id, total_number_of_email_list, campaign_subject, campa
 def enqueue_email_task(recipient_list, subject, sender_email, text_body, campaign_id):
     sqs = boto3.client('sqs', region_name=os.getenv("AWS_DEFAULT_REGION"))
     queue_url = os.getenv("AWS_SQS_URL")
+    print(queue_url)
     for name, email in recipient_list:
         message_body = {
             'contact_name': name,

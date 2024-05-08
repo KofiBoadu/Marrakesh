@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, session,render_template
+from flask import Flask, redirect, url_for, session, render_template
 from app.utils.main import login_manager, cache
 from .contacts import contacts_bp
 from .marketing import email_marketing
@@ -15,35 +15,15 @@ from app.events_schedule import events
 from .webhooks import api_blueprint
 from flask.logging import create_logger
 import logging
-
-
-
-
-
-
-
-
-
+from datetime import timedelta
 
 
 def create_app():
     load_dotenv()
-    app = Flask(__name__, template_folder='utils/templates', static_folder='utils/static',static_url_path='/static')
+    app = Flask(__name__, template_folder='utils/templates', static_folder='utils/static', static_url_path='/static')
 
     logger = create_logger(app)
     logger.setLevel(logging.DEBUG)
-   
-
-
-
-
-    # Setup scheduler with the Flask app
-    # check_due_tasks(app)
-    
-
-
-
-
 
     @app.route('/contacts/home')
     def redirect_to_login():
@@ -67,6 +47,7 @@ def create_app():
     app.register_blueprint(events, url_prefix='/events')
     app.register_blueprint(api_blueprint, url_prefix='/api')
     app.secret_key = os.getenv('SECRET_KEY')
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 
     # Flask-Mail configuration
     app.config['MAIL_SERVER'] = 'smtpout.secureserver.net'
@@ -74,7 +55,6 @@ def create_app():
     app.config['MAIL_USE_SSL'] = True
     app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
     app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-    # app.config['DB_CONNECTION_POOL'] = connection_pool
 
     mail.init_app(app)
     login_manager.init_app(app)
@@ -82,7 +62,5 @@ def create_app():
 
     cache.init_app(app)
     return app
-
-
 
 # marrakesh= create_app()
