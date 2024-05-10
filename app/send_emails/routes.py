@@ -6,7 +6,7 @@ from flask_login import login_required,current_user
 
 @email_customers.route('/send-email', methods=['POST'])
 @login_required
-def send_customer_email():
+def send_contact_email():
     to_email = request.form.get('to_email')
     from_email = request.form.get('from_email')
     subject = request.form.get('subject')

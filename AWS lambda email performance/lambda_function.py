@@ -238,3 +238,46 @@ def lambda_handler(event, context):
             print("no due task ")
     except Exception as e:
         print(f"Failed to retrieve due tasks: {e}")
+
+
+
+
+
+
+
+
+
+    # def check_due_tasks():
+    #     database_connection = create_database_connection()
+    #     cursor = None
+    #     local_tz = pytz.timezone('America/Chicago')  # Adjust timezone as necessary
+    #     now = datetime.now(local_tz).strftime('%Y-%m-%d %H:%M:%S')
+
+    #     # print(now) # Local time in properly formatted string
+
+    # try:
+#         cursor = database_connection.cursor(dictionary=True)
+#         query = """
+#             SELECT t.task_id, t.title, t.due_date, t.due_time, t.description, t.status,
+#                    c.first_name AS contact_first_name, c.last_name AS contact_last_name, c.email_address AS contact_email, c.phone_number,
+#                    u.first_name AS user_first_name, u.last_name AS user_last_name, u.email_address AS user_email
+#             FROM task t
+#             INNER JOIN contacts c ON t.contact_id = c.contact_id
+#             INNER JOIN users u ON t.user_id = u.user_id
+#             WHERE TIMESTAMP(t.due_date, t.due_time) <= %s
+#             AND t.status = 'pending'
+#         """
+
+#         cursor.execute(query, (now,))
+
+#         due_tasks = cursor.fetchall()
+#         return due_tasks
+
+#     except Exception as e:
+#         print(f"Failed to retrieve due tasks: {e}")
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if database_connection:
+#             database_connection.close()

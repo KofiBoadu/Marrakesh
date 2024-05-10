@@ -3,14 +3,6 @@ import logging
 import mysql.connector
 
 
-
-
-
-
-
-
-
-
 def update_full_contact_details(contact_id, first_name, last_name, email, phone, gender, state):
     """
         Updates the full contact details for a specific contact ID in the database.
@@ -62,9 +54,6 @@ def update_full_contact_details(contact_id, first_name, last_name, email, phone,
             database_connection.close()
 
 
-
-
-
 def remove_contacts(contact_ids):
     """
     Deletes multiple contacts from the database based on their IDs. This operation is 
@@ -83,33 +72,29 @@ def remove_contacts(contact_ids):
     database_connection = None
     cursor = None
     try:
-        database_connection = create_database_connection()  
-        database_connection.autocommit = False  
+        database_connection = create_database_connection()
+        database_connection.autocommit = False
         cursor = database_connection.cursor()
 
         # Prepare the SQL query with placeholders for the list of IDs
         format_strings = ','.join(['%s'] * len(contact_ids))
         cursor.execute(f"DELETE FROM contacts WHERE contact_id IN ({format_strings})", tuple(contact_ids))
 
-        deleted_count = cursor.rowcount  
+        deleted_count = cursor.rowcount
         if deleted_count > 0:
-            database_connection.commit()  
+            database_connection.commit()
         else:
-            database_connection.rollback()  
+            database_connection.rollback()
     except Exception as e:
         logging.error(f"An error occurred while deleting contacts: {e}")
         if database_connection:
-            database_connection.rollback()  
+            database_connection.rollback()
     finally:
         if cursor:
-            cursor.close()  
+            cursor.close()
         if database_connection:
-            database_connection.close()  
-    return deleted_count  
-
-
-
-
+            database_connection.close()
+    return deleted_count
 
 
 def check_contact_exists(email):
@@ -162,9 +147,6 @@ def check_contact_exists(email):
     return contact_id
 
 
-
-
-
 def get_total_num_of_contacts(search_query=''):
     """
     Counts the number of contacts in the database filtered by a search query if provided.
@@ -192,8 +174,6 @@ def get_total_num_of_contacts(search_query=''):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
 
 
 def get_filtered_contacts_count(status=None, gender=None, state=None, tour_name=None):
@@ -236,8 +216,6 @@ def get_filtered_contacts_count(status=None, gender=None, state=None, tour_name=
             database_connection.close()
 
 
-
-
 def get_contact_id(email):
     """
         Retrieves the contact ID for a given email address.
@@ -268,13 +246,6 @@ def get_contact_id(email):
             database_connection.close()
 
 
-
-
-
-
-
-
-
 def create_get_customer_tour_details_procedure():
     """
         Creates a stored procedure in the database to fetch customer tour details.
@@ -284,7 +255,7 @@ def create_get_customer_tour_details_procedure():
         Returns:
         - True if the procedure is successfully created, raises an Exception otherwise.
     """
-    procedure_query= """
+    procedure_query = """
         CREATE PROCEDURE GetCustomerTourDetails(
             IN search_query VARCHAR(255),
             IN items_per_page INT,
@@ -350,9 +321,6 @@ def create_get_customer_tour_details_procedure():
             database_connection.close()
 
 
-
-
-
 def get_all_contacts_information(page=1, items_per_page=25, search_query=''):
     """
         Fetches contact information from the database with optional pagination and search filtering.
@@ -392,8 +360,8 @@ def get_all_contacts_information(page=1, items_per_page=25, search_query=''):
 
         return contacts
 
-# print(get_all_contacts_information())
 
+# print(get_all_contacts_information())
 
 
 def add_new_contact(first_name, last_name, email, phone=None, gender=None, state=None, lead_status="Lead"):
@@ -442,11 +410,8 @@ def add_new_contact(first_name, last_name, email, phone=None, gender=None, state
             database_connection.close()
 
 
-
-
-
 def filter_contacts_procedure():
-    procedure_query="""
+    procedure_query = """
                 CREATE PROCEDURE GetFilteredContacts(
                 IN p_status VARCHAR(50),
                 IN p_gender VARCHAR(10),
@@ -510,6 +475,7 @@ def filter_contacts_procedure():
             cursor.close()
         if database_connection is not None:
             database_connection.close()
+
 
 # print(filter_contacts_procedure())
 

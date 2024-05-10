@@ -1,9 +1,6 @@
 from app.utils.database import create_database_connection
 
 
-
-
-
 def get_all_tours_procedure():
     create_procedure_query = """
      CREATE PROCEDURE GET_TOUR_PACKAGES(
@@ -50,6 +47,7 @@ def get_all_tours_procedure():
         if database_connection:
             database_connection.close()
 
+
 # print(get_all_tours_procedure())
 
 
@@ -59,7 +57,7 @@ def get_all_tours_scheduled(page=1, items_per_page=10):
     try:
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
-        cursor.callproc('GET_TOUR_PACKAGES', [items_per_page,page])
+        cursor.callproc('GET_TOUR_PACKAGES', [items_per_page, page])
         results = []
         for result in cursor.stored_results():
             results.extend(result.fetchall())
@@ -72,7 +70,6 @@ def get_all_tours_scheduled(page=1, items_per_page=10):
             cursor.close()
         if database_connection:
             database_connection.close()
-
 
 
 def get_total_tour_packages():
@@ -97,17 +94,28 @@ def get_total_tour_packages():
             database_connection.close()
 
 
+def delete_a_tour_package(tour_id):
+    query = "DELETE FROM tours WHERE tour_id = %s"
+    database_connection = None
+    cursor = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (tour_id,))  # Ensure the parameter is a tuple
+        database_connection.commit()
+        return True
+    except Exception as e:
+        if database_connection:
+            database_connection.rollback()
+        print(f"An error occurred while deleting: {e}")  # Corrected print format
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
 # print(get_total_tour_packages())
 
 
-
 # print(len(get_all_tours_scheduled(2)))
-    
-
-
-
-
-
-
-
-    

@@ -197,8 +197,7 @@ def add_new_tours():
         tour_type = request.form.get('tour_type')
         destination_id = get_destination_id(destination)
         create_new_tour_packages(tour_name, start_date, end_date, tour_price, destination_id, tour_type)
-
-    return redirect(url_for("contacts.home_page"))
+    return redirect(url_for("users.tour_services"))
 
 
 @contacts_bp.route('/check-email/contact-existence', methods=['POST'])

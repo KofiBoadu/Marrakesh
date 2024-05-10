@@ -7,8 +7,8 @@
 
 
 {% for tours in tours_scheduled %}
-            <tr>
-              <td><input type="checkbox" data-user-id="{{ tours[0] }}" class="user-checkbox"> </td>
+            <tr id="tour-row-{{ tours[0] }}" data-row-id="{{ tours[0] }}">
+                <td><input type="checkbox" data-tour-id="{{ tours[0] }}" class="user-checkbox" onchange="handleDeleteCheckboxChange(this);"></td>
               <td>{{ tours[1]}}</td>
               <td>{{ tours[2]}}</td>
               <td>{{ tours[3]}}</td>

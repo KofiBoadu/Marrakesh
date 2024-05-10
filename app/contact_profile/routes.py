@@ -42,7 +42,7 @@ def contact_profile(contact_id):
 
         due_dates = generate_due_dates()
         due_dates_names = list(due_dates.keys())
-        print(due_dates_names)
+
         due_times = generate_time_intervals()
 
         due_time_options = [times['value'] for times in due_times]

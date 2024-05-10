@@ -83,6 +83,15 @@
             <div class="create-user-button" onclick="show_TourButton()">
                 <button id="add_tour_button" type="button" class="user-action-button">Add New Tour</button>
             </div>
+
+          <!--  delete tour package-->
+           <div>
+            <form class="tour-package-delete" action="{{ url_for('users.deleting_tour_package') }}" style="display:none;" id="delete-form" method="post">
+                <a href="#" id="delete-package" onclick="submitDelete(event);">Delete</a>
+                <input type="hidden" id="tour_id_to_delete" name="tour_id">
+            </form>
+            </div>
+
     
 		</div>
         <table class="tours_table">

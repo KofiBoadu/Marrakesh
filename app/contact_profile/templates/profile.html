@@ -22,8 +22,23 @@
     <h3 class="back-to-contacts-page"><a href="{{ url_for('contacts.home_page') }}"> Contacts</a> </h3>
     
   
+
     <div class="profile-avatar">
-      <h1 class="profile-avatar-letter">{{profile[0].split()[0][0]+profile[0].split()[1][0]}}</h1>
+          <h1 class="profile-avatar-letter">
+              {%- if profile and profile[0] -%}
+                  {%- set name_parts = profile[0].split() -%}
+                  {%- if name_parts|length >= 2 -%}
+                      {{ name_parts[0][0]|upper }}{{ name_parts[1][0]|upper }}
+                  {%- elif name_parts|length == 1 -%}
+                      {{ name_parts[0][0]|upper }}
+                  {%- else -%}
+                      <!-- If no valid names are found, default to an empty string or a fallback letter -->
+                      {{ "" }}
+                  {%- endif -%}
+              {%- else -%}
+                  {{ "" }}
+              {%- endif -%}
+          </h1>
     </div>
     <div class="profile-name">
       <div class="profile-name-container" onmouseover="showEditButton()" onmouseout="hideEditButton(event)">
@@ -492,7 +507,7 @@
 
 
 
-  <form class="sendEmail" style="display: block;" action="{{url_for('send_emails.send_customer_email') }}"
+  <form class="sendEmail" style="display: block;" action="{{url_for('send_emails.send_contact_email') }}"
     method="post">
 
     <input type="hidden" name="contact_id" value="{{ contact_id }}">

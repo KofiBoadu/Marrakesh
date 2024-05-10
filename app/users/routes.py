@@ -9,7 +9,7 @@ from .admin_models import password_change, pass_word_checker, get_all_users, rem
     update_user_time_zone
 from app.utils.main import send_email
 from app.utils.tours import get_all_destinations
-from app.users.tour_packages import get_all_tours_scheduled, get_total_tour_packages
+from app.users.tour_packages import get_all_tours_scheduled, get_total_tour_packages,delete_a_tour_package
 import math
 
 
@@ -18,35 +18,7 @@ def login():
     return render_template("login.html")
 
 
-# @users_bp.route('/current_login_user', methods=['POST'])
-# def login_user_route():
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-#     current_login_user = get_user(email)
-#     time_zone = request.form.get("timezone")
-#     print(time_zone)
-#
-#     old_password = check_password_hash(current_login_user[4], password)
-#
-#     if current_login_user and old_password and current_login_user[6]:
-#         # old_password = check_password_hash(current_login_user[4], password)
-#         user_object = User(current_login_user[0], current_login_user[1], current_login_user[2], current_login_user[3],
-#                            current_login_user[4], current_login_user[5])
-#         login_user(user_object)
-#         user_id = current_login_user[0]
-#         first_name = current_login_user[1]
-#         last_name = current_login_user[2]
-#         session['username'] = [user_id, first_name, last_name]
-#         role_id = current_login_user[5]
-#         session['user_role_id'] = role_id
-#         session['user_id'] = current_login_user[0]
-#
-#         if time_zone:
-#             update_user_time_zone(user_id, time_zone)
-#
-#         return redirect(url_for("contacts.home_page"))
-#     else:
-#         return redirect(url_for('users.login'))
+
 
 
 @users_bp.route('/current_login_user', methods=['POST'])
@@ -258,13 +230,24 @@ def update_user_timezone():
     # Getting form data from request
     user_id = request.form.get('user_id')
     time_zone = request.form.get('timezone')
-
-    # Print received data for debugging
-    print("Received user ID:", user_id)
-    print("Received timezone:", time_zone)
-
     # Function call to update the user timezone in the database
     if update_user_time_zone(user_id, time_zone):
         return jsonify({"message": "Timezone updated successfully"}), 200
     else:
         return jsonify({"message": "Failed to update timezone"}), 500
+
+
+@users_bp.route('/delete/tour/package', methods=['POST'])
+def deleting_tour_package():
+    tour_id = request.form.get('tour_id')
+    if tour_id:
+        try:
+            delete_a_tour_package(tour_id)
+            return jsonify({"message": "Tour package successfully deleted"}), 200
+        except Exception as e:
+            return jsonify({"message": "Failed to delete tour package"}), 500
+    else:
+        return jsonify({"message": "No tour package ID provided"}), 400
+
+
+
