@@ -24,8 +24,8 @@ known_fields = {
     'deposit_amount',
     'date',
     'time',
-    'page_url',
-    'form_name',
+    # 'page_url',
+    # 'form_name',
     "Accommodation Type",
     "Budget (Budget Excluding Flights)",
     " Destination",
@@ -222,7 +222,7 @@ def all_emails_sent_to_contacts(contact_id):
         cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         all_emails = [
-            {'email_id': email[0], 'subject': email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4],
+            {'email_id': email[0], 'subject': "Email " + email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4],
              "sent_user": email[5]} for email in results]
     except Exception as e:
         print(f"An error occurred: {e}")

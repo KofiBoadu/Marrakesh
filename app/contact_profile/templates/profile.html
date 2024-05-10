@@ -285,7 +285,9 @@
         
           {% else %}
           <!-- Display for Emails and Notes -->
+
           <strong class="subject">{{ activity['subject'] }}</strong>
+
           <p class="from">{{ 'sent by' if not activity.get('is_note', False) else 'created by' }} {{
             activity['sent_user'] }}</p>
           {% if not activity.get('is_note', False) %}
