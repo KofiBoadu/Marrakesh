@@ -6,6 +6,36 @@ import secrets
 import re
 from datetime import datetime
 
+known_fields = {
+    'message',
+    'how_many_travelers',
+    'enter_full_names_and_emails__of_other_travelers_if_any',
+    'what_type_of_tour',
+    'referral_name_or_code_if_any',
+    'how_did_you_hear_about_us',
+    'city',
+    'postal_/_zip_code',
+    'country',
+    'type_of_accommodation',
+    'payment_options',
+    'address',
+    'what_is_the_best_way_to_contact_you',
+    'if_phone_when_is_the_best_time_of_day_for_a_call_back',
+    'is_there_anything_else_we_should_know',
+    'deposit_amount',
+    'date',
+    'time',
+    'page_url',
+    'form_name',
+    "Accommodation Type",
+    "Budget (Budget Excluding Flights)",
+    " Destination",
+    "Message",
+    "Time",
+    " What Is The Best Way To Contact You?",
+    'Are you prepared to secure your spot with a deposit within the next week?'
+
+}
 
 auth = HTTPBasicAuth()
 
@@ -45,7 +75,7 @@ def create_new_leads(first_name=None, last_name=None, email=None, phone=None, ge
             cursor = database_connection.cursor()
             cursor.execute(query, values)
             database_connection.commit()
-           
+
             return cursor.lastrowid
     except Exception as e:
         print(f"Database error occurred: {e}")
@@ -73,7 +103,7 @@ def create_new_form_submission(contact_id, source):
             cursor = database_connection.cursor()
             cursor.execute(query, values)
             database_connection.commit()
-       
+
             return cursor.lastrowid
 
     except Exception as e:
@@ -102,7 +132,7 @@ def add_new_form_submission_data(submission_id, field_name, field_value):
             cursor = database_connection.cursor()
             cursor.execute(query, values)
             database_connection.commit()
-           
+
             return cursor.lastrowid
     except Exception as e:
         print(f"Database error occurred: {e}")
@@ -119,11 +149,40 @@ def normalize_key(key):
     return key.strip().replace(' ', '_').lower()
 
 
+# def standardized_model_wordpress(raw_data):
+#     normalized_data = {}
+#     for key, value in raw_data.items():
+#         normalized_data[normalize_key(key)] = value
+#     required_contact_details = {'first_name', 'last_name', 'email', 'phone_number', 'gender', 'state'}
+#     standardized_model = {
+#         "first_name": None,
+#         "last_name": None,
+#         "email": None,
+#         "phone_number": None,
+#         "gender": None,
+#         "state": None,
+#         "form_data": {}
+#     }
+#
+#     reject_fields= {
+#
+#
+#     }
+#     for key, value in normalized_data.items():
+#         if key in required_contact_details:
+#             standardized_model[key] = value
+#         else:
+#             standardized_model["form_data"][key] = value
+#     return standardized_model
+
 def standardized_model_wordpress(raw_data):
     normalized_data = {}
     for key, value in raw_data.items():
         normalized_data[normalize_key(key)] = value
+
     required_contact_details = {'first_name', 'last_name', 'email', 'phone_number', 'gender', 'state'}
+    exclude_fields = {'page_url', 'user_agent', 'remote_ip', 'powered_by', 'form_id'}
+
     standardized_model = {
         "first_name": None,
         "last_name": None,
@@ -133,11 +192,13 @@ def standardized_model_wordpress(raw_data):
         "state": None,
         "form_data": {}
     }
+
     for key, value in normalized_data.items():
         if key in required_contact_details:
             standardized_model[key] = value
-        else:
+        elif key not in exclude_fields:
             standardized_model["form_data"][key] = value
+
     return standardized_model
 
 
@@ -204,6 +265,3 @@ def is_spam(submission):
     if is_gibberish_name(submission.get('First Name', '')) or is_gibberish_name(submission.get('Last Name', '')):
         return True
     return False
-
-
-

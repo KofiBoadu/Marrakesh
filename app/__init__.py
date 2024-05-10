@@ -47,7 +47,7 @@ def create_app():
     app.register_blueprint(events, url_prefix='/events')
     app.register_blueprint(api_blueprint, url_prefix='/api')
     app.secret_key = os.getenv('SECRET_KEY')
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 
     # Flask-Mail configuration
     app.config['MAIL_SERVER'] = 'smtpout.secureserver.net'

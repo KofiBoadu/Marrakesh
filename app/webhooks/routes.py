@@ -1,14 +1,11 @@
 from flask import request, jsonify
 from . import api_blueprint
-from  .webhooks_models import auth, create_new_leads, standardized_model_wordpress, create_new_form_submission, \
+from .webhooks_models import auth, create_new_leads, standardized_model_wordpress, create_new_form_submission, \
     add_new_form_submission_data, \
     standardized_model_facebook, is_spam
 import os
 # import paypalrestsdk
 from app.contacts.contact_models import check_contact_exists
-
-
-
 
 # paypalrestsdk.configure({
 #     'mode': 'live',
@@ -36,15 +33,11 @@ spammy_patterns = {
 }
 
 
-
-
-
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593', methods=['POST'])
 def add_new_lead():
     request_data = request.form.to_dict()
     print(request_data)
     source = "wordpress"
-  
 
     if request.content_type == 'application/x-www-form-urlencoded':
         data = request.form.to_dict()
@@ -82,10 +75,6 @@ def add_new_lead():
             return jsonify({"contact_id": contact_id}), 200
         else:
             return jsonify({"error": "Invalid contact data"}), 400
-
-
-
-
 
 
 @api_blueprint.route('/adding-new-lead-3e7a8f9d-94593/facebook-ads-leads-gen', methods=['POST'])

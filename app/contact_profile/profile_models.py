@@ -1,45 +1,40 @@
-
 import logging
 from app.utils.database import create_database_connection
 from datetime import datetime, timedelta
 from itertools import groupby
 
 
-known_fields = {
-    'message',
-    'how_many_travelers',
-    'enter_full_names_and_emails__of_other_travelers_if_any',
-    'what_type_of_tour',
-    'referral_name_or_code_if_any',
-    'how_did_you_hear_about_us',
-    'city',
-    'postal_/_zip_code',
-    'country',
-    'type_of_accommodation',
-    'payment_options',
-    'address',
-    'what_is_the_best_way_to_contact_you',
-    'if_phone_when_is_the_best_time_of_day_for_a_call_back',
-    'is_there_anything_else_we_should_know',
-    'deposit_amount',
-    'date',
-    'time',
-    # 'page_url',
-    # 'form_name',
-    "Accommodation Type",
-    "Budget (Budget Excluding Flights)",
-    " Destination",
-    "Message",
-    "Time",
-    " What Is The Best Way To Contact You?",
-    'Are you prepared to secure your spot with a deposit within the next week?'
-
-}
-
-
-
-
-
+#
+# known_fields = {
+#     'message',
+#     'how_many_travelers',
+#     'enter_full_names_and_emails__of_other_travelers_if_any',
+#     'what_type_of_tour',
+#     'referral_name_or_code_if_any',
+#     'how_did_you_hear_about_us',
+#     'city',
+#     'postal_/_zip_code',
+#     'country',
+#     'type_of_accommodation',
+#     'payment_options',
+#     'address',
+#     'what_is_the_best_way_to_contact_you',
+#     'if_phone_when_is_the_best_time_of_day_for_a_call_back',
+#     'is_there_anything_else_we_should_know',
+#     'deposit_amount',
+#     'date',
+#     'time',
+#     'page_url',
+#     'form_name',
+#     "Accommodation Type",
+#     "Budget (Budget Excluding Flights)",
+#     " Destination",
+#     "Message",
+#     "Time",
+#     " What Is The Best Way To Contact You?",
+#     'Are you prepared to secure your spot with a deposit within the next week?'
+#
+# }
 
 
 def profile_details(contact_id):
@@ -91,7 +86,6 @@ def profile_details(contact_id):
             database_connection.close()
 
 
-
 def get_customer_bookings(contact_id):
     query = """
         SELECT
@@ -128,9 +122,6 @@ def get_customer_bookings(contact_id):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
-
-
 
 
 def contact_gender_update(contact_id, gender):
@@ -196,8 +187,6 @@ def contact_submissions(contact_id):
             database_connection.close()
 
 
-
-
 def all_emails_sent_to_contacts(contact_id):
     """
         Retrieves all emails sent to a specific contact, ordered by the most recent.
@@ -222,7 +211,8 @@ def all_emails_sent_to_contacts(contact_id):
         cursor.execute(query, (contact_id,))
         results = cursor.fetchall()
         all_emails = [
-            {'email_id': email[0], 'subject': "Email " + email[1], 'status': email[2], 'sent_date': email[3], 'body': email[4],
+            {'email_id': email[0], 'subject': "Email " + email[1], 'status': email[2], 'sent_date': email[3],
+             'body': email[4],
              "sent_user": email[5]} for email in results]
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -232,13 +222,6 @@ def all_emails_sent_to_contacts(contact_id):
         if database_connection:
             database_connection.close()
     return all_emails
-
-
-
-
-
-
-
 
 
 def save_contact_notes(contact_id, note_message, note_creator):
@@ -276,8 +259,6 @@ def save_contact_notes(contact_id, note_message, note_creator):
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
-
 
 
 def get_contacts_notes(contact_id):
@@ -318,9 +299,6 @@ def get_contacts_notes(contact_id):
     return results
 
 
-
-
-
 def delete_contacts_notes(notes_id, contact_id):
     """
         Deletes a specific note for a contact from the database.
@@ -354,11 +332,6 @@ def delete_contacts_notes(notes_id, contact_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
-
-
-
 
 
 def update_contact_email(contact_email, contact_id):
@@ -431,8 +404,6 @@ def update_contact_phone(contact_id, phone):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
 
 
 def updating_contact_state(state, contact_id):
@@ -629,8 +600,6 @@ def bookings_updates_logs(old_tour_id, new_tour_id, contact_id, updated_by_user_
             database_connection.close()
 
 
-
-
 def fetch_contact_details(contact_id):
     """
         Fetches the contact details for a specific contact ID from the database.
@@ -668,10 +637,6 @@ def fetch_contact_details(contact_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
-
-
 
 
 def all_email_campaigns_sent_to_contact(contact_id):
@@ -732,9 +697,6 @@ def all_email_campaigns_sent_to_contact(contact_id):
             database_connection.close()
 
 
-
-
-
 def get_contact_booking_changes(contact_id):
     """
     Fetches booking changes for a given contact ID, including details of the old and new tours and the user who made the update.
@@ -777,10 +739,6 @@ def get_contact_booking_changes(contact_id):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
-
-
 
 
 def get_contact_activities(contact_id):
@@ -855,10 +813,6 @@ def get_contact_activities(contact_id):
     return activities_sorted
 
 
-
-
-
-
 def update_tour_bookings(tour_id, contact_id):
     """
         Updates the tour ID for a specific booking made by a contact.
@@ -897,7 +851,6 @@ def update_tour_bookings(tour_id, contact_id):
             database_connection.close()
 
 
-
 def get_contact_task(contact_id):
     # Corrected SQL query to properly format the CONCAT function and include a space between first and last name
     query = """
@@ -926,11 +879,8 @@ def get_contact_task(contact_id):
         if database_connection:
             database_connection.close()
 
-
-
 # date=get_contact_task(6457)[0][2]
 # print(date)
-
 
 
 # print(timedelta_to_time_str(timedelta(seconds=9900)))
