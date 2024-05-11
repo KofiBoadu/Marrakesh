@@ -3,11 +3,13 @@
 
     {% include "settings_base.html" %}
     
-   
+
+
+
     <div class="general-container">
         
         <h1 class="general-title">General</h1>
-        <label class="general-header"for="profileImage">Profile Image</label>
+        <label class="general-header" for="profileImage">Profile Image</label>
         <div class="general-profile">
             
                 
@@ -15,24 +17,29 @@
             </h1>
 
         </div>
-        <form>
 
+        <form class="user-profile-form" id="user-profile-details" data-url="{{ url_for('users.update_user_details') }}"  action="{{ url_for('users.update_user_details') }}" method="post">
             <div class="general-form">
-                
-
                 <div class="general-form">
                     <label for="firstName">First name</label>
                     <input type="text" id="firstName" name="first_name" value="{{ user.first_name }}">
                 </div>
-
                 <div class="general-form">
                     <label for="lastName">Last name</label>
                     <input type="text" id="lastName" name="last_name" value="{{ user.last_name }}">
                 </div>
+
+                 <input type="hidden" name="user_id" id='user-id' value="{{ session.get('user_id', '') }}">
             </div>
 
+            <!-- Button container -->
+            <div id="buttonContainer" style="display: none;">
+                <button type="button" id="saveButton">Save</button>
+                <button type="button" id="cancelButton">Cancel</button>
+            </div>
+      </form>
 
-        </form>
+
 
     </div>
 

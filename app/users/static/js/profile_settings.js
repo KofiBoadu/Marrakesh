@@ -1,4 +1,87 @@
 
+
+//UPDATE THE USER PROFILE DETAILS INCLUDING FIRST NAME AND LAST NAME
+// Initial values to restore on cancel
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM fully loaded and parsed");
+
+    let initialFirstName = document.getElementById("firstName").value;
+    console.log("Initial First Name:", initialFirstName);
+    let initialLastName = document.getElementById("lastName").value;
+    console.log("Initial Last Name:", initialLastName);
+
+    // Select input fields and button container
+    const firstNameInput = document.getElementById("firstName");
+    const lastNameInput = document.getElementById("lastName");
+    const buttonContainer = document.getElementById("buttonContainer");
+
+    // Buttons
+    const saveButton = document.getElementById("saveButton");
+    const cancelButton = document.getElementById("cancelButton");
+
+    if (firstNameInput && lastNameInput && buttonContainer && saveButton && cancelButton) {
+        // Show buttons when any input field is changed
+        [firstNameInput, lastNameInput].forEach(input => {
+            input.addEventListener("input", () => {
+                console.log("Input changed");
+                buttonContainer.style.display = "block";
+            });
+        });
+
+        // Save button click
+        saveButton.addEventListener("click", () => {
+            const formData = new FormData(document.getElementById("user-profile-details"));
+            const form = document.getElementById("user-profile-details");
+            const postUrl = form.getAttribute("data-url");
+            fetch(postUrl, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log("Save successful");
+                    buttonContainer.style.display = "none";
+                    initialFirstName = firstNameInput.value;
+                    initialLastName = lastNameInput.value;
+                } else {
+                    console.error("Error:", data.message);
+                    alert(`Error: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error("Server error:", error);
+                alert(`Server error: ${error}`);
+            });
+        });
+
+        // Cancel button click
+        cancelButton.addEventListener("click", () => {
+            console.log("Cancel clicked");
+            firstNameInput.value = initialFirstName;
+            lastNameInput.value = initialLastName;
+            buttonContainer.style.display = "none";
+        });
+    } else {
+        console.error("One or more elements not found");
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //update tours content IN THE TABLE INSTEAD OF REFRESHING THE WHOLE PAGE
 document.addEventListener('DOMContentLoaded', function() {
     const tour_paginationContainer = document.querySelector('.tours-pagination-controls');
@@ -119,3 +202,76 @@ function show_TourButton() {
 function closeTourModal() {
   document.getElementById('tourForm').style.display = 'None';
 }
+
+
+
+
+//
+////UPDATE THE USER PROFILE DETAILS INCLUDING FIRST NAME AND LAST NAME
+//// Initial values to restore on cancel
+//document.addEventListener("DOMContentLoaded", function() {
+//    console.log("DOM fully loaded and parsed");
+//
+//    let initialFirstName = document.getElementById("firstName").value;
+//    console.log("Initial First Name:", initialFirstName);
+//    let initialLastName = document.getElementById("lastName").value;
+//    console.log("Initial Last Name:", initialLastName);
+//
+//    // Select input fields and button container
+//    const firstNameInput = document.getElementById("firstName");
+//    const lastNameInput = document.getElementById("lastName");
+//    const buttonContainer = document.getElementById("buttonContainer");
+//
+//    // Buttons
+//    const saveButton = document.getElementById("saveButton");
+//    const cancelButton = document.getElementById("cancelButton");
+//
+//    if (firstNameInput && lastNameInput && buttonContainer && saveButton && cancelButton) {
+//        // Show buttons when any input field is changed
+//        [firstNameInput, lastNameInput].forEach(input => {
+//            input.addEventListener("input", () => {
+//                console.log("Input changed");
+//                buttonContainer.style.display = "block";
+//            });
+//        });
+//
+//        // Save button click
+//        saveButton.addEventListener("click", () => {
+//            const formData = new FormData(document.getElementById("user-profile-details"));
+//            fetch("{{ url_for('users.update_user_details') }}", {
+//                method: "POST",
+//                body: formData
+//            })
+//            .then(response => response.json())
+//            .then(data => {
+//                if (data.status === "success") {
+//                    console.log("Save successful");
+//                    buttonContainer.style.display = "none";
+//                    initialFirstName = firstNameInput.value;
+//                    initialLastName = lastNameInput.value;
+//                } else {
+//                    console.error("Error:", data.message);
+//                    alert(`Error: ${data.message}`);
+//                }
+//            })
+//            .catch(error => {
+//                console.error("Server error:", error);
+//                alert(`Server error: ${error}`);
+//            });
+//        });
+//
+//        // Cancel button click
+//        cancelButton.addEventListener("click", () => {
+//            console.log("Cancel clicked");
+//            firstNameInput.value = initialFirstName;
+//            lastNameInput.value = initialLastName;
+//            buttonContainer.style.display = "none";
+//        });
+//    } else {
+//        console.error("One or more elements not found");
+//    }
+//});
+//
+//
+//
+

@@ -6,19 +6,16 @@ from .admin_models import get_user, User, create_user_account, generate_secure_p
     reactivate_user_account, remove_super_admin, make_super_admin
 from flask_login import login_required, current_user
 from .admin_models import password_change, pass_word_checker, get_all_users, remover_user_from_account, user_roles, \
-    update_user_time_zone
+    update_user_time_zone,change_user_name_details
 from app.utils.main import send_email
 from app.utils.tours import get_all_destinations
-from app.users.tour_packages import get_all_tours_scheduled, get_total_tour_packages,delete_a_tour_package
+from app.users.tour_packages import get_all_tours_scheduled, get_total_tour_packages, delete_a_tour_package
 import math
 
 
 @users_bp.route('/login', methods=["GET"])
 def login():
     return render_template("login.html")
-
-
-
 
 
 @users_bp.route('/current_login_user', methods=['POST'])
@@ -38,14 +35,15 @@ def login_user_route():
     session.permanent = True
 
     # Login the user with Flask-Login
-    user_object = User(current_login_user[0], current_login_user[1], current_login_user[2], current_login_user[3], current_login_user[4], current_login_user[5])
+    user_object = User(current_login_user[0], current_login_user[1], current_login_user[2], current_login_user[3],
+                       current_login_user[4], current_login_user[5])
     login_user(user_object)
 
     # Update the timezone information
     time_zone = request.form.get('timezone')
-    print("zone",time_zone)
+    print("zone", time_zone)
     if time_zone:
-        zone= update_user_time_zone(current_login_user[0], time_zone)
+        zone = update_user_time_zone(current_login_user[0], time_zone)
         print(zone)
 
     # Set additional session variables
@@ -143,15 +141,15 @@ def creating_users():
     if account_creation_success:
         invite_message = f"""Dear {new_user_first_name},
 
-Thank you for joining the Marrakesh team. Below are your temporary credentials to access your account. You should be able to reset your password when you login with your temporary password.
-
-Login email: {new_user_email}
-Temporary password: {temp_password}
-URL: https://africatravellers-crm-7ca32dc61ea0.herokuapp.com/contacts/contacts/home
-
-Thank you,
-Marrakesh Team
-"""
+        Thank you for joining the Marrakesh team. Below are your temporary credentials to access your account. You should be able to reset your password when you login with your temporary password.
+        
+        Login email: {new_user_email}
+        Temporary password: {temp_password}
+        URL: https://africatravellers-crm-7ca32dc61ea0.herokuapp.com/contacts/contacts/home
+        
+        Thank you,
+        Marrakesh Team
+        """
 
         send_email(subject, [new_user_email], invite_message)
     return redirect(url_for('users.settings_users'))
@@ -250,4 +248,24 @@ def deleting_tour_package():
         return jsonify({"message": "No tour package ID provided"}), 400
 
 
-
+@users_bp.route('/update/user/profile-details', methods=['POST'])
+def update_user_details():
+    user_first_name = request.form.get('first_name')
+    print(user_first_name)
+    user_last_name = request.form.get('last_name')
+    print(user_last_name)
+    login_user_id = request.form.get("user_id")
+    print(login_user_id)
+    if login_user_id is None:
+        return jsonify({'status': 'error', 'message': 'No user ID provided'}), 400
+    if user_first_name or user_last_name or login_user_id:
+        try:
+            success = change_user_name_details(user_first_name, user_last_name, login_user_id)
+            if success:
+                return jsonify({'status': 'success', 'message': 'User details updated successfully'}), 200
+            else:
+                return jsonify({'status': 'error', 'message': 'Failed to update details'}), 500
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': 'Server error: {}'.format(str(e))}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Missing required fields'}), 400

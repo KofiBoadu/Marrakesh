@@ -341,3 +341,28 @@ def update_user_time_zone(user_id, time_zone):
         if database_connection:
             database_connection.close()
 
+
+def change_user_name_details(first_name, last_name, user_id):
+    query = """UPDATE users SET first_name = %s, last_name = %s WHERE user_id = %s"""
+    cursor = None
+    database_connection = None
+    try:
+        database_connection = create_database_connection()
+        cursor = database_connection.cursor()
+        cursor.execute(query, (first_name, last_name, user_id))
+        database_connection.commit()
+        return True
+    except Exception as e:
+        if database_connection:
+            database_connection.rollback()
+        print("An error occurred updating user first name and last name:", e)
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if database_connection:
+            database_connection.close()
+
+
+
+# print(change_user_name_details("kofi","boadu",1))
