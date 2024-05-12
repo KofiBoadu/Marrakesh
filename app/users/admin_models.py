@@ -364,5 +364,3 @@ def change_user_name_details(first_name, last_name, user_id):
             database_connection.close()
 
 
-
-# print(change_user_name_details("kofi","boadu",1))

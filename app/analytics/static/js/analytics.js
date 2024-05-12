@@ -57,26 +57,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('genderChart').getContext('2d');
     let genderChart; // Variable to hold the chart instance
 
-    function fetchDataAndUpdateChart(year = null) {
-        // Construct the URL based on whether a year is provided
+    function fetchDataAndUpdateChart(year = "") { // default parameter set to empty string
         let url = '/analytics/gender_chart';
         if (year) {
-            url += '?gender_year=' + year;  // Append the year parameter if provided
+            url += '?gender_year=' + encodeURIComponent(year);  // Encode URI component to handle special characters
         }
+
+        console.log("Fetching URL:", url); // Debugging output
 
         fetch(url)
             .then(response => response.json())
             .then(genderData => {
-                const labels = genderData.map(item => item[0]); // ['female', 'male']
-                const data = genderData.map(item => item[1]); // [118, 40]
+                console.log("Received Data:", genderData); // Debugging output
+                const labels = genderData.map(item => item[0]); // Assumes data is array of arrays/tuples
+                const data = genderData.map(item => item[1]);
 
-                // Update or create the chart
                 if (genderChart) {
                     genderChart.data.labels = labels;
                     genderChart.data.datasets[0].data = data;
@@ -88,18 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             labels: labels,
                             datasets: [{
                                 label: 'Gender Distribution',
-                                data: [120, 80], // Example data: 120 men, 80 women
-                                backgroundColor: [
-                                    '#03989E', // Solid color for men
-                                    '#FF914C'  // Solid color for women
-                                ],
-                                borderColor: [
-                                    '#03989E', // Border color for men
-                                    '#FF914C'  // Border color for women
-                                ],
+                                data: data,
+                                backgroundColor: ['#03989E', '#FF914C'],
+                                borderColor: ['#03989E', '#FF914C'],
                                 borderWidth: 1
                             }]
-
                         },
                         options: {
                             scales: {
@@ -116,10 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error fetching gender data:', error));
     }
 
-    // Event listener for the dropdown
     document.getElementById('genderSelectyear').addEventListener('change', function() {
         fetchDataAndUpdateChart(this.value);
     });
@@ -127,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fetch default data on initial load
     fetchDataAndUpdateChart();
 });
+
 
 
 

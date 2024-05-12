@@ -4,10 +4,6 @@ import mysql.connector
 import logging
 
 
-
-
-
-
 def calculate_annual_gross_revenue(year=None):
     """
         Calculates the annual gross revenue from tour bookings, optionally filtered by a specific year.
@@ -74,9 +70,6 @@ def calculate_annual_gross_revenue(year=None):
             database_connection.close()
 
 
-
-
-
 def get_travellers_by_destination_query(year=None):
     """
         Counts the number of bookings for each destination, optionally filtered by year.
@@ -140,24 +133,78 @@ def get_travellers_by_destination_query(year=None):
             database_connection.close()
 
 
+# def contacts_by_gender(year=None):
+#     """
+#         Retrieves a count of contacts grouped by gender, optionally filtered by year.
+#
+#         This function can operate in two modes: if a year is provided, it returns the count of contacts by gender for tours starting or ending in that year; otherwise, it returns the count of all contacts by gender.
+#
+#         Parameters:
+#         - year (int, optional): The year to filter the tour start and end dates. Defaults to None, in which case no year filter is applied.
+#
+#         Returns:
+#         - A list of tuples, where each tuple contains a gender group ('male', 'female', or 'Other') and the count of contacts in that group.
+#
+#         Note:
+#         - Handles database exceptions by printing an error message. The function ensures the database connection is closed before exiting.
+#     """
+#
+#     if year:
+#         query = """
+#             SELECT
+#                 CASE
+#                     WHEN c.gender IN ('male', 'female') THEN c.gender
+#                     ELSE 'Other'
+#                 END AS gender_group,
+#                 COUNT(*) as count
+#             FROM contacts c
+#             JOIN tour_bookings tb ON c.contact_id = tb.contact_id
+#             JOIN tours t ON tb.tour_id = t.tour_id
+#             WHERE (YEAR(t.start_date) = %(year)s OR YEAR(t.end_date) = %(year)s)
+#             GROUP BY gender_group;
+#         """
+#         params = {'year': year}
+#     else:
+#         query = """
+#             SELECT
+#                 CASE
+#                     WHEN gender IN ('male', 'female') THEN gender
+#                     ELSE 'Other'
+#                 END AS gender_group,
+#                 COUNT(*) as count
+#             FROM contacts
+#             GROUP BY gender_group;
+#         """
+#         params = {}
+#
+#     database_connection = None
+#     cursor = None
+#     try:
+#         database_connection = create_database_connection()
+#         cursor = database_connection.cursor()
+#         cursor.execute(query, params)
+#         result = cursor.fetchall()
+#         return result
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#     finally:
+#         if cursor is not None:
+#             cursor.close()
+#         if database_connection is not None:
+#             database_connection.close()
 
-
-def contacts_by_gender(year=None):
+def customers_by_gender(year=None):
     """
-        Retrieves a count of contacts grouped by gender, optionally filtered by year.
+    Retrieves a count of contacts grouped by gender, optionally filtered by year.
 
-        This function can operate in two modes: if a year is provided, it returns the count of contacts by gender for tours starting or ending in that year; otherwise, it returns the count of all contacts by gender.
+    Parameters:
+    - year (int, optional): The year to filter the tour start and end dates. Defaults to None.
 
-        Parameters:
-        - year (int, optional): The year to filter the tour start and end dates. Defaults to None, in which case no year filter is applied.
-
-        Returns:
-        - A list of tuples, where each tuple contains a gender group ('male', 'female', or 'Other') and the count of contacts in that group.
-
-        Note:
-        - Handles database exceptions by printing an error message. The function ensures the database connection is closed before exiting.
+    Returns:
+    - A list of tuples with each tuple containing a gender group and the count of contacts in that group.
     """
 
+    # Build the query based on the presence of a year filter
     if year:
         query = """
             SELECT 
@@ -170,6 +217,7 @@ def contacts_by_gender(year=None):
             JOIN tour_bookings tb ON c.contact_id = tb.contact_id
             JOIN tours t ON tb.tour_id = t.tour_id
             WHERE (YEAR(t.start_date) = %(year)s OR YEAR(t.end_date) = %(year)s)
+              AND c.lead_status = 'customer'
             GROUP BY gender_group;
         """
         params = {'year': year}
@@ -182,27 +230,35 @@ def contacts_by_gender(year=None):
                 END AS gender_group,
                 COUNT(*) as count
             FROM contacts
+            WHERE lead_status = 'customer'
             GROUP BY gender_group;
         """
         params = {}
 
     database_connection = None
     cursor = None
+
     try:
+        # Establish a connection to the database
         database_connection = create_database_connection()
         cursor = database_connection.cursor()
+
+        # Execute the query and fetch results
         cursor.execute(query, params)
-        result = cursor.fetchall()
-        return result
+        results = cursor.fetchall()
+
+        # Return the results
+        return results
     except Exception as e:
-        print(f"An error occurred: {e}")
+        # Print the error message for debugging
+        print(f"An error occurred while fetching gender data: {e}")
+        return []
     finally:
-        if cursor is not None:
+        # Ensure both the cursor and connection are closed to release resources
+        if cursor:
             cursor.close()
-        if database_connection is not None:
+        if database_connection:
             database_connection.close()
-
-
 
 
 def customers_location_by_state():
@@ -220,20 +276,25 @@ def customers_location_by_state():
 
     query = """
         SELECT 
-        CASE 
-            WHEN state_address IS NULL THEN 'Unknown'
-            WHEN state_address NOT IN (
-                'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 
-                'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 
-                'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 
-                'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 
-                'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'DC') THEN 'Other'
-            ELSE state_address
-        END AS state_group, 
-        COUNT(*) AS customer_count
-        FROM  contacts        #customers
-        GROUP BY state_group
-        ORDER BY customer_count DESC;
+            CASE 
+                WHEN c.state_address IS NULL THEN 'Unknown'
+                WHEN c.state_address NOT IN (
+                    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 
+                    'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 
+                    'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 
+                    'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 
+                    'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'DC') THEN 'Other'
+                ELSE c.state_address
+            END AS state_group, 
+            COUNT(*) AS customer_count
+        FROM 
+            contacts c
+        INNER JOIN 
+            tour_bookings tb ON tb.contact_id = c.contact_id
+        GROUP BY 
+            state_group
+        ORDER BY 
+            customer_count DESC;
     """
 
     database_connection = None
@@ -251,8 +312,6 @@ def customers_location_by_state():
             cursor.close()
         if database_connection is not None:
             database_connection.close()
-
-
 
 
 def calculate_gross_revenue(year):
@@ -294,7 +353,6 @@ def calculate_gross_revenue(year):
 
         return format_rev, revenue
 
-
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
@@ -303,11 +361,6 @@ def calculate_gross_revenue(year):
             cursor.close()
         if database_connection:
             database_connection.close()
-
-
-
-
-
 
 
 def get_total_number_of_travellers():
