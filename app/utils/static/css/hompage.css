@@ -770,3 +770,14 @@ button#cancel:hover {
     background-color: transparent;
     cursor: pointer;
 }
+
+
+
+ #user-list-popup {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+ }

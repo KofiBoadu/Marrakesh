@@ -42,6 +42,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Capture the user's timezone and set it in the hidden input field
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(timezone)
     document.getElementById('timezone').value = timezone;
 });
 </script>

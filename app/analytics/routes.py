@@ -13,7 +13,6 @@ from flask_login import login_required
 @login_required
 def analytics_home():
     current_year = datetime.datetime.now().year
-
     total_travelers = get_total_number_of_travellers()
     revenue, formatted_revenue = calculate_gross_revenue(current_year)
     list_years = our_customers_since_by_year()
@@ -21,7 +20,6 @@ def analytics_home():
     total_revenue = 0
     for year, amount in revenue_data:
         total_revenue = total_revenue + float(amount.replace(',', ''))
-
     total_revenue = "{:.2f}".format(total_revenue)
     return render_template("analytics.html", total_revenue=total_revenue, total_travelers=total_travelers,
                            current_year=current_year, revenue=revenue, formatted_revenue=formatted_revenue,
@@ -43,7 +41,6 @@ def contacts_gender_charts():
     if year == "":
         year = None  # Treat empty string as None for 'lifetime' data
     gender_data = customers_by_gender(year)
-
     return jsonify(gender_data)
 
 

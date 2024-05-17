@@ -498,9 +498,89 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //UPDATE CONTACT OWNER FUNCTIONS in the rows
-function showUserList(contactId) {
+//function showUserList(contactId) {
+//    document.getElementById('selected-contact-id').value = contactId;
+//    document.getElementById('user-list-popup').style.display = 'block';
+//}
+
+
+//function showUserList(contactId, element) {
+//            var popup = document.getElementById('user-list-popup');
+//            var rect = element.getBoundingClientRect();
+//            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+//            var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+//
+//            popup.style.top = (rect.bottom + scrollTop) + 'px';
+//            popup.style.left = (rect.left + scrollLeft) + 'px';
+//            popup.style.display = 'block';
+//        }
+////
+//
+//
+//
+//function selectUser(userId) {
+//        document.getElementById('selected-user-id').value = userId;
+//        document.getElementById('update-owner').style.display = 'block';
+//       document.getElementById('user-list-popup').style.display = 'none';
+//}
+//
+//function closeForm() {
+//    document.getElementById('update-owner').style.display = 'none';
+//}
+//
+//
+////Function to handle form submission using Fetch API
+//function submitForm(event) {
+//    event.preventDefault(); // Prevent default form submission
+//
+//    const form = document.getElementById('update-owner-form');
+//    const url = form.getAttribute('data-url'); // Get the URL from data attribute
+//    const userId = document.getElementById('selected-user-id').value;
+//    const contactId = document.getElementById('selected-contact-id').value;
+//
+//    const data = new FormData();
+//    data.append('user_id', userId);
+//    data.append('contact_id', contactId);
+//
+//    fetch(url, {
+//        method: 'POST',
+//        body: data
+//    })
+//    .then(response => response.json())
+//    .then(data => {
+//        if (data.owner) {
+//            // Update the owner cell directly
+//            document.getElementById('contact-owner-' + contactId).textContent = data.owner;
+//            closeForm(); // Close the form
+//        } else {
+//            alert('Failed to update contact owner: ' + data.error);
+//        }
+//    })
+//    .catch(error => {
+//        console.error('Error:', error);
+//        alert('Failed to update contact owner.');
+//    });
+//}
+//
+//
+//// Add event listener to the form
+//document.getElementById('update-owner-form').addEventListener('submit', submitForm);
+//
+
+
+
+
+function showUserList(contactId, element) {
+    var popup = document.getElementById('user-list-popup');
+    var rect = element.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+    popup.style.top = (rect.bottom + scrollTop) + 'px';
+    popup.style.left = (rect.left + scrollLeft) + 'px';
+    popup.style.display = 'block';
+
     document.getElementById('selected-contact-id').value = contactId;
-    document.getElementById('user-list-popup').style.display = 'block';
 }
 
 function selectUser(userId) {
@@ -514,7 +594,7 @@ function closeForm() {
 }
 
 
-//Function to handle form submission using Fetch API
+
 function submitForm(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -527,12 +607,26 @@ function submitForm(event) {
     data.append('user_id', userId);
     data.append('contact_id', contactId);
 
+    // Debugging: Log form data
+    console.log('Form data:', {
+        user_id: userId,
+        contact_id: contactId
+    });
+
     fetch(url, {
         method: 'POST',
         body: data
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        // Debugging: Log response data
+        console.log('Response data:', data);
+
         if (data.owner) {
             // Update the owner cell directly
             document.getElementById('contact-owner-' + contactId).textContent = data.owner;
@@ -550,7 +644,10 @@ function submitForm(event) {
 // Add event listener to the form
 document.getElementById('update-owner-form').addEventListener('submit', submitForm);
 
-
-
-
-
+// Close popup when clicking outside
+document.addEventListener('click', function(event) {
+    var popup = document.getElementById('user-list-popup');
+    if (!popup.contains(event.target) && event.target.className !== 'contact_owner') {
+        popup.style.display = 'none';
+    }
+});

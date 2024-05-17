@@ -57,7 +57,19 @@
 
 
 <!--assigned users form pop up-->
-<div id="user-list-popup" style="display: none;">
+<!--<div id="user-list-popup" style="display: none;">-->
+<!--    <ul>-->
+<!--        <li onclick="selectUser('none')">No owner</li>-->
+<!--        {% for user in all_users %}-->
+<!--        <li onclick="selectUser({{ user[0] }})">-->
+<!--            <strong>{{ user[1] }} {{ user[2] }}</strong><br>-->
+<!--            <strong>{{ user[3] }}</strong>-->
+<!--        </li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+<!--</div>-->
+
+<div id="user-list-popup"  style="display: none;">
     <ul>
         <li onclick="selectUser('none')">No owner</li>
         {% for user in all_users %}
@@ -69,15 +81,28 @@
     </ul>
 </div>
 
+
+
+
 <!--#save the new assigned contact owner-->
 <!-- Update owner form -->
-<div id="update-owner" style="display:none;">
-    <form id="update-owner-form" action="#" method="post" data-url="{{ url_for('contacts.assigning_contact_owner') }}">
-        <input type="hidden" id="selected-user-id" name="user_id">
-        <input type="hidden" id="selected-contact-id" name="contact_id">
-        <button type="submit">Save</button>
-        <button type="button" onclick="closeForm()">Cancel</button>
-    </form>
+<!--<div id="update-owner" style="display:none;">-->
+<!--    <form id="update-owner-form" action="#" method="post" data-url="{{ url_for('contacts.assigning_contact_owner') }}">-->
+<!--        <input type="hidden" id="selected-user-id" name="user_id">-->
+<!--        <input type="hidden" id="selected-contact-id" name="contact_id">-->
+<!--        <button type="submit">Save</button>-->
+<!--        <button type="button" onclick="closeForm()">Cancel</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+
+<div id="update-owner" style="display: none;">
+        <form id="update-owner-form" action="#" method="post" data-url="{{ url_for('contacts.assigning_contact_owner') }}">
+            <input type="hidden" id="selected-user-id" name="user_id">
+            <input type="hidden" id="selected-contact-id" name="contact_id">
+            <button type="submit">Save</button>
+            <button type="button" onclick="closeForm()">Cancel</button>
+        </form>
 </div>
 
 
