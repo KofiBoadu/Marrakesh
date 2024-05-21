@@ -5,7 +5,7 @@ from .marketing import email_marketing
 from app.users import users_bp
 from dotenv import load_dotenv
 import os
-from .contact_profile import contacts_profile
+from app.contact_profile import contacts_profile
 from .send_emails import email_customers
 from .utils.main import mail
 from app.file_export import fileExport_bp

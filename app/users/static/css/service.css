@@ -217,3 +217,17 @@
     width: 11.875%;
     margin-top: 4%;
 }
+
+.delete-tour{
+	margin-top: 3%;
+}
+
+#delete-package{
+	color:#FF914C;
+	text-decoration: none;
+	font-weight: 200;
+}
+
+#delete-button-tour {
+    margin-top: 5%;
+}

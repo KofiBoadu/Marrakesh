@@ -17,7 +17,8 @@
 
     <div class="tour_header">
         <h2 class="tour_header--title">Add New Tour</h2>
-        <img class="tour_header--close" id="exit" width="24" height="24" onclick="closeTourModal()" src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
+        <img class="tour_header--close" id="exit" width="24" height="24" onclick="closeTourModal()"
+            src="https://img.icons8.com/material-outlined/24/FFFFFF/delete-sign.png" alt="delete-sign" />
 
     </div>
 
@@ -42,9 +43,9 @@
         <div class="tour_wrap">
             <label>Type of Tour</label>
             <div class="tour_wrap--type">
-                <input  class="radio" type="radio" name="tour_type" value="private">
+                <input class="radio" type="radio" name="tour_type" value="private">
                 <label id="tour_type" for="male">Private</label>
-                <input class="radio" type="radio"  name="tour_type" value="group">
+                <input class="radio" type="radio" name="tour_type" value="group">
                 <label id="tour_type" for="female">Group</label>
             </div>
 
@@ -71,50 +72,50 @@
 
 
 
-       
-<!-- available tours table -->
-    <div class="tours_table_container">
-        <div id="tours-header">
-            <div id="tours-header-container">
-                <h3 id="tours_table-title">Tours</h3>
-                <h5>{{ total_tours}} total tour packages</h5>
-            </div>
-			
-            <div class="create-user-button" onclick="show_TourButton()">
-                <button id="add_tour_button" type="button" class="user-action-button">Add New Tour</button>
-            </div>
 
-          <!--  delete tour package-->
-           <div>
-            <form class="tour-package-delete" action="{{ url_for('users.deleting_tour_package') }}" style="display:none;" id="delete-form" method="post">
-                <a href="#" id="delete-package" onclick="submitDelete(event);">Delete</a>
+<!-- available tours table -->
+<div class="tours_table_container">
+    <div id="tours-header">
+        <div id="tours-header-container">
+            <h3 id="tours_table-title">Tours</h3>
+            <h5>{{ total_tours}} total tour packages</h5>
+        </div>
+        <!--  delete tour package-->
+        <div class="delete-tour">
+               
+            <form class="tour-package-delete" action="{{ url_for('users.deleting_tour_package') }}"
+                style="display:none;" id="delete-form" method="post">
+                <a href="#" id="delete-package" onclick="submitDelete(event);"><img id="delete-button-tour" width="16" height="16"
+                    src="https://img.icons8.com/small/16/FF914C/filled-trash.png" alt="delete-icon" />delete</a>
                 <input type="hidden" id="tour_id_to_delete" name="tour_id">
             </form>
-            </div>
-
-    
-		</div>
-        <table class="tours_table">
-              <thead>
-                  <th><input type="checkbox"></th>
-                  <th>Name</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Price</th>
-                  <th>Destination</th>
-                  <th>Tour Type</th>
-              </thead>
-              <tbody id="toursTableData" >
-               {% include 'tours_table_body.html' %}
-              </tbody>
-        </table>
-
-        {% include 'tours_pagination.html' %}
-
         </div>
 
+        <div class="create-user-button" onclick="show_TourButton()">
+            <button id="add_tour_button" type="button" class="user-action-button">Add New Tour</button>
+        </div>
+
+
+
+
+    </div>
+    <table class="tours_table">
+        <thead>
+            <th><input class="user-checkbox" type="checkbox"></th>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Price</th>
+            <th>Destination</th>
+            <th>Tour Type</th>
+        </thead>
+        <tbody id="toursTableData">
+            {% include 'tours_table_body.html' %}
+        </tbody>
+    </table>
+
+    {% include 'tours_pagination.html' %}
+
+</div>
+
 {% endblock %}
-
-
-
-

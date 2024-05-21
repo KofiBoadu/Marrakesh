@@ -22,17 +22,19 @@
 }
 
 .marketing_title {
-	border-radius: 10px 10px 0 0;
-	background: rgb(3, 152, 158);
-	padding: 2%;
-	background: linear-gradient(90deg, rgb(3, 152, 158) 32%, rgb(191, 232, 233) 100%);
+
+    margin-right: 50px;
+    border-bottom: 2px solid rgb(238, 234, 234);
+    width: 100%;
+    padding-bottom: 20px;
+    font-weight: 400;
+    color: #959494;
 }
 
 .marketing_title--header {
-	font-family: sans-serif;
-	font-size: 1.5em;
-	color: white;
-	margin-left: 5%;
+	font-weight: 400;
+	font-size: 2em;
+	
 }
 
 .marketing-form-group {
@@ -93,6 +95,6 @@
 	background-color: #FF8C00;
 	border-style: none;
 	padding: 10px;
-	font-weight: bold;
+	font-weight: 300;
 	border-radius: 5px;
 }

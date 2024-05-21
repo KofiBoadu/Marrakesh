@@ -366,7 +366,7 @@ strong {
 /* Example widths for each column - adjust these as needed */
 #data-table th:nth-child(1),
 .table-container-scroll-bar table td:nth-child(1) {
-  width: 5%;
+  width: 2%;
 }
 
 #data-table th:nth-child(2),
@@ -415,7 +415,7 @@ strong {
 
 .table-container-scroll-bar {
   overflow-y: auto;
-  max-height: 580px;
+  max-height: 380px;
   /* Adjust based on your needs */
   border: 1px solid #ccc;
   border-bottom: none;
@@ -433,7 +433,7 @@ th {
 #data-table {
   background-color: rgba(151, 194, 195, 0.7176470588);
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
   border-spacing: 1px;
 }
 
@@ -478,15 +478,15 @@ tbody {
 }
 
 .delete-checkbox {
-  width: 2em;
-  height: 2em;
+  width: 1.5em;
+  height: 1.5em;
   border: 2px solid grey;
 }
 
 td a {
   text-decoration: none;
   color: #03989E;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 #deleteModal {
@@ -753,31 +753,58 @@ button#cancel:hover {
 
 #import_button {
   margin-right: 100px;
+}
+
+.highlighted-cell {
+  background-color: yellow;
+}
+
+#user-list-popup {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#user-list-popup ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#user-list-popup ul li {
+  padding: 10px 10px;
+  cursor: pointer;
+  font-family: "Lexend Deca", sans-serif;
+  font-size: 14px;
+}
+
+#user-list-popup ul li:hover {
+  background-color: rgba(3, 153, 158, 0.1882352941);
+}
+
+#update-owner {
+  background-color: rgb(251, 251, 251);
+  border-top: 1px solid rgb(203, 214, 226);
+  padding: 20px;
+  position: absolute;
+  bottom: -50px; /* Start off the screen */
+  width: 100%;
+  transition: bottom 1s ease-in-out;
+  animation: slideUp 0.5s forwards;
+  animation-delay: 0s;
+}
+
+@keyframes slideUp {
+  from {
+    bottom: -50%;
+  }
+  to {
+    bottom: 0px;
+  }
+}
+.slide-up-active {
+  bottom: 0; /* Slide up into view */
 }/*# sourceMappingURL=hompage.css.map */
-
-
-#active-filters div {
-    display: inline-block;
-    padding: 5px;
-    margin: 5px;
-    background-color: #eee;
-    border-radius: 5px;
-}
-
-#active-filters button {
-    margin-left: 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-}
-
-
-
- #user-list-popup {
-            display: none;
-            position: absolute;
-            background: white;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 1000;
- }
